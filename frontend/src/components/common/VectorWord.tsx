@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { VectorWordProps } from '@/types/common/layout';
 
+/**
+ * IMP : VectorWord Component ( Icon + Text )
+ * Type : icon, color?
+ * @param param0
+ * @returns
+ */
 function VectorWord({ icon, color = '#58D7A2' }: Readonly<VectorWordProps>) {
   return <StyledVectorWord color={color}>{icon}</StyledVectorWord>;
 }

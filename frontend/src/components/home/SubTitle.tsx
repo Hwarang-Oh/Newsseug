@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { SubTitleProps } from '@/types/home';
 
+/**
+ * IMP : SubTitle Component ( SubTitle )
+ * Type : subTitle
+ * @param param0
+ * @returns
+ */
 function SubTitle({ subTitle }: Readonly<SubTitleProps>) {
   return (
     <SubTitleBoxStyle>
