@@ -1,8 +1,16 @@
-import { ArticleListCardGroupProps } from '@/types/common/common';
 import styled from 'styled-components';
-import ArticleListCard from './ArticleListCard';
+import ArticleListCard from 'components/common/ArticleListCard';
+import { ArticleListCardGroupProps } from '@/types/common/common';
 
-function ArticleListCardGroup({ articleList }: ArticleListCardGroupProps) {
+/**
+ * IMP : ArticleListCardGroup ( News Card Group ) Component
+ * TYPE : articleList -> data.json에서 가져와야 한다. ( import data from '@/db/data.json';)
+ * @param param0
+ * @returns
+ */
+function ArticleListCardGroup({
+  articleList,
+}: Readonly<ArticleListCardGroupProps>) {
   return (
     <Container>
       {articleList.map((article, idx) => (

@@ -1,8 +1,10 @@
-import { LayoutProps } from '@/types/common/layout';
 import styled from 'styled-components';
+import { LayoutProps } from '@/types/common/layout';
 
 /**
- * IMP : 자식 요소를 동적으로 Rendering 할 수 있음.
+ * IMP : Layout Component -> Children Component를 동적으로 Rendering
+ * ? MainLayout / SubLayout Component에 사용됨
+ * Type : children -> React.ReactNode, backgroundColor?
  * @param param0
  * @returns
  */

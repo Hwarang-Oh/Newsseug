@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { SubLayoutProps } from '@/types/common/layout';
 
 /**
- * IMP : 자식 요소를 동적으로 Rendering 할 수 있음.
+ * IMP : SubHeader Component ( SubLayout ) => BackBtn ( 뒤로가기 ), MainSection ( children )
+ * TYPE : children, isSearch?, headerColor?
  * @param param0
  * @returns
  */

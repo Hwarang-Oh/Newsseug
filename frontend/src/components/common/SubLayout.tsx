@@ -1,12 +1,13 @@
-import { SubLayoutProps } from '@/types/common/layout';
-import Container from './Container';
-import Layout from './Layout';
-import NavBar from './NavBar';
-import SubHeader from './SubHeader';
 import React from 'react';
+import Container from 'components/common/Container';
+import Layout from 'components/common/Layout';
+import NavBar from 'components/common/NavBar';
+import SubHeader from 'components/common/SubHeader';
+import { SubLayoutProps } from '@/types/common/layout';
 
 /**
- * IMP : 자식 요소를 동적으로 Rendering 할 수 있음.
+ * IMP : SubLayout Component ( Layout ) => SubHeader ( Header 기본 ), Container ( Child ), NavBar ( 기본 )
+ * Type : children, isSearch?, headerColor?
  * @param param0
  * @returns
  */

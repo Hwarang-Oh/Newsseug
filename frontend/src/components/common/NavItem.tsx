@@ -1,6 +1,12 @@
-import { NavItemProps } from '@/types/common/layout';
 import styled from 'styled-components';
+import { NavItemProps } from '@/types/common/layout';
 
+/**
+ * IMP : NavItem Component ( Navigation Item )
+ * Type : NavItem ( icon, text?, isMain?, active, onClick )
+ * @param param0
+ * @returns
+ */
 function NavItem({
   icon,
   text,
@@ -31,8 +37,7 @@ const NavItemContainer = styled.div<{
   cursor: pointer;
 
   position: relative;
-  top: ${({ $isMain }) =>
-    $isMain ? '-16px' : '0'}; // 원하는 정도로 값을 조절 가능
+  top: ${({ $isMain }) => ($isMain ? '-16px' : '0')};
   ${({ $isMain, $active, theme }) =>
     !$isMain &&
     `
@@ -43,8 +48,7 @@ const NavItemContainer = styled.div<{
 `;
 
 const NavText = styled.span`
-  color: ${({ theme }) =>
-    theme.relaxColor.dark}; // theme에서 진한 회색 가져오기
+  color: ${({ theme }) => theme.relaxColor.dark};
   font-family: Pretendard;
   font-size: 11px;
   font-style: normal;

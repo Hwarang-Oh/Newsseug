@@ -1,11 +1,12 @@
+import Container from 'components/common/Container';
+import Layout from 'components/common/Layout';
+import LogoHeader from 'components/common/LogoHeader';
+import NavBar from 'components/common/NavBar';
 import { LayoutProps } from '@/types/common/layout';
-import Container from './Container';
-import Layout from './Layout';
-import LogoHeader from './LogoHeader';
-import NavBar from './NavBar';
 
 /**
- * IMP : 자식 요소를 동적으로 Rendering 할 수 있음.
+ * IMP : MainLayout Component ( Layout ) => LogoHeader ( 기본 ), Container ( Child ), NavBar ( 기본 )
+ * TYPE : children
  * @param param0
  * @returns
  */

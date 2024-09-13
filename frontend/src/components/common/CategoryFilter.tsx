@@ -7,7 +7,14 @@ import React, {
 } from 'react';
 import { CategoryFilterProps } from '@/types/common/common';
 import styled from 'styled-components';
+import { CategoryFilterProps } from '@/types/common/common';
 
+/**
+ * IMP : CategoryFilter ( News Category Filter ) Component
+ * TYPE : activeCategory, setActiveCategory
+ * @param param0
+ * @returns
+ */
 function CategoryFilter({
   activeCategory,
   setActiveCategory,

@@ -1,6 +1,12 @@
-import { ArticleListCardProps } from '@/types/common/common';
 import styled from 'styled-components';
+import { ArticleListCardProps } from '@/types/common/common';
 
+/**
+ * IMP : ArticleListCard ( News Card ) Component
+ * TYPE : imgUrl, title, viewCount, pressName, width?, height?
+ * @param param0
+ * @returns
+ */
 function ArticleListCard({
   imgUrl,
   title,
@@ -8,7 +14,7 @@ function ArticleListCard({
   pressName,
   width = '180px',
   height = '250px',
-}: ArticleListCardProps) {
+}: Readonly<ArticleListCardProps>) {
   return (
     <Wrapper width={width} height={height}>
       <Thumbnail src={imgUrl} />
