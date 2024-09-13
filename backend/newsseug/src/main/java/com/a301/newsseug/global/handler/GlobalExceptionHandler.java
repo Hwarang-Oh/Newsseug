@@ -40,9 +40,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ServletWebRequest servletWebRequest = (ServletWebRequest) request;
 
         return ResponseEntity
-                .status(errorCode.getCode())
+                .status(errorCode.getStatus())
                 .body(ErrorResponse
-                        .builder(e, errorCode.getCode(), errorCode.getMessage())
+                        .builder(e, errorCode.getStatus(), errorCode.getMessage())
                         .title(e.getClass().getSimpleName())
                         .instance(URI.create(servletWebRequest.getRequest().getRequestURI()))
                         .build());
@@ -90,9 +90,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 );
 
         return ResponseEntity
-                .status(errorCode.getCode())
+                .status(errorCode.getStatus())
                 .body(ErrorResponse
-                        .builder(e, errorCode.getCode(), errorCode.getMessage())
+                        .builder(e, errorCode.getStatus(), errorCode.getMessage())
                         .title(e.getClass().getSimpleName())
                         .instance(URI.create(servletWebRequest.getRequest().getRequestURI()))
                         .property("error", errors)
@@ -122,9 +122,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 );
 
         return ResponseEntity
-                .status(errorCode.getCode())
+                .status(errorCode.getStatus())
                 .body(ErrorResponse
-                        .builder(e, errorCode.getCode(), errorCode.getMessage())
+                        .builder(e, errorCode.getStatus(), errorCode.getMessage())
                         .title(e.getClass().getSimpleName())
                         .instance(URI.create(servletWebRequest.getRequest().getRequestURI()))
                         .property("error", errors)

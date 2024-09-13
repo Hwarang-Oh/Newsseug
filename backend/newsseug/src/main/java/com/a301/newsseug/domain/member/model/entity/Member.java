@@ -1,6 +1,7 @@
 package com.a301.newsseug.domain.member.model.entity;
 
 import com.a301.newsseug.global.model.entity.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,11 +27,17 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Embedded
-    private MemberDetail memberDetail;
+    private String nickname;
+
+    @Column(updatable = false)
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @Column(updatable = false)
+    private LocalDateTime birth;
 
     @Embedded
-    private OAuthDetail oAuthDetail;
+    private OAuth2Details OAuth2Details;
 
     @Setter
     private String refreshToken;
@@ -38,11 +45,13 @@ public class Member extends BaseEntity {
     @Builder
     public Member(
             String nickName, Gender gender, LocalDateTime birth,
-            AuthProvider authProvider,
-            String authProviderId
+            OAuth2Details OAuth2Details,
+            Role role
     ) {
-        this.memberDetail = MemberDetail.of(nickName, gender, birth);
-        this.oAuthDetail = OAuthDetail.of(authProvider, authProviderId);
+        this.nickname = nickName;
+        this.gender = gender;
+        this.birth = birth;
+        this.OAuth2Details = OAuth2Details;
     }
 
 }

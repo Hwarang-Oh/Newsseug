@@ -1,8 +1,7 @@
 package com.a301.newsseug.domain.member.model.entity;
 
-public enum AuthProvider {
+public enum Role {
 
-    KAKAO,
-    GOOGLE;
+    ROLE_USER, ROLE_ADMIN
 
 }

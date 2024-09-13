@@ -4,3 +4,6 @@ spring:
 
   profiles:
     default: local
+
+  config:
+    import: application-oauth.yml
