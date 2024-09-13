@@ -46,24 +46,21 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         String providerId = oAuth2UserDetails.getProviderId();
-        Member member = memberRepository.findByProviderId(providerId).orElse(null);
-
-        if (Objects.isNull(member)) {
-
-            member = Member.builder()
-                    .nickName("Test")
-                    .OAuth2Details(
-                            OAuth2Details.of(
-                                    ProviderType.convertToEnum(provider),
-                                    providerId,
-                                    Role.ROLE_USER
-                            )
-                    )
-                    .build();
-
-            memberRepository.save(member);
-
-        }
+        Member member = memberRepository.findByProviderId(providerId)
+                .orElseGet(() ->
+                     memberRepository.save(
+                             Member.builder()
+                                     .nickName("Test")
+                                     .OAuth2Details(
+                                             OAuth2Details.of(
+                                                     ProviderType.convertToEnum(provider),
+                                                     providerId,
+                                                     Role.ROLE_USER
+                                             )
+                                     )
+                                     .build()
+                     )
+                );
 
         return CustomOAuth2UserDetails.of(member, oAuth2User.getAttributes());
 
