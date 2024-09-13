@@ -7,7 +7,7 @@ public class ErrorMessage {
      * - 응답 상태 코드는 서버가 클라이언트 오류를 감지해 요청 불가
      */
     public static final String FAIL_TO_VALIDATE_MESSAGE = "잘못된 요청입니다.";
-
+    public static final String INVALID_PROVIDER_TYPE_MESSAGE = "유효하지 않은 제공자입니다.";
 
     /**
      * [401 UnAuthorized]

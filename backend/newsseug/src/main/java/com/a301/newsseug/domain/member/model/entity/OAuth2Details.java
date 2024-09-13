@@ -11,23 +11,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
 @Embeddable
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class OAuthDetail {
+public class OAuth2Details {
 
     @Column(updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
-    private AuthProvider authProvider;
+    private ProviderType provider;
 
     @Column(updatable = false, nullable = false)
-    private String authProviderId;
+    private String providerId;
 
-    public static OAuthDetail of(AuthProvider authProvider, String authProviderId) {
-        return OAuthDetail.builder()
-                .authProvider(authProvider)
-                .authProviderId(authProviderId)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public static OAuth2Details of(ProviderType provider, String providerId, Role role) {
+        return OAuth2Details.builder()
+                .provider(provider)
+                .providerId(providerId)
+                .role(role)
                 .build();
     }
 

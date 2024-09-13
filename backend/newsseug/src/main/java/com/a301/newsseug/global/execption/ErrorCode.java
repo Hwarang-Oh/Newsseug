@@ -2,6 +2,7 @@ package com.a301.newsseug.global.execption;
 
 import static com.a301.newsseug.global.constant.ErrorMessage.*;
 
+import com.a301.newsseug.global.constant.ErrorMessage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,8 @@ public enum ErrorCode {
      * [400 Bad Request]
      * - 응답 상태 코드는 서버가 클라이언트 오류를 감지해 요청 불가
      */
-    FAIL_TO_VALIDATE(HttpStatus.BAD_REQUEST, FAIL_TO_VALIDATE_MESSAGE);
+    FAIL_TO_VALIDATE(HttpStatus.BAD_REQUEST, FAIL_TO_VALIDATE_MESSAGE),
+    INVALID_PROVIDER_TYPE(HttpStatus.BAD_REQUEST, ErrorMessage.INVALID_PROVIDER_TYPE_MESSAGE);
 
     /**
      * [401 UnAuthorized]
@@ -39,7 +41,8 @@ public enum ErrorCode {
      * - 서버 오류
      */
 
-    private final HttpStatus code;
+    private final HttpStatus status;
     private final String message;
+
 
 }
