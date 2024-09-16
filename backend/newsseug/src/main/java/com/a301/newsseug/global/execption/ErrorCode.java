@@ -17,7 +17,7 @@ public enum ErrorCode {
      * - 응답 상태 코드는 서버가 클라이언트 오류를 감지해 요청 불가
      */
     FAIL_TO_VALIDATE(HttpStatus.BAD_REQUEST, FAIL_TO_VALIDATE_MESSAGE),
-    INVALID_PROVIDER_TYPE(HttpStatus.BAD_REQUEST, ErrorMessage.INVALID_PROVIDER_TYPE_MESSAGE);
+    INVALID_PROVIDER_TYPE(HttpStatus.BAD_REQUEST, ErrorMessage.INVALID_PROVIDER_TYPE_MESSAGE),
 
     /**
      * [401 UnAuthorized]
@@ -40,6 +40,7 @@ public enum ErrorCode {
      * [500 INTERNAL_SERVER_ERROR]
      * - 서버 오류
      */
+    FAIL_TO_ISSUE_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, FAIL_TO_ISSUE_TOKEN_MESSAGE);
 
     private final HttpStatus status;
     private final String message;

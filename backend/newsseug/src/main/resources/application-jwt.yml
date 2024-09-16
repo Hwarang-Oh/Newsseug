@@ -1,5 +1,5 @@
 jwt:
   secret: 85a25e195b4ab0e8066784a48070334a0aa0cd482304c7b7b9f20b46664a8af46ee6480aaedefd35f02721ab3157baa6de748cdde8b108bfc7eba804f057838c
   expiration:
-    access: 86400000
-    refresh: 2592000000
+    access: 1
+    refresh: 90

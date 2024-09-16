@@ -1,6 +1,6 @@
 package com.a301.newsseug.domain.auth.service;
 
-import com.a301.newsseug.domain.auth.model.entity.CustomOAuth2UserDetails;
+import com.a301.newsseug.domain.auth.model.entity.CustomOAuth2User;
 import com.a301.newsseug.domain.auth.model.entity.KakaoUserDetails;
 import com.a301.newsseug.domain.auth.model.entity.OAuth2UserDetails;
 import com.a301.newsseug.domain.member.model.entity.Member;
@@ -8,7 +8,6 @@ import com.a301.newsseug.domain.member.model.entity.OAuth2Details;
 import com.a301.newsseug.domain.member.model.entity.ProviderType;
 import com.a301.newsseug.domain.member.model.entity.Role;
 import com.a301.newsseug.domain.member.repository.MemberRepository;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -48,21 +47,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String providerId = oAuth2UserDetails.getProviderId();
         Member member = memberRepository.findByProviderId(providerId)
                 .orElseGet(() ->
-                     memberRepository.save(
-                             Member.builder()
-                                     .nickName("Test")
-                                     .OAuth2Details(
-                                             OAuth2Details.of(
-                                                     ProviderType.convertToEnum(provider),
-                                                     providerId,
-                                                     Role.ROLE_USER
-                                             )
-                                     )
-                                     .build()
-                     )
+                        memberRepository.save(
+                                Member.builder()
+                                        .nickName("Test")
+                                        .providerType(ProviderType.convertToEnum(provider))
+                                        .providerId(providerId)
+                                        .role(Role.ROLE_USER)
+                                        .build()
+                        )
                 );
 
-        return CustomOAuth2UserDetails.of(member, oAuth2User.getAttributes());
+        return CustomOAuth2User.of(member, oAuth2User.getAttributes());
 
     }
 

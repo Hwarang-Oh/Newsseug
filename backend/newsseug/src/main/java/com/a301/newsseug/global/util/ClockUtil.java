@@ -4,7 +4,9 @@ import static com.a301.newsseug.global.constant.StringFormat.TIMESTAMP_FORMAT;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class ClockUtil {
 
@@ -17,7 +19,18 @@ public class ClockUtil {
     }
 
     public static String getLocalDateTimeToString() {
-        return LocalDateTime.now(ClockInstanceHolder.clock).format(DateTimeFormatter.ofPattern(TIMESTAMP_FORMAT));
+        return getLocalDateTime().format(DateTimeFormatter.ofPattern(TIMESTAMP_FORMAT));
     }
+
+    public static Date convertToDate(LocalDateTime now) {
+        return Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static Date getExpirationDate(LocalDateTime now, long expirationTime) {
+        return Date.from(
+                now.plusDays(expirationTime).atZone(ZoneId.systemDefault()).toInstant()
+        );
+    }
+
 
 }

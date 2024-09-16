@@ -1,95 +1,168 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.3.3'
-	id 'io.spring.dependency-management' version '1.1.6'
-	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'java'
+    id 'jacoco'
+    id 'org.springframework.boot' version '3.3.3'
+    id 'io.spring.dependency-management' version '1.1.6'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 group = 'com.a301'
 version = '0.0.1'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+jacoco {
+    toolVersion = '0.8.12'
+    reportsDirectory = layout.buildDirectory.dir('jacoco')
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	set('snippetsDir', file("build/generated-snippets"))
+    set('snippetsDir', file("build/generated-snippets"))
 }
 
 dependencies {
 
-	/**
-	 * Spring 의존성
-	 * - Devtools
-	 * - Web
-	 * - Security
-	 * - OAuth2
-	 */
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation "org.springframework.boot:spring-boot-starter-security"
-	testImplementation "org.springframework.security:spring-security-test"
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    /**
+     * Spring 의존성
+     * - Devtools
+     * - Web
+     * - Security
+     * - OAuth2
+     */
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    testImplementation "org.springframework.security:spring-security-test"
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-	/**
-	 * DB 의존성
-	 * - Spring JPA
-	 * - Mariadb
-	 * - Redis
-	 * - P6Spy
-	 */
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+    /**
+     * DB 의존성
+     * - Spring JPA
+     * - Mariadb
+     * - Redis
+     * - P6Spy
+     */
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 
-	/**
-	 * Util 의존성
-	 * - Lombok
-	 * - Swagger
-	 * - Docker
-	 * - validation
-	 * - jjwt
-	 *  - api, impl, jackson
-	 */
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-	implementation "org.springframework.boot:spring-boot-docker-compose"
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+    /**
+     * Util 의존성
+     * - Lombok
+     * - Swagger
+     * - Docker
+     * - validation
+     * - jjwt
+     *  - api, impl, jackson
+     */
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    implementation "org.springframework.boot:spring-boot-docker-compose"
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 
-	/**
-	 * Test 의존성
-	 * - Spring Test
-	 * - AssertJ
-	 */
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testImplementation 'org.assertj:assertj-core:3.21.0'
+    /**
+     * Test 의존성
+     * - Spring Test
+     * - AssertJ
+     */
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.assertj:assertj-core:3.21.0'
 
 }
 
-tasks.named('test') {
-	outputs.dir snippetsDir
-	useJUnitPlatform()
+test {
+    useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
 }
 
-tasks.named('asciidoctor') {
-	inputs.dir snippetsDir
-	dependsOn test
+jacocoTestReport {
+
+    def Qdomains = []
+
+    for (qPattern in '**/QA'..'**/QZ') {
+        Qdomains.add(qPattern + '*')
+    }
+
+    reports {
+
+        xml.required = false
+        csv.required = false
+
+        html.outputLocation = layout.buildDirectory.dir("jacoco/html")
+
+    }
+
+    afterEvaluate {
+
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, exclude: [
+                            "**/*Application*",
+                            "**/model/*",
+                            "**/exception/*",
+                            "**/repository/*",
+                            "**/global",
+                    ] + Qdomains)
+                }))
+    }
+
+    finalizedBy 'jacocoTestCoverageVerification'
+
+}
+
+jacocoTestCoverageVerification {
+
+    violationRules {
+
+        rule {
+
+            enabled = true
+            element = 'CLASS'
+
+            limit {
+
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.6
+
+            }
+
+            def Qdomains = []
+
+            for (qPattern in '**/QA'..'**/QZ') {
+                Qdomains.add(qPattern + '*')
+            }
+
+            excludes = [
+                    "*.*Application*",
+                    "*.model.*",
+                    "*.exception.*",
+                    "*.repository.*",
+                    "*.global.*",
+            ] + Qdomains
+
+        }
+
+    }
+
 }

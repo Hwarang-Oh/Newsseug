@@ -3,21 +3,22 @@ package com.a301.newsseug.domain.auth.model.entity;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+@Getter
 @Builder(access = AccessLevel.PRIVATE)
-public class CustomOAuth2UserDetails implements OAuth2User {
+public class CustomOAuth2User implements OAuth2User {
 
     private final Member member;
     private Map<String, Object> attributes;
 
-    public static CustomOAuth2UserDetails of(Member member, Map<String, Object> attributes) {
-        return CustomOAuth2UserDetails.builder()
+    public static CustomOAuth2User of(Member member, Map<String, Object> attributes) {
+        return CustomOAuth2User.builder()
                 .member(member)
                 .attributes(attributes)
                 .build();
