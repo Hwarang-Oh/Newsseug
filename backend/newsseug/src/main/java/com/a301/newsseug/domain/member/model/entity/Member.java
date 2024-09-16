@@ -24,8 +24,9 @@ import lombok.Setter;
 public class Member extends BaseEntity {
 
     @Id
+    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
+    private Long id;
 
     private String nickname;
 
@@ -45,13 +46,12 @@ public class Member extends BaseEntity {
     @Builder
     public Member(
             String nickName, Gender gender, LocalDateTime birth,
-            OAuth2Details OAuth2Details,
-            Role role
+            ProviderType providerType, String providerId, Role role
     ) {
         this.nickname = nickName;
         this.gender = gender;
         this.birth = birth;
-        this.OAuth2Details = OAuth2Details;
+        this.OAuth2Details = OAuth2Details.of(providerType, providerId, role);
     }
 
 }

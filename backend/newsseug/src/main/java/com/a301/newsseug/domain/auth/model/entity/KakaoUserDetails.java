@@ -2,8 +2,10 @@ package com.a301.newsseug.domain.auth.model.entity;
 
 import com.a301.newsseug.domain.member.model.entity.ProviderType;
 import java.util.Map;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public class KakaoUserDetails implements OAuth2UserDetails {
 

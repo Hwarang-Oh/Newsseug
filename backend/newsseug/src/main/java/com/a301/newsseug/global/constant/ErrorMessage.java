@@ -30,5 +30,6 @@ public class ErrorMessage {
      * [500 INTERNAL_SERVER_ERROR]
      * - 서버 오류
      */
+    public static final String FAIL_TO_ISSUE_TOKEN_MESSAGE = "토큰 발행을 실패했습니다.";
 
 }

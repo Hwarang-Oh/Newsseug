@@ -6,4 +6,4 @@ spring:
     default: local
 
   config:
-    import: application-oauth.yml
+    import: application-jwt.yml, application-oauth.yml
