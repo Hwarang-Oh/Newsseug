@@ -1,6 +1,5 @@
 package com.a301.newsseug.domain.member.model.entity;
 
-import com.a301.newsseug.domain.auth.model.entity.OAuth2UserDetails;
 import com.a301.newsseug.global.model.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
