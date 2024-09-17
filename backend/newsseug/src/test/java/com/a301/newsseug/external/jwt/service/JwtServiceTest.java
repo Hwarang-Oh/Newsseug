@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 
 import com.a301.newsseug.domain.member.factory.MemberFactory;
 import com.a301.newsseug.domain.member.model.entity.Member;
+import com.a301.newsseug.external.jwt.config.JwtProperties;
 import com.a301.newsseug.external.jwt.exception.FailToIssueTokenException;
 import com.a301.newsseug.external.jwt.model.entity.TokenType;
 import com.a301.newsseug.global.util.ClockUtil;
@@ -26,17 +27,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.MockedStatic;
-import org.springframework.core.env.Environment;
 
 @DisplayName("JWT 관련 기능")
 @ExtendWith(MockitoExtension.class)
 public class JwtServiceTest {
 
     @Mock
-    private Environment env;
+    private JwtProperties jwtProperties;
+
+    @Mock
+    private JwtProperties.Expiration expiration;
 
     @InjectMocks
-    private JwtService jwtService;
+    private JwtServiceImpl jwtService;
 
     private MockedStatic<ClockUtil> mockedClockUtil;
 
@@ -45,9 +48,10 @@ public class JwtServiceTest {
     @BeforeEach
     void beforeEach() {
 
-        lenient().when(env.getProperty("jwt.secret")).thenReturn(JWT_SECRET);
-        lenient().when(env.getProperty("jwt.expiration.access")).thenReturn(String.valueOf(ACCESS_TOKEN_EXPIRATION));
-        lenient().when(env.getProperty("jwt.expiration.refresh")).thenReturn(String.valueOf(REFRESH_TOKEN_EXPIRATION));
+        lenient().when(jwtProperties.getSecret()).thenReturn(JWT_SECRET);
+        lenient().when(jwtProperties.getExpiration()).thenReturn(expiration);
+        lenient().when(expiration.getAccess()).thenReturn(ACCESS_TOKEN_EXPIRATION);
+        lenient().when(expiration.getRefresh()).thenReturn(REFRESH_TOKEN_EXPIRATION);
 
         Clock clock = Clock.systemDefaultZone();
         LocalDateTime fixedLocalDateTime = LocalDateTime.now(clock);
@@ -82,8 +86,8 @@ public class JwtServiceTest {
     public void issueAccessToken() {
 
         String accessToken = jwtService.issueToken(member, TokenType.ACCESS_TOKEN);
-        Header header = jwtService.getHeader(accessToken);
-        Claims claims = jwtService.getClaims(accessToken);
+        Header header = jwtService.extractHeader(accessToken);
+        Claims claims = jwtService.extractClaims(accessToken);
 
         Date issuedAt = claims.getIssuedAt();
         Date expiration = claims.getExpiration();
@@ -101,8 +105,8 @@ public class JwtServiceTest {
     public void issueRefreshToken() {
 
         String refreshToken = jwtService.issueToken(member, TokenType.REFRESH_TOKEN);
-        Header header = jwtService.getHeader(refreshToken);
-        Claims claims = jwtService.getClaims(refreshToken);
+        Header header = jwtService.extractHeader(refreshToken);
+        Claims claims = jwtService.extractClaims(refreshToken);
 
         Date issuedAt = claims.getIssuedAt();
         Date expiration = claims.getExpiration();
@@ -124,9 +128,9 @@ public class JwtServiceTest {
 
     @Test
     @DisplayName("토큰 파싱")
-    public void getClaims() {
+    public void extractClaims() {
         String accessToken = jwtService.issueToken(member, TokenType.ACCESS_TOKEN);
-        Claims claims = jwtService.getClaims(accessToken);
+        Claims claims = jwtService.extractClaims(accessToken);
         assertThat(claims).isNotNull();
     }
 

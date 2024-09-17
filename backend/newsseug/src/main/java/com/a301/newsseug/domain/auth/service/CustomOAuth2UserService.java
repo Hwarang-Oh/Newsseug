@@ -1,10 +1,11 @@
 package com.a301.newsseug.domain.auth.service;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomOAuth2User;
+import com.a301.newsseug.domain.auth.model.entity.GoogleUserDetails;
 import com.a301.newsseug.domain.auth.model.entity.KakaoUserDetails;
 import com.a301.newsseug.domain.auth.model.entity.OAuth2UserDetails;
+import com.a301.newsseug.domain.member.exception.InvalidProviderTypeException;
 import com.a301.newsseug.domain.member.model.entity.Member;
-import com.a301.newsseug.domain.member.model.entity.OAuth2Details;
 import com.a301.newsseug.domain.member.model.entity.ProviderType;
 import com.a301.newsseug.domain.member.model.entity.Role;
 import com.a301.newsseug.domain.member.repository.MemberRepository;
@@ -22,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private static final String KAKAO = "kakao";
     private final MemberRepository memberRepository;
 
     @Override
@@ -33,17 +33,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         log.info("getAttributes : {}", oAuth2User.getAttributes());
 
         String provider = userRequest.getClientRegistration().getRegistrationId();
-        OAuth2UserDetails oAuth2UserDetails = null;
-
-        switch (provider) {
-
-            case KAKAO -> {
-                log.info("카카오 로그인");
-                oAuth2UserDetails = new KakaoUserDetails(oAuth2User.getAttributes());
-            }
-
-        }
-
+        OAuth2UserDetails oAuth2UserDetails = getOAuth2UserDetails(provider, oAuth2User);
         String providerId = oAuth2UserDetails.getProviderId();
         Member member = memberRepository.findByProviderId(providerId)
                 .orElseGet(() ->
@@ -52,12 +42,32 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                                         .nickName("Test")
                                         .providerType(ProviderType.convertToEnum(provider))
                                         .providerId(providerId)
-                                        .role(Role.ROLE_USER)
+                                        .role(Role.ROLE_MEMBER)
                                         .build()
                         )
                 );
 
         return CustomOAuth2User.of(member, oAuth2User.getAttributes());
+
+    }
+
+    private OAuth2UserDetails getOAuth2UserDetails(String provider, OAuth2User oAuth2User) throws InvalidProviderTypeException {
+
+        switch (ProviderType.convertToEnum(provider)) {
+
+            case KAKAO -> {
+                log.info("카카오 로그인");
+                return new KakaoUserDetails(oAuth2User.getAttributes());
+            }
+
+            case GOOGLE -> {
+                log.info("구글 로그인");
+                return  new GoogleUserDetails(oAuth2User.getAttributes());
+            }
+
+        }
+
+        throw new InvalidProviderTypeException();
 
     }
 

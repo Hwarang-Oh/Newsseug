@@ -2,6 +2,6 @@ package com.a301.newsseug.domain.member.model.entity;
 
 public enum Role {
 
-    ROLE_USER, ROLE_ADMIN
+    ROLE_MEMBER, ROLE_ADMIN
 
 }

@@ -1,26 +1,26 @@
-package com.a301.newsseug.domain.auth.model.entity;
+    package com.a301.newsseug.domain.auth.model.entity;
 
 import com.a301.newsseug.domain.member.model.entity.ProviderType;
 import java.util.Map;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-public class KakaoUserDetails implements OAuth2UserDetails {
+public class GoogleUserDetails implements OAuth2UserDetails {
 
     private Map<String, Object> attributes;
 
     @Override
     public ProviderType getProvider() {
-        return ProviderType.KAKAO;
+        return ProviderType.GOOGLE;
     }
 
     @Override
     public String getProviderId() {
-        return attributes.get("id").toString();
+        return (String) attributes.get("sub");
     }
 
 }
