@@ -16,7 +16,7 @@ public class MemberFactory {
                 .nickName("test")
                 .gender(Gender.MALE)
                 .birth(ClockUtil.getLocalDateTime())
-                .role(Role.ROLE_USER)
+                .role(Role.ROLE_MEMBER)
                 .providerType(ProviderType.KAKAO)
                 .providerId("test")
                 .build();

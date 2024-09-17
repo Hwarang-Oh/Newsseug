@@ -40,9 +40,6 @@ public class Member extends BaseEntity {
     @Embedded
     private OAuth2Details OAuth2Details;
 
-    @Setter
-    private String refreshToken;
-
     @Builder
     public Member(
             String nickName, Gender gender, LocalDateTime birth,
