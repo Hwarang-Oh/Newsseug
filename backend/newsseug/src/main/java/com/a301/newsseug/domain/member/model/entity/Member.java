@@ -1,5 +1,6 @@
 package com.a301.newsseug.domain.member.model.entity;
 
+import com.a301.newsseug.domain.auth.model.entity.OAuth2UserDetails;
 import com.a301.newsseug.global.model.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -15,7 +16,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @Entity
@@ -38,7 +38,7 @@ public class Member extends BaseEntity {
     private LocalDateTime birth;
 
     @Embedded
-    private OAuth2Details OAuth2Details;
+    private OAuth2Details oAuth2Details;
 
     @Builder
     public Member(
@@ -48,7 +48,7 @@ public class Member extends BaseEntity {
         this.nickname = nickName;
         this.gender = gender;
         this.birth = birth;
-        this.OAuth2Details = OAuth2Details.of(providerType, providerId, role);
+        this.oAuth2Details = OAuth2Details.of(providerType, providerId, role);
     }
 
 }
