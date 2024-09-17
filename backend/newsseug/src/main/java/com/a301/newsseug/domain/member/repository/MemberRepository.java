@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    @Query("SELECT m FROM Member m WHERE m.OAuth2Details.providerId = :providerId")
+    @Query("SELECT m FROM Member m WHERE m.oAuth2Details.providerId = :providerId")
     Optional<Member> findByProviderId(@Param("providerId") String providerId);
 
 }
