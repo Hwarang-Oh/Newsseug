@@ -1,6 +1,6 @@
 package com.a301.newsseug.domain.member.factory;
 
-import com.a301.newsseug.domain.member.model.entity.Gender;
+import com.a301.newsseug.domain.member.model.entity.GenderType;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.model.entity.ProviderType;
 import com.a301.newsseug.domain.member.model.entity.Role;
@@ -14,7 +14,7 @@ public class MemberFactory {
 
         Member member = Member.builder()
                 .nickName("test")
-                .gender(Gender.MALE)
+                .gender(GenderType.MALE)
                 .birth(ClockUtil.getLocalDateTime())
                 .role(Role.ROLE_MEMBER)
                 .providerType(ProviderType.KAKAO)

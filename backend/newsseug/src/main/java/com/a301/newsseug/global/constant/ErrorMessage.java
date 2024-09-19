@@ -8,6 +8,7 @@ public class ErrorMessage {
      */
     public static final String FAIL_TO_VALIDATE_MESSAGE = "잘못된 요청입니다.";
     public static final String INVALID_PROVIDER_TYPE_MESSAGE = "유효하지 않은 제공자입니다.";
+    public static final String INVALID_GENDER_TYPE_MESSAGE = "유효하지 않은 성별입니다.";
 
     /**
      * [401 UnAuthorized]
@@ -19,12 +20,12 @@ public class ErrorMessage {
      * [403 Forbidden]
      * - 요청한 자원에 대해 권한 없음
      */
-
+    public static final String UNTRUSTWORTHY_TOKEN_MESSAGE = "신뢰할 수 없는 토큰입니다.";
     /**
      * [404 Not Found]
      * - 존재하지 않는 자원
      */
-
+    public static final String NOT_EXIST_MEMBER_MESSAGE ="존재하지 않는 사용자입니다.";
 
     /**
      * [500 INTERNAL_SERVER_ERROR]

@@ -1,16 +1,27 @@
 package com.a301.newsseug.global.config;
 
+import static com.a301.newsseug.domain.member.model.entity.Role.ROLE_MEMBER;
+
 import com.a301.newsseug.domain.auth.service.CustomOAuth2UserService;
+import com.a301.newsseug.domain.auth.service.CustomUserDetailsService;
+import com.a301.newsseug.external.jwt.filter.JwtAuthorizationFilter;
+import com.a301.newsseug.external.jwt.handler.JwtAccessDeniedHandler;
+import com.a301.newsseug.external.jwt.handler.JwtAuthenticationEntryPoint;
+import com.a301.newsseug.external.jwt.service.JwtService;
 import com.a301.newsseug.global.handler.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
 
@@ -18,9 +29,37 @@ import org.springframework.web.cors.CorsUtils;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    public static final String[] SWAGGER_URI = {
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.index.html",
+            "/webjars/**",
+            "/swagger-resources/**"
+    };
+
     private final CorsConfigurationSource corsConfigurationSource;
-    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomOAuth2UserService oAuth2UserService;
+    private final JwtService jwtService;
+    private final CustomUserDetailsService userDetailsService;
+
+    private final JwtAccessDeniedHandler accessDeniedHandler;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+
+        return web ->
+                web.ignoring()
+
+                        .requestMatchers(SWAGGER_URI)
+
+                        // 정적 리소스
+                        .requestMatchers(
+                                PathRequest.toStaticResources().atCommonLocations()
+                        );
+
+    }
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -37,18 +76,22 @@ public class SecurityConfig {
 
                 .headers(header ->
                         header.frameOptions(
-                                HeadersConfigurer.FrameOptionsConfig::sameOrigin
+                                FrameOptionsConfig::sameOrigin
                         ))
 
                 .sessionManagement(sessionManagementConfigurer
                         -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                .authorizeHttpRequests(requestConfigurer -> requestConfigurer
+                .authorizeHttpRequests(requestConfigurer ->
 
-                        // 프리플라이트 관련 설정
-                        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                        requestConfigurer
 
-                        .anyRequest().permitAll()
+                                // 프리플라이트 관련 설정
+                                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/members/**")).hasRole(ROLE_MEMBER.getRole())
+
+                                .anyRequest().authenticated()
 
                 )
 
@@ -57,11 +100,18 @@ public class SecurityConfig {
                                 configurer
                                         .userInfoEndpoint(
                                                 endpointConfig ->
-                                                        endpointConfig.userService(customOAuth2UserService)
+                                                        endpointConfig.userService(oAuth2UserService)
                                         )
                                         .successHandler(oAuth2AuthenticationSuccessHandler)
                 )
 
+                .addFilterBefore(new JwtAuthorizationFilter(jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class)
+
+                .exceptionHandling(
+                        handling ->
+                                handling.accessDeniedHandler(accessDeniedHandler)
+                                        .authenticationEntryPoint(authenticationEntryPoint)
+                )
                 .build();
 
     }
