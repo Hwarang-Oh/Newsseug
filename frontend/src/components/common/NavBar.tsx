@@ -69,7 +69,7 @@ const navItems = [
   },
   {
     isMain: true,
-    route: 'shortform',
+    route: 'articles/1',
     icon: <ShortFormNavItem />,
   },
   {
