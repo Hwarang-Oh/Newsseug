@@ -2,7 +2,6 @@ package com.a301.newsseug.global.execption;
 
 import static com.a301.newsseug.global.constant.ErrorMessage.*;
 
-import com.a301.newsseug.global.constant.ErrorMessage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,8 @@ public enum ErrorCode {
      * - 응답 상태 코드는 서버가 클라이언트 오류를 감지해 요청 불가
      */
     FAIL_TO_VALIDATE(HttpStatus.BAD_REQUEST, FAIL_TO_VALIDATE_MESSAGE),
-    INVALID_PROVIDER_TYPE(HttpStatus.BAD_REQUEST, ErrorMessage.INVALID_PROVIDER_TYPE_MESSAGE),
+    INVALID_PROVIDER_TYPE(HttpStatus.BAD_REQUEST, INVALID_PROVIDER_TYPE_MESSAGE),
+    INVALID_GENDER_TYPE(HttpStatus.BAD_REQUEST, INVALID_GENDER_TYPE_MESSAGE),
 
     /**
      * [401 UnAuthorized]
@@ -28,12 +28,14 @@ public enum ErrorCode {
      * [403 Forbidden]
      * - 요청한 자원에 대해 권한 없음
      */
+    UNTRUSTWORTHY_TOKEN(HttpStatus.UNAUTHORIZED, UNTRUSTWORTHY_TOKEN_MESSAGE),
 
 
     /**
      * [404 Not Found]
      * - 존재하지 않는 자원
      */
+    NOT_EXIST_MEMBER(HttpStatus.NOT_FOUND, NOT_EXIST_MEMBER_MESSAGE),
 
 
     /**

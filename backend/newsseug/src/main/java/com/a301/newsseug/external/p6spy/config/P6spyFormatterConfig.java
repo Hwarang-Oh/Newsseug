@@ -1,4 +1,4 @@
-package com.a301.newsseug.global.config;
+package com.a301.newsseug.external.p6spy.config;
 
 import com.p6spy.engine.common.ConnectionInformation;
 import com.p6spy.engine.event.JdbcEventListener;

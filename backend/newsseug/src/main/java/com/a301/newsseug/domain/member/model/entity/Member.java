@@ -10,11 +10,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
@@ -27,21 +28,22 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     private String nickname;
 
-    @Column(updatable = false)
+    @Setter
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private GenderType gender;
 
-    @Column(updatable = false)
-    private LocalDateTime birth;
+    @Setter
+    private LocalDate birth;
 
     @Embedded
     private OAuth2Details oAuth2Details;
 
     @Builder
     public Member(
-            String nickName, Gender gender, LocalDateTime birth,
+            String nickName, GenderType gender, LocalDate birth,
             ProviderType providerType, String providerId, Role role
     ) {
         this.nickname = nickName;
