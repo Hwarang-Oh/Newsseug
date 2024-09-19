@@ -39,7 +39,7 @@ services:
       - TZ=Asia/Seoul
     ports:
       - '8080:8080'
-    restart: on-failure
+    restart: always
     networks:
       - newsseug-network
 
