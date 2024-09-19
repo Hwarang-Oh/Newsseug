@@ -7,24 +7,15 @@ import org.springframework.http.ResponseEntity;
 public class ResponseUtil {
 
     public static <T> ResponseEntity<Result<T>> ok(Result<T> result) {
-        return new ResponseEntity<>(
-                result,
-                HttpStatus.OK
-        );
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     public static <T> ResponseEntity<Result<T>> noContent(Result<T> result) {
-        return new ResponseEntity<>(
-                result,
-                HttpStatus.NO_CONTENT
-        );
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(result);
     }
 
     public static <T> ResponseEntity<Result<T>> created(Result<T> result) {
-        return new ResponseEntity<>(
-                result,
-                HttpStatus.CREATED
-        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
 }
