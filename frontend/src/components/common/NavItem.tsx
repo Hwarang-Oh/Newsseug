@@ -32,6 +32,7 @@ const NavItemContainer = styled.div<{
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 4px;
   flex: 1 0 0;
   align-self: stretch;
   cursor: pointer;

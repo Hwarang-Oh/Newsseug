@@ -4,6 +4,7 @@ export interface InputSectionProps {
   backGroundColor?: string;
   canEdit?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
 }
 
 export interface InputTitleProps {
@@ -25,12 +26,16 @@ export type GenderBoxProps = {
 
 export interface GenderSelectBoxProps {
   title: string;
-  genderBoxList: GenderBoxProps[];
+  genderList: GenderBoxProps[];
   onSelect: (index: number) => void;
 }
 
 export interface UserInputProps {
   nickname: string;
   birthDate: string;
-  gender: string;
+  gender: number;
+}
+
+export interface SubmitButtonProps {
+  disabled: boolean;
 }

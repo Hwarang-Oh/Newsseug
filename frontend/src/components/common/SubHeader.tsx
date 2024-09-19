@@ -21,18 +21,18 @@ function SubHeader({
     navigate(-1);
   };
   return (
-    <Wrapper headerColor={headerColor}>
+    <Wrapper $headerColor={headerColor}>
       <BackBtn onClick={handleGoBack}>
         <img src={ArrowIcon} alt="back arrow icon" />
       </BackBtn>
-      <MainSection isSearch={!!isSearch}>{children}</MainSection>
+      <MainSection $isSearch={!!isSearch}>{children}</MainSection>
     </Wrapper>
   );
 }
 
 export default SubHeader;
 
-const Wrapper = styled.div<{ headerColor?: string }>`
+const Wrapper = styled.div<{ $headerColor?: string }>`
   z-index: 1000;
   padding: 12px 16px;
   position: fixed;
@@ -43,8 +43,8 @@ const Wrapper = styled.div<{ headerColor?: string }>`
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  background-color: ${({ headerColor, theme }) =>
-    headerColor ? headerColor : theme.bgColor};
+  background-color: ${({ $headerColor, theme }) =>
+    $headerColor ?? theme.bgColor};
 `;
 
 const BackBtn = styled.button`
@@ -67,18 +67,19 @@ const BackBtn = styled.button`
   }
 `;
 
-const MainSection = styled.div<{ isSearch?: boolean }>`
+const MainSection = styled.div<{ $isSearch?: boolean }>`
   display: flex;
-  width: ${({ isSearch }) => (isSearch ? 'fit-content' : 'auto')};
+  width: ${({ $isSearch }) => ($isSearch ? 'fit-content' : 'auto')};
   padding: 8px 12px;
   align-items: center;
   gap: 8px;
   border-radius: 8px;
-  position: ${({ isSearch }) => (isSearch ? 'static' : 'absolute')};
-  top: ${({ isSearch }) => (isSearch ? 'auto' : '50%')};
-  left: ${({ isSearch }) => (isSearch ? 'auto' : '50%')};
-  transform: ${({ isSearch }) => (isSearch ? 'none' : 'translate(-50%, -50%)')};
-  border: ${({ isSearch, theme }) =>
-    isSearch ? `1px solid ${theme.relaxColor.light}` : 'none'};
-  flex-grow: ${({ isSearch }) => (isSearch ? 1 : 0)};
+  position: ${({ $isSearch }) => ($isSearch ? 'static' : 'absolute')};
+  top: ${({ $isSearch }) => ($isSearch ? 'auto' : '50%')};
+  left: ${({ $isSearch }) => ($isSearch ? 'auto' : '50%')};
+  transform: ${({ $isSearch }) =>
+    $isSearch ? 'none' : 'translate(-50%, -50%)'};
+  border: ${({ $isSearch, theme }) =>
+    $isSearch ? `1px solid ${theme.relaxColor.light}` : 'none'};
+  flex-grow: ${({ $isSearch }) => ($isSearch ? 1 : 0)};
 `;

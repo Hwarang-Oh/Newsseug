@@ -1,4 +1,6 @@
-export function MaleIcon() {
+export { MaleIcon, FemaleIcon };
+
+function MaleIcon() {
   return (
     <svg
       width="150"
@@ -19,8 +21,7 @@ export function MaleIcon() {
     </svg>
   );
 }
-
-export function FemaleIcon() {
+function FemaleIcon() {
   return (
     <svg
       width="150"

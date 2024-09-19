@@ -1,9 +1,11 @@
-import { NormalWordProps } from '@/types/splash';
 import styled from 'styled-components';
+import { NormalWordProps } from '@/types/splash';
 
 function NormalWord({ text }: Readonly<NormalWordProps>) {
   return <StyledNormalWord>{text}</StyledNormalWord>;
 }
+
+export default NormalWord;
 
 const StyledNormalWord = styled.p`
   color: #fff;
@@ -15,5 +17,3 @@ const StyledNormalWord = styled.p`
   line-height: normal;
   letter-spacing: 2.7px;
 `;
-
-export default NormalWord;

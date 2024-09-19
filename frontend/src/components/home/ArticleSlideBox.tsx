@@ -22,9 +22,8 @@ export default ArticleSlideBox;
 const ArticleSlideBoxStyle = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 20px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  gap: 8px;
+  padding-bottom: 24px;
   overflow-x: auto;
   & > * {
     flex-shrink: 0;

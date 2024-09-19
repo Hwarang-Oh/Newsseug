@@ -10,8 +10,8 @@ function InputBox({
   return (
     <InputBoxContainerStyle $backGroundColor={backGroundColor}>
       <InputBoxTextStyle
-        value={input ?? ''}
-        placeholder={!input ? '생년월일을 입력해주세요.' : ''}
+        value={input}
+        placeholder={!input ? '예) YYYY.MM.DD' : ''}
         readOnly={!canEdit}
         onChange={onChange}
       />
@@ -22,7 +22,6 @@ export default InputBox;
 
 const InputBoxContainerStyle = styled.div<{ $backGroundColor?: string }>`
   display: flex;
-  width: calc(87%);
   padding: 11px 12px;
   border-radius: 4px;
   background-color: ${({ $backGroundColor }) => $backGroundColor ?? 'white'};
