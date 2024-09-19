@@ -7,17 +7,17 @@ import { LayoutProps } from '@/types/common/layout';
  * @param param0
  * @returns
  */
-function Container({ children, isPaddingZero = false }: LayoutProps) {
-  return <ContainerBox isPaddingZero={isPaddingZero}>{children}</ContainerBox>;
+function Container({ children, isPaddingZero = false }: Readonly<LayoutProps>) {
+  return <ContainerBox $isPaddingZero={isPaddingZero}>{children}</ContainerBox>;
 }
 
 export default Container;
 
-const ContainerBox = styled.div<{ isPaddingZero: boolean }>`
+const ContainerBox = styled.div<{ $isPaddingZero: boolean }>`
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: ${({ isPaddingZero }) => (isPaddingZero ? '0' : '0 15px')};
+  padding: ${({ $isPaddingZero }) => ($isPaddingZero ? '0' : '0 16px')};
   padding-top: 48px;
   padding-bottom: calc(7vh);
   box-sizing: border-box;

@@ -9,10 +9,10 @@ import { SectionProps } from '@/types/home';
  * @param param0
  * @returns
  */
-function Section({ subTitle, articleList }: Readonly<SectionProps>) {
+function Section({ subTitle, articleList, moreLink }: Readonly<SectionProps>) {
   return (
     <SectionStyle>
-      <SubTitle subTitle={subTitle} />
+      <SubTitle subTitle={subTitle} moreLink={moreLink} />
       <ArticleSlideBox articleList={articleList} />
     </SectionStyle>
   );

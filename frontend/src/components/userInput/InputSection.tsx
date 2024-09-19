@@ -1,14 +1,15 @@
-import { InputSectionProps } from '@/types/userInput';
 import styled from 'styled-components';
-import InputTitle from './InputTitle';
-import InputBox from './InputBox';
+import InputTitle from 'components/userInput/InputTitle';
+import InputBox from 'components/userInput/InputBox';
+import { InputSectionProps } from '@/types/userInput';
 
 function InputSection({
   title,
   input,
   backGroundColor,
-  canEdit,
+  canEdit = true,
   onChange,
+  error,
 }: Readonly<InputSectionProps>) {
   return (
     <InputSectionContainerStyle>
@@ -19,6 +20,7 @@ function InputSection({
         canEdit={canEdit}
         onChange={onChange}
       />
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </InputSectionContainerStyle>
   );
 }
@@ -28,6 +30,13 @@ export default InputSection;
 const InputSectionContainerStyle = styled.div`
   display: flex;
   flex-direction: column;
+  margin: 0px 24px;
   gap: 8px;
-  padding-left: 24px;
+`;
+
+const ErrorMessage = styled.span`
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
 `;

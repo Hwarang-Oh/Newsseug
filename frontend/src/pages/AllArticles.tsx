@@ -1,24 +1,26 @@
-import { useState } from 'react';
 import SubLayout from 'components/common/SubLayout';
 import CategoryFilter from 'components/common/CategoryFilter';
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
-import SubscribeHeader from 'components/subscribe/SubscribeHeader';
-import SubscribePressFilter from 'components/subscribe/SubscribePressFilter';
-import data from 'db/data.json';
+import { AllArticlesProps } from '@/types/allArticles';
+import { useState } from 'react';
 
-const subscribeNumber = 6;
-function AllArticles() {
+/**
+ * IMP : All Articles Page -> Home Page를 통해서 들어올 수 있는 Page
+ * IMP : ( 사용법 )  <AllArticles pageTitle={data.todyNews[0].subTitle} articleList={data.todyNews[0].ArticleList} />
+ * @param param0
+ * @returns
+ */
+function AllArticles({ pageTitle, articleList }: Readonly<AllArticlesProps>) {
   const [activeCategory, setActiveCategory] = useState('전체');
-  console.log(data);
   return (
     <SubLayout>
-      <div>전체 기사</div>
+      <div>{pageTitle}</div>
       <div>
         <CategoryFilter
           activeCategory={activeCategory}
           setActiveCategory={setActiveCategory}
         />
-        <ArticleListCardGroup articleList={data.articles} />
+        <ArticleListCardGroup articleList={articleList ?? []} />
       </div>
     </SubLayout>
   );

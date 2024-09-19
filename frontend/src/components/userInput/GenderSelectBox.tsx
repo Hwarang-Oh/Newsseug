@@ -1,18 +1,18 @@
-import { GenderSelectBoxProps } from '@/types/userInput';
 import styled from 'styled-components';
-import InputTitle from './InputTitle';
-import GenderBox from './GenderBox';
+import InputTitle from 'components/userInput/InputTitle';
+import GenderBox from 'components/userInput/GenderBox';
+import { GenderSelectBoxProps } from '@/types/userInput';
 
 function GenderSelectBox({
   title,
-  genderBoxList,
+  genderList,
   onSelect,
 }: Readonly<GenderSelectBoxProps>) {
   return (
     <GenderSelectBoxStyle>
       <InputTitle title={title} />
       <GenderBoxListStyle>
-        {genderBoxList.map((genderBox, index) => (
+        {genderList.map((genderBox, index) => (
           <GenderBox
             key={index}
             icon={genderBox.icon}
@@ -30,12 +30,12 @@ export default GenderSelectBox;
 const GenderSelectBoxStyle = styled.div`
   display: flex;
   flex-direction: column;
+  margin: 0px 24px;
   gap: 8px;
-  padding-left: 24px;
 `;
 
 const GenderBoxListStyle = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 12px;
+  justify-content: space-around;
 `;

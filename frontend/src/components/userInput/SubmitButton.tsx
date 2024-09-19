@@ -1,23 +1,34 @@
 import styled from 'styled-components';
+import { SubmitButtonProps } from '@/types/userInput';
 
-function SubmitButton() {
+function SubmitButton({ disabled }: Readonly<SubmitButtonProps>) {
   return (
-    <SubmitButtonStyle>
-      <SubmitButtonTextStyle>입력 완료</SubmitButtonTextStyle>
-    </SubmitButtonStyle>
+    <ButtonBox>
+      <SubmitButtonStyle disabled={disabled}>
+        <SubmitButtonTextStyle>입력 완료</SubmitButtonTextStyle>
+      </SubmitButtonStyle>
+    </ButtonBox>
   );
 }
 export default SubmitButton;
 
-const SubmitButtonStyle = styled.button`
+const ButtonBox = styled.div`
+  margin: 0px 24px;
+`;
+
+const SubmitButtonStyle = styled.button<{ disabled: boolean }>`
   display: flex;
-  width: calc(87%);
+  width: 100%;
   padding: 13px 0px;
   justify-content: center;
-  align-items: center;
   border: none;
   border-radius: 4px;
-  background: #58d7a2;
+  background: ${({ disabled }) => (disabled ? '#D4D4D4' : '#58d7a2')};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  transition: background 0.3s ease;
+  &:hover {
+    background: ${({ disabled }) => (disabled ? '#D4D4D4' : '#45c690')};
+  }
 `;
 
 const SubmitButtonTextStyle = styled.p`

@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import React, {
   useEffect,
   useRef,
@@ -5,8 +6,6 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import { CategoryFilterProps } from '@/types/common/common';
-import styled from 'styled-components';
 import { CategoryFilterProps } from '@/types/common/common';
 
 /**
