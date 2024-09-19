@@ -45,8 +45,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
        try {
 
-           log.info("jwt filter");
-
            if (jwtService.isValid(token)) {
                Claims claims = jwtService.parseClaims(token);
                UserDetails userDetails = customUserDetailsService.loadUserByUsername(claims.getSubject());

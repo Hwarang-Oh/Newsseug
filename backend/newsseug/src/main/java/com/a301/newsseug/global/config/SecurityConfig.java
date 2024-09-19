@@ -51,13 +51,7 @@ public class SecurityConfig {
 
         return web ->
                 web.ignoring()
-
-                        .requestMatchers(SWAGGER_URI)
-
-                        // 정적 리소스
-                        .requestMatchers(
-                                PathRequest.toStaticResources().atCommonLocations()
-                        );
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
 
     }
 
@@ -88,6 +82,8 @@ public class SecurityConfig {
 
                                 // 프리플라이트 관련 설정
                                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+
+                                .requestMatchers(SWAGGER_URI).permitAll()
 
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/members/**")).hasRole(ROLE_MEMBER.getRole())
 
