@@ -1,7 +1,6 @@
 import MainLayout from 'components/common/MainLayout';
 import data from 'db/data.json';
 import Section from 'components/home/Section';
-import UserInput from './UserInput';
 
 /**
  * IMP : Home Page
@@ -10,17 +9,16 @@ import UserInput from './UserInput';
  */
 function Home() {
   return (
-    // <MainLayout>
-    //   {data.todyNews.map((data, index) => (
-    //     <Section
-    //       key={index}
-    //       subTitle={data.subTitle}
-    //       moreLink={'/'}
-    //       articleList={data.ArticleList}
-    //     />
-    //   ))}
-    // </MainLayout>
-    <UserInput></UserInput>
+    <MainLayout>
+      {data.todyNews.map((data, index) => (
+        <Section
+          key={index}
+          subTitle={data.subTitle}
+          moreLink={'/'}
+          articleList={data.ArticleList}
+        />
+      ))}
+    </MainLayout>
   );
 }
 
