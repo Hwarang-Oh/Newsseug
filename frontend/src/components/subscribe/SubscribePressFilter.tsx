@@ -3,7 +3,9 @@ import SubscribePressCard from 'components/subscribe/SubscribePressCard';
 import { SubscribePressFilterProps } from '@/types/subscribe';
 import { useState } from 'react';
 
-function SubscribePressFilter({ subscribeData }: SubscribePressFilterProps) {
+function SubscribePressFilter({
+  subscribeData,
+}: Readonly<SubscribePressFilterProps>) {
   const [activePress, setActivePress] = useState<number | null>(null);
 
   const handleCardClick = (idx: number) => {

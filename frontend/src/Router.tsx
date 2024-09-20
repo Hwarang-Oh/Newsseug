@@ -12,6 +12,7 @@ import Splash from './pages/Splash';
 import Press from './pages/Press';
 import Article from './pages/Article';
 import History from './pages/History';
+import SearchResult from './pages/SearchResult';
 import UserInput from './pages/UserInput';
 
 function Router() {
@@ -41,6 +42,7 @@ function Router() {
         </Route>
 
         <Route path="/search" element={<Search />} />
+        <Route path="/search/result" element={<SearchResult />} />
         <Route path="/press/:pressId" element={<Press />} />
       </Routes>
     </BrowserRouter>

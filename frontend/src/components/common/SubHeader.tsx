@@ -62,15 +62,15 @@ const BackBtn = styled.button`
     background-color: ${({ theme }) => theme.relaxColor.light + 70};
   }
   img {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
 `;
 
 const MainSection = styled.div<{ $isSearch?: boolean }>`
   display: flex;
   width: ${({ $isSearch }) => ($isSearch ? 'fit-content' : 'auto')};
-  padding: 8px 12px;
+  padding: 6px 12px;
   align-items: center;
   gap: 8px;
   border-radius: 8px;
