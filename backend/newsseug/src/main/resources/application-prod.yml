@@ -11,7 +11,7 @@ spring:
       enabled: off
 
   datasource:
-    url: jdbc:mariadb://newsseug-mariadb-1:3306/newsseug?serverTimezone=Asia/Seoul
+    url: jdbc:mariadb://mariadb:3306/newsseug?serverTimezone=Asia/Seoul
     username: root
     password: newsseug1234
     driver-class-name: org.mariadb.jdbc.Driver
