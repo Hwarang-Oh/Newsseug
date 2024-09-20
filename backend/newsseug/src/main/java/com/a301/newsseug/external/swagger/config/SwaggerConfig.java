@@ -51,4 +51,19 @@ public class SwaggerConfig {
 
     }
 
+    @Bean
+    public GroupedOpenApi pressApi() {
+
+        return GroupedOpenApi.builder()
+                .group(Member.class.getSimpleName())
+                .pathsToMatch("/api/v1/press/**")
+                .addOpenApiCustomizer(openApi
+                                -> openApi.addSecurityItem(
+                                new SecurityRequirement().addList("Bearer")
+                        )
+                )
+                .build();
+
+    }
+
 }
