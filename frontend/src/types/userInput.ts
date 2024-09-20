@@ -32,8 +32,8 @@ export interface GenderSelectBoxProps {
 
 export interface UserInputProps {
   nickname: string;
-  birthDate: string;
-  gender: number;
+  gender: string;
+  birth: string;
 }
 
 export interface SubmitButtonProps {

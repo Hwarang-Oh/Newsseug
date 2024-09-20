@@ -1,25 +1,27 @@
-import api from 'apis/commonApi';
+import api from './commonApi';
 import { AxiosResponse, isAxiosError } from 'axios';
-const LOGIN_URL = `/oauth2/authorization`;
 
 /**
- * IMP : 비동기 함수에서 Promise 기반으로 asnyc/await과 try/catch를 통해 호출자가 CallBack 정의 없이 직접 처리
- * Type : Promise<AxiosResponse> => AxiosResponse의 Case에 대한 Promise를 반환해야 함.
- * TODO : 나중에 LoginResponse의 Type을 다른 파일로 빼줘야 함.
+ * IMP : 아래 함수는 HTTPS에 의한 요청이 아님. Redirect를 통해 외부 URL로 이동하는 함수
+ * TODO : window.location.href를 통해 외부 URL로 이동하는 함수 ( Modal로 띄울 수 있도록 해야 한다 )
+ * @param provider
  */
-interface LoginResponse {
-  redirectUrl: string;
-}
+const LOGIN_URL = `${process.env.REACT_APP_API_BASE_URL}/oauth2/authorization`;
+export const redirectToLogin = (provider: string): void => {
+  const loginUrl = `${LOGIN_URL}/${provider}`;
+  window.location.href = loginUrl;
+};
 
-export const getLogin = async (
-  provider: 'google' | 'kakao',
-): Promise<LoginResponse> => {
+/**
+ * IMP: 로그아웃을 위한 API
+ * TODO : 구체화를 해줘야 한다.
+ * TODO : 로그아웃 후 어떤 처리를 해줄지 정의해야 한다.
+ */
+const LOGOUT_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1/logout`;
+export const logout = async (): Promise<void> => {
   try {
-    const response: AxiosResponse<LoginResponse> = await api.get(
-      `${LOGIN_URL}/${provider}`,
-    );
+    const response: AxiosResponse<void> = await api.get(LOGOUT_URL);
     console.log(response.data);
-    return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

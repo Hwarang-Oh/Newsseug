@@ -22,8 +22,10 @@ export default Login;
 const LoginItems = [
   {
     icon: <GoogleLogin />,
+    provider: 'google',
   },
   {
     icon: <KakaoLogin />,
+    provider: 'kakao',
   },
 ];

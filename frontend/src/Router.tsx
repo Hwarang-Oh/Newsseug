@@ -12,6 +12,7 @@ import Splash from './pages/Splash';
 import Press from './pages/Press';
 import Article from './pages/Article';
 import History from './pages/History';
+import UserInput from './pages/UserInput';
 
 function Router() {
   return (
@@ -20,6 +21,7 @@ function Router() {
         <Route path="/" element={<Home />} />
         <Route path="/splash" element={<Splash />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<UserInput />} />
 
         <Route path="/articles">
           <Route path="all" element={<AllArticles />} />
