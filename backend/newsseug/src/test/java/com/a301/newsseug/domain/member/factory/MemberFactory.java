@@ -5,6 +5,7 @@ import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.model.entity.ProviderType;
 import com.a301.newsseug.domain.member.model.entity.Role;
 import com.a301.newsseug.global.util.ClockUtil;
+import java.time.LocalDate;
 import org.springframework.test.util.ReflectionTestUtils;
 
 public class MemberFactory {
@@ -15,7 +16,7 @@ public class MemberFactory {
         Member member = Member.builder()
                 .nickName("test")
                 .gender(GenderType.MALE)
-                .birth(ClockUtil.getLocalDateTime())
+                .birth(LocalDate.now())
                 .role(Role.ROLE_MEMBER)
                 .providerType(ProviderType.KAKAO)
                 .providerId("test")
