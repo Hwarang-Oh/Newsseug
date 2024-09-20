@@ -4,6 +4,7 @@ import com.a301.newsseug.domain.article.model.entity.type.Category;
 import com.a301.newsseug.domain.member.model.entity.Hate;
 import com.a301.newsseug.domain.member.model.entity.History;
 import com.a301.newsseug.domain.member.model.entity.Like;
+import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.global.model.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -57,17 +58,9 @@ public class Article extends BaseEntity {
     @Column(nullable = false)
     private Category category;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Like> likes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Hate> hates = new ArrayList<>();
-
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<History> histories = new ArrayList<>();
-
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Report> reports = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "press_id", nullable = false)
+    private Press press;
 
     @Builder
     public Article(String title, String source, String contentUrl, String videoUrl, Category category) {
