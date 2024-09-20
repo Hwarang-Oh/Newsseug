@@ -1,8 +1,11 @@
 server:
   port: 8080
 
-spring:
+app:
+  oauth:
+    base-url: https://j11a301.p.ssafy.io
 
+spring:
   docker:
     compose:
       enabled: off
@@ -12,6 +15,7 @@ spring:
     username: root
     password: newsseug1234
     driver-class-name: org.mariadb.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: create
