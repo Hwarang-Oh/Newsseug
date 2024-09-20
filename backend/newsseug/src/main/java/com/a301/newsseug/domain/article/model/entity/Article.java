@@ -57,18 +57,6 @@ public class Article extends BaseEntity {
     @Column(nullable = false)
     private Category category;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Like> likes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Hate> hates = new ArrayList<>();
-
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<History> histories = new ArrayList<>();
-
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Report> reports = new ArrayList<>();
-
     @Builder
     public Article(String title, String source, String contentUrl, String videoUrl, Category category) {
         this.title = title;
