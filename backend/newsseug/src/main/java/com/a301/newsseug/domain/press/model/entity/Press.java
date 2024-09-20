@@ -3,14 +3,17 @@ package com.a301.newsseug.domain.press.model.entity;
 import com.a301.newsseug.global.model.entity.BaseEntity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@AllArgsConstructor
 @Table(name = "press")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Press extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long pressId;
@@ -22,7 +25,13 @@ public class Press extends BaseEntity {
 
     private Long subscribeCount;
 
-//    Article과 합치기 전 주석 처리
-//    @OneToMany(mappedBy = "press")
-//    private List<Article> articles = new ArrayList<>();
+    @Builder
+    public Press(
+        String name, String imageUrl, String description
+    ) {
+        this.pressBranding = PressBranding.of(name, imageUrl);
+        this.description = description;
+        this.subscribeCount = 0L;
+    }
+
 }
