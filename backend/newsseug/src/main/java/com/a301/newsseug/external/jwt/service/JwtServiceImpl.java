@@ -69,6 +69,7 @@ public class JwtServiceImpl implements JwtService {
     private String createToken(Member member, long expirationTime, TokenType type) {
 
         LocalDateTime now = ClockUtil.getLocalDateTime();
+        System.out.println(now);
 
         return  Jwts.builder()
                 .header()

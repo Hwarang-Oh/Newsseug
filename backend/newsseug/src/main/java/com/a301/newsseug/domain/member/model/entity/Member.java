@@ -43,8 +43,7 @@ public class Member extends BaseEntity {
 
     @Builder
     public Member(
-            String nickName, GenderType gender, LocalDate birth,
-            ProviderType providerType, String providerId, Role role
+            String nickName, GenderType gender, LocalDate birth, ProviderType providerType, String providerId, Role role
     ) {
         this.nickname = nickName;
         this.gender = gender;

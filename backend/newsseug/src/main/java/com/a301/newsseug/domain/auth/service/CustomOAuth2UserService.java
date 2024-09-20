@@ -9,6 +9,7 @@ import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.model.entity.ProviderType;
 import com.a301.newsseug.domain.member.model.entity.Role;
 import com.a301.newsseug.domain.member.repository.MemberRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -35,8 +36,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String provider = userRequest.getClientRegistration().getRegistrationId();
         OAuth2UserDetails oAuth2UserDetails = getOAuth2UserDetails(provider, oAuth2User);
         String providerId = oAuth2UserDetails.getProviderId();
-        Member member = memberRepository.findByProviderId(providerId)
-                .orElseGet(() ->
+
+        boolean isFirst = false;
+        Optional<Member> member = memberRepository.findByProviderId(providerId);
+
+        if (member.isEmpty()) {
+            isFirst = true;
+        }
+
+        return CustomOAuth2User.of(
+                member.orElseGet(() ->
                         memberRepository.save(
                                 Member.builder()
                                         .nickName("Test")
@@ -44,10 +53,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                                         .providerId(providerId)
                                         .role(Role.ROLE_MEMBER)
                                         .build()
-                        )
-                );
-
-        return CustomOAuth2User.of(member, oAuth2User.getAttributes());
+                )),
+                isFirst,
+                oAuth2User.getAttributes()
+        );
 
     }
 

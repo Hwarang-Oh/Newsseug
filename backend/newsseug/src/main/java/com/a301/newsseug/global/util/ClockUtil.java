@@ -28,7 +28,7 @@ public class ClockUtil {
 
     public static Date getExpirationDate(LocalDateTime now, long expirationTime) {
         return Date.from(
-                now.plusDays(expirationTime).atZone(ZoneId.systemDefault()).toInstant()
+                now.plusSeconds(expirationTime).atZone(ZoneId.systemDefault()).toInstant()
         );
     }
 
