@@ -3,6 +3,7 @@ package com.a301.newsseug.external.swagger.config;
 import static org.springframework.security.config.Elements.JWT;
 
 import com.a301.newsseug.domain.member.model.entity.Member;
+import com.a301.newsseug.domain.press.model.entity.Press;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -55,7 +56,7 @@ public class SwaggerConfig {
     public GroupedOpenApi pressApi() {
 
         return GroupedOpenApi.builder()
-                .group(Member.class.getSimpleName())
+                .group(Press.class.getSimpleName())
                 .pathsToMatch("/api/v1/press/**")
                 .addOpenApiCustomizer(openApi
                                 -> openApi.addSecurityItem(
