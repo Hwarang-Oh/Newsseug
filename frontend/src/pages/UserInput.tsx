@@ -11,7 +11,7 @@ function UserInput() {
     control,
     genderList,
     handleGenderSelect,
-    formState: { isValid },
+    formState: { isValid, isSubmitted },
     handleDateChange,
     handleSubmit,
     onSubmit,
@@ -33,7 +33,7 @@ function UserInput() {
           />
 
           <Controller
-            name="birthDate"
+            name="birth"
             control={control}
             rules={{
               required: '생년월일을 입력해주세요.',
@@ -48,7 +48,7 @@ function UserInput() {
                 input={field.value}
                 backGroundColor="#f4f4f4"
                 onChange={(e) => handleDateChange(e, field.onChange)}
-                error={error?.message}
+                error={isSubmitted ? error?.message : ''}
               />
             )}
           />

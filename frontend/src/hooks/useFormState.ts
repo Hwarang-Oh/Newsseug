@@ -5,8 +5,8 @@ import { MaleIcon, FemaleIcon } from 'components/icon/GenderIcon';
 
 const defaultValues: UserInputProps = {
   nickname: '기쁜 두꺼비',
-  birthDate: '',
-  gender: 0,
+  birth: '',
+  gender: '',
 };
 
 function useFormState() {
@@ -17,16 +17,8 @@ function useFormState() {
     });
 
   const [genderList, setGenderList] = useState([
-    {
-      icon: MaleIcon(),
-      selected: false,
-      value: 0,
-    },
-    {
-      icon: FemaleIcon(),
-      selected: false,
-      value: 1,
-    },
+    { icon: MaleIcon(), selected: false, value: 'MALE' },
+    { icon: FemaleIcon(), selected: false, value: 'FEMALE' },
   ]);
 
   const handleGenderSelect = (index: number) => {
