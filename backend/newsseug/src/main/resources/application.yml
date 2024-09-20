@@ -7,8 +7,3 @@ spring:
 
   config:
     import: application-jwt.yml, application-oauth.yml
-
-  data:
-    redis:
-      host: localhost
-      port: 6379
