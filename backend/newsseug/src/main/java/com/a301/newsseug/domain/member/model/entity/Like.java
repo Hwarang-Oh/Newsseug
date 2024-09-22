@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Like {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long likeId;
 
     @ManyToOne(fetch = FetchType.LAZY)

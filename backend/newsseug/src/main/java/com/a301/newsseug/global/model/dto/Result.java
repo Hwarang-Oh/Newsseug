@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Schema(name = "공통 응답 형식")
 public class Result<T> {
 
     @Schema(description = "요청 시간")

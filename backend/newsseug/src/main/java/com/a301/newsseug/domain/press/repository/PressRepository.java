@@ -13,4 +13,5 @@ public interface PressRepository extends JpaRepository<Press, Long> {
         return findById(id).orElseThrow(NotExistPressException::new);
     }
 
+    Press findByPressId(Long id);
 }
