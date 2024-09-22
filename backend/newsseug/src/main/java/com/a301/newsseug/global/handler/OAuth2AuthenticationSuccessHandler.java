@@ -43,11 +43,11 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                 });
 
         response.addCookie(
-                CookieUtil.create(response, "access-token", accessToken, jwtProperties.getExpiration().getAccess())
+                CookieUtil.create("access-token", accessToken, jwtProperties.getExpiration().getAccess())
         );
 
         if (oAuth2User.isFirst()) {
-            response.sendRedirect("http://locahost:3000/register");
+            response.sendRedirect("http://localhost:3000/register");
             return;
         }
 
