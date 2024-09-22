@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class History {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long historyId;
 
     @ManyToOne(fetch = FetchType.LAZY)

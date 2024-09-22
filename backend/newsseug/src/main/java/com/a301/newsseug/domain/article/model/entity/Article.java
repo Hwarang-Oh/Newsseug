@@ -36,20 +36,23 @@ import java.util.List;
 public class Article extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long articleId;
 
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
-    private String source;
+    private String source; // 출처 URL
 
     @Column(nullable = false)
-    private String contentUrl;
+    private String contentUrl; // 원문 URL
 
     @Column(nullable = false)
-    private String videoUrl;
+    private String videoUrl; // 영상 URL
+
+    @Column(nullable = false)
+    private String thumbnailUrl; // 썸네일 URL
 
     @Column(nullable = false)
     private Long viewCount = 0L;
@@ -63,11 +66,12 @@ public class Article extends BaseEntity {
     private Press press;
 
     @Builder
-    public Article(String title, String source, String contentUrl, String videoUrl, Category category) {
+    public Article(String title, String source, String contentUrl, String videoUrl, String thumbnailUrl, Category category) {
         this.title = title;
         this.source = source;
         this.contentUrl = contentUrl;
         this.videoUrl = videoUrl;
+        this.thumbnailUrl = thumbnailUrl;
         this.viewCount = 0L;
         this.category = category;
     }

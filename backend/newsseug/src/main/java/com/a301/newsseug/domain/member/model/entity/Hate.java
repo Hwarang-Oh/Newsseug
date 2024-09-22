@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Hate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long hateId;
 
     @ManyToOne(fetch = FetchType.LAZY)

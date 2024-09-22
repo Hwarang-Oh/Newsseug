@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Report {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long reportId;
 
     @ManyToOne(fetch = FetchType.LAZY)
