@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class CookieUtil {
 
-    public static Cookie create(HttpServletResponse response, String cookieName, String value, Long maxAge) {
+    public static Cookie create(String cookieName, String value, Long maxAge) {
 
         Cookie cookie = new Cookie(cookieName, value);
 
@@ -17,8 +17,6 @@ public class CookieUtil {
         cookie.setHttpOnly(true);
         cookie.setMaxAge(maxAge.intValue());
         cookie.setSecure(true);
-
-        response.addCookie(cookie);
 
         return cookie;
 
