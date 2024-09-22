@@ -36,6 +36,8 @@ public enum ErrorCode {
      * - 존재하지 않는 자원
      */
     NOT_EXIST_MEMBER(HttpStatus.NOT_FOUND, NOT_EXIST_MEMBER_MESSAGE),
+    NOT_EXIST_PRESS(HttpStatus.NOT_FOUND, NOT_EXIST_PRESS_MESSAGE),
+    NOT_SUBSCRIBE_PRESS(HttpStatus.NOT_FOUND, NOT_SUBSCRIBE_PRESS_MESSAGE),
 
 
     /**
