@@ -1,8 +1,8 @@
 import SubLayout from 'components/common/SubLayout';
 import CategoryFilter from 'components/common/CategoryFilter';
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
-import { AllArticlesProps } from '@/types/allArticles';
 import { useState } from 'react';
+import { AllArticlesProps } from '@/types/allArticles';
 
 /**
  * IMP : All Articles Page -> Home Page를 통해서 들어올 수 있는 Page

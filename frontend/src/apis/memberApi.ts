@@ -1,10 +1,7 @@
 import api from 'apis/commonApi';
 import { AxiosResponse, isAxiosError } from 'axios';
-import { UserInputProps } from '@/types/userInput';
-import {
-  RandomNicknameResponse,
-  MemberLoginResponse,
-} from '@/types/api/member';
+import { UserInputProps } from 'types/userInput';
+import { MemberLoginResponse, MemberInfoResponse } from 'types/api/member';
 
 const MEMBER_URL = '/api/v1/members';
 
@@ -14,16 +11,19 @@ const MEMBER_URL = '/api/v1/members';
  */
 
 /**
- * IMP : Random Nickname을 받아오는 API ( 외부 API 호출 )
+ * IMP : 회원가입을 위한 API
+ * @param input
+ * @returns
  */
-export const getRandomNickname = async (): Promise<RandomNicknameResponse> => {
+export const registerMember = async (
+  input: UserInputProps,
+): Promise<MemberLoginResponse> => {
   try {
-    const response = await api.post<RandomNicknameResponse>(
-      '/nickname/getRandomNickname.ajax',
-      { lang: 'ko' },
-      { baseURL: 'https://www.rivestsoft.com/nickname.html' },
+    const response: AxiosResponse<MemberLoginResponse> = await api.put(
+      MEMBER_URL,
+      input,
     );
-    console.log(response);
+    console.log('회원가입 결과 : ', response.data);
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
@@ -35,20 +35,14 @@ export const getRandomNickname = async (): Promise<RandomNicknameResponse> => {
 };
 
 /**
- * IMP : 회원가입을 위한 API
- * @param input
- * @returns
+ * IMP : 정보 조회를 위한 API
+ * TODO : MOCK DATA로 대체
  */
-export const registerMember = async (
-  input: UserInputProps,
-): Promise<MemberLoginResponse> => {
-  console.log('입력하는 Data :', input);
+export const getMemberInfo = async (): Promise<MemberInfoResponse> => {
   try {
-    const response: AxiosResponse<MemberLoginResponse> = await api.put(
-      MEMBER_URL,
-      input,
-    );
-    console.log('회원가입 결과 : ', response.data);
+    const response: AxiosResponse<MemberInfoResponse> =
+      await api.get(MEMBER_URL);
+    console.log('회원 정보 : ', response.data);
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {

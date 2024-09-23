@@ -44,6 +44,5 @@ export interface SubmitButtonProps {
 
 export interface ConfirmModalProps {
   userData: UserInputProps;
-  onConfirm: () => void;
   onCancel: () => void;
 }
