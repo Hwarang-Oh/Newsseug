@@ -20,6 +20,7 @@ export default ArticleHeader;
 
 const Wrapper = styled.div`
   padding: 12px;
+  z-index: 3;
   position: fixed;
   box-sizing: border-box;
   display: flex;
