@@ -1,18 +1,29 @@
 package com.a301.newsseug.domain.folder.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+import com.a301.newsseug.domain.bookmark.repository.BookmarkRepository;
+import com.a301.newsseug.domain.folder.exception.InaccessibleFolderException;
 import com.a301.newsseug.domain.folder.factory.FolderFactory;
 import com.a301.newsseug.domain.folder.model.dto.FolderDto;
-import com.a301.newsseug.domain.folder.model.response.FolderListResponse;
+import com.a301.newsseug.domain.folder.model.dto.response.GetFolderResponse;
+import com.a301.newsseug.domain.folder.model.dto.response.ListFolderResponse;
+import com.a301.newsseug.domain.folder.model.entity.Folder;
 import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.factory.MemberFactory;
 import com.a301.newsseug.domain.member.model.entity.Member;
+import com.a301.newsseug.global.model.entity.ActivateStatus;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,38 +38,84 @@ class FolderServiceTest {
     private FolderRepository folderRepository;
 
     @Mock
+    private BookmarkRepository bookmarkRepository;
+
+    @Mock
     private CustomUserDetails userDetails;
 
     @InjectMocks
     private FolderServiceImpl folderService;
 
-    private Member member;
+    private Member loginMember;
 
     @BeforeEach
-    void setUp() {
-        member = MemberFactory.memberOfKakao();
+    void beforeEach() {
+
+        loginMember = MemberFactory.memberOfKakao();
         MockitoAnnotations.openMocks(this);
+        given(userDetails.getMember()).willReturn(loginMember);
+
     }
+
+    @Test
+    @DisplayName("폴더 조회")
+    void getFolder() {
+
+        Folder folder = FolderFactory.folder(1L, "folder1");
+
+        // Given
+        given(folderRepository.findByIdAAndMemberAndStatus(folder.getId(), loginMember, ActivateStatus.ACTIVE))
+                .willReturn(Optional.of(folder));
+
+        given(bookmarkRepository.findAllByFolder(folder)).willReturn(Collections.emptyList());
+
+        // When
+        GetFolderResponse response = folderService.getFolder(userDetails, folder.getId());
+
+        // Then
+        verify(folderRepository).findByIdAAndMemberAndStatus(folder.getId(), loginMember, ActivateStatus.ACTIVE);
+        verify(bookmarkRepository).findAllByFolder(folder);
+
+        assertThat(folder.getId()).isEqualTo(response.id());
+        assertThat(folder.getName()).isEqualTo(response.name());
+        assertThat(response.articles().isEmpty()).isTrue();
+
+    }
+
+    @Test
+    @DisplayName("폴더 조회[접근할 수 없는 폴더]")
+    void getFolderInaccessibleFolder() {
+
+        // Given
+        Folder folder = FolderFactory.folder(1L, "folder1");
+        when(userDetails.getMember()).thenReturn(loginMember);
+        when(folderRepository.findByIdAAndMemberAndStatus(folder.getId(), loginMember, ActivateStatus.ACTIVE))
+                .thenReturn(Optional.empty());
+
+        // Then
+        assertThatThrownBy(() -> folderService.getFolder(userDetails, folder.getId()))
+                .isInstanceOf(InaccessibleFolderException.class);
+
+    }
+
 
     @Test
     @DisplayName("사용자 폴더 목록 조회")
     void getFolderByMember() {
 
         // Given
-        given(userDetails.getMember()).willReturn(member);  // Mock member
-        given(folderRepository.findAllByMember(member)).willReturn(
-                Arrays.asList(
+        given(folderRepository.findAllByMember(loginMember)).willReturn(
+                List.of(
                         FolderFactory.folder(1L, "folder1"),
                         FolderFactory.folder(2L, "folder2")
-                ));  // Mock repository response
+                ));
 
         // When
-        FolderListResponse response = folderService.getFoldersByMember(userDetails);
+        ListFolderResponse response = folderService.getFoldersByMember(userDetails);
 
         // Then
-        verify(folderRepository).findAllByMember(member);
+        verify(folderRepository).findAllByMember(loginMember);
 
-        // Verify the response using AssertJ
         assertThat(response.folders()).hasSize(2);
         assertThat(response.folders())
                 .extracting(FolderDto::id, FolderDto::name, FolderDto::articleCount)

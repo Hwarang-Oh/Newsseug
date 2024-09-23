@@ -3,7 +3,7 @@ package com.a301.newsseug.domain.member.controller;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.folder.service.FolderService;
 import com.a301.newsseug.domain.member.model.dto.request.MemberUpdateRequest;
-import com.a301.newsseug.domain.folder.model.response.FolderListResponse;
+import com.a301.newsseug.domain.folder.model.dto.response.ListFolderResponse;
 import com.a301.newsseug.domain.member.service.MemberService;
 import com.a301.newsseug.domain.press.model.dto.GetPressResponseDto;
 import com.a301.newsseug.domain.press.model.dto.response.ListPressResponse;
@@ -47,7 +47,7 @@ public class MemberController {
 
     @Operation(summary = "사용자 폴더 목록 조회 API", description = "사용자 폴더 목록을 조회한다.")
     @GetMapping("/folders")
-    public ResponseEntity<Result<FolderListResponse>> getFolders(
+    public ResponseEntity<Result<ListFolderResponse>> getFolders(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
 

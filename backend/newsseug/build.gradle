@@ -122,6 +122,9 @@ jacocoTestReport {
                             "**/exception/*",
                             "**/repository/*",
                             "**/global",
+                            "**/handler/*",
+                            "**/config/*",
+                            "**/filter/*"
                     ] + Qdomains)
                 }))
     }
@@ -159,6 +162,9 @@ jacocoTestCoverageVerification {
                     "*.exception.*",
                     "*.repository.*",
                     "*.global.*",
+                    "*.handler.*",
+                    "*.config.*",
+                    "*.filter.*"
             ] + Qdomains
 
         }

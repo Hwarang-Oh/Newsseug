@@ -1,5 +1,6 @@
 package com.a301.newsseug.domain.folder.model.dto;
 
+import com.a301.newsseug.domain.folder.model.entity.Folder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,11 +20,11 @@ public record FolderDto(
 
 ) {
 
-    public static FolderDto of(Long id, String name, Long articleCount) {
+    public static FolderDto of(Folder folder) {
         return FolderDto.builder()
-                .id(id)
-                .name(name)
-                .articleCount(articleCount)
+                .id(folder.getId())
+                .name(folder.getName())
+                .articleCount(folder.getArticleCount())
                 .build();
     }
 

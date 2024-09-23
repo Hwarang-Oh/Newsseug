@@ -1,6 +1,7 @@
 package com.a301.newsseug.domain.folder.model.entity;
 
 import com.a301.newsseug.domain.member.model.entity.Member;
+import com.a301.newsseug.global.model.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "folders")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Folder {
+public class Folder extends BaseEntity {
 
     @Id
     @Column(name = "folder_id")
