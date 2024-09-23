@@ -12,3 +12,7 @@ declare module '*.ttf' {
   const content: string;
   export default content;
 }
+
+declare module '@woowa-babble/random-nickname' {
+  export function getRandomNickname(type: string): string;
+}

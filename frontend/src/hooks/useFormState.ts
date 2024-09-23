@@ -1,15 +1,40 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { registerMember } from 'apis/memberApi';
 import { UserInputProps } from '@/types/userInput';
 import { MaleIcon, FemaleIcon } from 'components/icon/GenderIcon';
-import { registerMember } from 'apis/memberApi';
+import { getRandomNickname } from '@woowa-babble/random-nickname';
+
+// 랜덤 닉네임 생성 함수
+// TODO : 아마 나중에는, Token유무와 비교해서 새로고침에 의한 생성 못하게 해야 할 수도 있음.
+const randomNickname = (): string => {
+  const types = ['animals', 'characters', 'monsters'];
+  const randomType = types[Math.floor(Math.random() * types.length)];
+  return getRandomNickname(randomType);
+};
+
+// 로컬 스토리지에서 닉네임 불러오기 또는 새로운 닉네임 생성
+const getOrSetRandomNickname = (): string => {
+  const savedNickname = localStorage.getItem('randomNickname');
+  if (savedNickname) {
+    return savedNickname; // 저장된 닉네임이 있으면 그 닉네임 반환
+  } else {
+    const newNickname = randomNickname(); // 없으면 새로운 닉네임 생성
+    localStorage.setItem('randomNickname', newNickname); // 로컬 스토리지에 저장
+    return newNickname;
+  }
+};
 
 const defaultValues: UserInputProps = {
-  nickname: '기쁜 두꺼비',
+  nickname: getOrSetRandomNickname(),
   birth: '',
   gender: '',
 };
 
+/**
+ * IMP : useFormState Custom Hook
+ * @returns
+ */
 function useFormState() {
   const { control, formState, setValue, trigger, getValues, handleSubmit } =
     useForm<UserInputProps>({
@@ -69,7 +94,7 @@ function useFormState() {
   };
 }
 
-const nicknameValidation = { fixedValue: '기쁜 두꺼비' };
+const nicknameValidation = { fixedValue: getOrSetRandomNickname() };
 const genderValidation = { required: true };
 const birthValidation = {
   required: '생년월일을 입력해 주세요.',
