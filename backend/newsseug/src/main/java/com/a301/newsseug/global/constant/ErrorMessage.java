@@ -30,6 +30,7 @@ public class ErrorMessage {
     public static final String NOT_EXIST_PRESS_MESSAGE = "존재하지 않는 언론사입니다.";
     public static final String NOT_EXIST_FOLDER_MESSAGE = "존재하지 않는 폴더입니다.";
     public static final String NOT_EXIST_ARTICLE_MESSAGE = "존재하지 않는 기사입니다.";
+    public static final String NOT_EXIST_LIKE_MESSAGE = "존재하지 않는 좋아요입니다.";
     public static final String NOT_SUBSCRIBE_PRESS_MESSAGE = "구독하지 않은 언론사입니다.";
 
     /**
