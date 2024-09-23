@@ -4,8 +4,6 @@ import com.a301.newsseug.domain.article.exception.NotExistArticleException;
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.article.model.entity.type.Category;
 import com.a301.newsseug.domain.member.model.entity.Member;
-import com.a301.newsseug.domain.press.exception.NotExistPressException;
-import com.a301.newsseug.domain.press.model.entity.Press;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,8 +16,8 @@ import java.util.List;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
-    default Article getOrThrow(Long articleId) {
-        return findById(articleId).orElseThrow(NotExistArticleException::new);
+    default Article getOrThrow(Long id) {
+        return findById(id).orElseThrow(NotExistArticleException::new);
     }
 
     // 오늘의 뉴스

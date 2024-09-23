@@ -1,4 +1,4 @@
-package com.a301.newsseug.global.execption;
+package com.a301.newsseug.global.exception;
 
 import static com.a301.newsseug.global.constant.ErrorMessage.*;
 
@@ -29,18 +29,17 @@ public enum ErrorCode {
      * [403 Forbidden]
      * - 요청한 자원에 대해 권한 없음
      */
-    UNTRUSTWORTHY_TOKEN(HttpStatus.UNAUTHORIZED, UNTRUSTWORTHY_TOKEN_MESSAGE),
+    UNTRUSTWORTHY_TOKEN(HttpStatus.FORBIDDEN, UNTRUSTWORTHY_TOKEN_MESSAGE),
 
-
+    
     /**
      * [404 Not Found]
      * - 존재하지 않는 자원
      */
     NOT_EXIST_MEMBER(HttpStatus.NOT_FOUND, NOT_EXIST_MEMBER_MESSAGE),
     NOT_EXIST_PRESS(HttpStatus.NOT_FOUND, NOT_EXIST_PRESS_MESSAGE),
-    NOT_EXIST_ARTICLE(HttpStatus.NOT_FOUND, NOT_EXIST_ARTICLE_MESSAGE),
-    NOT_EXIST_LIKE(HttpStatus.NOT_FOUND, NOT_EXIST_LIKE_MESSAGE),
     NOT_EXIST_FOLDER(HttpStatus.NOT_FOUND, NOT_EXIST_FOLDER_MESSAGE),
+    NOT_EXIST_ARTICLE(HttpStatus.NOT_FOUND, NOT_EXIST_ARTICLE_MESSAGE),
     NOT_SUBSCRIBE_PRESS(HttpStatus.NOT_FOUND, NOT_SUBSCRIBE_PRESS_MESSAGE),
 
 

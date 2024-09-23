@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FolderRepository extends JpaRepository<Folder, Long> {
 
-    Optional<Folder> findByIdAndMemberAndStatus(Long id, Member member, ActivateStatus status);
+    Optional<Folder> findByFolderIdAndMemberAndStatus(Long id, Member member, ActivateStatus status);
     List<Folder> findAllByMember(Member member);
 
 }

@@ -3,7 +3,6 @@ package com.a301.newsseug.domain.folder.model.dto;
 import com.a301.newsseug.domain.folder.model.entity.Folder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
-import lombok.Getter;
 
 @Builder
 @Schema(name = "폴더 정보")
@@ -22,7 +21,7 @@ public record FolderDto(
 
     public static FolderDto of(Folder folder) {
         return FolderDto.builder()
-                .id(folder.getId())
+                .id(folder.getFolderId())
                 .name(folder.getName())
                 .articleCount(folder.getArticleCount())
                 .build();

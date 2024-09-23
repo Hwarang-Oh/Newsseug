@@ -4,8 +4,8 @@ import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.member.model.dto.request.MemberUpdateRequest;
 import com.a301.newsseug.domain.member.model.entity.GenderType;
 import com.a301.newsseug.domain.member.model.entity.Member;
-import com.a301.newsseug.domain.member.model.entity.MemberPress;
-import com.a301.newsseug.domain.member.repository.MemberPressRepository;
+import com.a301.newsseug.domain.member.model.entity.Subscribe;
+import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.controller.PressController;
 import com.a301.newsseug.domain.press.exception.NotSubscribePressException;
 import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberServiceImpl implements MemberService {
 
     private final PressRepository pressRepository;
-    private final MemberPressRepository memberPressRepository;
+    private final SubscribeRepository subscribeRepository;
     private final PressController pressController;
 
     @Override
@@ -56,7 +56,7 @@ public class MemberServiceImpl implements MemberService {
                                         p.getPressId(),
                                         p.getPressBranding().getName(),
                                         p.getPressBranding().getImageUrl(),
-                                        memberPressRepository.existsByMemberAndPress(
+                                        subscribeRepository.existsByMemberAndPress(
                                                 userDetails.getMember(), p
                                         )
                                 )
@@ -67,13 +67,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Boolean subscribePress(CustomUserDetails userDetails, Long pressId) {
+    public Boolean subscribe(CustomUserDetails userDetails, Long pressId) {
 
         Member loginMember = userDetails.getMember();
         Press press = pressRepository.getOrThrow(pressId);
 
-        memberPressRepository.save(
-                MemberPress.builder()
+        subscribeRepository.save(
+                Subscribe.builder()
                         .member(loginMember)
                         .press(press)
                         .build()
@@ -84,15 +84,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Boolean unsubscribePress(CustomUserDetails userDetails, Long pressId) {
+    public Boolean unsubscribe(CustomUserDetails userDetails, Long pressId) {
 
         Member loginMember = userDetails.getMember();
         Press press = pressRepository.getOrThrow(pressId);
 
-        MemberPress memberPress = memberPressRepository.findByMemberAndPress(loginMember, press)
+        Subscribe subscribe = subscribeRepository.findByMemberAndPress(loginMember, press)
                 .orElseThrow(NotSubscribePressException::new);
 
-        memberPress.inactive();
+        subscribe.inactive();
 
         return true;
 

@@ -62,19 +62,19 @@ class FolderServiceTest {
         Folder folder = FolderFactory.folder(1L, "folder1");
 
         // Given
-        given(folderRepository.findByIdAndMemberAndStatus(folder.getId(), loginMember, ActivateStatus.ACTIVE))
+        given(folderRepository.findByFolderIdAndMemberAndStatus(folder.getFolderId(), loginMember, ActivateStatus.ACTIVE))
                 .willReturn(Optional.of(folder));
 
         given(bookmarkRepository.findAllByFolder(folder)).willReturn(Collections.emptyList());
 
         // When
-        GetFolderResponse response = folderService.getFolder(userDetails, folder.getId());
+        GetFolderResponse response = folderService.getFolder(userDetails, folder.getFolderId());
 
         // Then
-        verify(folderRepository).findByIdAndMemberAndStatus(folder.getId(), loginMember, ActivateStatus.ACTIVE);
+        verify(folderRepository).findByFolderIdAndMemberAndStatus(folder.getFolderId(), loginMember, ActivateStatus.ACTIVE);
         verify(bookmarkRepository).findAllByFolder(folder);
 
-        assertThat(folder.getId()).isEqualTo(response.id());
+        assertThat(folder.getFolderId()).isEqualTo(response.id());
         assertThat(folder.getName()).isEqualTo(response.name());
         assertThat(response.articles().isEmpty()).isTrue();
 
@@ -87,11 +87,11 @@ class FolderServiceTest {
         // Given
         Folder folder = FolderFactory.folder(1L, "folder1");
         when(userDetails.getMember()).thenReturn(loginMember);
-        when(folderRepository.findByIdAndMemberAndStatus(folder.getId(), loginMember, ActivateStatus.ACTIVE))
+        when(folderRepository.findByFolderIdAndMemberAndStatus(folder.getFolderId(), loginMember, ActivateStatus.ACTIVE))
                 .thenReturn(Optional.empty());
 
         // Then
-        assertThatThrownBy(() -> folderService.getFolder(userDetails, folder.getId()))
+        assertThatThrownBy(() -> folderService.getFolder(userDetails, folder.getFolderId()))
                 .isInstanceOf(InaccessibleFolderException.class);
 
     }

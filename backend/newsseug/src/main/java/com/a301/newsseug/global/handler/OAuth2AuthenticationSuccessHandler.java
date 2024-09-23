@@ -11,12 +11,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @RequiredArgsConstructor
@@ -35,10 +33,10 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         Member member = oAuth2User.getMember();
 
         String accessToken = jwtService.issueToken(member, TokenType.ACCESS_TOKEN);
-        redisTokenService.findByKey(member.getId())
+        redisTokenService.findByKey(member.getMemberId())
                 .orElseGet(() -> {
                     String token = jwtService.issueToken(member, TokenType.REFRESH_TOKEN);
-                    redisTokenService.save(member.getId(), token);
+                    redisTokenService.save(member.getMemberId(), token);
                     return token;
                 });
 
