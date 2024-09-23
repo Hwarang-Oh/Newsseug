@@ -1,9 +1,6 @@
 package com.a301.newsseug.domain.article.model.entity;
 
 import com.a301.newsseug.domain.article.model.entity.type.Category;
-import com.a301.newsseug.domain.member.model.entity.Hate;
-import com.a301.newsseug.domain.member.model.entity.History;
-import com.a301.newsseug.domain.member.model.entity.Like;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.global.model.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -11,9 +8,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * CREATE TABLE `articles` (

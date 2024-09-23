@@ -1,9 +1,11 @@
-package com.a301.newsseug.domain.member.model.entity;
+package com.a301.newsseug.domain.interaction.model.entity;
 
 import com.a301.newsseug.domain.article.model.entity.Article;
+import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.global.util.ClockUtil;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -31,6 +33,12 @@ public class Like {
     @CreatedDate
     @Column(updatable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
+
+    @Builder
+    public Like(Member member, Article article) {
+        this.member = member;
+        this.article = article;
+    }
 
     @PrePersist
     protected void onPrePersist() {

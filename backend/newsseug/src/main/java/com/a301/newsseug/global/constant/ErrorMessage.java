@@ -14,7 +14,7 @@ public class ErrorMessage {
      * [401 UnAuthorized]
      * - 요청된 리소스에 대한 유효한 인증 자격 증명이 없음
      */
-    public static final String INACCESSIBLE_FOLDER_MESSAGE = "접근할 수 없는 폴더입니다.";
+
 
     /**
      * [403 Forbidden]
@@ -28,6 +28,8 @@ public class ErrorMessage {
      */
     public static final String NOT_EXIST_MEMBER_MESSAGE = "존재하지 않는 사용자입니다.";
     public static final String NOT_EXIST_PRESS_MESSAGE = "존재하지 않는 언론사입니다.";
+    public static final String NOT_EXIST_ARTICLE_MESSAGE = "존재하지 않는 기사입니다.";
+    public static final String NOT_EXIST_LIKE_MESSAGE = "존재하지 않는 좋아요입니다.";
     public static final String NOT_EXIST_FOLDER_MESSAGE = "존재하지 않는 폴더입니다.";
     public static final String NOT_SUBSCRIBE_PRESS_MESSAGE = "구독하지 않은 언론사입니다.";
 
