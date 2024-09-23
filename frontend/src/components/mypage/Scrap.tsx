@@ -59,8 +59,10 @@ const Wrapper = styled.div<{ width?: string; height?: string; url: string }>`
 
 const ScrapTitle = styled.h1<{ width: string }>`
   color: #fff;
-  font-size: ${({ width }) => (width === '180px' ? '20px' : '15px')};
-  width: ${({ width }) => (width === '180px' ? '150px' : '90px')};
+  font-size: ${({ width }) =>
+    width === '180px' || width === '100%' ? '18px' : '14px'};
+  width: ${({ width }) =>
+    width === '180px' || width === '100%' ? '150px' : '90px'};
   text-align: center;
   margin: 0;
   overflow: hidden; /* 넘치는 텍스트 숨기기 */
@@ -77,21 +79,28 @@ const ScrapTag = styled.div<{ width: string }>`
   left: 8px;
   display: flex;
   align-items: center;
-  gap: ${({ width }) => (width === '180px' ? '3px' : '2px')};
+  gap: ${({ width }) =>
+    width === '180px' || width === '100%' ? '3px' : '2px'};
   * {
-    color: white;
+    color: ${({ theme }) => theme.bgColor};
   }
 `;
 
 const ScrapTagIcon = styled.img<{ width: string }>`
-  width: ${({ width }) => (width === '180px' ? '25px' : '20px')};
-  height: ${({ width }) => (width === '180px' ? '25px' : '20px')};
+  width: ${({ width }) =>
+    width === '180px' || width === '100%' ? '25px' : '20px'};
+  height: ${({ width }) =>
+    width === '180px' || width === '100%' ? '25px' : '20px'};
 `;
 
 const ScrapTagCnt = styled.p<{ width: string }>`
   display: inline-block;
-  line-height: ${({ width }) => (width === '180px' ? '25px' : '20px')};
-  width: ${({ width }) => (width === '180px' ? '25px' : '20px')};
-  height: ${({ width }) => (width === '180px' ? '25px' : '20px')};
-  font-size: ${({ width }) => (width === '180px' ? '20px' : '15px')};
+  line-height: ${({ width }) =>
+    width === '180px' || width === '100%' ? '25px' : '20px'};
+  width: ${({ width }) =>
+    width === '180px' || width === '100%' ? '25px' : '20px'};
+  height: ${({ width }) =>
+    width === '180px' || width === '100%' ? '25px' : '20px'};
+  font-size: ${({ width }) =>
+    width === '180px' || width === '100%' ? '18px' : '14px'};
 `;
