@@ -1,9 +1,11 @@
-package com.a301.newsseug.domain.article.model.entity;
+package com.a301.newsseug.domain.interaction.model.entity;
 
+import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.article.model.entity.type.ReportType;
 import com.a301.newsseug.global.util.ClockUtil;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -35,5 +37,11 @@ public class Report {
     @PrePersist
     protected void onPrePersist() {
         this.createdAt = ClockUtil.getLocalDateTime();
+    }
+
+    @Builder
+    public Report(Article article, ReportType type) {
+        this.article = article;
+        this.type = type;
     }
 }

@@ -1,5 +1,6 @@
 package com.a301.newsseug.domain.interaction.controller;
 
+import com.a301.newsseug.domain.article.model.entity.type.ReportType;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.interaction.service.InteractionService;
 import com.a301.newsseug.global.model.dto.Result;
@@ -34,9 +35,11 @@ public class InteractionController {
             @PathVariable(name = "articleId") Long articleId
     ) {
 
+        interactionService.postLikeToArticle(userDetails, articleId);
+
         return ResponseUtil.ok(
                 Result.of(
-                        interactionService.postLikeToArticle(userDetails, articleId)
+                        Boolean.TRUE
                 ));
 
     }
@@ -53,9 +56,11 @@ public class InteractionController {
             @PathVariable(name = "articleId") Long articleId
     ) {
 
+        interactionService.deleteLikeFromArticle(userDetails, articleId);
+
         return ResponseUtil.ok(
                 Result.of(
-                        interactionService.deleteLikeFromArticle(userDetails, articleId)
+                        Boolean.TRUE
                 ));
 
     }
@@ -72,9 +77,52 @@ public class InteractionController {
             @PathVariable(name = "articleId") Long articleId
     ) {
 
+        interactionService.PostHateToArticle(userDetails, articleId);
+
         return ResponseUtil.ok(
                 Result.of(
-                        interactionService.PostHateToArticle(userDetails, articleId)
+                        Boolean.TRUE
+                ));
+
+    }
+
+    @Operation(summary = "싫어요 취소 API", description = "사용자가 기사에 싫어요를 저장한다.",
+            responses = {
+                    @ApiResponse(description = "싫어요 취소 성공", responseCode = "200"),
+                    @ApiResponse(description = "싫어요 취소 실패", responseCode = "400"),
+                    @ApiResponse(description = "기사 또는 사용자 조회 실패", responseCode = "404")
+            })
+    @DeleteMapping("/hates/articles/{articleId}")
+    public ResponseEntity<Result<Boolean>> deleteHateToArticle(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable(name = "articleId") Long articleId
+    ) {
+
+        interactionService.deleteHateFromArticle(userDetails, articleId);
+
+        return ResponseUtil.ok(
+                Result.of(
+                        Boolean.TRUE
+                ));
+
+    }
+
+    @Operation(summary = "기사 신고 API", description = "사용자가 특정 기사에 대해 신고를 한다.",
+            responses = {
+                    @ApiResponse(description = "신고 성공", responseCode = "200"),
+                    @ApiResponse(description = "신고 실패", responseCode = "400")
+            })
+    @PostMapping("/reports/articles/{articleId}")
+    public ResponseEntity<Result<Boolean>> reportArticle(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable(name = "articleId") Long articleId,
+            @RequestParam ReportType reportType) {
+
+        interactionService.reportArticle(userDetails, articleId, reportType);
+
+        return ResponseUtil.ok(
+                Result.of(
+                        Boolean.TRUE
                 ));
 
     }
