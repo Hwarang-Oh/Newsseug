@@ -30,6 +30,8 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
 
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String TOKEN_PREFIX = "Bearer ";
     private final JwtProperties jwtProperties;
 
     /**
@@ -69,17 +71,18 @@ public class JwtServiceImpl implements JwtService {
     private String createToken(Member member, long expirationTime, TokenType type) {
 
         LocalDateTime now = ClockUtil.getLocalDateTime();
-        System.out.println(now);
 
-        return  Jwts.builder()
-                .header()
-                .add("type", type.getValue())
-                .and()
-                .subject(member.getOAuth2Details().getProviderId())
-                .issuedAt(ClockUtil.convertToDate(now))
-                .expiration(ClockUtil.getExpirationDate(now, expirationTime))
-                .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
-                .compact();
+        return  TOKEN_PREFIX.concat(
+                Jwts.builder()
+                        .header()
+                        .add("type", type.getValue())
+                        .and()
+                        .subject(member.getOAuth2Details().getProviderId())
+                        .issuedAt(ClockUtil.convertToDate(now))
+                        .expiration(ClockUtil.getExpirationDate(now, expirationTime))
+                        .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
+                        .compact()
+        );
 
     }
 
@@ -89,10 +92,11 @@ public class JwtServiceImpl implements JwtService {
      * @return 파싱된 헤더
      */
     public Header parseHeader(String token) {
+
         return Jwts.parser()
                 .verifyWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
                 .build()
-                .parseSignedClaims(token)
+                .parseSignedClaims(removePrefix(token))
                 .getHeader();
     }
 
@@ -102,11 +106,13 @@ public class JwtServiceImpl implements JwtService {
      * @return 파싱된 클레임
      */
     public Claims parseClaims(String token) {
+
         return Jwts.parser()
                 .verifyWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
                 .build()
-                .parseSignedClaims(token)
+                .parseSignedClaims(removePrefix(token))
                 .getPayload();
+
     }
 
     /**
@@ -114,12 +120,14 @@ public class JwtServiceImpl implements JwtService {
      * @param request HttpServletRequest 객체
      * @return 추출된 JWT 토큰
      */
-    public String resolveToken(HttpServletRequest request) {
+    public String resolveToken(HttpServletRequest request) throws InvalidFormatException {
+        return removePrefix(request.getHeader(AUTHORIZATION));
+    }
 
-        String token = request.getHeader("Authorization");
+    private String removePrefix(String token) {
 
-        if (!Objects.isNull(token) && token.startsWith("Bearer ")) {
-            return token.replace("Bearer ", "");
+        if (!Objects.isNull(token) && token.startsWith(TOKEN_PREFIX)) {
+            return token.replace(TOKEN_PREFIX, "");
         }
 
         return null;
@@ -133,7 +141,7 @@ public class JwtServiceImpl implements JwtService {
      */
     public boolean isValid(String token) throws JwtException {
 
-        if (!StringUtils.hasText(token)){
+        if (Objects.isNull(token)){
             return false;
         }
 

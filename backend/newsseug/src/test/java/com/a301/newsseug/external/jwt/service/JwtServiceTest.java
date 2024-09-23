@@ -169,7 +169,7 @@ public class JwtServiceTest {
     @DisplayName("토큰 검증[유효하지 않은 형식]")
     public void invalidateFormatToken() {
 
-        String invalidToken = "invalidTokenString";
+        String invalidToken = "Bearer invalidTokenString";
         assertThatThrownBy(() -> jwtService.isValid(invalidToken))
                 .isInstanceOf(InvalidFormatException.class);
 
