@@ -20,7 +20,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @Operation(summary = "홈 화면 기사 조회 API", description = "[\"오늘의 뉴스\", \"20대 관심 기사\", \"전체 기사\"] 를 조회한다.")
-    @GetMapping()
+    @GetMapping("/home")
     public ResponseEntity<Result<HomeArticlesResponse>> getHomeArticles() {
 
         HomeArticlesResponse result = articleService.getHomeArticles();
@@ -31,9 +31,7 @@ public class ArticleController {
 
     @Operation(summary = "단일 기사 조회 API", description = "단일 기사를 조회한다.")
     @GetMapping("/{articleId}")
-    public ResponseEntity<Result<Boolean>> getArticle(@PathVariable Long articleId) {
-
-
+    public ResponseEntity<Result<Boolean>> getArticle(@PathVariable(name = "articleId") Long articleId) {
 
         return ResponseUtil.ok(Result.of(Boolean.TRUE));
 
@@ -44,7 +42,6 @@ public class ArticleController {
     public ResponseEntity<Result<ListArticleResponse>> getArticlesByCategory(@RequestParam String categoryName) {
 
         ListArticleResponse result = articleService.getArticlesByCategory(categoryName);
-
         return ResponseUtil.ok(Result.of(result));
 
     }

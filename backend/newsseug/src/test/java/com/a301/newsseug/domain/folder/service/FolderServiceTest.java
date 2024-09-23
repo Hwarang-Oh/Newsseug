@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -20,7 +19,6 @@ import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.factory.MemberFactory;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.global.model.entity.ActivateStatus;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +62,7 @@ class FolderServiceTest {
         Folder folder = FolderFactory.folder(1L, "folder1");
 
         // Given
-        given(folderRepository.findByIdAAndMemberAndStatus(folder.getId(), loginMember, ActivateStatus.ACTIVE))
+        given(folderRepository.findByIdAndMemberAndStatus(folder.getId(), loginMember, ActivateStatus.ACTIVE))
                 .willReturn(Optional.of(folder));
 
         given(bookmarkRepository.findAllByFolder(folder)).willReturn(Collections.emptyList());
@@ -73,7 +71,7 @@ class FolderServiceTest {
         GetFolderResponse response = folderService.getFolder(userDetails, folder.getId());
 
         // Then
-        verify(folderRepository).findByIdAAndMemberAndStatus(folder.getId(), loginMember, ActivateStatus.ACTIVE);
+        verify(folderRepository).findByIdAndMemberAndStatus(folder.getId(), loginMember, ActivateStatus.ACTIVE);
         verify(bookmarkRepository).findAllByFolder(folder);
 
         assertThat(folder.getId()).isEqualTo(response.id());
@@ -89,7 +87,7 @@ class FolderServiceTest {
         // Given
         Folder folder = FolderFactory.folder(1L, "folder1");
         when(userDetails.getMember()).thenReturn(loginMember);
-        when(folderRepository.findByIdAAndMemberAndStatus(folder.getId(), loginMember, ActivateStatus.ACTIVE))
+        when(folderRepository.findByIdAndMemberAndStatus(folder.getId(), loginMember, ActivateStatus.ACTIVE))
                 .thenReturn(Optional.empty());
 
         // Then
