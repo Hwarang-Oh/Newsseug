@@ -1,7 +1,7 @@
 package com.a301.newsseug.domain.article.service;
 
 import com.a301.newsseug.domain.article.model.dto.SimpleArticleDto;
-import com.a301.newsseug.domain.article.model.dto.response.HomeArticlesResponse;
+import com.a301.newsseug.domain.article.model.dto.response.TodayArticlesResponse;
 import com.a301.newsseug.domain.article.model.dto.response.ListArticleResponse;
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.article.model.entity.type.Category;
@@ -29,21 +29,25 @@ public class ArticleServiceImpl implements ArticleService {
     private final PressRepository pressRepository;
 
     @Override
-    public HomeArticlesResponse getHomeArticles() {
+    public TodayArticlesResponse getHomeArticles() {
 
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();  // 오늘 00:00:00
         LocalDateTime endOfDay = startOfDay.plusDays(1);  // 내일 00:00:00 까지
         List<Article> todaysArticles = articleRepository.findByCreatedAtBetween(startOfDay, endOfDay);
 
+        // TodayArticleResponse 생성
+        return TodayArticlesResponse.of(
+                mapToListArticleResponse(todaysArticles)
+        );
+    }
+
+    @Override
+    public ListArticleResponse getAllArticles() {
+
         // 전체 기사
         List<Article> allArticles = articleRepository.findAllByOrderByCreatedAtDesc();
 
-        // ListHomeArticleResponse 생성
-        return HomeArticlesResponse.of(
-                mapToListArticleResponse(todaysArticles),
-                mapToListArticleResponse(allArticles), // 이곳에 20대 추천 기사가 들어가야함
-                mapToListArticleResponse(allArticles)
-        );
+        return mapToListArticleResponse(allArticles);
     }
 
     @Override
