@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import ArrowIcon from 'assets/arrowIcon.svg';
 import { useNavigate } from 'react-router-dom';
-import { SubLayoutProps } from '@/types/common/layout';
+import { SubLayoutProps } from 'types/common/layout';
 
 /**
  * IMP : SubHeader Component ( SubLayout ) => BackBtn ( 뒤로가기 ), MainSection ( children )

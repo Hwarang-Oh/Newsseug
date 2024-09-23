@@ -17,6 +17,7 @@ const ContainerBox = styled.div<{ $isPaddingZero: boolean }>`
   position: relative;
   display: flex;
   flex-direction: column;
+  /* align-items: center; */
   padding: ${({ $isPaddingZero }) => ($isPaddingZero ? '0' : '0 16px')};
   padding-top: 48px;
   padding-bottom: calc(7vh);

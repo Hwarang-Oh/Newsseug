@@ -15,5 +15,6 @@ declare module 'styled-components' {
     mainColor: string;
     relaxColor: RelaxColor;
     descriptionBgColor: string;
+    scrapModalColor: string;
   }
 }
