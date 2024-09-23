@@ -18,6 +18,7 @@ function InputSection({
         input={input}
         backGroundColor={backGroundColor}
         canEdit={canEdit}
+        type="tel"
         onChange={onChange}
       />
       {error && <ErrorMessage>{error}</ErrorMessage>}

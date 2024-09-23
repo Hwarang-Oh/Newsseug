@@ -5,6 +5,7 @@ function InputBox({
   input,
   backGroundColor,
   canEdit,
+  type,
   onChange,
 }: Readonly<InputBoxProps>) {
   return (
@@ -13,6 +14,7 @@ function InputBox({
         value={input}
         placeholder={!input ? '예) YYYY.MM.DD' : ''}
         readOnly={!canEdit}
+        type={type}
         onChange={onChange}
       />
     </InputBoxContainerStyle>
