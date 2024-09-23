@@ -18,10 +18,12 @@ function ArticleListCard({
   return (
     <Wrapper width={width} height={height}>
       <Thumbnail src={imgUrl} />
-      <PressTag>{pressName}</PressTag>
+      <PressTag width={width}>{pressName}</PressTag>
       <ArticleInfo>
-        <ArticleTitle>{title}</ArticleTitle>
-        <ViewCount>조회수 {formatViewCount(viewCount)}회</ViewCount>
+        <ArticleTitle width={width}>{title}</ArticleTitle>
+        <ViewCount width={width}>
+          조회수 {formatViewCount(viewCount)}회
+        </ViewCount>
       </ArticleInfo>
     </Wrapper>
   );
@@ -55,6 +57,7 @@ const ArticleInfo = styled.div`
   padding: 5px;
   bottom: 0px;
   left: 0px;
+  gap: 2px;
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0) 0%,
@@ -62,30 +65,39 @@ const ArticleInfo = styled.div`
   );
 `;
 
-const ArticleTitle = styled.h1`
+const ArticleTitle = styled.h1<{ width: string }>`
   color: ${({ theme }) => theme.bgColor};
   font-feature-settings:
     'liga' off,
     'clig' off;
-  font-size: 12px;
+  font-size: ${({ width }) =>
+    width === '180px' || width === '100%' ? '15px' : '12px'};
   font-style: normal;
   font-weight: 500;
   line-height: normal;
   letter-spacing: -0.28px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: ${({ width }) =>
+    width === '180px' || width === '100%' ? 2 : 1};
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
-const ViewCount = styled.p`
+const ViewCount = styled.p<{ width: string }>`
   color: ${({ theme }) => theme.bgColor};
   font-feature-settings:
     'liga' off,
     'clig' off;
-  font-size: 9px;
+  font-size: ${({ width }) =>
+    width === '180px' || width === '100%' ? '12px' : '10px'};
   font-style: normal;
   font-weight: 500;
   line-height: normal;
 `;
 
-const PressTag = styled.div`
+const PressTag = styled.div<{ width: string }>`
   display: inline-flex;
   padding: 2px 6px;
   justify-content: center;
@@ -101,11 +113,11 @@ const PressTag = styled.div`
   font-feature-settings:
     'liga' off,
     'clig' off;
-  font-family: Pretendard;
-  font-size: 8px;
+  font-size: ${({ width }) =>
+    width === '180px' || width === '100%' ? '12px' : '8px'};
   font-style: normal;
   font-weight: 600;
-  line-height: 140%; /* 11.2px */
+  line-height: 140%;
   letter-spacing: -0.2px;
 `;
 
