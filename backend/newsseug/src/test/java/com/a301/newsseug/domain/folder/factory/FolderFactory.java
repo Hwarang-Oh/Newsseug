@@ -14,7 +14,7 @@ public class FolderFactory {
                 .build();
 
 
-        ReflectionTestUtils.setField(folder, "id", id);
+        ReflectionTestUtils.setField(folder, "folderId", id);
 
         return folder;
 

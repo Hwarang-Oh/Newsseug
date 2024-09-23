@@ -20,7 +20,7 @@ public class MemberFactory {
                 .providerId("test")
                 .build();
 
-        ReflectionTestUtils.setField(member, "id", 1L);
+        ReflectionTestUtils.setField(member, "memberId", 1L);
 
         return member;
     }
