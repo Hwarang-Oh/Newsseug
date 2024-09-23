@@ -64,12 +64,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         return ListArticleResponse.of(
                 articles.stream()
-                    .map(article -> SimpleArticleDto.of(
-                            article.getArticleId(),
-                            getPressName(article.getPress().getPressId()),
-                            article.getThumbnailUrl(),
-                            article.getTitle(),
-                            article.getViewCount()))
+                    .map(SimpleArticleDto::of)
                     .collect(Collectors.toList())
         );
 

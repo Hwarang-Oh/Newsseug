@@ -1,6 +1,10 @@
 package com.a301.newsseug.domain.article.model.dto;
 
+import com.a301.newsseug.domain.article.model.entity.Article;
+import com.a301.newsseug.domain.bookmark.model.entity.Bookmark;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Builder;
 
 @Builder
@@ -24,14 +28,26 @@ public record SimpleArticleDto(
 
 ) {
 
-        public static SimpleArticleDto of(Long id, String pressName, String thumbnailUrl, String title, Long viewCount) {
+        public static SimpleArticleDto of(Article article) {
                 return SimpleArticleDto.builder()
-                        .id(id)
-                        .pressName(pressName)
-                        .thumbnailUrl(thumbnailUrl)
-                        .title(title)
-                        .viewCount(viewCount)
+                        .id(article.getArticleId())
+                        .pressName(article.getPress().getPressBranding().getName())
+                        .thumbnailUrl(article.getThumbnailUrl())
+                        .title(article.getTitle())
+                        .viewCount(article.getViewCount())
                         .build();
+        }
+
+        public static List<SimpleArticleDto> fromArticle(List<Article> articles) {
+                return articles.stream()
+                        .map(SimpleArticleDto::of)
+                        .collect(Collectors.toList());
+        }
+
+        public static List<SimpleArticleDto> fromBookmark(List<Bookmark> bookmarks) {
+                return bookmarks.stream()
+                        .map(bookmark -> SimpleArticleDto.of(bookmark.getArticle()))
+                        .collect(Collectors.toList());
         }
 
 }
