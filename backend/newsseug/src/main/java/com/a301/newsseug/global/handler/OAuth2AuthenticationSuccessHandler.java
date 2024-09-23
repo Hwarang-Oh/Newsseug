@@ -6,7 +6,6 @@ import com.a301.newsseug.external.jwt.config.JwtProperties;
 import com.a301.newsseug.external.jwt.model.entity.TokenType;
 import com.a301.newsseug.external.jwt.service.JwtService;
 import com.a301.newsseug.external.jwt.service.RedisTokenService;
-import com.a301.newsseug.global.util.CookieUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Component;
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
-    private final JwtProperties jwtProperties;
     private final RedisTokenService redisTokenService;
 
     @Override
@@ -40,16 +38,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                     return token;
                 });
 
-        response.addCookie(
-                CookieUtil.create("access-token", accessToken, jwtProperties.getExpiration().getAccess())
-        );
-
-        if (oAuth2User.isFirst()) {
-            response.sendRedirect("http://localhost:3000/register");
-            return;
-        }
-
-        response.sendRedirect("http://localhost:3000");
+        response.addHeader("first-login", String.valueOf(oAuth2User.isFirst()));
+        response.addHeader("access-token", accessToken);
 
     }
 
