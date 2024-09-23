@@ -1,17 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { motion, useMotionValue, useAnimation, PanInfo } from 'framer-motion';
+import { motion, useAnimation, PanInfo } from 'framer-motion';
 import scrapPlusIcon from 'assets/scrapPlusIcon.svg';
 import scrapCheckIcon from 'assets/scrapCheckIcon.svg';
 import { ScrapModalProps } from 'types/article';
 
-const ScrapModal: React.FC<ScrapModalProps> = ({ isOpen, onRequestClose }) => {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+function ScrapModal({
+  isOpen,
+  onRequestClose,
+  onCreateModalOpen,
+}: ScrapModalProps) {
+  const [checkedItems, setCheckedItems] = useState<boolean[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
-  const y = useMotionValue(0);
 
-  const windowHeight = window.innerHeight;
+  const windowHeight = window.screen.height;
   const defaultHeight = windowHeight * 0.6;
 
   useEffect(() => {
@@ -25,10 +28,17 @@ const ScrapModal: React.FC<ScrapModalProps> = ({ isOpen, onRequestClose }) => {
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [isOpen, controls]);
+  }, [controls, defaultHeight, isOpen]);
 
-  const handleClick = () => {
-    setIsChecked((prev) => !prev);
+  useEffect(() => {
+    // 초기 상태로 모든 아이템의 체크 상태를 false로 설정
+    setCheckedItems(new Array(25).fill(false));
+  }, []);
+
+  const handleClick = (index: number) => {
+    setCheckedItems((prev) =>
+      prev.map((checked, i) => (i === index ? !checked : checked)),
+    );
   };
 
   const handlePan = (
@@ -42,13 +52,10 @@ const ScrapModal: React.FC<ScrapModalProps> = ({ isOpen, onRequestClose }) => {
     const isAtBottom = scrollTop + clientHeight >= scrollHeight;
 
     if (isAtTop && info.delta.y > 0) {
-      // 최상단에서 아래로 드래그
       controls.set({ y: Math.max(0, info.delta.y) });
     } else if (isAtBottom && info.delta.y < 0) {
-      // 최하단에서 위로 드래그
       return;
     } else {
-      // 중간에서 스크롤
       contentRef.current.scrollTop -= info.delta.y;
     }
   };
@@ -71,6 +78,10 @@ const ScrapModal: React.FC<ScrapModalProps> = ({ isOpen, onRequestClose }) => {
 
   const handleOverlayClick = () => {
     controls.start({ y: '100%' }).then(onRequestClose);
+  };
+
+  const handleCreateFolderClick = () => {
+    onCreateModalOpen();
   };
 
   return (
@@ -96,17 +107,17 @@ const ScrapModal: React.FC<ScrapModalProps> = ({ isOpen, onRequestClose }) => {
         <DraggableBar />
         <ModalHeader>
           <ModalTitle>추가할 폴더 선택</ModalTitle>
-          <CreateScrap>
-            <img src={scrapPlusIcon} alt="새 스크랩" />
-            <span>새 스크랩</span>
+          <CreateScrap onClick={handleCreateFolderClick}>
+            <img src={scrapPlusIcon} alt="새 폴더 생성" />
+            <span>새 폴더</span>
           </CreateScrap>
         </ModalHeader>
         <ContentWrapper ref={contentRef}>
           <ModalBody>
             {[...Array(25)].map((_, index) => (
-              <ScrapItem key={index}>
+              <ScrapItem key={index} onClick={() => handleClick(index)}>
                 <HiddenCheckbox />
-                <StyledCheckbox checked={isChecked} onClick={handleClick}>
+                <StyledCheckbox $checked={checkedItems[index]}>
                   <svg width="16px" height="16px" viewBox="0 0 24 24">
                     <polyline
                       points="20 6 9 17 4 12"
@@ -116,7 +127,7 @@ const ScrapModal: React.FC<ScrapModalProps> = ({ isOpen, onRequestClose }) => {
                     />
                   </svg>
                 </StyledCheckbox>
-                <ScrapName>스크랩 {index + 1}</ScrapName>
+                <ScrapName>폴더 {index + 1}</ScrapName>
               </ScrapItem>
             ))}
           </ModalBody>
@@ -128,7 +139,7 @@ const ScrapModal: React.FC<ScrapModalProps> = ({ isOpen, onRequestClose }) => {
       </ModalContent>
     </ModalOverlay>
   );
-};
+}
 
 export default ScrapModal;
 
@@ -154,6 +165,7 @@ const ModalContent = styled(motion.div)`
   overflow: hidden;
   position: relative;
   margin: 20px 0;
+  border: none;
 `;
 
 const ContentWrapper = styled.div`
@@ -163,10 +175,10 @@ const ContentWrapper = styled.div`
 `;
 
 const DraggableBar = styled.div`
-  height: 3px;
+  height: 4px;
   width: 50px;
   background: ${({ theme }) => theme.textColor + '99'};
-  margin: 5px auto;
+  margin: 5px auto 2px auto;
   border-radius: 8px;
 `;
 
@@ -216,16 +228,14 @@ const CreateScrap = styled.button`
 const ModalBody = styled.div`
   width: 100%;
   box-sizing: border-box;
-  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
   align-items: center;
 `;
 
 const ScrapItem = styled.div`
   width: 100%;
-  height: 20px;
+  padding: 12px 15px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -233,6 +243,16 @@ const ScrapItem = styled.div`
   font-size: 15px;
   line-height: 20px;
   overflow: hidden;
+  border: 1px solid ${({ theme }) => theme.bgColor};
+  &:active {
+    background-color: ${({ theme }) => theme.textColor + '30'};
+    border: 1px solid ${({ theme }) => theme.textColor + '30'};
+    transition: 0.2s;
+  }
+
+  &:not(:active) {
+    transition: border 0.8s;
+  }
 `;
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -247,12 +267,12 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   width: 1px;
 `;
 
-const StyledCheckbox = styled.div<{ checked: boolean }>`
+const StyledCheckbox = styled.div<{ $checked: boolean }>`
   display: inline-block;
   width: 16px;
   height: 16px;
-  background: ${({ checked, theme }) =>
-    checked ? theme.scrapModalColor : theme.bgColor};
+  background: ${({ $checked, theme }) =>
+    $checked ? theme.scrapModalColor : theme.bgColor};
   border-radius: 3px;
   border: 2px solid ${({ theme }) => theme.scrapModalColor};
   transition: all 150ms;
@@ -262,7 +282,7 @@ const StyledCheckbox = styled.div<{ checked: boolean }>`
   justify-content: center;
 
   svg {
-    visibility: ${({ checked }) => (checked ? 'visible' : 'hidden')};
+    visibility: ${({ $checked }) => ($checked ? 'visible' : 'hidden')};
     fill: ${({ theme }) => theme.bgColor};
   }
 `;
@@ -274,7 +294,7 @@ const ScrapName = styled.span`
 `;
 
 const ModalFooter = styled.button`
-  height: 44px;
+  height: 50px;
   width: 100%;
   margin: 0;
   padding: 12px 10px;
@@ -283,6 +303,7 @@ const ModalFooter = styled.button`
   bottom: 0;
   display: flex;
   align-items: center;
+  border: none;
   border-top: 1px solid ${({ theme }) => theme.relaxColor.light};
   background: ${({ theme }) => theme.bgColor};
   outline: none;

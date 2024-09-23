@@ -3,6 +3,7 @@ import SubLayout from 'components/common/SubLayout';
 import Keyword from 'components/search/Keyword';
 import { useState } from 'react';
 import ScrapModal from 'components/articles/ScrapModal';
+import CreateScrapModal from 'components/articles/CreateScrapModal';
 
 const keywordlist = [
   { keywordText: '미국 ETF', isHistory: true },
@@ -12,6 +13,7 @@ const keywordlist = [
 
 function Search() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
 
   const handleClick = () => {
     setIsModalOpen((prev) => !prev);
@@ -27,6 +29,19 @@ function Search() {
           <ScrapModal
             isOpen={isModalOpen}
             onRequestClose={() => setIsModalOpen(false)}
+            onCreateModalOpen={() => {
+              setIsModalOpen(false);
+              setIsCreateModalOpen(true);
+            }}
+          />
+        )}
+        {isCreateModalOpen && (
+          <CreateScrapModal
+            isOpen={isCreateModalOpen}
+            onRequestClose={() => {
+              setIsModalOpen(true);
+              setIsCreateModalOpen(false);
+            }}
           />
         )}
         {keywordlist.map((keyword, idx) => {

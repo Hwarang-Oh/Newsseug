@@ -4,7 +4,11 @@ export interface ProgressBarProps {
   onSeek: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export interface ScrapModalProps {
+export interface ModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
+}
+
+export interface ScrapModalProps extends ModalProps {
+  onCreateModalOpen: () => void;
 }
