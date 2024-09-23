@@ -9,7 +9,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-@Schema(name = "기사 목록", description = "기사 목록 조회에 대해 노출할 정보.")
+@Schema(name = "기사 목록", description = "기사 목록을 조회한 결과")
 public record ListArticleResponse(
 
         List<SimpleArticleDto> articles

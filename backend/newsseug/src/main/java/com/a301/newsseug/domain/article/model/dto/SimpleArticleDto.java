@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import lombok.Builder;
 
 @Builder
-@Schema(name = "기사 정보", description = "기사 목록 조회 시 노출할 정보.")
+@Schema(name = "기사 정보", description = "기사 목록에 노출할 기사 정보")
 public record SimpleArticleDto(
 
         @Schema(description = "기사 고유 식별자", examples = {"99"})

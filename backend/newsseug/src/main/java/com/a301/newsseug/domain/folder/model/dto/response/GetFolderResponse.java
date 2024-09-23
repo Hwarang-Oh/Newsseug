@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-@Schema(name = "폴더 상세 조회")
+@Schema(name = "폴더 상세 조회", description = "하나의 폴더를 조회한 결과")
 public record GetFolderResponse(
 
         @Schema(description = "식별자")
