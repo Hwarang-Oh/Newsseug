@@ -14,7 +14,7 @@ public class ErrorMessage {
      * [401 UnAuthorized]
      * - 요청된 리소스에 대한 유효한 인증 자격 증명이 없음
      */
-
+    public static final String INACCESSIBLE_FOLDER_MESSAGE = "접근할 수 없는 폴더입니다.";
 
     /**
      * [403 Forbidden]

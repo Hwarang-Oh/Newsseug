@@ -23,6 +23,7 @@ public enum ErrorCode {
      * [401 UnAuthorized]
      * - 요청된 리소스에 대한 유효한 인증 자격 증명이 없음
      */
+    INACCESSIBLE_FOLDER(HttpStatus.UNAUTHORIZED, INACCESSIBLE_FOLDER_MESSAGE),
 
     /**
      * [403 Forbidden]
