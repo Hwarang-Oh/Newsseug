@@ -30,7 +30,7 @@ public class FolderServiceImpl implements FolderService {
     public GetFolderResponse getFolder(CustomUserDetails userDetails, Long folderId) {
 
         Member loginMember = userDetails.getMember();
-        Folder folder = folderRepository.findByIdAndMemberAndStatus(folderId, loginMember, ActivateStatus.ACTIVE)
+        Folder folder = folderRepository.findByFolderIdAndMemberAndStatus(folderId, loginMember, ActivateStatus.ACTIVE)
                 .orElseThrow(InaccessibleFolderException::new);
 
         List<Bookmark> bookmarks = bookmarkRepository.findAllByFolder(folder);
@@ -54,6 +54,19 @@ public class FolderServiceImpl implements FolderService {
                         .map(FolderDto::of)
                         .collect(Collectors.toList())
         );
+
+    }
+
+    @Override
+    public void createFolder(CustomUserDetails userDetails, String name) {
+
+        Member loginMember = userDetails.getMember();
+        Folder folder = Folder.builder()
+                .member(loginMember)
+                .name(name)
+                .build();
+
+        folderRepository.save(folder);
 
     }
 

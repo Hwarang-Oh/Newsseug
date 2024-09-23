@@ -1,7 +1,7 @@
 package com.a301.newsseug.domain.folder.exception;
 
-import com.a301.newsseug.global.execption.BaseException;
-import com.a301.newsseug.global.execption.ErrorCode;
+import com.a301.newsseug.global.exception.BaseException;
+import com.a301.newsseug.global.exception.ErrorCode;
 
 public class NotExistFolderException extends BaseException {
 

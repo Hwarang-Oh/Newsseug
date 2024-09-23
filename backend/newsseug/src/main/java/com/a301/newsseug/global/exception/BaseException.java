@@ -1,4 +1,4 @@
-package com.a301.newsseug.global.execption;
+package com.a301.newsseug.global.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

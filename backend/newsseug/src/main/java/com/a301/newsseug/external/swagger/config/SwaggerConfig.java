@@ -2,6 +2,7 @@ package com.a301.newsseug.external.swagger.config;
 
 import static org.springframework.security.config.Elements.JWT;
 
+import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.folder.model.entity.Folder;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.press.model.entity.Press;
@@ -74,6 +75,21 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder()
                 .group(Folder.class.getSimpleName())
                 .pathsToMatch("/api/v1/folders/**")
+                .addOpenApiCustomizer(openApi
+                                -> openApi.addSecurityItem(
+                                new SecurityRequirement().addList("Bearer")
+                        )
+                )
+                .build();
+
+    }
+
+    @Bean
+    public GroupedOpenApi articleApi() {
+
+        return GroupedOpenApi.builder()
+                .group(Article.class.getSimpleName())
+                .pathsToMatch("/api/v1/articles/**")
                 .addOpenApiCustomizer(openApi
                                 -> openApi.addSecurityItem(
                                 new SecurityRequirement().addList("Bearer")

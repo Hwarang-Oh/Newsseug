@@ -24,9 +24,8 @@ import lombok.Setter;
 public class Member extends BaseEntity {
 
     @Id
-    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Long memberId;
 
     @Setter
     private String nickname;

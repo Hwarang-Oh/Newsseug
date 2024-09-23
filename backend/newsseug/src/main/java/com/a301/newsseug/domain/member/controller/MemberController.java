@@ -5,7 +5,6 @@ import com.a301.newsseug.domain.folder.service.FolderService;
 import com.a301.newsseug.domain.member.model.dto.request.MemberUpdateRequest;
 import com.a301.newsseug.domain.folder.model.dto.response.ListFolderResponse;
 import com.a301.newsseug.domain.member.service.MemberService;
-import com.a301.newsseug.domain.press.model.dto.GetPressResponseDto;
 import com.a301.newsseug.domain.press.model.dto.response.ListPressResponse;
 import com.a301.newsseug.global.model.dto.Result;
 import com.a301.newsseug.global.util.ResponseUtil;
@@ -15,7 +14,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,7 +74,7 @@ public class MemberController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable(name = "pressId") Long pressId
     ) {
-
+        memberService.subscribe(userDetails, pressId);
         return ResponseUtil.ok(
                 Result.of(Boolean.TRUE)
         );
@@ -89,7 +87,7 @@ public class MemberController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable(name = "pressId") Long pressId
     ) {
-
+        memberService.unsubscribe(userDetails, pressId);
         return ResponseUtil.ok(
                 Result.of(Boolean.TRUE)
         );
