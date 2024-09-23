@@ -1,6 +1,9 @@
 import MainLayout from 'components/common/MainLayout';
 import data from 'db/data.json';
 import Section from 'components/home/Section';
+import UserInput from './UserInput';
+import AllArticles from './AllArticles';
+import ConfirmModal from 'components/userInput/ConfirmModal';
 
 /**
  * IMP : Home Page

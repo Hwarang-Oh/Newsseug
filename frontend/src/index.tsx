@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ThemeProvider } from 'styled-components';
 import App from './App';
-import { lightTheme } from './styles/theme';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import { ThemeProvider } from 'styled-components';
+import { lightTheme } from './styles/theme';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

@@ -34,11 +34,11 @@ const NavItemContainer = styled.div<{
   align-items: center;
   gap: 4px;
   flex: 1 0 0;
-  align-self: stretch;
+  align-self: center;
   cursor: pointer;
 
   position: relative;
-  top: ${({ $isMain }) => ($isMain ? '-16px' : '0')};
+  top: ${({ $isMain }) => ($isMain ? '-25px' : '0')};
   ${({ $isMain, $active, theme }) =>
     !$isMain &&
     `

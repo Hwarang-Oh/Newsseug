@@ -34,6 +34,18 @@ interface History {
 /**
  * * INFO : 이것은 FE 개발자가 직접 추가한 Type입니다.
  */
+
+/**
+ * IMP : 새로 회원가입 하는 Member에 대한 Random Nickname을 받아오는 Response Type
+ */
+export interface RandomNicknameResponse {
+  nickname: string;
+  success: boolean;
+}
+
+/**
+ *
+ */
 export interface MemberLoginResponse {
   timestamp: string;
   trackId: string;

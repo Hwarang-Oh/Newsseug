@@ -1,59 +1,89 @@
+import styled from 'styled-components';
+import useFormState from 'hooks/useFormState';
 import Layout from 'components/common/Layout';
 import InputSection from 'components/userInput/InputSection';
 import GenderSelectBox from 'components/userInput/GenderSelectBox';
 import SubmitButton from 'components/userInput/SubmitButton';
-import useFormState from 'hooks/useFormState';
+import ConfirmModal from 'components/userInput/ConfirmModal';
+import { SetStateAction, useState } from 'react';
 import { Controller } from 'react-hook-form';
-import styled from 'styled-components';
+import { getValue } from '@testing-library/user-event/dist/utils';
 
 function UserInput() {
+  /**
+   * IMP : useFormState에서 정의한 Custom Hook을 사용하여 Form을 구성
+   */
   const {
     control,
     genderList,
+    validationRules,
+    formState: { isValid },
     handleGenderSelect,
-    formState: { isValid, isSubmitted },
     handleDateChange,
     handleSubmit,
     onSubmit,
+    getValues,
   } = useFormState();
+
+  /**
+   * IMP : Modal Open 상태를 관리하는 State
+   */
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <Layout>
-      <FormStyle onSubmit={handleSubmit(onSubmit)}>
+      {/* <FormStyle onSubmit={handleSubmit(onSubmit)}> */}
+      <FormStyle>
         <InputSectionStyle>
           <InputSection
             title="생성된 닉네임"
-            input="기쁜 두꺼비"
+            input={validationRules.nickname.fixedValue}
             canEdit={false}
           />
-          <GenderSelectBox
-            title="성별을 선택해주세요"
-            genderList={genderList}
-            onSelect={handleGenderSelect}
+
+          <Controller
+            name="gender"
+            control={control}
+            rules={validationRules.gender}
+            render={() => (
+              <GenderSelectBox
+                title="성별을 선택해주세요"
+                genderList={genderList}
+                onSelect={handleGenderSelect}
+              />
+            )}
           />
 
           <Controller
             name="birth"
             control={control}
-            rules={{
-              required: '생년월일을 입력해주세요.',
-              pattern: {
-                value: /^\d{4}.\d{2}.\d{2}$/,
-                message: '생년월일 형식이 올바르지 않습니다. (YYYY.MM.DD)',
-              },
-            }}
+            rules={validationRules.birth}
             render={({ field, fieldState: { error } }) => (
               <InputSection
                 title="생년월일을 입력해주세요"
                 input={field.value}
                 backGroundColor="#f4f4f4"
                 onChange={(e) => handleDateChange(e, field.onChange)}
-                error={isSubmitted ? error?.message : ''}
+                error={error?.message}
               />
             )}
           />
         </InputSectionStyle>
-        <SubmitButton disabled={!isValid} />
+
+        <SubmitButton
+          disabled={!isValid}
+          onClick={() => setIsModalOpen(true)}
+        />
+
+        {isModalOpen && (
+          <ConfirmModal
+            userData={getValues()}
+            onConfirm={() => {
+              handleSubmit(onSubmit);
+            }}
+            onCancel={() => setIsModalOpen(false)}
+          />
+        )}
       </FormStyle>
     </Layout>
   );

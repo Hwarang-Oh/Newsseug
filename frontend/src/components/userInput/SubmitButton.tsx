@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { SubmitButtonProps } from '@/types/userInput';
 
-function SubmitButton({ disabled }: Readonly<SubmitButtonProps>) {
+function SubmitButton({ disabled, onClick }: Readonly<SubmitButtonProps>) {
   return (
     <ButtonBox>
-      <SubmitButtonStyle disabled={disabled}>
+      <SubmitButtonStyle disabled={disabled} onClick={onClick}>
         <SubmitButtonTextStyle>입력 완료</SubmitButtonTextStyle>
       </SubmitButtonStyle>
     </ButtonBox>
@@ -16,7 +16,7 @@ const ButtonBox = styled.div`
   margin: 0px 24px;
 `;
 
-const SubmitButtonStyle = styled.button<{ disabled: boolean }>`
+const SubmitButtonStyle = styled.div<{ disabled: boolean }>`
   display: flex;
   width: 100%;
   padding: 13px 0px;

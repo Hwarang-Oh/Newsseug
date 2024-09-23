@@ -1,7 +1,10 @@
-import api from '@/apis/commonApi';
+import api from 'apis/commonApi';
 import { AxiosResponse, isAxiosError } from 'axios';
 import { UserInputProps } from '@/types/userInput';
-import { MemberLoginResponse } from '@/types/api/member';
+import {
+  RandomNicknameResponse,
+  MemberLoginResponse,
+} from '@/types/api/member';
 
 const MEMBER_URL = '/api/v1/members';
 
@@ -11,6 +14,27 @@ const MEMBER_URL = '/api/v1/members';
  */
 
 /**
+ * IMP : Random Nickname을 받아오는 API ( 외부 API 호출 )
+ */
+export const getRandomNickname = async (): Promise<RandomNicknameResponse> => {
+  try {
+    const response = await api.post<RandomNicknameResponse>(
+      '/nickname/getRandomNickname.ajax',
+      { lang: 'ko' },
+      { baseURL: 'https://www.rivestsoft.com/nickname.html' },
+    );
+    console.log(response);
+    return response.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error('Not Found');
+      } else throw error;
+    } else throw error;
+  }
+};
+
+/**
  * IMP : 회원가입을 위한 API
  * @param input
  * @returns
@@ -18,12 +42,13 @@ const MEMBER_URL = '/api/v1/members';
 export const registerMember = async (
   input: UserInputProps,
 ): Promise<MemberLoginResponse> => {
+  console.log('입력하는 Data :', input);
   try {
     const response: AxiosResponse<MemberLoginResponse> = await api.put(
       MEMBER_URL,
       input,
     );
-    console.log(response.data);
+    console.log('회원가입 결과 : ', response.data);
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {

@@ -1,5 +1,4 @@
-import styled, { keyframes } from 'styled-components';
-import { useState } from 'react';
+import styled from 'styled-components';
 import { redirectToLogin } from 'apis/loginApi';
 import { LoginItemProps } from '@/types/login';
 

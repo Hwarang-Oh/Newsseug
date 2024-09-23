@@ -15,6 +15,7 @@ export interface InputBoxProps {
   input?: string;
   backGroundColor?: string;
   canEdit?: boolean;
+  type?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -38,4 +39,11 @@ export interface UserInputProps {
 
 export interface SubmitButtonProps {
   disabled: boolean;
+  onClick: () => void;
+}
+
+export interface ConfirmModalProps {
+  userData: UserInputProps;
+  onConfirm: () => void;
+  onCancel: () => void;
 }
