@@ -1,6 +1,10 @@
 package com.a301.newsseug.domain.press.model.dto;
 
+import com.a301.newsseug.domain.member.model.entity.Subscribe;
+import com.a301.newsseug.domain.press.model.entity.Press;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Builder;
 
 @Builder
@@ -14,20 +18,23 @@ public record SimplePressDto(
         String name,
 
         @Schema(description = "사진")
-        String imageUrl,
-
-        @Schema(description = "구독 여부")
-        boolean isSubscribed
+        String imageUrl
 
 ) {
 
-    public static SimplePressDto of(Long id, String name, String imageUrl, boolean isSubscribed) {
+    public static SimplePressDto of(Press press) {
         return SimplePressDto.builder()
-                .id(id)
-                .name(name)
-                .imageUrl(imageUrl)
-                .isSubscribed(isSubscribed)
+                .id(press.getPressId())
+                .name(press.getPressBranding().getName())
+                .imageUrl(press.getPressBranding().getImageUrl())
                 .build();
     }
+
+    public static List<SimplePressDto> fromSubscribe(List<Subscribe> subscribes) {
+        return subscribes.stream()
+                .map(subscribe -> SimplePressDto.of(subscribe.getPress()))
+                .collect(Collectors.toList());
+    }
+
 
 }

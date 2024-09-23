@@ -6,7 +6,6 @@ import com.a301.newsseug.domain.member.model.entity.GenderType;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.model.entity.Subscribe;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
-import com.a301.newsseug.domain.press.controller.PressController;
 import com.a301.newsseug.domain.press.exception.NotSubscribePressException;
 import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
 import com.a301.newsseug.domain.press.model.dto.response.ListPressResponse;
@@ -20,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.SimpleErrors;
 
 @Slf4j
 @Transactional
@@ -29,7 +29,6 @@ public class MemberServiceImpl implements MemberService {
 
     private final PressRepository pressRepository;
     private final SubscribeRepository subscribeRepository;
-    private final PressController pressController;
 
     @Override
     public void updateMember(CustomUserDetails UserDetails, MemberUpdateRequest request) {
@@ -47,21 +46,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public ListPressResponse getPressByMember(CustomUserDetails userDetails) {
 
-        List<Press> press = pressRepository.findAll();
+        Member loginMember = userDetails.getMember();
+        List<Subscribe> subscribes = subscribeRepository.findAllByMember(loginMember);
 
         return ListPressResponse.of(
-                press.stream()
-                        .map(p ->
-                                SimplePressDto.of(
-                                        p.getPressId(),
-                                        p.getPressBranding().getName(),
-                                        p.getPressBranding().getImageUrl(),
-                                        subscribeRepository.existsByMemberAndPress(
-                                                userDetails.getMember(), p
-                                        )
-                                )
-                        )
-                        .collect(Collectors.toList())
+                SimplePressDto.fromSubscribe(subscribes)
         );
 
     }
