@@ -1,6 +1,6 @@
 package com.a301.newsseug.domain.article.controller;
 
-import com.a301.newsseug.domain.article.model.dto.response.HomeArticlesResponse;
+import com.a301.newsseug.domain.article.model.dto.response.TodayArticlesResponse;
 import com.a301.newsseug.domain.article.model.dto.response.ListArticleResponse;
 import com.a301.newsseug.domain.article.service.ArticleService;
 import com.a301.newsseug.global.model.dto.Result;
@@ -21,9 +21,9 @@ public class ArticleController {
 
     @Operation(summary = "홈 화면 기사 조회 API", description = "[\"오늘의 뉴스\", \"20대 관심 기사\", \"전체 기사\"] 를 조회한다.")
     @GetMapping("/home")
-    public ResponseEntity<Result<HomeArticlesResponse>> getHomeArticles() {
+    public ResponseEntity<Result<TodayArticlesResponse>> getHomeArticles() {
 
-        HomeArticlesResponse result = articleService.getHomeArticles();
+        TodayArticlesResponse result = articleService.getHomeArticles();
 
         return ResponseUtil.ok(Result.of(result));
 
