@@ -1,6 +1,7 @@
 package com.a301.newsseug.domain.article.service;
 
 import com.a301.newsseug.domain.article.model.dto.SimpleArticleDto;
+import com.a301.newsseug.domain.article.model.dto.response.AllArticlesResponse;
 import com.a301.newsseug.domain.article.model.dto.response.TodayArticlesResponse;
 import com.a301.newsseug.domain.article.model.dto.response.ListArticleResponse;
 import com.a301.newsseug.domain.article.model.entity.Article;
@@ -39,15 +40,19 @@ public class ArticleServiceImpl implements ArticleService {
         return TodayArticlesResponse.of(
                 mapToListArticleResponse(todaysArticles)
         );
+
     }
 
     @Override
-    public ListArticleResponse getAllArticles() {
+    public AllArticlesResponse getAllArticles() {
 
         // 전체 기사
         List<Article> allArticles = articleRepository.findAllByOrderByCreatedAtDesc();
 
-        return mapToListArticleResponse(allArticles);
+        return AllArticlesResponse.of(
+                mapToListArticleResponse(allArticles)
+        );
+
     }
 
     @Override
