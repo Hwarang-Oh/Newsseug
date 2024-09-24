@@ -9,7 +9,8 @@ import data from 'db/data.json';
 const subscribeNumber = 6;
 
 function Subscribes() {
-  const [activeCategory, setActiveCategory] = useState('전체');
+  const [activeCategory, setActiveCategory] = useState<string>('전체');
+  const [activePress, setActivePress] = useState<string | null>(null);
 
   return (
     <MainLayout>
@@ -18,7 +19,11 @@ function Subscribes() {
         subscribeNumber={subscribeNumber}
         variant="subscribed"
       />
-      <SubscribePressFilter subscribeData={data.subscribeData} />
+      <SubscribePressFilter
+        subscribeData={data.subscribeData}
+        activePress={activePress}
+        setActivePress={setActivePress}
+      />
       <CategoryFilter
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}

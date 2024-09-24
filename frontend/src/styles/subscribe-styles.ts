@@ -32,4 +32,5 @@ export const PressName = styled.p`
   text-align: center;
   font-size: 10px;
   font-weight: 500;
+  line-height: 140%;
 `;

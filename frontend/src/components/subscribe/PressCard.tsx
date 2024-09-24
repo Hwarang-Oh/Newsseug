@@ -1,4 +1,4 @@
-import { PressCardProps } from '@/types/subscribe';
+import { PressCardProps } from 'types/subscribe';
 import styled from 'styled-components';
 import {
   PressLogo,
@@ -6,20 +6,23 @@ import {
   PressName,
   PressContainer,
 } from 'styles/subscribe-styles';
+import SubscribePlusIcon from 'assets/SubscribePlusIcon.svg';
+import SubscribeMinusIcon from 'assets/SubscribeMinusIcon.svg';
 
-function PressCard({
-  imgUrl,
-  pressName,
-  isSubscribed,
-  onClick,
-}: PressCardProps) {
+function PressCard({ press, isSubscribed, toggleSubscribe }: PressCardProps) {
   return (
-    <Container>
-      <CustomLogoContainer isSubscribed={isSubscribed} onClick={onClick}>
-        <PressLogo src={imgUrl} />
-        <Circle isSubscribed={isSubscribed}>{isSubscribed ? '-' : '+'}</Circle>
+    <Container onClick={() => toggleSubscribe(press)}>
+      <CustomLogoContainer $isSubscribed={isSubscribed}>
+        <PressLogo src={press.imgUrl} />
+        <SubscribeIcon>
+          {isSubscribed ? (
+            <img src={SubscribeMinusIcon} alt="plus icon" />
+          ) : (
+            <img src={SubscribePlusIcon} alt="plus icon" />
+          )}
+        </SubscribeIcon>
       </CustomLogoContainer>
-      <PressName>{pressName}</PressName>
+      <PressName>{press.pressName}</PressName>
     </Container>
   );
 }
@@ -27,32 +30,29 @@ function PressCard({
 export default PressCard;
 
 const Container = styled(PressContainer)`
-  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 0;
 `;
 
 const CustomLogoContainer = styled(LogoContainer)<{
-  isSubscribed: boolean;
+  $isSubscribed: boolean;
 }>`
-  border: ${({ isSubscribed, theme }) =>
-    `${isSubscribed ? '2px' : '1px'} solid ${isSubscribed ? theme.mainColor : '#f4f4f4'}`};
-
-  transition: border 0.8s ease-in-out;
+  position: relative;
+  border: ${({ $isSubscribed, theme }) =>
+    `${$isSubscribed ? '2px' : '1px'} solid ${$isSubscribed ? theme.mainColor : theme.relaxColor.superlight}`};
 `;
 
-const Circle = styled.div<{
-  isSubscribed: boolean;
-}>`
+const SubscribeIcon = styled.div`
   position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: ${({ isSubscribed, theme }) =>
-    isSubscribed ? 'gray' : theme.mainColor};
-  color: white;
-  border-radius: 50%;
+  top: 0;
+  right: 0;
   width: 20px;
   height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
 `;
