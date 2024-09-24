@@ -1,7 +1,6 @@
 from typing import List, Optional
 from openai import OpenAI
 import logging
-from logging import Logger
 
 import moviepy.editor as mp
 import os
@@ -19,11 +18,11 @@ dotenv.load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-logger:logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
-client:OpenAI = OpenAI(api_key=OPENAI_API_KEY)
+client = OpenAI(api_key=OPENAI_API_KEY)
 
-size: dict = {"height": 1792, "width": 1024} # 숏폼의 크기
+size = {"height": 1792, "width": 1024} # 숏폼의 크기
 
 fps = 30
 
@@ -44,33 +43,44 @@ class Speech:
         self.data = data
         self.sample_rate = sample_rate
 
-def create_article(article_content: str) -> mp.VideoClip:
+def create_article(article_content: str) -> Optional[mp.VideoClip]:
     """뉴스 기사로 숏츠를 생성하는 함수
 
     Args:
         article_content (str): 원본 뉴스 기사 내용
-        des (str): 생성된 숏츠 저장 경로
+    
+    Returns:
+        Optional[mp.VideoClip]: 비디오 숏폼 파일
     """
 
-    scenes: Optional[List[Scene]] = create_scenes(article_content)
+    scenes = generate_scenes(article_content)
     
     # 장면을 제대로 생성하지 못했을 경우 예외 처리
     if (scenes is None):
-        return
+        return None
 
-    images = [base64_to_np(generate_image(scene)) for scene in scenes]
-    
-    speeches = [read_speech(generate_text_to_speech(scene.ko_dialogue)) for scene in scenes]
+    images = []
+    speeches = []
+
+    for scene in scenes:
+        image = generate_image(scene)
+        speech = generate_text_to_speech(scene.ko_dialogue)
+        
+        if image is None or speech is None:
+            return None
+        
+        images.append(base64_to_np(image))
+        speeches.append(read_speech(speech))
     
     audio_clip, durations = create_audio_clip_and_durations(speeches)
     
-    image_clip: mp.ImageSequenceClip = create_image_clip(images, durations)
+    image_clip = create_image_clip(images, durations)
     
     vdieo_clip = create_video_clip(image_clip, audio_clip)
     
     return vdieo_clip
 
-def create_scenes(article_content: str) -> Optional[List[Scene]]:
+def generate_scenes(article_content: str) -> Optional[List[Scene]]:
     """기사 내용으로 8개의 그림 장면 묘사를 만드는 함수
 
     Args:
@@ -135,18 +145,23 @@ Sample answer:
             },
         )
         
-        if (len(response.choices) <= 0) :
-            logger.error("요청 실패")
+        if (len(response.choices) == 0) :
+            logger.error("generate_scenes choices: " + 0)
+            return None
+        
+        if response.choices[0].finish_reason != "stop":
+            logger.error("generate_scenes 종료 사유 에러: " + response.choices[0].finish_reason)
             return None
         
         json_content = json.loads(response.choices[0].message.content)
         
         return [Scene(number=scene["number"], description=scene["description(en)"], en_dialogue=scene["dialogue(en)"], ko_dialogue=scene["dialogue(ko)"]) for scene in json_content["script"]]
+    
     except Exception as e:
         logger.exception(e)
         return None
 
-def generate_image(scene: Scene) -> bytes:
+def generate_image(scene: Scene) -> Optional[bytes]:
     """장면을 기반으로 이미지 생성 함수
 
     Args:
@@ -155,44 +170,48 @@ def generate_image(scene: Scene) -> bytes:
     Returns:
         bytes: 생성된 base64로 인코딩된 이미지
     """
+    try:
+        response = client.images.generate(
+            model="dall-e-3",
+            prompt=f"""You are an Image Creation and Transformation Expert. Your task is to generate realistic image for a short-form news article. You will be provided with visual descriptions and scripts for each of the scene. 
+
+        Here is how you will proceed:
+
+        Step 1: Analyze Visual Descriptions and Scripts:
+        Carefully read the provided visual description and script for scene. Understand the key elements and themes that need to be depicted.  
+
+        Step 2: Conceptualize Image:
+        Based on the description, conceptualize the visual representation for scene. Ensure that the concept aligns with the overall theme and narrative of the news article. 
+
+        Step 3: Generate Images:
+        Generate a realistic image that looks like a real photograph.
+
+        Step 4: Review and Adjust:
+        Review image to ensure it accurately represents the scene description. Make any necessary adjustments to ensure quality. 
+
+        Step 5: Finalize and Deliver:
+        Once image is reviewed and adjusted, finalize that and prepare that for use in the short-form news article. 
+
+        Take a deep breath and lets work this out in a step by step way to be sure we have the right answer.
+        Please create based on the scene description entered below.
+
+        Here is the visual description:
+        {scene.description}
+
+        Here is the script:
+        {scene.en_dialogue}
+        """,
+                n=1,
+                quality='standard',
+                response_format='b64_json',
+                size="1024x1792",
+            )
     
-    response = client.images.generate(
-        model="dall-e-3",
-        prompt=f"""You are an Image Creation and Transformation Expert. Your task is to generate realistic image for a short-form news article. You will be provided with visual descriptions and scripts for each of the scene. 
-
-    Here is how you will proceed:
-
-    Step 1: Analyze Visual Descriptions and Scripts:
-    Carefully read the provided visual description and script for scene. Understand the key elements and themes that need to be depicted.  
-
-    Step 2: Conceptualize Image:
-    Based on the description, conceptualize the visual representation for scene. Ensure that the concept aligns with the overall theme and narrative of the news article. 
-
-    Step 3: Generate Images:
-    Generate a realistic image that looks like a real photograph.
-
-    Step 4: Review and Adjust:
-    Review image to ensure it accurately represents the scene description. Make any necessary adjustments to ensure quality. 
-
-    Step 5: Finalize and Deliver:
-    Once image is reviewed and adjusted, finalize that and prepare that for use in the short-form news article. 
-
-    Take a deep breath and lets work this out in a step by step way to be sure we have the right answer.
-    Please create based on the scene description entered below.
-
-    Here is the visual description:
-    {scene.description}
-
-    Here is the script:
-    {scene.en_dialogue}
-    """,
-            n=1,
-            quality='standard',
-            response_format='b64_json',
-            size="1024x1792",
-        )
+        return response.data[0].b64_json
     
-    return response.data[0].b64_json
+    except Exception as e:
+        logger.exception(e)
+        return None
 
 def base64_to_np(base64_string):
     image = Image.open(BytesIO(base64.b64decode(base64_string)))
@@ -227,22 +246,27 @@ def create_audio_clip_and_durations(speeches: list[Speech]) -> tuple[mp.AudioCli
 
     return audio_clip, speech_durations
 
-def generate_text_to_speech(description: str) -> bytes:
+def generate_text_to_speech(dialogue: str) -> Optional[bytes]:
     """문자열을 발화 음성 바이트로 변환하는 함수
 
     Args:
-        description (str): 발화 데이터를 생성할 문자열
+        dialogue (str): 발화 데이터를 생성할 문자열
 
     Returns:
         bytes: 발화 음성 바이트
     """
-    response = client.audio.speech.create(
-            model="tts-1",
-            voice="alloy",
-            input=description
-        )
     
-    return response.content
+    try:
+        response = client.audio.speech.create(
+                model="tts-1",
+                voice="alloy",
+                input=dialogue
+            )
+        
+        return response.content
+    except Exception as e:
+        logger.exception(e)
+        return None
 
 def read_speech(speech: bytes) -> Speech:
     """음성 바이트를 넘파이 배열로 변환하는 함수
