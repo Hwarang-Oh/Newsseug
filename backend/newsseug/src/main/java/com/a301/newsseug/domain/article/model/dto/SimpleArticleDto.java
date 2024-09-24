@@ -3,6 +3,8 @@ package com.a301.newsseug.domain.article.model.dto;
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.bookmark.model.entity.Bookmark;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Builder;
@@ -24,7 +26,10 @@ public record SimpleArticleDto(
         String title,
 
         @Schema(description = "조회수", examples = {"150"})
-        Long viewCount
+        Long viewCount,
+
+        @Schema(description = "생성일", examples = {"20240423"})
+        LocalDateTime createdAt
 
 ) {
 
@@ -35,6 +40,7 @@ public record SimpleArticleDto(
                         .thumbnailUrl(article.getThumbnailUrl())
                         .title(article.getTitle())
                         .viewCount(article.getViewCount())
+                        .createdAt(article.getCreatedAt())
                         .build();
         }
 

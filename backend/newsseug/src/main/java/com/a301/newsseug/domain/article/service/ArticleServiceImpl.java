@@ -2,11 +2,21 @@ package com.a301.newsseug.domain.article.service;
 
 import com.a301.newsseug.domain.article.model.dto.SimpleArticleDto;
 import com.a301.newsseug.domain.article.model.dto.response.AllArticlesResponse;
+import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
 import com.a301.newsseug.domain.article.model.dto.response.TodayArticlesResponse;
 import com.a301.newsseug.domain.article.model.dto.response.ListArticleResponse;
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.article.model.entity.type.Category;
 import com.a301.newsseug.domain.article.repository.ArticleRepository;
+import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+import com.a301.newsseug.domain.interaction.model.dto.SimpleHateDto;
+import com.a301.newsseug.domain.interaction.model.dto.SimpleLikeDto;
+import com.a301.newsseug.domain.interaction.repository.HateRepository;
+import com.a301.newsseug.domain.interaction.repository.LikeRepository;
+import com.a301.newsseug.domain.interaction.repository.ReportRepository;
+import com.a301.newsseug.domain.member.model.entity.Member;
+import com.a301.newsseug.domain.member.repository.SubscribeRepository;
+import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +38,12 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
 
     private final PressRepository pressRepository;
+
+    private final LikeRepository likeRepository;
+
+    private final HateRepository hateRepository;
+
+    private final SubscribeRepository subscribeRepository;
 
     @Override
     public TodayArticlesResponse getHomeArticles() {
@@ -63,6 +79,33 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articles = articleRepository.findByCategoryOrderByCreatedAtDesc(category);
 
         return mapToListArticleResponse(articles);
+
+    }
+
+    @Override
+    public GetArticleResponse getArticle(CustomUserDetails userDetails, Long articleId) {
+
+        Member loginMember = userDetails.getMember();
+
+        Article article = articleRepository.getOrThrow(articleId);
+
+        Press press = article.getPress();
+
+        Boolean subscribeStatus = subscribeRepository.existsByMemberAndPress(loginMember, press);
+
+        Boolean likeStatus = likeRepository.existsByMemberAndArticle(loginMember, article);
+        int likeCount = likeRepository.countByArticle(article);
+
+        Boolean hateStatus = hateRepository.existsByMemberAndArticle(loginMember, article);
+        int hateCount = hateRepository.countByArticle(article);
+
+        return GetArticleResponse.of(
+                SimpleArticleDto.of(article),
+                SimplePressDto.of(press),
+                subscribeStatus,
+                SimpleLikeDto.of(likeStatus, likeCount),
+                SimpleHateDto.of(hateStatus, hateCount)
+        );
 
     }
 
