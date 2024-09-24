@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import scrapPlusIcon from 'assets/scrapPlusIcon.svg';
 import { useState } from 'react';
-import CreateScrapModal from 'components/articles/CreateScrapModal';
+import MiddleModal from 'components/articles/MiddleModal';
 
 const ScrapList = [
   {
@@ -46,9 +46,10 @@ function AllScraps() {
       </Header>
       <ScrapContainer>
         {isCreateOpen && (
-          <CreateScrapModal
+          <MiddleModal
             isOpen={isCreateOpen}
             onRequestClose={() => setIsCreateOpen(false)}
+            modalTitle="새 폴더 생성"
           />
         )}
         {ScrapList.map((scrap, idx) => (

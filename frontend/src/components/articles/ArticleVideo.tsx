@@ -1,18 +1,33 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import ArticleInfo from 'components/articles/ArticleInfo';
 import ProgressBar from 'components/articles/ProgressBar';
+import ScrapModal from 'components/articles/ScrapModal';
+import ArticleButtons from 'components/articles/ArticleButtons';
 import playIcon from 'assets/playIcon.svg';
-import ArticleButtons from './ArticleButtons';
+import { ArticleVideoProp } from 'types/article';
+import MiddleModal from 'components/articles/MiddleModal';
 
-interface ArticleVideoProp {
-  src: string;
-}
-
-function ArticleVideo({ src }: ArticleVideoProp) {
+function ArticleVideo({ src, setIsModalOpen }: ArticleVideoProp) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
+
+  const [isScrapModalOpen, setIsScrapModalOpen] = useState<boolean>(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsModalOpen(isScrapModalOpen || isCreateModalOpen || isReportModalOpen);
+  }, [isCreateModalOpen, isScrapModalOpen, isReportModalOpen]);
+
+  const handleScrapClick = () => {
+    setIsScrapModalOpen((prev) => !prev);
+  };
+
+  const handleReportClick = () => {
+    setIsReportModalOpen((prev) => !prev);
+  };
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -60,17 +75,47 @@ function ArticleVideo({ src }: ArticleVideoProp) {
             <img src={playIcon} alt="play icon" />
           </PlayButton>
         )}
-        {/* <ArticleButtonsWrapper>
-        </ArticleButtonsWrapper> */}
-        <ArticleButtons />
+        <ArticleButtons
+          handleScrapClick={handleScrapClick}
+          handleReportClick={handleReportClick}
+        />
+        {isScrapModalOpen && (
+          <ScrapModal
+            isOpen={isScrapModalOpen}
+            onRequestClose={() => setIsScrapModalOpen(false)}
+            onCreateModalOpen={() => {
+              setIsScrapModalOpen(false);
+              setIsCreateModalOpen(true);
+            }}
+          />
+        )}
+        {isCreateModalOpen && (
+          <MiddleModal
+            isOpen={isCreateModalOpen}
+            onRequestClose={() => {
+              setIsScrapModalOpen(true);
+              setIsCreateModalOpen(false);
+            }}
+            modalTitle="새 폴더 생성"
+          />
+        )}
+        {isReportModalOpen && (
+          <MiddleModal
+            isOpen={isReportModalOpen}
+            onRequestClose={() => {
+              setIsReportModalOpen(false);
+            }}
+            modalTitle="동영상 신고하기"
+          />
+        )}
       </VideoWrapper>
       <ArticleContainer>
         <ArticleInfo />
-        <ProgressBar
+        {/* <ProgressBar
           progress={progress}
           isPlaying={isPlaying}
           onSeek={handleSeek}
-        />
+        /> */}
       </ArticleContainer>
     </Container>
   );
@@ -83,7 +128,7 @@ const Container = styled.div`
   height: 100%;
   z-index: 1;
   position: relative;
-  background-color: #000;
+  background-color: ${({ theme }) => theme.textColor};
 `;
 
 const ShrotForm = styled.video`

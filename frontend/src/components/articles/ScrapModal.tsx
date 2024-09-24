@@ -210,7 +210,7 @@ const CreateScrap = styled.button`
   border: none;
   outline: none;
   background: none;
-  color: ${({ theme }) => theme.scrapModalColor};
+  color: ${({ theme }) => theme.mainColor};
   font-size: 12px;
   display: flex;
   align-items: center;

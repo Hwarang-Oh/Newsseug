@@ -13,7 +13,7 @@ export const darkTheme: DefaultTheme = {
     dark: '#5E5F60', // 진한 회색
   },
   descriptionBgColor: '#3a3a3a',
-  scrapModalColor: '#106DDB',
+  descriptionColor: '#EEEEEE',
 };
 
 export const lightTheme: DefaultTheme = {
@@ -29,5 +29,5 @@ export const lightTheme: DefaultTheme = {
     dark: '#5E5F60', // 진한 회색
   },
   descriptionBgColor: '#fafafa',
-  scrapModalColor: '#106DDB',
+  descriptionColor: '#EEEEEE',
 };

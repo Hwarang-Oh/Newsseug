@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ProgressBarProps } from '@/types/article';
+import { ProgressBarProps } from 'types/article';
 
 function ProgressBar({ progress, isPlaying, onSeek }: ProgressBarProps) {
   return (
@@ -55,9 +55,9 @@ const ProgressInput = styled.input`
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 15px; /* Customize size */
-    height: 15px; /* Customize size */
-    background-color: white; /* Set thumb color */
+    width: 15px;
+    height: 15px;
+    background-color: ${({ theme }) => theme.bgColor};
     border-radius: 50%;
     cursor: pointer;
   }
