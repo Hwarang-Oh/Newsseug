@@ -67,16 +67,16 @@ function CategoryFilter({
       {isPressPage && <StickyTrigger ref={stickyTriggerRef} />}
       <Container
         ref={containerRef}
-        isPressPage={isPressPage}
-        bgColor={bgColor}
+        $isPressPage={isPressPage}
+        $bgColor={bgColor}
         $isSticky={isSticky}
       >
         {categories.map((category) => (
           <FilterButton
             key={category}
-            isPressPage={isPressPage}
+            $isPressPage={isPressPage}
             $isSticky={isSticky}
-            active={activeCategory === category}
+            $active={activeCategory === category}
             onClick={() => handleCategoryClick(category)}
           >
             {category}
@@ -99,8 +99,8 @@ const StickyTrigger = styled.div`
 `;
 
 const Container = styled.div<{
-  isPressPage: boolean;
-  bgColor?: string;
+  $isPressPage: boolean;
+  $bgColor?: string;
   $isSticky: boolean;
 }>`
   box-sizing: border-box;
@@ -108,16 +108,22 @@ const Container = styled.div<{
   white-space: nowrap;
   overflow-x: auto;
   display: flex;
-  padding: ${({ isPressPage }) => (isPressPage ? '8px' : '8px 0')};
+  padding: ${({ $isPressPage: isPressPage }) =>
+    isPressPage ? '8px' : '8px 0'};
   align-items: flex-start;
   gap: 8px;
   flex-shrink: 0;
   scroll-behavior: smooth;
-  position: ${({ isPressPage }) => (isPressPage ? 'sticky' : 'static')};
-  top: ${({ isPressPage }) => (isPressPage ? '48px' : 'auto')};
-  background-color: ${({ $isSticky, isPressPage, theme, bgColor }) =>
-    isPressPage && $isSticky ? bgColor : theme.bgColor};
-  z-index: ${({ isPressPage }) => (isPressPage ? '999' : 'auto')};
+  position: ${({ $isPressPage: isPressPage }) =>
+    isPressPage ? 'sticky' : 'static'};
+  top: ${({ $isPressPage: isPressPage }) => (isPressPage ? '48px' : 'auto')};
+  background-color: ${({
+    $isSticky,
+    $isPressPage: isPressPage,
+    theme,
+    $bgColor: bgColor,
+  }) => (isPressPage && $isSticky ? bgColor : theme.bgColor)};
+  z-index: ${({ $isPressPage: isPressPage }) => (isPressPage ? '999' : 'auto')};
   will-change: background-color;
   transition: background-color 0.1s ease-out;
 
@@ -127,35 +133,61 @@ const Container = styled.div<{
   -ms-overflow-style: none;
 `;
 
+const getBorder = (
+  theme: any,
+  $isSticky: boolean,
+  $active?: boolean,
+  $isPressPage?: boolean,
+) => {
+  if ($isPressPage && $isSticky) {
+    return `1px solid ${theme.descriptionColor}`;
+  }
+  return $active ? 'none' : `1px solid ${theme.descriptionColor}`;
+};
+
+const getColor = (
+  $isSticky: boolean,
+  theme: any,
+  $active?: boolean,
+  $isPressPage?: boolean,
+) => {
+  if ($isPressPage && $isSticky) {
+    return theme.textColor;
+  }
+  return $active ? theme.bgColor : theme.textColor;
+};
+
+const getBackgroundColor = (
+  $isSticky: boolean,
+  theme: any,
+  $active?: boolean,
+  $isPressPage?: boolean,
+) => {
+  if ($isPressPage && $isSticky) {
+    return $active ? theme.descriptionColor : '#eeeeee00';
+  }
+  return $active ? theme.mainColor : theme.bgColor;
+};
+
 const FilterButton = styled.button<{
-  active?: boolean;
-  isPressPage?: boolean;
+  $active?: boolean;
+  $isPressPage?: boolean;
   $isSticky: boolean;
 }>`
   display: flex;
-  border: ${({ active, isPressPage, $isSticky }) =>
-    isPressPage && $isSticky
-      ? '1px solid #EEEEEE'
-      : active
-        ? 'none'
-        : '1px solid #EEEEEE'};
+  border: ${({ $active, $isPressPage, $isSticky, theme }) =>
+    getBorder(theme, $isSticky, $active, $isPressPage)};
   font-size: 12px;
   width: 55px;
   height: 32px;
   padding: 6px 12px;
   justify-content: center;
   align-items: center;
-  color: ${({ active, theme, isPressPage, $isSticky }) =>
-    isPressPage && $isSticky ? theme.textColor : active ? 'white' : 'black'};
+  color: ${({ $active, theme, $isPressPage, $isSticky }) =>
+    getColor($isSticky, theme, $active, $isPressPage)};
   border-radius: 3px;
-  background-color: ${({ active, isPressPage, $isSticky, theme }) =>
-    isPressPage && $isSticky
-      ? active
-        ? '#EEEEEE'
-        : '#eeeeee00'
-      : active
-        ? theme.mainColor
-        : 'white'};
+  background-color: ${({ $active, $isPressPage, $isSticky, theme }) =>
+    getBackgroundColor($isSticky, theme, $active, $isPressPage)};
   cursor: pointer;
   outline: none;
   will-change: background-color, color, border;

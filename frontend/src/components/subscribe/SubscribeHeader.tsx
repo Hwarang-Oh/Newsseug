@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { SubscribeHeaderProps } from '@/types/subscribe';
+import { SubscribeHeaderProps } from 'types/subscribe';
 import { useNavigate } from 'react-router-dom';
 
 function SubscribeHeader({
@@ -17,7 +17,9 @@ function SubscribeHeader({
     <Container>
       <Title>
         {title}
-        {subscribeNumber && <SubscribeCount>{subscribeNumber}</SubscribeCount>}
+        {subscribeNumber !== undefined && (
+          <SubscribeCount>{subscribeNumber}</SubscribeCount>
+        )}
       </Title>
       {variant === 'subscribed' && (
         <ViewAll onClick={handleViewAllClick}>
@@ -30,8 +32,8 @@ function SubscribeHeader({
             fill="none"
           >
             <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
+              fillRule="evenodd"
+              clipRule="evenodd"
               d="M3.64645 1.14645C3.84171 0.951184 4.15829 0.951184 4.35355 1.14645L8.85355 5.64645C9.04882 5.84171 9.04882 6.15829 8.85355 6.35355L4.35355 10.8536C4.15829 11.0488 3.84171 11.0488 3.64645 10.8536C3.45118 10.6583 3.45118 10.3417 3.64645 10.1464L7.79289 6L3.64645 1.85355C3.45118 1.65829 3.45118 1.34171 3.64645 1.14645Z"
               fill="#626262"
             />
