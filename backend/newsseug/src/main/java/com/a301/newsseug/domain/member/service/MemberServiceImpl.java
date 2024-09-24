@@ -14,7 +14,9 @@ import com.a301.newsseug.domain.press.repository.PressRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.swing.text.html.Option;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -56,10 +58,17 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Boolean subscribe(CustomUserDetails userDetails, Long pressId) {
+    public void subscribe(CustomUserDetails userDetails, Long pressId) {
 
         Member loginMember = userDetails.getMember();
         Press press = pressRepository.getOrThrow(pressId);
+
+        Optional<Subscribe> subscribe = subscribeRepository.findByMemberAndPress(loginMember, press);
+
+        if (subscribe.isPresent()) {
+            subscribe.get().active();
+            return;
+        }
 
         subscribeRepository.save(
                 Subscribe.builder()
@@ -68,12 +77,10 @@ public class MemberServiceImpl implements MemberService {
                         .build()
         );
 
-        return true;
-
     }
 
     @Override
-    public Boolean unsubscribe(CustomUserDetails userDetails, Long pressId) {
+    public void unsubscribe(CustomUserDetails userDetails, Long pressId) {
 
         Member loginMember = userDetails.getMember();
         Press press = pressRepository.getOrThrow(pressId);
@@ -82,8 +89,6 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(NotSubscribePressException::new);
 
         subscribe.inactive();
-
-        return true;
 
     }
 

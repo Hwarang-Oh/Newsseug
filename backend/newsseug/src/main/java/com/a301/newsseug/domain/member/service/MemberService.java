@@ -8,7 +8,7 @@ public interface MemberService {
 
     void updateMember(CustomUserDetails userDetails, MemberUpdateRequest request);
     ListPressResponse getPressByMember(CustomUserDetails userDetails);
-    Boolean subscribe(CustomUserDetails userDetails, Long pressId);
-    Boolean unsubscribe(CustomUserDetails userDetails, Long pressId);
+    void subscribe(CustomUserDetails userDetails, Long pressId);
+    void unsubscribe(CustomUserDetails userDetails, Long pressId);
 
 }
