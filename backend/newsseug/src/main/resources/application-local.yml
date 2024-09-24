@@ -4,6 +4,8 @@ server:
 app:
   oauth:
     base-url: http://localhost:8080
+  es:
+    base-url: http://localhost:9200
 
 spring:
 
@@ -20,3 +22,7 @@ spring:
     redis:
       host: localhost
       port: 6379
+
+    elasticsearch:
+      repositories:
+        enabled: true

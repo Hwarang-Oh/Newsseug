@@ -30,6 +30,35 @@ services:
     networks:
       - newsseug-network
 
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
+    container_name: es
+    environment:
+      - node.name=es-node
+      - cluster.name=search-cluster
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - newsseug-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.6.2
+    container_name: kibana
+    environment:
+      SERVER_NAME: kibana
+      ELASTICSEARCH_HOSTS: http://es:9200
+    ports:
+      - 5601:5601
+    depends_on:
+      - es
+    networks:
+      - newsseug-network
+
   newsseug-backend:
     container_name: newsseug-backend
     build: ./backend/newsseug
@@ -51,3 +80,4 @@ volumes:
 
 networks:
   newsseug-network:
+      driver: bridge

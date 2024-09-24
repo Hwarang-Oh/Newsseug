@@ -4,6 +4,8 @@ server:
 app:
   oauth:
     base-url: https://j11a301.p.ssafy.io
+  es:
+    base-url: http://es:9200
 
 spring:
   docker:
@@ -28,3 +30,6 @@ spring:
       host: redis
       port: 6379
 
+    elasticsearch:
+      repositories:
+        enabled: true
