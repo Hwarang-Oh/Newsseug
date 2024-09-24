@@ -99,5 +99,21 @@ public class SwaggerConfig {
 
     }
 
+    @Bean
+    public GroupedOpenApi interactionApi() {
+
+        return GroupedOpenApi.builder()
+                .group("Interaction")
+                .pathsToMatch("/api/v1/likes/**", "/api/v1/hates/**", "/api/v1/reports/**")
+                .addOpenApiCustomizer(openApi
+                                -> openApi.addSecurityItem(
+                                new SecurityRequirement().addList("Bearer")
+                        )
+                )
+                .build();
+
+    }
+
+
 
 }
