@@ -23,7 +23,6 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Slf4j
 @Service
@@ -36,8 +35,9 @@ public class JwtServiceImpl implements JwtService {
 
     /**
      * 사용자 정보를 바탕으로 JWT 토큰을 발행하는 메서드
+     *
      * @param member 사용자 정보
-     * @param type 토큰 타입 (ACCESS_TOKEN, REFRESH_TOKEN)
+     * @param type   토큰 타입 (ACCESS_TOKEN, REFRESH_TOKEN)
      * @return 발행된 JWT 토큰
      * @throws FailToIssueTokenException 토큰 발행 실패 시 예외 발생
      */
@@ -63,16 +63,18 @@ public class JwtServiceImpl implements JwtService {
 
     /**
      * JWT 토큰을 생성하는 메서드
-     * @param member 사용자 정보
+     *
+     * @param member         사용자 정보
      * @param expirationTime 토큰 만료 시간
-     * @param type 토큰 타입 (ACCESS_TOKEN, REFRESH_TOKEN)
+     * @param type           토큰 타입 (ACCESS_TOKEN, REFRESH_TOKEN)
      * @return 생성된 JWT 토큰
      */
     private String createToken(Member member, long expirationTime, TokenType type) {
 
         LocalDateTime now = ClockUtil.getLocalDateTime();
 
-        return Jwts.builder()
+        return TOKEN_PREFIX.concat(
+                Jwts.builder()
                         .header()
                         .add("type", type.getValue())
                         .and()
@@ -80,12 +82,14 @@ public class JwtServiceImpl implements JwtService {
                         .issuedAt(ClockUtil.convertToDate(now))
                         .expiration(ClockUtil.getExpirationDate(now, expirationTime))
                         .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
-                        .compact();
+                        .compact()
+        );
 
     }
 
     /**
      * JWT 토큰의 헤더를 파싱하는 메서드
+     *
      * @param token JWT 토큰
      * @return 파싱된 헤더
      */
@@ -100,6 +104,7 @@ public class JwtServiceImpl implements JwtService {
 
     /**
      * JWT 토큰의 클레임을 파싱하는 메서드
+     *
      * @param token JWT 토큰
      * @return 파싱된 클레임
      */
@@ -115,6 +120,7 @@ public class JwtServiceImpl implements JwtService {
 
     /**
      * Authorization 헤더에서 Bearer 토큰을 추출하는 메서드
+     *
      * @param request HttpServletRequest 객체
      * @return 추출된 JWT 토큰
      */
@@ -134,12 +140,13 @@ public class JwtServiceImpl implements JwtService {
 
     /**
      * JWT 토큰이 유효한지 검사하는 메서드
+     *
      * @param token JWT 토큰
      * @return 토큰이 유효한지 여부
      */
     public boolean isValid(String token) throws JwtException {
 
-        if (Objects.isNull(token)){
+        if (Objects.isNull(token)) {
             return false;
         }
 
