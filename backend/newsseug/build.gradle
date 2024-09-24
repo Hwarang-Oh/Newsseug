@@ -55,11 +55,13 @@ dependencies {
      * - Mariadb
      * - Redis
      * - P6Spy
+     * - Elasticsearch
      */
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 
     /**
      * Util 의존성
