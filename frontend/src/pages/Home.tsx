@@ -2,7 +2,7 @@ import MainLayout from 'components/common/MainLayout';
 import Section from 'components/home/Section';
 import { useEffect, useState } from 'react';
 import { ArticleListCardProps } from 'types/common/common';
-import { fetchArticles, fetchArticlesByCategory } from 'apis/articleApi';
+import { fetchAllArticles, fetchArticlesByCategory } from 'apis/articleApi';
 import { Article } from 'types/api/article';
 
 /**
@@ -31,7 +31,7 @@ function Home() {
         const [data1, data2, data3] = await Promise.all([
           fetchArticlesByCategory('오늘의 뉴스'),
           fetchArticlesByCategory('20대 관심 기사'),
-          fetchArticles(),
+          fetchAllArticles(),
         ]);
 
         // 데이터를 변환하고 상태로 업데이트
