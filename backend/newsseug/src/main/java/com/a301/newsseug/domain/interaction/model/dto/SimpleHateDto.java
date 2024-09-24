@@ -1,0 +1,23 @@
+package com.a301.newsseug.domain.interaction.model.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
+
+@Builder
+@Schema(name = "싫어요 정보", description = "단일 기사에 노출할 싫어요 유무 및 개수 정보")
+public record SimpleHateDto(
+
+        Boolean hateStatus,
+
+        int hateCount
+
+) {
+
+    public static SimpleHateDto of(Boolean hateStatus, int hateCount) {
+        return SimpleHateDto.builder()
+                .hateStatus(hateStatus)
+                .hateCount(hateCount)
+                .build();
+    }
+
+}

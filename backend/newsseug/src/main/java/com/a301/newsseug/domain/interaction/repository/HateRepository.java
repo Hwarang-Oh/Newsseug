@@ -17,4 +17,8 @@ public interface HateRepository extends CrudRepository<Hate, Long> {
 
     Optional<Hate> findByMemberAndArticle(Member member, Article article);
 
+    int countByArticle(Article article);
+
+    Boolean existsByMemberAndArticle(Member member, Article article);
+
 }
