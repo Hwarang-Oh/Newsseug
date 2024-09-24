@@ -2,6 +2,8 @@ server:
   port: 8080
 
 app:
+  client:
+    base-url: https://j11a301.p.ssafy.io
   oauth:
     base-url: https://j11a301.p.ssafy.io
   es:

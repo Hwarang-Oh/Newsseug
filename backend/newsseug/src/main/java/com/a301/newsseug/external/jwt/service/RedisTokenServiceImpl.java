@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 public class RedisTokenServiceImpl implements RedisTokenService {
 
     private final RedisTemplate<String, Object> redisTemplate;
-    private final String REFRESH_TOKEN_KEY_PREFIX = "member:%d:refresh_token:";
+    private final String REFRESH_TOKEN_KEY_PREFIX = "member:%s:refresh_token:";
     private final JwtProperties jwtProperties;
 
     @Override
-    public void save(Long id, String value) {
+    public void save(String id, String value) {
         redisTemplate.opsForValue().set(
                 String.format(REFRESH_TOKEN_KEY_PREFIX, id),
                 value,
@@ -28,14 +28,14 @@ public class RedisTokenServiceImpl implements RedisTokenService {
     }
 
     @Override
-    public Optional<String> findByKey(Long id) {
+    public Optional<String> findByKey(String id) {
         return Optional.ofNullable(
                 (String) redisTemplate.opsForValue().get(String.format(REFRESH_TOKEN_KEY_PREFIX, id))
         );
     }
 
     @Override
-    public void deleteByKey(Long id) {
+    public void deleteByKey(String id) {
         redisTemplate.delete(String.format(REFRESH_TOKEN_KEY_PREFIX, id));
     }
 
