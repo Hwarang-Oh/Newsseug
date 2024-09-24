@@ -2,6 +2,9 @@ import SubLayout from 'components/common/SubLayout';
 import Scrap from 'components/mypage/Scrap';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import scrapPlusIcon from 'assets/scrapPlusIcon.svg';
+import { useState } from 'react';
+import CreateScrapModal from 'components/articles/CreateScrapModal';
 
 const ScrapList = [
   {
@@ -26,10 +29,28 @@ function AllScraps() {
   const handleClick = (idx: number, title: string) => {
     navigate(`${idx}`, { state: { title } });
   };
+
+  const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
+
+  const handleCreateFolderClick = () => {
+    setIsCreateOpen(true);
+  };
   return (
     <SubLayout>
-      <span>내 스크랩</span>
+      <Header>
+        <Title>기사.zip</Title>
+        <CreateScrap onClick={handleCreateFolderClick}>
+          <img src={scrapPlusIcon} alt="새 폴더 생성" />
+          <span>새 폴더</span>
+        </CreateScrap>
+      </Header>
       <ScrapContainer>
+        {isCreateOpen && (
+          <CreateScrapModal
+            isOpen={isCreateOpen}
+            onRequestClose={() => setIsCreateOpen(false)}
+          />
+        )}
         {ScrapList.map((scrap, idx) => (
           <Scrap
             key={idx}
@@ -37,6 +58,7 @@ function AllScraps() {
             scrapCnt={scrap.scrapCnt}
             scrapTitle={scrap.scrapTitle}
             onClick={() => handleClick(idx, scrap.scrapTitle)}
+            width="100%"
           />
         ))}
       </ScrapContainer>
@@ -45,6 +67,42 @@ function AllScraps() {
 }
 
 export default AllScraps;
+
+const CreateScrap = styled.button`
+  border: none;
+  outline: none;
+  background: none;
+  color: ${({ theme }) => theme.scrapModalColor};
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  border-radius: 20px;
+  &:active {
+    background-color: ${({ theme }) => theme.textColor + '3b'};
+    transition: none;
+  }
+
+  &:not(:active) {
+    transition: background-color 0.5s;
+  }
+  position: absolute;
+  right: 16px;
+`;
+
+const Title = styled.h1`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+`;
+
+const Header = styled.div`
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  position: relative;
+`;
 
 const ScrapContainer = styled.div`
   display: grid;

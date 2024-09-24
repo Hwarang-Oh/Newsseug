@@ -132,9 +132,11 @@ function ScrapModal({
             ))}
           </ModalBody>
         </ContentWrapper>
-        <ModalFooter onClick={handleOverlayClick}>
-          <img src={scrapCheckIcon} alt="완료 버튼" />
-          <BtnText>완료</BtnText>
+        <ModalFooter>
+          <Btn onClick={handleOverlayClick} $isSubmit={false}>
+            취소
+          </Btn>
+          <Btn $isSubmit={true}>완료</Btn>
         </ModalFooter>
       </ModalContent>
     </ModalOverlay>
@@ -185,21 +187,21 @@ const DraggableBar = styled.div`
 const ModalHeader = styled.div`
   height: 44px;
   width: 100%;
-  border-bottom: 1px solid ${({ theme }) => theme.relaxColor.light};
   margin: 0;
-  padding: 12px 10px;
+  padding: 18px 20px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
+  border-bottom: 1px solid ${({ theme }) => theme.relaxColor.light};
   top: 0;
   background: ${({ theme }) => theme.bgColor};
   z-index: 1;
 `;
 
 const ModalTitle = styled.h1`
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: ${({ theme }) => theme.textColor};
 `;
@@ -235,13 +237,13 @@ const ModalBody = styled.div`
 
 const ScrapItem = styled.div`
   width: 100%;
-  padding: 12px 15px;
+  padding: 14px 20px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 15px;
-  line-height: 20px;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 140%;
   overflow: hidden;
   border: 1px solid ${({ theme }) => theme.bgColor};
   &:active {
@@ -272,9 +274,10 @@ const StyledCheckbox = styled.div<{ $checked: boolean }>`
   width: 16px;
   height: 16px;
   background: ${({ $checked, theme }) =>
-    $checked ? theme.scrapModalColor : theme.bgColor};
+    $checked ? theme.mainColor : theme.bgColor};
   border-radius: 3px;
-  border: 2px solid ${({ theme }) => theme.scrapModalColor};
+  border: 2px solid
+    ${({ $checked, theme }) => ($checked ? theme.mainColor : theme.textColor)};
   transition: all 150ms;
 
   display: flex;
@@ -293,28 +296,38 @@ const ScrapName = styled.span`
   text-overflow: ellipsis;
 `;
 
-const ModalFooter = styled.button`
+const ModalFooter = styled.div`
   height: 50px;
   width: 100%;
   margin: 0;
-  padding: 12px 10px;
+  padding: 18px;
   box-sizing: border-box;
   position: sticky;
   bottom: 0;
+  gap: 10px;
   display: flex;
   align-items: center;
-  border: none;
+  justify-content: flex-end;
   border-top: 1px solid ${({ theme }) => theme.relaxColor.light};
-  background: ${({ theme }) => theme.bgColor};
-  outline: none;
-  gap: 10px;
-  &:active {
-    background-color: ${({ theme }) => theme.textColor + '3b'};
-    transition: 0.3s;
-  }
 `;
 
-const BtnText = styled.span`
-  color: ${({ theme }) => theme.textColor};
+const Btn = styled.button<{ $isSubmit: boolean }>`
+  color: ${({ theme, $isSubmit }) =>
+    $isSubmit ? theme.mainColor : theme.textColor};
   font-size: 15px;
+  border: none;
+  background: ${({ theme }) => theme.bgColor};
+  outline: none;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+  &:active {
+    background-color: ${({ theme }) => theme.textColor + '3b'};
+    transition: none;
+  }
+
+  &:not(:active) {
+    transition: background-color 0.5s;
+  }
 `;

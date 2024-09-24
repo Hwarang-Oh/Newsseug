@@ -5,9 +5,8 @@ import InputSection from 'components/userInput/InputSection';
 import GenderSelectBox from 'components/userInput/GenderSelectBox';
 import SubmitButton from 'components/userInput/SubmitButton';
 import ConfirmModal from 'components/userInput/ConfirmModal';
-import { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { Controller } from 'react-hook-form';
-import { getValue } from '@testing-library/user-event/dist/utils';
 
 function UserInput() {
   /**
@@ -32,8 +31,7 @@ function UserInput() {
 
   return (
     <Layout>
-      {/* <FormStyle onSubmit={handleSubmit(onSubmit)}> */}
-      <FormStyle>
+      <FormStyle onSubmit={handleSubmit(onSubmit)}>
         <InputSectionStyle>
           <InputSection
             title="생성된 닉네임"
@@ -78,9 +76,6 @@ function UserInput() {
         {isModalOpen && (
           <ConfirmModal
             userData={getValues()}
-            onConfirm={() => {
-              handleSubmit(onSubmit);
-            }}
             onCancel={() => setIsModalOpen(false)}
           />
         )}

@@ -1,5 +1,5 @@
 import api from './commonApi';
-import { AxiosResponse, isAxiosError } from 'axios';
+import axios, { AxiosResponse, isAxiosError } from 'axios';
 
 /**
  * IMP : 아래 함수는 HTTPS에 의한 요청이 아님. Redirect를 통해 외부 URL로 이동하는 함수
@@ -10,6 +10,11 @@ const LOGIN_URL = `${process.env.REACT_APP_API_BASE_URL}/oauth2/authorization`;
 export const redirectToLogin = (provider: string): void => {
   const loginUrl = `${LOGIN_URL}/${provider}`;
   window.location.href = loginUrl;
+};
+
+export const login = async (provider: string) => {
+  const response = await axios.get(LOGIN_URL);
+  console.log(response.data);
 };
 
 /**

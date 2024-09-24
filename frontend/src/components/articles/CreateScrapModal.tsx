@@ -34,12 +34,12 @@ function CreateScrapModal({ isOpen, onRequestClose }: ModalProps) {
         onClick={(e) => e.stopPropagation()}
       >
         <ModalHeader>
-          <ModalTitle>새로운 폴더</ModalTitle>
+          <ModalTitle>새 폴더 생성</ModalTitle>
         </ModalHeader>
         <ModalBody>
           <TextInput
             ref={inputRef}
-            placeholder="폴더 이름"
+            placeholder="폴더 이름을 입력해주세요."
             maxLength={50}
             onChange={handleInputChange}
             onFocus={() => setIsFocused(true)} // 포커스 시 상태 변경
@@ -48,8 +48,12 @@ function CreateScrapModal({ isOpen, onRequestClose }: ModalProps) {
           <TextCnt $disabled={!isFocused}>{inputValue.length}/50</TextCnt>
         </ModalBody>
         <ModalFooter>
-          <Btn onClick={handleCloseClick}>취소</Btn>
-          <Btn onClick={handleSubmitClick}>완료</Btn>
+          <Btn onClick={handleCloseClick} $isSubmit={false}>
+            취소
+          </Btn>
+          <Btn onClick={handleSubmitClick} $isSubmit={true}>
+            완료
+          </Btn>
         </ModalFooter>
       </ModalContent>
     </ModalOverlay>
@@ -72,11 +76,10 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContent = styled(motion.div)`
-  /* motion.div로 변경 */
   background: ${({ theme }) => theme.bgColor};
   border-radius: 10px;
   display: flex;
-  width: 250px;
+  width: 300px;
   flex-direction: column;
   align-items: flex-start;
   position: absolute;
@@ -85,7 +88,7 @@ const ModalContent = styled(motion.div)`
 
 const ModalHeader = styled.div`
   display: flex;
-  padding: 15px;
+  padding: 18px 20px;
   align-items: center;
   gap: 10px;
   align-self: stretch;
@@ -95,14 +98,14 @@ const ModalTitle = styled.div`
   color: ${({ theme }) => theme.textColor};
   font-size: 18px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 20px;
   letter-spacing: 0.25px;
 `;
 
 const ModalBody = styled.div`
   display: flex;
-  padding: 5px 10px;
+  padding: 14px 20px;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
@@ -118,12 +121,12 @@ const TextInput = styled.input`
   letter-spacing: 0.25px;
   width: 100%;
   box-sizing: border-box;
-  caret-color: ${({ theme }) => theme.scrapModalColor};
+  caret-color: ${({ theme }) => theme.relaxColor.dark};
   border: none;
   border-radius: 0;
   border-bottom: 1px solid ${({ theme }) => theme.relaxColor.littlelight};
   &:focus {
-    border-bottom: 2px solid ${({ theme }) => theme.scrapModalColor};
+    border-bottom: 2px solid ${({ theme }) => theme.mainColor};
     outline: none;
     transition: 0.1s;
   }
@@ -141,21 +144,22 @@ const TextCnt = styled.span<{ $disabled: boolean }>`
 
 const ModalFooter = styled.div`
   display: flex;
-  padding: 10px 15px 15px 30px;
+  padding: 18px 30px;
   justify-content: flex-end;
   align-items: center;
   gap: 15px;
   align-self: stretch;
 `;
-const Btn = styled.button`
-  color: ${({ theme }) => theme.scrapModalColor};
+const Btn = styled.button<{ $isSubmit: boolean }>`
+  color: ${({ theme, $isSubmit }) =>
+    $isSubmit ? theme.mainColor : theme.textColor};
   font-size: 15px;
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
   letter-spacing: 0.25px;
   background: none;
-  padding: 5px 7px;
+  padding: 5px 10px;
   border-radius: 20px;
   border: none;
   outline: none;

@@ -1,17 +1,37 @@
 /**
- * IMP : Article에 대한 Type을 정의하고 있습니다.
- * IMP : Category와 ReportType은 ENUM 타입으로 Union Literal을 사용하고 있어, type Keyword를 사용했습니다.
- * IMP : Java에서 정의된 Type을 TS로 옮긴 형태입니다.
- * TODO : 그러므로, API를 통해 받아오는 데이터의 형식을 정의하고 싶다면, 직접 추가해야 할 수도 있습니다.
+ * IMP : Article API Response Type 정의
+ * @property {number} articleId - 기사 ID
+ * @property {string} pressName - 언론사 이름
+ * @property {string} thumbnailUrl - 썸네일 URL
+ * @property {string} title - 제목
+ * @property {number} viewCount - 조회수
  */
-
 export interface Article {
   articleId: number;
+  pressName: string;
+  thumbnailUrl: string;
   title: string;
+  viewCount: number;
+}
+
+/**
+ * IMP : ArticleDetail API Response Type 정의
+ * @extends Article
+ * @property {string} source - 기사 출처
+ * @property {string} contentUrl - 기사 본문 URL
+ * @property {string} videoUrl - 관련 동영상 URL
+ * @property {Category} category - 카테고리 정보
+ * @property {Like[]} likes - 좋아요 리스트
+ * @property {Hate[]} hates - 싫어요 리스트
+ * @property {History[]} histories - 히스토리 기록
+ * @property {Report[]} reports - 신고 내역
+ * @property {Date} createdAt - 생성일
+ * @property {Date} updatedAt - 수정일
+ */
+interface ArticleDetail extends Article {
   source: string;
   contentUrl: string;
   videoUrl: string;
-  viewCount: number;
   category: Category;
   likes: Like[];
   hates: Hate[];
