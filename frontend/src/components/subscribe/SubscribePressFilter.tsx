@@ -1,26 +1,24 @@
 import styled from 'styled-components';
 import SubscribePressCard from 'components/subscribe/SubscribePressCard';
-import { SubscribePressFilterProps } from '@/types/subscribe';
-import { useState } from 'react';
+import { SubscribePressFilterProps } from 'types/subscribe';
 
 function SubscribePressFilter({
   subscribeData,
+  activePress,
+  setActivePress,
 }: Readonly<SubscribePressFilterProps>) {
-  const [activePress, setActivePress] = useState<number | null>(null);
-
-  const handleCardClick = (idx: number) => {
-    setActivePress(idx === activePress ? null : idx);
+  const handleCardClick = (id: string) => {
+    setActivePress(id === activePress ? null : id);
   };
   return (
     <Container>
-      {subscribeData.map((press, idx) => (
+      {subscribeData.map((press) => (
         <SubscribePressCard
-          key={idx}
-          imgUrl={press.imgUrl}
-          pressName={press.pressName}
-          isActive={activePress === idx}
+          key={press.id}
+          press={press}
+          isActive={activePress === press.id}
           isAllActive={activePress === null}
-          onClick={() => handleCardClick(idx)}
+          onClick={() => handleCardClick(press.id)}
         />
       ))}
     </Container>
