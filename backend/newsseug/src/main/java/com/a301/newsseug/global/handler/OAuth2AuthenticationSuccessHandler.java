@@ -6,6 +6,7 @@ import com.a301.newsseug.external.jwt.config.JwtProperties;
 import com.a301.newsseug.external.jwt.model.entity.TokenType;
 import com.a301.newsseug.external.jwt.service.JwtService;
 import com.a301.newsseug.external.jwt.service.RedisTokenService;
+import com.a301.newsseug.global.util.CookieUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,11 +22,12 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
     private final JwtService jwtService;
     private final RedisTokenService redisTokenService;
+    private final JwtProperties jwtProperties;
 
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request, HttpServletResponse response, Authentication authentication
-    ) throws IOException, ServletException {
+    ) throws IOException {
 
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
         Member member = oAuth2User.getMember();
@@ -38,8 +40,22 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                     return token;
                 });
 
-        response.addHeader("first-login", String.valueOf(oAuth2User.isFirst()));
-        response.addHeader("access-token", accessToken);
+        response.addCookie(
+                CookieUtil.create(
+                        "first-login",
+                        String.valueOf(oAuth2User.isFirst()),
+                        jwtProperties.getExpiration().getAccess()
+                )
+        );
+
+        response.addCookie(
+                CookieUtil.create(
+                        "access-token",
+                        accessToken,
+                        jwtProperties.getExpiration().getAccess())
+        );
+
+        response.sendRedirect("http://localhost:3000");
 
     }
 

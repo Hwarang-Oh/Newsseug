@@ -72,8 +72,7 @@ public class JwtServiceImpl implements JwtService {
 
         LocalDateTime now = ClockUtil.getLocalDateTime();
 
-        return  TOKEN_PREFIX.concat(
-                Jwts.builder()
+        return Jwts.builder()
                         .header()
                         .add("type", type.getValue())
                         .and()
@@ -81,8 +80,7 @@ public class JwtServiceImpl implements JwtService {
                         .issuedAt(ClockUtil.convertToDate(now))
                         .expiration(ClockUtil.getExpirationDate(now, expirationTime))
                         .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
-                        .compact()
-        );
+                        .compact();
 
     }
 

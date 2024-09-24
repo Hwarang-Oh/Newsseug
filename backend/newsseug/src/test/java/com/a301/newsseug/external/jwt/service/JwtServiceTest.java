@@ -49,6 +49,7 @@ public class JwtServiceTest {
     private Clock clock;
     private LocalDateTime fixedLocalDateTime;
     private Date fixedDate;
+    private String accessToken;
 
     @BeforeEach
     void beforeEach() {
@@ -62,6 +63,7 @@ public class JwtServiceTest {
         clock = Clock.systemDefaultZone();
         fixedLocalDateTime = LocalDateTime.now(clock);
         fixedDate = Date.from(fixedLocalDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        accessToken = TOKEN_PREFIX.concat(jwtService.issueToken(member, TokenType.ACCESS_TOKEN));
 
         mockedClockUtil = mockStatic(ClockUtil.class);
 
@@ -85,7 +87,6 @@ public class JwtServiceTest {
                         Date.from(fixedLocalDateTime.plusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
                 );
 
-        String accessToken = jwtService.issueToken(member, TokenType.ACCESS_TOKEN);
         Header header = jwtService.parseHeader(accessToken);
         Claims claims = jwtService.parseClaims(accessToken);
 
@@ -110,7 +111,7 @@ public class JwtServiceTest {
                         Date.from(fixedLocalDateTime.plusSeconds(REFRESH_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
                 );
 
-        String refreshToken = jwtService.issueToken(member, TokenType.REFRESH_TOKEN);
+        String refreshToken = TOKEN_PREFIX.concat(jwtService.issueToken(member, TokenType.REFRESH_TOKEN));
         Header header = jwtService.parseHeader(refreshToken);
         Claims claims = jwtService.parseClaims(refreshToken);
 
@@ -142,10 +143,9 @@ public class JwtServiceTest {
                         Date.from(fixedLocalDateTime.plusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
                 );
 
-        String accessToken = jwtService.issueToken(member, TokenType.ACCESS_TOKEN);
         Claims claims = jwtService.parseClaims(accessToken);
-
         assertThat(claims).isNotNull();
+
     }
 
     @Test
@@ -158,9 +158,7 @@ public class JwtServiceTest {
                         Date.from(fixedLocalDateTime.plusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
                 );
 
-        String accessToken = jwtService.issueToken(member, TokenType.ACCESS_TOKEN);
         boolean isValid = jwtService.isValid(accessToken);
-
         assertThat(isValid).isTrue();
 
     }
@@ -169,7 +167,7 @@ public class JwtServiceTest {
     @DisplayName("토큰 검증[유효하지 않은 형식]")
     public void invalidateFormatToken() {
 
-        String invalidToken = "Bearer invalidTokenString";
+        String invalidToken = TOKEN_PREFIX.concat("invalidTokenString");
         assertThatThrownBy(() -> jwtService.isValid(invalidToken))
                 .isInstanceOf(InvalidFormatException.class);
 
@@ -185,7 +183,7 @@ public class JwtServiceTest {
                         Date.from(fixedLocalDateTime.minusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
                 );
 
-        String expiredToken = jwtService.issueToken(member, TokenType.ACCESS_TOKEN);
+        String expiredToken = TOKEN_PREFIX.concat(jwtService.issueToken(member, TokenType.ACCESS_TOKEN));
         assertThatThrownBy(() -> jwtService.isValid(expiredToken))
                 .isInstanceOf(ExpiredTokenException.class);
 
