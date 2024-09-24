@@ -44,7 +44,7 @@ public class SwaggerConfig {
 
         return GroupedOpenApi.builder()
                 .group(Member.class.getSimpleName())
-                .pathsToMatch("/api/v1/members/**")
+                .pathsToMatch("/api/v1/auth/**", "/api/v1/members/**")
                 .addOpenApiCustomizer(openApi
                                 -> openApi.addSecurityItem(
                                 new SecurityRequirement().addList("Bearer")

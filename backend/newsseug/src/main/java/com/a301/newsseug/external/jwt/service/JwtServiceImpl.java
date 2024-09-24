@@ -29,29 +29,29 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
 
-    private static final String AUTHORIZATION = "Authorization";
-    private static final String TOKEN_PREFIX = "Bearer ";
+    private static final java.lang.String AUTHORIZATION = "Authorization";
+    private static final java.lang.String TOKEN_PREFIX = "Bearer ";
     private final JwtProperties jwtProperties;
 
     /**
      * 사용자 정보를 바탕으로 JWT 토큰을 발행하는 메서드
      *
-     * @param member 사용자 정보
+     * @param providerId 사용자 정보
      * @param type   토큰 타입 (ACCESS_TOKEN, REFRESH_TOKEN)
      * @return 발행된 JWT 토큰
      * @throws FailToIssueTokenException 토큰 발행 실패 시 예외 발생
      */
-    public String issueToken(Member member, TokenType type) throws FailToIssueTokenException {
+    public java.lang.String issueToken(String providerId, TokenType type) throws FailToIssueTokenException {
 
         if (Objects.nonNull(type)) {
 
             switch (type) {
                 case ACCESS_TOKEN -> {
-                    return createToken(member, jwtProperties.getExpiration().getAccess(), type);
+                    return createToken(providerId, jwtProperties.getExpiration().getAccess(), type);
                 }
 
                 case REFRESH_TOKEN -> {
-                    return createToken(member, jwtProperties.getExpiration().getRefresh(), type);
+                    return createToken(providerId, jwtProperties.getExpiration().getRefresh(), type);
                 }
             }
 
@@ -64,12 +64,12 @@ public class JwtServiceImpl implements JwtService {
     /**
      * JWT 토큰을 생성하는 메서드
      *
-     * @param member         사용자 정보
+     * @param providerId         사용자 정보
      * @param expirationTime 토큰 만료 시간
      * @param type           토큰 타입 (ACCESS_TOKEN, REFRESH_TOKEN)
      * @return 생성된 JWT 토큰
      */
-    private String createToken(Member member, long expirationTime, TokenType type) {
+    private java.lang.String createToken(String providerId, long expirationTime, TokenType type) {
 
         LocalDateTime now = ClockUtil.getLocalDateTime();
 
@@ -78,7 +78,7 @@ public class JwtServiceImpl implements JwtService {
                         .header()
                         .add("type", type.getValue())
                         .and()
-                        .subject(member.getOAuth2Details().getProviderId())
+                        .subject(providerId)
                         .issuedAt(ClockUtil.convertToDate(now))
                         .expiration(ClockUtil.getExpirationDate(now, expirationTime))
                         .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
@@ -93,7 +93,7 @@ public class JwtServiceImpl implements JwtService {
      * @param token JWT 토큰
      * @return 파싱된 헤더
      */
-    public Header parseHeader(String token) {
+    public Header parseHeader(java.lang.String token) {
 
         return Jwts.parser()
                 .verifyWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
@@ -108,7 +108,7 @@ public class JwtServiceImpl implements JwtService {
      * @param token JWT 토큰
      * @return 파싱된 클레임
      */
-    public Claims parseClaims(String token) {
+    public Claims parseClaims(java.lang.String token) {
 
         return Jwts.parser()
                 .verifyWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
@@ -124,11 +124,11 @@ public class JwtServiceImpl implements JwtService {
      * @param request HttpServletRequest 객체
      * @return 추출된 JWT 토큰
      */
-    public String resolveToken(HttpServletRequest request) throws InvalidFormatException {
+    public java.lang.String resolveToken(HttpServletRequest request) throws InvalidFormatException {
         return removePrefix(request.getHeader(AUTHORIZATION));
     }
 
-    private String removePrefix(String token) {
+    private java.lang.String removePrefix(java.lang.String token) {
 
         if (!Objects.isNull(token) && token.startsWith(TOKEN_PREFIX)) {
             return token.replace(TOKEN_PREFIX, "");
@@ -144,7 +144,7 @@ public class JwtServiceImpl implements JwtService {
      * @param token JWT 토큰
      * @return 토큰이 유효한지 여부
      */
-    public boolean isValid(String token) throws JwtException {
+    public boolean isValid(java.lang.String token) throws JwtException {
 
         if (Objects.isNull(token)) {
             return false;
