@@ -12,13 +12,13 @@ const ARTICLES_URL = `/api/v1/articles`;
  */
 
 /**
- * IMP : Home 화면에서 사용하는 Articles를 Fetch하는 API
- * TODO : pageTitle : 오늘의 뉴스 Articles[] , 20대 관심 기사 Articles[], 전체 기사 Articles[]
- * TODO => 각 특성에 맞는 Articles[] Array를 Fetch하는 API가 필요함.
+ * IMP : Home 화면에서 사용하는 모든 Articles를 Fetch하는 API
  */
-export const fetchArticles = async (): Promise<Article[]> => {
+export const fetchAllArticles = async (): Promise<Article[]> => {
   try {
-    const response: AxiosResponse<Article[]> = await api.get(ARTICLES_URL);
+    const response: AxiosResponse<Article[]> = await api.get(
+      `${ARTICLES_URL}/all`,
+    );
     console.log(response.data);
     return response.data;
   } catch (error: unknown) {
@@ -34,20 +34,44 @@ export const fetchArticles = async (): Promise<Article[]> => {
 };
 
 /**
- * IMP : 각 Article을 Fetch하는 API
- * *  ArticleId를 통해 각 Article 1개를 Fetch한다.
- * @param articleId
+ * IMP : Home 화면에서 사용하는 '오늘의 뉴스' Articles를 Fetch하는 API
  */
-export const fetchEachArticle = async (articleId: number): Promise<Article> => {
+export const fetchTodayArticles = async (): Promise<Article[]> => {
   try {
-    const response: AxiosResponse<Article> = await api.get(
-      `${ARTICLES_URL}/${articleId}`,
+    const response: AxiosResponse<Article[]> = await api.get(
+      `${ARTICLES_URL}/today`,
     );
     console.log(response.data);
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
-      if (error.response?.status === 404) {
+      if (error.response?.status === 401) {
+        console.warn('API가 없으므로 Mock 데이터를 반환합니다.');
+        return (
+          article.articleByCategory.find(
+            (eachSection) => eachSection.category === '오늘의 뉴스',
+          )?.articleList || []
+        );
+        // throw new Error('Not Found');
+      } else throw error;
+    } else throw error;
+  }
+};
+
+/**
+ * IMP : Home 화면에서 사용하는 '연령대별 뉴스' Articles를 Fetch하는 API
+ */
+export const fetchAgeArticles = async (age: number): Promise<Article[]> => {
+  try {
+    const response: AxiosResponse<Article[]> = await api.get(
+      `${ARTICLES_URL}?age=${encodeURIComponent(age)}`,
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 401) {
+        console.warn('API가 없으므로 Mock 데이터를 반환합니다.');
         throw new Error('Not Found');
       } else throw error;
     } else throw error;
@@ -77,6 +101,27 @@ export const fetchArticlesByCategory = async (
           )?.articleList || []
         );
         // throw new Error('Not Found');
+      } else throw error;
+    } else throw error;
+  }
+};
+
+/**
+ * IMP : 각 Article을 Fetch하는 API
+ * *  ArticleId를 통해 각 Article 1개를 Fetch한다.
+ * @param articleId
+ */
+export const fetchEachArticle = async (articleId: number): Promise<Article> => {
+  try {
+    const response: AxiosResponse<Article> = await api.get(
+      `${ARTICLES_URL}/${articleId}`,
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error('Not Found');
       } else throw error;
     } else throw error;
   }

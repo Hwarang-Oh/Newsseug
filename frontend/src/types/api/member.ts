@@ -37,24 +37,12 @@ interface History {
  */
 
 /**
- * IMP : Member의 로그인 결과를 받아오는 Response Type
- * @property {string} timestamp - 요청 시간
- * @property {string} trackId - 트랙 ID
- * @property {boolean} data - 로그인 결과
- */
-export interface MemberLoginResponse {
-  timestamp: string;
-  trackId: string;
-  data: boolean;
-}
-
-/**
  * IMP : Member의 정보를 받아오는 Response Type
  * @property {string} nickname - 닉네임
  * @property {string} gender - 성별
  * @property {number} age - 나이
  */
-export interface MemberInfoResponse {
+export interface MemberState {
   nickname: string;
   gender: string;
   age: number;

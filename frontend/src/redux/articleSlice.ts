@@ -1,23 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Article } from 'types/api/article';
 
-interface ArticleState {
-  articles: Article[];
+// TODO : 현재 시청하고 있는 Article List에 대한 상태 관리
+interface currentArticleList {
+  ArticleList: Article[];
+  pastArticleId: number;
+  currentArticleId: number;
+  nextArticleId: number;
 }
 
-const initialState: ArticleState = {
-  articles: [],
+const initialState: currentArticleList = {
+  ArticleList: [],
+  pastArticleId: 0,
+  currentArticleId: 0,
+  nextArticleId: 0,
 };
 
 const articleSlice = createSlice({
   name: 'article',
   initialState,
   reducers: {
-    setArticles: (state, action: PayloadAction<Article[]>) => {
-      state.articles = action.payload;
+    setCurrentArticles: (state, action: PayloadAction<Article[]>) => {
+      state.ArticleList = action.payload;
     },
   },
 });
 
-export const { setArticles } = articleSlice.actions;
+export const { setCurrentArticles } = articleSlice.actions;
 export default articleSlice.reducer;
