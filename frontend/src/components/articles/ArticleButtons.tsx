@@ -3,8 +3,12 @@ import likeIcon from 'assets/likeIcon.svg';
 import dislikeIcon from 'assets/dislikeIcon.svg';
 import saveIcon from 'assets/saveIcon.svg';
 import reportIcon from 'assets/reportIcon.svg';
+import { ArticleButtonsProp } from 'types/article';
 
-function ArticleButtons() {
+function ArticleButtons({
+  handleScrapClick,
+  handleReportClick,
+}: ArticleButtonsProp) {
   return (
     <ButtonContainer>
       <Button>
@@ -15,11 +19,11 @@ function ArticleButtons() {
         <img src={dislikeIcon} alt="Dislike" />
         <span>1,000</span>
       </Button>
-      <Button>
+      <Button onClick={handleScrapClick}>
         <img src={saveIcon} alt="Save" />
         <span>스크랩</span>
       </Button>
-      <Button>
+      <Button onClick={handleReportClick}>
         <img src={reportIcon} alt="Report" />
         <span>신고하기</span>
       </Button>
@@ -46,7 +50,7 @@ const Button = styled.button`
   align-items: center;
   background-color: transparent;
   border: none;
-  color: white;
+  color: ${({ theme }) => theme.bgColor};
   gap: 4px;
 
   .span {
