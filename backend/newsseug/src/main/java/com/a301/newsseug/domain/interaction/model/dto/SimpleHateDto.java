@@ -7,15 +7,15 @@ import lombok.Builder;
 @Schema(name = "싫어요 정보", description = "단일 기사에 노출할 싫어요 유무 및 개수 정보")
 public record SimpleHateDto(
 
-        Boolean hateStatus,
+        Boolean isHate,
 
-        int hateCount
+        Integer hateCount
 
 ) {
 
-    public static SimpleHateDto of(Boolean hateStatus, int hateCount) {
+    public static SimpleHateDto of(Boolean isHate, Integer hateCount) {
         return SimpleHateDto.builder()
-                .hateStatus(hateStatus)
+                .isHate(isHate)
                 .hateCount(hateCount)
                 .build();
     }
