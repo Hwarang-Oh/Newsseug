@@ -1,9 +1,11 @@
 package com.a301.newsseug.domain.article.controller;
 
 import com.a301.newsseug.domain.article.model.dto.response.AllArticlesResponse;
+import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
 import com.a301.newsseug.domain.article.model.dto.response.TodayArticlesResponse;
 import com.a301.newsseug.domain.article.model.dto.response.ListArticleResponse;
 import com.a301.newsseug.domain.article.service.ArticleService;
+import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.global.model.dto.Result;
 import com.a301.newsseug.global.util.ResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,9 +44,15 @@ public class ArticleController {
 
     @Operation(summary = "단일 기사 조회 API", description = "단일 기사를 조회한다.")
     @GetMapping("/{articleId}")
-    public ResponseEntity<Result<Boolean>> getArticle(@PathVariable(name = "articleId") Long articleId) {
+    public ResponseEntity<Result<GetArticleResponse>> getArticle(
+            CustomUserDetails userDetails,
+            @PathVariable(name = "articleId") Long articleId) {
 
-        return ResponseUtil.ok(Result.of(Boolean.TRUE));
+        GetArticleResponse result = articleService.getArticle(userDetails, articleId);
+        return ResponseUtil.ok(
+                Result.of(
+                        result
+                ));
 
     }
 

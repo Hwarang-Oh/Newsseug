@@ -7,15 +7,15 @@ import lombok.Builder;
 @Schema(name = "좋아요 정보", description = "단일 기사에 노출할 좋아요 유무 및 개수 정보")
 public record SimpleLikeDto(
 
-        Boolean likeStatus,
+        Boolean isLike,
 
-        int likeCount
+        Integer likeCount
 
 ) {
 
-    public static SimpleLikeDto of(Boolean likeStatus, int likeCount) {
+    public static SimpleLikeDto of(Boolean isLike, Integer likeCount) {
         return SimpleLikeDto.builder()
-                .likeStatus(likeStatus)
+                .isLike(isLike)
                 .likeCount(likeCount)
                 .build();
     }

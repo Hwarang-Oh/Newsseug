@@ -88,23 +88,21 @@ public class ArticleServiceImpl implements ArticleService {
         Member loginMember = userDetails.getMember();
 
         Article article = articleRepository.getOrThrow(articleId);
-
         Press press = article.getPress();
 
-        Boolean subscribeStatus = subscribeRepository.existsByMemberAndPress(loginMember, press);
+        Boolean isSubscribe = subscribeRepository.existsByMemberAndPress(loginMember, press);
 
-        Boolean likeStatus = likeRepository.existsByMemberAndArticle(loginMember, article);
-        int likeCount = likeRepository.countByArticle(article);
+        Boolean isLike = likeRepository.existsByMemberAndArticle(loginMember, article);
+        Integer likeCount = likeRepository.countByArticle(article);
 
-        Boolean hateStatus = hateRepository.existsByMemberAndArticle(loginMember, article);
-        int hateCount = hateRepository.countByArticle(article);
+        Boolean isHate = hateRepository.existsByMemberAndArticle(loginMember, article);
+        Integer hateCount = hateRepository.countByArticle(article);
 
         return GetArticleResponse.of(
-                SimpleArticleDto.of(article),
-                SimplePressDto.of(press),
-                subscribeStatus,
-                SimpleLikeDto.of(likeStatus, likeCount),
-                SimpleHateDto.of(hateStatus, hateCount)
+                article,
+                isSubscribe,
+                SimpleLikeDto.of(isLike, likeCount),
+                SimpleHateDto.of(isHate, hateCount)
         );
 
     }
