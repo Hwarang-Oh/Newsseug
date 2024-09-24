@@ -84,7 +84,7 @@ public class SecurityConfig {
                                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 
                                 .requestMatchers(SWAGGER_URI).permitAll()
-
+                                .requestMatchers("/api/v1/auth/**").permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/members/**")).hasRole(ROLE_MEMBER.getRole())
 
                                 .anyRequest().authenticated()

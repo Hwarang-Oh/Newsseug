@@ -7,10 +7,13 @@ import com.a301.newsseug.external.jwt.model.entity.TokenType;
 import com.a301.newsseug.external.jwt.service.JwtService;
 import com.a301.newsseug.external.jwt.service.RedisTokenService;
 import com.a301.newsseug.global.util.CookieUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -40,22 +43,13 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                     return token;
                 });
 
-        response.addCookie(
-                CookieUtil.create(
-                        "first-login",
-                        String.valueOf(oAuth2User.isFirst()),
-                        jwtProperties.getExpiration().getAccess()
-                )
-        );
 
-        response.addCookie(
-                CookieUtil.create(
-                        "access-token",
-                        accessToken,
-                        jwtProperties.getExpiration().getAccess())
-        );
-
-        response.sendRedirect("http://localhost:3000");
+        Map<String, Object> body = new HashMap<>();
+        body.put("first-login", oAuth2User.isFirst());
+        body.put("access-token", accessToken);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(body));
 
     }
 
