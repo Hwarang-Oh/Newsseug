@@ -52,7 +52,7 @@ public class FolderServiceImpl implements FolderService {
         return ListFolderResponse.of(
                 folders.stream()
                         .map(FolderDto::of)
-                        .collect(Collectors.toList())
+                        .toList()
         );
 
     }
