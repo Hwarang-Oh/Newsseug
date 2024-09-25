@@ -1,9 +1,10 @@
 package com.a301.newsseug.domain.member.model.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Builder;
 
-@Builder
+@Builder(access = AccessLevel.PRIVATE)
 @Schema(name = "사용자 정보 응답", description = "내정보 페이지에서 노출할 사용자의 정보.")
 public record GetMemberResponse(
 

@@ -3,10 +3,11 @@ package com.a301.newsseug.domain.folder.model.dto.response;
 import com.a301.newsseug.domain.article.model.dto.SimpleArticleDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Builder;
 
-@Builder
-@Schema(name = "폴더 상세 조회", description = "하나의 폴더를 조회한 결과")
+@Builder(access = AccessLevel.PRIVATE)
+@Schema(name = "폴더 상세 조회 응답", description = "폴더 목록에서 하나의 폴더를 클릭했을 때 노출할 정보.")
 public record GetFolderResponse(
 
         @Schema(description = "식별자")

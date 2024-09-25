@@ -22,7 +22,7 @@ public class Bookmark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long bookmark_id;
+    private Long bookmarkId;
 
     @ManyToOne
     @JoinColumn(name = "article_id")
