@@ -23,7 +23,7 @@ public class OAuth2Details {
     @Enumerated(EnumType.STRING)
     private ProviderType provider;
 
-    @Column(updatable = false, nullable = false)
+    @Column(updatable = false, nullable = false,  unique = true)
     private String providerId;
 
     @Enumerated(EnumType.STRING)
