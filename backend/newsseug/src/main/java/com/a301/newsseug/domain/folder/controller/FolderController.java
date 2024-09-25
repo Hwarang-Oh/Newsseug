@@ -8,6 +8,7 @@ import com.a301.newsseug.global.model.dto.Result;
 import com.a301.newsseug.global.util.ResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +31,7 @@ public class FolderController {
     @GetMapping("/{folderId}")
     public ResponseEntity<Result<GetFolderResponse>> getFolder(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable(name = "folderId") Long folderId
+            @PathVariable(name = "folderId") @NotBlank Long folderId
     ) {
 
         return ResponseEntity.ok(
@@ -55,7 +56,7 @@ public class FolderController {
     @PostMapping
     public ResponseEntity<Result<Boolean>> createFolder(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestParam(name = "name") String name
+            @RequestParam(name = "name") @NotBlank String name
     ) {
         folderService.createFolder(userDetails, name);
         return ResponseUtil.created(Result.of(Boolean.TRUE));
