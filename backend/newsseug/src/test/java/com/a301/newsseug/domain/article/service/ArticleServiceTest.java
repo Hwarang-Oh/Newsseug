@@ -4,7 +4,7 @@ import com.a301.newsseug.domain.article.factory.ArticleFactory;
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.article.repository.ArticleRepository;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
-import com.a301.newsseug.domain.member.factory.MemberFactory;
+import com.a301.newsseug.domain.member.factory.entity.MemberFactory;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,7 +36,7 @@ public class ArticleServiceTest {
     @BeforeEach
     void beforeEach() {
 
-        loginMember = MemberFactory.memberOfKakao();
+        loginMember = MemberFactory.memberOfKakao(1L);
         MockitoAnnotations.openMocks(this);
         given(userDetails.getMember()).willReturn(loginMember);
 

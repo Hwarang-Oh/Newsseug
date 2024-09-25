@@ -2,7 +2,7 @@ package com.a301.newsseug.domain.member.controller;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.folder.service.FolderService;
-import com.a301.newsseug.domain.member.model.dto.request.MemberUpdateRequest;
+import com.a301.newsseug.domain.member.model.dto.request.UpdateMemberRequest;
 import com.a301.newsseug.domain.folder.model.dto.response.ListFolderResponse;
 import com.a301.newsseug.domain.member.model.dto.response.GetMemberResponse;
 import com.a301.newsseug.domain.member.service.MemberService;
@@ -44,7 +44,7 @@ public class MemberController {
     @PutMapping()
     public ResponseEntity<Result<Boolean>> updateMember(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestBody @Valid MemberUpdateRequest request
+            @RequestBody @Valid UpdateMemberRequest request
     ) {
 
         memberService.updateMember(userDetails, request);

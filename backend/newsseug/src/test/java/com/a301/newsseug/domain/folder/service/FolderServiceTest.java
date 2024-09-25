@@ -16,7 +16,7 @@ import com.a301.newsseug.domain.folder.model.dto.response.GetFolderResponse;
 import com.a301.newsseug.domain.folder.model.dto.response.ListFolderResponse;
 import com.a301.newsseug.domain.folder.model.entity.Folder;
 import com.a301.newsseug.domain.folder.repository.FolderRepository;
-import com.a301.newsseug.domain.member.factory.MemberFactory;
+import com.a301.newsseug.domain.member.factory.entity.MemberFactory;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.global.model.entity.ActivateStatus;
 import java.util.Collections;
@@ -25,11 +25,13 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @DisplayName("폴더 관련 기능")
+@ExtendWith(MockitoExtension.class)
 class FolderServiceTest {
 
     @Mock
@@ -48,11 +50,8 @@ class FolderServiceTest {
 
     @BeforeEach
     void beforeEach() {
-
-        loginMember = MemberFactory.memberOfKakao();
-        MockitoAnnotations.openMocks(this);
+        loginMember = MemberFactory.memberOfKakao(1L);
         given(userDetails.getMember()).willReturn(loginMember);
-
     }
 
     @Test
