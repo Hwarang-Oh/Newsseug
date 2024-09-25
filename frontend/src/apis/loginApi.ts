@@ -5,7 +5,10 @@ import { AxiosResponse, isAxiosError } from 'axios';
  * IMP : 아래 함수는 HTTPS에 의한 요청이 아님. Redirect를 통해 외부 URL로 이동하는 함수
  * @param provider
  */
-const LOGIN_URL = `${process.env.REACT_APP_API_BASE_URL}/oauth2/authorization`;
+// Type : local
+// const LOGIN_URL = `${process.env.REACT_APP_API_BASE_URL}/oauth2/authorization`;
+// Type : remote
+const LOGIN_URL = `/oauth2/authorization`;
 export const getLogin = (provider: string): void => {
   const loginUrl = `${LOGIN_URL}/${provider}`;
   window.location.href = loginUrl;
@@ -14,7 +17,10 @@ export const getLogin = (provider: string): void => {
 /**
  * IMP : Provider Id를 기반으로 AccessToken을 가져오는 API
  */
-const LOGIN_API_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1/auth/login`;
+// Type : local
+// const LOGIN_API_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1/auth/login`;
+// Type : remote
+const LOGIN_API_URL = `/api/v1/auth/login`;
 export const getAccessToken = async (providerId: string): Promise<string> => {
   try {
     const {
