@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ConfirmModalProps } from '@/types/userInput';
+import { ConfirmModalProps } from 'types/register';
 
 /**
  * IMP : Confirm Modal Component

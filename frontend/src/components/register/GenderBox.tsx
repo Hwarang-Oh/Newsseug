@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { GenderBoxProps } from '@/types/userInput';
+import { GenderBoxProps } from 'types/register';
 
 function GenderBox({ icon, selected, onClick }: Readonly<GenderBoxProps>) {
   return (

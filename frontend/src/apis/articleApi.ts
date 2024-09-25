@@ -36,7 +36,7 @@ export const fetchAllArticles = async (): Promise<Article[]> => {
 /**
  * IMP : Home 화면에서 사용하는 '오늘의 뉴스' Articles를 Fetch하는 API
  */
-export const fetchTodayArticles = async (): Promise<Article[]> => {
+export const fetchArticlesByToday = async (): Promise<Article[]> => {
   try {
     const response: AxiosResponse<Article[]> = await api.get(
       `${ARTICLES_URL}/today`,
@@ -61,7 +61,7 @@ export const fetchTodayArticles = async (): Promise<Article[]> => {
 /**
  * IMP : Home 화면에서 사용하는 '연령대별 뉴스' Articles를 Fetch하는 API
  */
-export const fetchAgeArticles = async (age: number): Promise<Article[]> => {
+export const fetchArticlesByAge = async (age: number): Promise<Article[]> => {
   try {
     const response: AxiosResponse<Article[]> = await api.get(
       `${ARTICLES_URL}?age=${encodeURIComponent(age)}`,
@@ -72,7 +72,7 @@ export const fetchAgeArticles = async (age: number): Promise<Article[]> => {
     if (isAxiosError(error)) {
       if (error.response?.status === 401) {
         console.warn('API가 없으므로 Mock 데이터를 반환합니다.');
-        throw new Error('Not Found');
+        return [];
       } else throw error;
     } else throw error;
   }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { registerMember } from 'apis/memberApi';
-import { UserInputProps } from '@/types/userInput';
+import { UserInputProps } from '@/types/register';
 import { MaleIcon, FemaleIcon } from 'components/icon/GenderIcon';
 import { getRandomNickname } from '@woowa-babble/random-nickname';
 

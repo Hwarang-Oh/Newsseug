@@ -1,6 +1,7 @@
-import Layout from '../components/common/Layout';
-import FirstAppear from '../components/splash/FirstAppear';
-import SecondAppear from '../components/splash/SecondAppear';
+import Layout from 'components/common/Layout';
+import FirstAppear from 'components/splash/FirstAppear';
+import SecondAppear from 'components/splash/SecondAppear';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * IMP : Splash Page
@@ -8,10 +9,17 @@ import SecondAppear from '../components/splash/SecondAppear';
  * @returns
  */
 function Splash() {
+  const navigate = useNavigate();
+  const handleAnimationEnd = () => {
+    setTimeout(() => {
+      navigate('/login');
+    }, 1500);
+  };
+
   return (
     <Layout backgroundColor="#58D7A2">
       <FirstAppear />
-      <SecondAppear delay="1s" />
+      <SecondAppear delay="1s" onAnimationEnd={handleAnimationEnd} />
     </Layout>
   );
 }

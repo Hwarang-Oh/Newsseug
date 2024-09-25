@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Article } from 'types/api/article';
 
 // TODO : 현재 시청하고 있는 Article List에 대한 상태 관리
-interface currentArticleList {
+interface CurrentArticleList {
   ArticleList: Article[];
   pastArticleId: number;
   currentArticleId: number;
   nextArticleId: number;
 }
 
-const initialState: currentArticleList = {
+const initialState: CurrentArticleList = {
   ArticleList: [],
   pastArticleId: 0,
   currentArticleId: 0,

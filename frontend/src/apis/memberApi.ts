@@ -1,9 +1,14 @@
 import api from 'apis/commonApi';
 import { AxiosResponse, isAxiosError } from 'axios';
-import { UserInputProps } from 'types/userInput';
+import { UserInputProps } from '@/types/register';
 import { MemberState } from 'types/api/member';
 
 const MEMBER_URL = '/api/v1/members';
+
+/**
+ * IMP : JWT 토큰을 이용한 로그인을 위한 API
+ */
+export const login = async (): Promise<void> => {};
 
 /**
  * IMP : 회원 정보 등록을 위한 API
@@ -12,9 +17,8 @@ const MEMBER_URL = '/api/v1/members';
  */
 export const registerMember = async (input: UserInputProps): Promise<void> => {
   try {
-    const response: AxiosResponse<void> = await api.put(MEMBER_URL, input);
-    console.log('회원가입 결과 : ', response.data);
-    return response.data;
+    const response: AxiosResponse<boolean> = await api.put(MEMBER_URL, input);
+    if (!response.data) throw new Error('Failed to register member');
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -31,7 +35,7 @@ export const registerMember = async (input: UserInputProps): Promise<void> => {
 export const getMemberInfo = async (): Promise<MemberState> => {
   try {
     const response: AxiosResponse<MemberState> = await api.get(MEMBER_URL);
-    console.log('회원 정보 : ', response.data);
+    if (!response.data) throw new Error('Failed to get member info');
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {

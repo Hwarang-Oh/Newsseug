@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { InputBoxProps } from '@/types/userInput';
+import { InputBoxProps } from 'types/register';
 
 function InputBox({
   input,

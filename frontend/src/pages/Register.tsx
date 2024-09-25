@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import useFormState from 'hooks/useFormState';
 import Layout from 'components/common/Layout';
-import InputSection from 'components/userInput/InputSection';
-import GenderSelectBox from 'components/userInput/GenderSelectBox';
-import SubmitButton from 'components/userInput/SubmitButton';
-import ConfirmModal from 'components/userInput/ConfirmModal';
+import InputSection from 'components/register/InputSection';
+import GenderSelectBox from 'components/register/GenderSelectBox';
+import SubmitButton from 'components/register/SubmitButton';
+import ConfirmModal from 'components/register/ConfirmModal';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 

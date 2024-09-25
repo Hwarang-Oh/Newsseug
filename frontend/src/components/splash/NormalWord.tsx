@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { NormalWordProps } from '@/types/splash';
+import { NormalWordProps } from 'types/splash';
 
 function NormalWord({ text }: Readonly<NormalWordProps>) {
   return <StyledNormalWord>{text}</StyledNormalWord>;

@@ -6,7 +6,7 @@
  * @property {Date} birth - 생년월일
  * @property {OAuth2Details} oAuth2Details - OAuth2 정보
  */
-export interface Member {
+interface Member {
   id: number;
   nickname: string;
   gender: GenderType;
@@ -14,8 +14,8 @@ export interface Member {
   oAuth2Details: OAuth2Details;
 }
 
-type GenderType = 'MALE' | 'FEMALE';
-type ProviderType = 'KAKAO' | 'GOOGLE';
+export type GenderType = 'MALE' | 'FEMALE';
+export type ProviderType = 'kakao' | 'google' | 'none';
 type Role = 'ROLE_MEMBER' | 'ROLE_ADMIN';
 
 interface OAuth2Details {
@@ -46,4 +46,11 @@ export interface MemberState {
   nickname: string;
   gender: string;
   age: number;
+}
+
+export interface MemberStore {
+  member: MemberState;
+  AccessToken: string;
+  providerType: ProviderType;
+  providerId: string;
 }
