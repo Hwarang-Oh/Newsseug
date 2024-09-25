@@ -22,7 +22,7 @@ function CategoryFilter({
   setParentSticky,
 }: Readonly<CategoryFilterProps>) {
   const categories = useMemo(
-    () => ['전체', '정치', '경제', '외교', '사건', '과학', '사회', '스포츠'],
+    () => ['전체', '정치', '경제', '국제', '사건', '과학', '사회', '스포츠'],
     [],
   );
 

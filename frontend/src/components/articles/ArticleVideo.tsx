@@ -8,6 +8,16 @@ import playIcon from 'assets/playIcon.svg';
 import { ArticleVideoProp } from 'types/article';
 import MiddleModal from 'components/articles/MiddleModal';
 
+const likeInfo = {
+  isLike: false,
+  likeCount: 10,
+};
+
+const dislikeInfo = {
+  isLike: false,
+  likeCount: 1000,
+};
+
 function ArticleVideo({ src, setIsModalOpen }: ArticleVideoProp) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -19,7 +29,7 @@ function ArticleVideo({ src, setIsModalOpen }: ArticleVideoProp) {
 
   useEffect(() => {
     setIsModalOpen(isScrapModalOpen || isCreateModalOpen || isReportModalOpen);
-  }, [isCreateModalOpen, isScrapModalOpen, isReportModalOpen]);
+  }, [setIsModalOpen, isCreateModalOpen, isScrapModalOpen, isReportModalOpen]);
 
   const handleScrapClick = () => {
     setIsScrapModalOpen((prev) => !prev);
@@ -56,7 +66,6 @@ function ArticleVideo({ src, setIsModalOpen }: ArticleVideoProp) {
       setProgress(parseFloat(event.target.value));
     }
   };
-
   return (
     <Container>
       <VideoWrapper>
@@ -76,6 +85,8 @@ function ArticleVideo({ src, setIsModalOpen }: ArticleVideoProp) {
           </PlayButton>
         )}
         <ArticleButtons
+          likeInfo={likeInfo}
+          dislikeInfo={dislikeInfo}
           handleScrapClick={handleScrapClick}
           handleReportClick={handleReportClick}
         />
@@ -111,11 +122,11 @@ function ArticleVideo({ src, setIsModalOpen }: ArticleVideoProp) {
       </VideoWrapper>
       <ArticleContainer>
         <ArticleInfo />
-        {/* <ProgressBar
+        <ProgressBar
           progress={progress}
           isPlaying={isPlaying}
           onSeek={handleSeek}
-        /> */}
+        />
       </ArticleContainer>
     </Container>
   );
