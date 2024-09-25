@@ -1,6 +1,6 @@
 package com.a301.newsseug.global.config;
 
-import static com.a301.newsseug.domain.member.model.entity.Role.ROLE_MEMBER;
+import static com.a301.newsseug.domain.member.model.entity.type.RoleType.ROLE_MEMBER;
 
 import com.a301.newsseug.domain.auth.service.CustomOAuth2UserService;
 import com.a301.newsseug.domain.auth.service.CustomUserDetailsService;

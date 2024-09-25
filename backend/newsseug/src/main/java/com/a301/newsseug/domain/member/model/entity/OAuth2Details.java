@@ -1,5 +1,7 @@
 package com.a301.newsseug.domain.member.model.entity;
 
+import com.a301.newsseug.domain.member.model.entity.type.ProviderType;
+import com.a301.newsseug.domain.member.model.entity.type.RoleType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
@@ -25,13 +27,13 @@ public class OAuth2Details {
     private String providerId;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private RoleType role;
 
-    public static OAuth2Details of(ProviderType provider, String providerId, Role role) {
+    public static OAuth2Details of(ProviderType provider, String providerId, RoleType roleType) {
         return OAuth2Details.builder()
                 .provider(provider)
                 .providerId(providerId)
-                .role(role)
+                .role(roleType)
                 .build();
     }
 

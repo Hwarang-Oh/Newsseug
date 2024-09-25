@@ -3,31 +3,28 @@ package com.a301.newsseug.domain.article.service;
 import com.a301.newsseug.domain.article.model.dto.SimpleArticleDto;
 import com.a301.newsseug.domain.article.model.dto.response.AllArticlesResponse;
 import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
-import com.a301.newsseug.domain.article.model.dto.response.TodayArticlesResponse;
 import com.a301.newsseug.domain.article.model.dto.response.ListArticleResponse;
+import com.a301.newsseug.domain.article.model.dto.response.TodayArticlesResponse;
 import com.a301.newsseug.domain.article.model.entity.Article;
-import com.a301.newsseug.domain.article.model.entity.type.Category;
+import com.a301.newsseug.domain.article.model.entity.type.CategoryType;
 import com.a301.newsseug.domain.article.repository.ArticleRepository;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.interaction.model.dto.SimpleHateDto;
 import com.a301.newsseug.domain.interaction.model.dto.SimpleLikeDto;
 import com.a301.newsseug.domain.interaction.repository.HateRepository;
 import com.a301.newsseug.domain.interaction.repository.LikeRepository;
-import com.a301.newsseug.domain.interaction.repository.ReportRepository;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
-import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
+import com.a301.newsseug.global.util.ClockUtil;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Transactional
@@ -36,25 +33,20 @@ import java.util.stream.Collectors;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
-
     private final PressRepository pressRepository;
-
     private final LikeRepository likeRepository;
-
     private final HateRepository hateRepository;
-
     private final SubscribeRepository subscribeRepository;
 
     @Override
     public TodayArticlesResponse getHomeArticles() {
 
-        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();  // 오늘 00:00:00
-        LocalDateTime endOfDay = startOfDay.plusDays(1);  // 내일 00:00:00 까지
-        List<Article> todaysArticles = articleRepository.findByCreatedAtBetween(startOfDay, endOfDay);
+        LocalDateTime startOfDay = ClockUtil.getLocalDateTime().toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1);
+        List<Article> todayArticles = articleRepository.findByCreatedAtBetween(startOfDay, endOfDay);
 
-        // TodayArticleResponse 생성
         return TodayArticlesResponse.of(
-                mapToListArticleResponse(todaysArticles)
+                mapToListArticleResponse(todayArticles)
         );
 
     }
@@ -62,7 +54,6 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public AllArticlesResponse getAllArticles() {
 
-        // 전체 기사
         List<Article> allArticles = articleRepository.findAllByOrderByCreatedAtDesc();
 
         return AllArticlesResponse.of(
@@ -74,9 +65,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ListArticleResponse getArticlesByCategory(String categoryName) {
 
-        Category category = Category.valueOf(categoryName.toUpperCase());
+        CategoryType categoryType = CategoryType.valueOf(categoryName.toUpperCase());
 
-        List<Article> articles = articleRepository.findByCategoryOrderByCreatedAtDesc(category);
+        List<Article> articles = articleRepository.findByCategoryOrderByCreatedAtDesc(categoryType);
 
         return mapToListArticleResponse(articles);
 
