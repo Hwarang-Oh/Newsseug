@@ -45,8 +45,6 @@ public class PressServiceTest {
 		ListSimplePressResponse response = pressService.getSimplePress();
 
 		// Then
-		verify(pressRepository).findAll();
-
 		assertThat(response.press()).hasSize(2);
 		assertThat(response.press())
 			.extracting(SimplePressDto::id, SimplePressDto::name, SimplePressDto::imageUrl)
@@ -54,6 +52,23 @@ public class PressServiceTest {
 				tuple(0L, "name", "imageUrl"),
 				tuple(1L, "name", "imageUrl")
 			);
+
+		verify(pressRepository).findAll();
+	}
+
+	@Test
+	@DisplayName("언론사 단순 정보 목록 조회")
+	void getSimplePressEmpty() {
+		// Given
+		given(pressRepository.findAll()).willReturn(List.of());
+
+		// When
+		ListSimplePressResponse response = pressService.getSimplePress();
+
+		// Then
+		assertThat(response.press()).isEmpty();
+
+		verify(pressRepository).findAll();
 	}
 
 	@Test
