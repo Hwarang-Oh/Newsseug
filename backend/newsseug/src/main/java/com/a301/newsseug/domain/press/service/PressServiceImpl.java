@@ -1,13 +1,12 @@
 package com.a301.newsseug.domain.press.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import com.a301.newsseug.domain.press.model.dto.GetPressBrandingResponseDto;
-import com.a301.newsseug.domain.press.model.dto.GetPressResponseDto;
+import com.a301.newsseug.domain.press.exception.NotExistPressException;
+import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
+import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
+import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
 import com.a301.newsseug.domain.press.model.entity.Press;
-import com.a301.newsseug.domain.press.model.entity.PressBranding;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,35 +18,20 @@ public class PressServiceImpl implements PressService {
     private final PressRepository pressRepository;
 
     @Override
-    public GetPressBrandingResponseDto getPressBranding() {
+    public ListSimplePressResponse getSimplePress() {
 
         List<Press> press = pressRepository.findAll();
 
-        List<PressBranding> pressBranding = new ArrayList<>();
-        for (Press p : press) {
-            pressBranding.add(p.getPressBranding());
-        }
+        List<SimplePressDto> simplePressDtoList = press.stream().map(SimplePressDto::of).toList();
 
-        return new GetPressBrandingResponseDto(pressBranding);
+        return ListSimplePressResponse.of(simplePressDtoList);
     }
 
     @Override
-    public Optional<GetPressResponseDto> getPress(Long pressId) {
+    public GetPressResponse getPress(Long pressId) {
 
-        Optional<Press> optionalPress = pressRepository.findById(pressId);
+        Press press = pressRepository.findById(pressId).orElseThrow(NotExistPressException::new);
 
-        if (optionalPress.isEmpty()) {
-            return Optional.empty();
-        }
-
-        Press press = optionalPress.get();
-
-        return Optional.of(GetPressResponseDto.builder()
-            .pressId(press.getPressId())
-            .name(press.getPressBranding().getName())
-            .imageUrl(press.getPressBranding().getImageUrl())
-            .description(press.getDescription())
-            .subscribeCount(press.getSubscribeCount())
-            .build());
+        return GetPressResponse.of(press);
     }
 }

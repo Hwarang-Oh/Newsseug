@@ -2,20 +2,20 @@ package com.a301.newsseug.domain.member.service;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.member.model.dto.request.MemberUpdateRequest;
-import com.a301.newsseug.domain.member.model.dto.response.GetMemberResponse;
 import com.a301.newsseug.domain.member.model.entity.type.GenderType;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.model.entity.Subscribe;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.exception.NotSubscribePressException;
 import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
-import com.a301.newsseug.domain.press.model.dto.response.ListPressResponse;
+import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,14 +31,6 @@ public class MemberServiceImpl implements MemberService {
     private final SubscribeRepository subscribeRepository;
 
     @Override
-    public GetMemberResponse getMember(CustomUserDetails userDetails) {
-
-        Member loginMember = userDetails.getMember();
-        return GetMemberResponse.of(loginMember.getNickname(), loginMember.getProfileImageUrl());
-
-    }
-
-    @Override
     public void updateMember(CustomUserDetails UserDetails, MemberUpdateRequest request) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -52,12 +44,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ListPressResponse getPressByMember(CustomUserDetails userDetails) {
+    public ListSimplePressResponse getPressByMember(CustomUserDetails userDetails) {
 
         Member loginMember = userDetails.getMember();
         List<Subscribe> subscribes = subscribeRepository.findAllByMember(loginMember);
 
-        return ListPressResponse.of(
+        return ListSimplePressResponse.of(
                 SimplePressDto.fromSubscribe(subscribes)
         );
 

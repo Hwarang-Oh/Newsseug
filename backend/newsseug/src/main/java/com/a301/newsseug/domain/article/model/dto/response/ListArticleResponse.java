@@ -2,7 +2,7 @@ package com.a301.newsseug.domain.article.model.dto.response;
 
 import com.a301.newsseug.domain.article.model.dto.SimpleArticleDto;
 import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
-import com.a301.newsseug.domain.press.model.dto.response.ListPressResponse;
+import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 

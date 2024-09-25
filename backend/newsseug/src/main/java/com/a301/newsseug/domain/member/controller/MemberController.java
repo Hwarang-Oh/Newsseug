@@ -6,7 +6,7 @@ import com.a301.newsseug.domain.member.model.dto.request.MemberUpdateRequest;
 import com.a301.newsseug.domain.folder.model.dto.response.ListFolderResponse;
 import com.a301.newsseug.domain.member.model.dto.response.GetMemberResponse;
 import com.a301.newsseug.domain.member.service.MemberService;
-import com.a301.newsseug.domain.press.model.dto.response.ListPressResponse;
+import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
 import com.a301.newsseug.global.model.dto.Result;
 import com.a301.newsseug.global.util.ResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,7 +67,7 @@ public class MemberController {
 
     @Operation(summary = "구독한 언론사 목록 조회", description = "사용자가 구독한 언론사 목록을 조회한다.")
     @PostMapping("/press")
-    public ResponseEntity<Result<ListPressResponse>> getPress(
+    public ResponseEntity<Result<ListSimplePressResponse>> getPress(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
 
