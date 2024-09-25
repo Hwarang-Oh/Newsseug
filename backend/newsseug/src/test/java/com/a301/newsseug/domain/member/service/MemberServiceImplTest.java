@@ -34,7 +34,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-@DisplayName("멤버 관련")
+@DisplayName("멤버 관련 기능")
 @ExtendWith(MockitoExtension.class)
 class MemberServiceImplTest {
 
