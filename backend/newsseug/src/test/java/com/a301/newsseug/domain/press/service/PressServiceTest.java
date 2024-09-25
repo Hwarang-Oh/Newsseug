@@ -8,7 +8,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.verify;
+import static org.mockito.BDDMockito.given;
 
 import com.a301.newsseug.domain.press.factory.PressFactory;
 import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
@@ -33,13 +34,13 @@ public class PressServiceTest {
 		Press press1 = PressFactory.press(0L);
 		Press press2 = PressFactory.press(1L);
 
-		Mockito.when(pressRepository.findAll()).thenReturn(List.of(press1, press2));
+		given(pressRepository.findAll()).willReturn(List.of(press1, press2));
 
 		// When
 		ListSimplePressResponse response = pressService.getSimplePress();
 
 		// Then
-		Mockito.verify(pressRepository).findAll();
+		verify(pressRepository).findAll();
 
 		assertThat(response.press()).hasSize(2);
 		assertThat(response.press())
@@ -56,13 +57,13 @@ public class PressServiceTest {
 		// Given
 		Press press = PressFactory.press(0L);
 
-		Mockito.when(pressRepository.findByPressId(press.getPressId())).thenReturn(press);
+		given(pressRepository.findByPressId(press.getPressId())).willReturn(press);
 
 		// When
 		GetPressResponse response = pressService.getPress(press.getPressId());
 
 		// Then
-		Mockito.verify(pressRepository).findByPressId(press.getPressId());
+		verify(pressRepository).findByPressId(press.getPressId());
 
 		assertThat(response.id()).isEqualTo(press.getPressId());
 		assertThat(response.name()).isEqualTo(press.getPressBranding().getName());
