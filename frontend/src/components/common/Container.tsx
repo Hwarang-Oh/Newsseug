@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { LayoutProps } from '@/types/common/layout';
+import { LayoutProps } from 'types/common/layout';
 
 /**
  * IMP : Container Component -> Children Component를 동적으로 Rendering

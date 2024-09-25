@@ -1,36 +1,33 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from 'redux/store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'redux/store';
 import { getAccessToken } from 'apis/loginApi';
 import { setProviderInfo } from '../redux/memberSlice';
+import { setCookie } from 'utils/cookieUtil';
 
 function useAutoLogin() {
   const dispatch = useDispatch<AppDispatch>();
-  const memberSlice = useSelector((state: RootState) => state.member);
-
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const isFirst = queryParams.get('isFirst');
     const providerId = queryParams.get('providerId');
-    console.log(isFirst, providerId);
 
     if (providerId) {
-      getAccessToken(providerId).then((AccessToken) => {
+      getAccessToken(providerId).then((accessToken) => {
+        setCookie('AccessToken', accessToken, { maxAge: 900 });
+        setCookie('ProviderId', providerId, { maxAge: 900 });
         dispatch(
           setProviderInfo({
-            AccessToken,
-            providerId,
+            AccessToken: accessToken,
+            providerId: providerId,
           }),
         );
       });
+      if (isFirst) navigate('/register');
     }
-    if (!isFirst) navigate('/register');
-    else {
-      console.log('accessToken:', memberSlice.AccessToken);
-    }
-  }, [location, navigate]);
+  }, [location, navigate, dispatch]);
 }
 export default useAutoLogin;

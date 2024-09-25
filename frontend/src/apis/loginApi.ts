@@ -1,5 +1,5 @@
-import api from './commonApi';
-import axios, { AxiosResponse, isAxiosError } from 'axios';
+import api from 'apis/commonApi';
+import { AxiosResponse, isAxiosError } from 'axios';
 
 /**
  * IMP : 아래 함수는 HTTPS에 의한 요청이 아님. Redirect를 통해 외부 URL로 이동하는 함수
@@ -11,21 +11,20 @@ export const getLogin = (provider: string): void => {
   window.location.href = loginUrl;
 };
 
-export const login = async (provider: string) => {
-  const response = await axios.get(LOGIN_URL);
-  console.log(response.data);
-};
-
 /**
  * IMP : Provider Id를 기반으로 AccessToken을 가져오는 API
  */
 const LOGIN_API_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1/auth/login`;
 export const getAccessToken = async (providerId: string): Promise<string> => {
   try {
-    const response = await api.get(LOGIN_API_URL, {
-      params: { providerId: providerId },
+    const {
+      data: {
+        data: { accessToken },
+      },
+    } = await api.get(LOGIN_API_URL, {
+      params: { providerId },
     });
-    return response.data.accessToken;
+    return accessToken;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -44,7 +43,6 @@ const LOGOUT_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1/logout`;
 export const getLogout = async (): Promise<void> => {
   try {
     const response: AxiosResponse<void> = await api.get(LOGOUT_URL);
-    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

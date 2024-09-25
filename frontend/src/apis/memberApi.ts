@@ -1,8 +1,7 @@
 import api from 'apis/commonApi';
 import { AxiosResponse, isAxiosError } from 'axios';
-import { UserInputProps } from '@/types/register';
+import { UserInputProps } from 'types/register';
 import { MemberState } from 'types/api/member';
-
 const MEMBER_URL = '/api/v1/members';
 
 /**
@@ -15,10 +14,14 @@ export const login = async (): Promise<void> => {};
  * @param input
  * @returns
  */
-export const registerMember = async (input: UserInputProps): Promise<void> => {
+export const registerMember = async (
+  input: UserInputProps,
+): Promise<boolean> => {
   try {
-    const response: AxiosResponse<boolean> = await api.put(MEMBER_URL, input);
-    if (!response.data) throw new Error('Failed to register member');
+    const {
+      data: { data: registerResult },
+    } = await api.put(MEMBER_URL, input);
+    return registerResult;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -54,7 +57,6 @@ export const subscribePress = async (pressId: number): Promise<void> => {
     const response: AxiosResponse<boolean> = await api.post(
       `${MEMBER_URL}/press/${pressId}`,
     );
-    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -72,7 +74,6 @@ export const unsubscribePress = async (pressId: number): Promise<void> => {
     const response: AxiosResponse<boolean> = await api.put(
       `${MEMBER_URL}/press/${pressId}`,
     );
-    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -91,7 +92,6 @@ export const getSubscribedPressList = async (): Promise<void> => {
     const response: AxiosResponse<boolean> = await api.post(
       `${MEMBER_URL}/press`,
     );
-    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

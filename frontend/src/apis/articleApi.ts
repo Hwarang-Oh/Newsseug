@@ -1,8 +1,7 @@
 import api from 'apis/commonApi';
-import { AxiosResponse, isAxiosError } from 'axios';
-import { Article } from '@/types/api/article';
 import article from 'db/article.json';
-
+import { AxiosResponse, isAxiosError } from 'axios';
+import { Article } from 'types/api/article';
 const ARTICLES_URL = `/api/v1/articles`;
 
 /**
@@ -19,7 +18,6 @@ export const fetchAllArticles = async (): Promise<Article[]> => {
     const response: AxiosResponse<Article[]> = await api.get(
       `${ARTICLES_URL}/all`,
     );
-    console.log(response.data);
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
@@ -27,7 +25,6 @@ export const fetchAllArticles = async (): Promise<Article[]> => {
       if (error.response?.status === 401) {
         console.warn('API가 없으므로 Mock 데이터를 반환합니다.');
         return article.articles;
-        // throw new Error('Not Found');
       } else throw error;
     } else throw error;
   }
@@ -41,7 +38,6 @@ export const fetchArticlesByToday = async (): Promise<Article[]> => {
     const response: AxiosResponse<Article[]> = await api.get(
       `${ARTICLES_URL}/today`,
     );
-    console.log(response.data);
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
@@ -52,7 +48,6 @@ export const fetchArticlesByToday = async (): Promise<Article[]> => {
             (eachSection) => eachSection.category === '오늘의 뉴스',
           )?.articleList || []
         );
-        // throw new Error('Not Found');
       } else throw error;
     } else throw error;
   }
@@ -66,12 +61,10 @@ export const fetchArticlesByAge = async (age: number): Promise<Article[]> => {
     const response: AxiosResponse<Article[]> = await api.get(
       `${ARTICLES_URL}?age=${encodeURIComponent(age)}`,
     );
-    console.log(response.data);
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 401) {
-        console.warn('API가 없으므로 Mock 데이터를 반환합니다.');
         return [];
       } else throw error;
     } else throw error;
@@ -89,7 +82,6 @@ export const fetchArticlesByCategory = async (
     const response: AxiosResponse<Article[]> = await api.get(
       `${ARTICLES_URL}?category=${encodeURIComponent(category)}`,
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     if (isAxiosError(error)) {
@@ -100,7 +92,6 @@ export const fetchArticlesByCategory = async (
             (eachSection) => eachSection.category === category,
           )?.articleList || []
         );
-        // throw new Error('Not Found');
       } else throw error;
     } else throw error;
   }
@@ -116,7 +107,6 @@ export const fetchEachArticle = async (articleId: number): Promise<Article> => {
     const response: AxiosResponse<Article> = await api.get(
       `${ARTICLES_URL}/${articleId}`,
     );
-    console.log(response.data);
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {

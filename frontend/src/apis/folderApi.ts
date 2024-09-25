@@ -8,8 +8,6 @@ const FOLDERS_URL = `/api/v1/folders`;
  */
 export const getFolderList = async (): Promise<void> => {
   try {
-    const response: AxiosResponse<boolean> = await api.get(FOLDERS_URL);
-    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -24,8 +22,6 @@ export const getFolderList = async (): Promise<void> => {
  */
 export const createFolder = async (): Promise<void> => {
   try {
-    const response: AxiosResponse<boolean> = await api.post(FOLDERS_URL);
-    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -46,7 +42,6 @@ export const saveArticleToFolder = async (
     const response: AxiosResponse<boolean> = await api.post(
       `${FOLDERS_URL}/${folderId}/articles/${articleId}`,
     );
-    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -66,7 +61,6 @@ export const getArticleListInFolder = async (
     const response: AxiosResponse<boolean> = await api.get(
       `${FOLDERS_URL}/${folderId}`,
     );
-    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

@@ -18,7 +18,6 @@ function MiddleModal({
   };
 
   const handleSubmitClick = () => {
-    console.log(submitValue);
     setSubmitValue('');
   };
 
