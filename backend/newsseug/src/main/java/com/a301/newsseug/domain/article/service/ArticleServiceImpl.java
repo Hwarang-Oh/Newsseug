@@ -106,7 +106,7 @@ public class ArticleServiceImpl implements ArticleService {
         return ListArticleResponse.of(
                 articles.stream()
                     .map(SimpleArticleDto::of)
-                    .collect(Collectors.toList())
+                    .toList()
         );
 
     }
