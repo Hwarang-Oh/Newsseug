@@ -116,7 +116,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     private String getPressName(Long pressId) {
 
-        Press press = pressRepository.findByPressId(pressId);
+        Press press = pressRepository.getOrThrow(pressId);
 
         return press.getPressBranding().getName();
 

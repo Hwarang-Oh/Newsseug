@@ -2,7 +2,6 @@ package com.a301.newsseug.domain.press.service;
 
 import java.util.List;
 
-import com.a301.newsseug.domain.press.exception.NotExistPressException;
 import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
 import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
 import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
@@ -30,7 +29,7 @@ public class PressServiceImpl implements PressService {
     @Override
     public GetPressResponse getPress(Long pressId) {
 
-        Press press = pressRepository.findById(pressId).orElseThrow(NotExistPressException::new);
+        Press press = pressRepository.getOrThrow(pressId);
 
         return GetPressResponse.of(press);
     }
