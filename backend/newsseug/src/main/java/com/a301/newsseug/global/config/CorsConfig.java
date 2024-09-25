@@ -21,7 +21,7 @@ public class CorsConfig {
         corsConfiguration.setAllowedOrigins(
                 List.of(
                         "http://localhost:3000",
-                        "http://j11a301.p.ssafy.io:3000"
+                        "https://j11a301.p.ssafy.io"
                 )
         );
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
