@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j
@@ -31,6 +32,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
        String token = jwtService.resolveToken(request);
+
+       if (!StringUtils.hasText(token)) {
+           filterChain.doFilter(request, response);
+           return;
+       }
 
        try {
 

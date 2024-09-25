@@ -47,15 +47,6 @@ public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-
-        return web ->
-                web.ignoring()
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-
-    }
-
-    @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
         return http
@@ -82,11 +73,9 @@ public class SecurityConfig {
 
                                 // 프리플라이트 관련 설정
                                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-
                                 .requestMatchers(SWAGGER_URI).permitAll()
                                 .requestMatchers("/api/v1/auth/**").permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/members/**")).hasRole(ROLE_MEMBER.getRole())
-
                                 .anyRequest().authenticated()
 
                 )
