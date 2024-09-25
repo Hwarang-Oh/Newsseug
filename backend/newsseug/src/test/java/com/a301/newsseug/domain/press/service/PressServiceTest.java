@@ -6,11 +6,15 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.BDDMockito.given;
 
+import com.a301.newsseug.domain.press.exception.NotExistPressException;
 import com.a301.newsseug.domain.press.factory.PressFactory;
 import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
 import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
@@ -18,14 +22,15 @@ import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 
+@ExtendWith(MockitoExtension.class)
 @DisplayName("언론사 관련 기능")
 public class PressServiceTest {
 
-	@InjectMocks
-	private PressServiceImpl pressService;
-
 	@Mock
 	private PressRepository pressRepository;
+
+	@InjectMocks
+	private PressServiceImpl pressService;
 
 	@Test
 	@DisplayName("언론사 단순 정보 목록 조회")
@@ -57,18 +62,30 @@ public class PressServiceTest {
 		// Given
 		Press press = PressFactory.press(0L);
 
-		given(pressRepository.findByPressId(press.getPressId())).willReturn(press);
+		given(pressRepository.getOrThrow(press.getPressId())).willReturn(press);
 
 		// When
 		GetPressResponse response = pressService.getPress(press.getPressId());
 
 		// Then
-		verify(pressRepository).findByPressId(press.getPressId());
+		verify(pressRepository).getOrThrow(press.getPressId());
 
 		assertThat(response.id()).isEqualTo(press.getPressId());
 		assertThat(response.name()).isEqualTo(press.getPressBranding().getName());
 		assertThat(response.imageUrl()).isEqualTo(press.getPressBranding().getImageUrl());
 		assertThat(response.description()).isEqualTo(press.getDescription());
 		assertThat(response.subscribeCount()).isEqualTo(0L);
+	}
+
+	@Test
+	@DisplayName("언론사 상세 조회[존재하지 않는 폴더]")
+	void getPressNotExistPress() {
+		// Given
+		Press press = PressFactory.press(0L);
+
+		given(pressRepository.getOrThrow(press.getPressId())).willThrow(NotExistPressException.class);
+
+		// Then
+		assertThatThrownBy(() -> pressService.getPress(press.getPressId())).isInstanceOf(NotExistPressException.class);
 	}
 }
