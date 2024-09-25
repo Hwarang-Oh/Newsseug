@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import ArticleListCard from 'components/common/ArticleListCard';
-import { ArticleListCardGroupProps } from '@/types/common/common';
+import { ArticleListCardGroupProps } from 'types/common/common';
 
 /**
  * IMP : ArticleListCardGroup ( News Card Group ) Component

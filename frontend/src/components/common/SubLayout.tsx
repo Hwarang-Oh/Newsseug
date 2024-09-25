@@ -3,7 +3,7 @@ import Container from 'components/common/Container';
 import Layout from 'components/common/Layout';
 import NavBar from 'components/common/NavBar';
 import SubHeader from 'components/common/SubHeader';
-import { SubLayoutProps } from '@/types/common/layout';
+import { SubLayoutProps } from 'types/common/layout';
 
 /**
  * IMP : SubLayout Component ( Layout ) => SubHeader ( Header 기본 ), Container ( Child ), NavBar ( 기본 )

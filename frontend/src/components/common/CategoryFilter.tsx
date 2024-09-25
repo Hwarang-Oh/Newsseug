@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import { CategoryFilterProps } from '@/types/common/common';
+import { CategoryFilterProps } from 'types/common/common';
 
 /**
  * IMP : CategoryFilter ( News Category Filter ) Component

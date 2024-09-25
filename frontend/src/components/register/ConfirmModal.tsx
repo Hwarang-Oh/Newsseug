@@ -20,7 +20,7 @@ function ConfirmModal({ userData, onCancel }: Readonly<ConfirmModalProps>) {
           </InfoRow>
           <InfoRow>
             <Label>성별:</Label>{' '}
-            <Value> {userData.gender === 'Male' ? '남자' : '여자'} ✅</Value>
+            <Value> {userData.gender === 'MALE' ? '남자' : '여자'} ✅</Value>
           </InfoRow>
           <InfoRow>
             <Label>생년월일:</Label> <Value>{userData.birth} ✅</Value>

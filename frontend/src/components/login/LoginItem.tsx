@@ -7,12 +7,10 @@ import { setProviderType } from '../../redux/memberSlice';
 
 function LoginItem({ icon, provider }: Readonly<LoginItemProps>) {
   const dispatch = useDispatch<AppDispatch>();
-
   const handleLogin = () => {
     dispatch(setProviderType(provider));
     getLogin(provider);
   };
-
   return <LoginItemContainer onClick={handleLogin}>{icon}</LoginItemContainer>;
 }
 

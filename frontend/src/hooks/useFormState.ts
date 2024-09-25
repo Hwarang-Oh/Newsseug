@@ -1,26 +1,26 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { registerMember } from 'apis/memberApi';
-import { UserInputProps } from '@/types/register';
+import { UserInputProps } from 'types/register';
+import { useNavigate } from 'react-router-dom';
+import { formatDateToCompact } from 'utils/formatDateToCompact';
 import { MaleIcon, FemaleIcon } from 'components/icon/GenderIcon';
 import { getRandomNickname } from '@woowa-babble/random-nickname';
 
-// 랜덤 닉네임 생성 함수
-// TODO : 아마 나중에는, Token유무와 비교해서 새로고침에 의한 생성 못하게 해야 할 수도 있음.
+// TODO : 추후, Token유무와 비교해서 새로고침에 의한 생성 못하게 해야 할 수도 있음.
 const randomNickname = (): string => {
   const types = ['animals', 'characters', 'monsters'];
   const randomType = types[Math.floor(Math.random() * types.length)];
   return getRandomNickname(randomType);
 };
 
-// 로컬 스토리지에서 닉네임 불러오기 또는 새로운 닉네임 생성
 const getOrSetRandomNickname = (): string => {
   const savedNickname = localStorage.getItem('randomNickname');
   if (savedNickname) {
-    return savedNickname; // 저장된 닉네임이 있으면 그 닉네임 반환
+    return savedNickname;
   } else {
-    const newNickname = randomNickname(); // 없으면 새로운 닉네임 생성
-    localStorage.setItem('randomNickname', newNickname); // 로컬 스토리지에 저장
+    const newNickname = randomNickname();
+    localStorage.setItem('randomNickname', newNickname);
     return newNickname;
   }
 };
@@ -36,6 +36,7 @@ const defaultValues: UserInputProps = {
  * @returns
  */
 function useFormState() {
+  const navigate = useNavigate();
   const { control, formState, setValue, trigger, getValues, handleSubmit } =
     useForm<UserInputProps>({
       defaultValues,
@@ -68,7 +69,7 @@ function useFormState() {
     e: React.ChangeEvent<HTMLInputElement>,
     onChange: (value: string) => void,
   ) => {
-    let value = e.target.value.replace(/\D/g, '').slice(0, 8); // Ensures only digits, truncated to 8
+    let value = e.target.value.replace(/\D/g, '').slice(0, 8);
     if (value.length > 4)
       value =
         `${value.slice(0, 4)}.${value.slice(4, 6)}` +
@@ -77,8 +78,14 @@ function useFormState() {
     await trigger('birth');
   };
 
-  const onSubmit = (data: UserInputProps) => {
+  const onSubmit = async (data: UserInputProps) => {
+    data.birth = formatDateToCompact(data.birth);
     registerMember(data);
+    if (await registerMember(data)) {
+      navigate('/');
+    } else {
+      throw new Error('회원가입에 실패했습니다.');
+    }
   };
 
   return {

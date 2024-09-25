@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ArticleListCardProps } from '@/types/common/common';
+import { ArticleListCardProps } from 'types/common/common';
 
 /**
  * IMP : ArticleListCard ( News Card ) Component

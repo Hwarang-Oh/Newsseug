@@ -7,7 +7,6 @@ import SubmitButton from 'components/register/SubmitButton';
 import ConfirmModal from 'components/register/ConfirmModal';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
-
 function UserInput() {
   /**
    * IMP : useFormState에서 정의한 Custom Hook을 사용하여 Form을 구성

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { NavItemProps } from '@/types/common/layout';
+import { NavItemProps } from 'types/common/layout';
 
 /**
  * IMP : NavItem Component ( Navigation Item )

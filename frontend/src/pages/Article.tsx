@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 import ArticleSlider from 'components/articles/ArticleSlider';
-import { useEffect } from 'react';
 import ArticleHeader from 'components/articles/ArticleHeader';
+import { useEffect } from 'react';
 
 function Article() {
   useEffect(() => {
-    // 페이지의 크기만큼 높이 지정
     const setHeight = () => {
       const containerElement = document.getElementById('container');
       if (containerElement) {

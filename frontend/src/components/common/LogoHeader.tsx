@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import LogoIcon from 'components/icon/LogoIcon';
-import { LogoHeaderProps } from '@/types/common/layout';
+import { LogoHeaderProps } from 'types/common/layout';
 
 /**
  * IMP : LogoHeader Component ( Logo )
