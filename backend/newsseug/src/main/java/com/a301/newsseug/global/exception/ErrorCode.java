@@ -33,7 +33,6 @@ public enum ErrorCode {
      */
     UNTRUSTWORTHY_TOKEN(HttpStatus.FORBIDDEN, UNTRUSTWORTHY_TOKEN_MESSAGE),
 
-    
     /**
      * [404 Not Found]
      * - 존재하지 않는 자원
