@@ -9,6 +9,8 @@ public class ErrorMessage {
     public static final String FAIL_TO_VALIDATE_MESSAGE = "잘못된 요청입니다.";
     public static final String INVALID_PROVIDER_TYPE_MESSAGE = "유효하지 않은 제공자입니다.";
     public static final String INVALID_GENDER_TYPE_MESSAGE = "유효하지 않은 성별입니다.";
+    public static final String INVALID_CATEGORY_TYPE_MESSAGE = "유효하지 않은 기사 카테고리입니다.";
+    public static final String INVALID_REPORT_TYPE_MESSAGE = "유효하지 않은 신고입니다.";
 
     /**
      * [401 UnAuthorized]
