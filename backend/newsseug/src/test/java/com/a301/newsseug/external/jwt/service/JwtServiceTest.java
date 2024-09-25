@@ -81,6 +81,7 @@ public class JwtServiceTest {
     @DisplayName("토큰 발행[성공 - Access]")
     public void issueAccessToken() {
 
+        // Given
         mockedClockUtil
                 .when(() -> ClockUtil.getExpirationDate(fixedLocalDateTime, ACCESS_TOKEN_EXPIRATION))
                 .thenReturn(
@@ -90,9 +91,11 @@ public class JwtServiceTest {
         Header header = jwtService.parseHeader(accessToken);
         Claims claims = jwtService.parseClaims(accessToken);
 
+        // When
         Date issuedAt = claims.getIssuedAt();
         Date expiration = claims.getExpiration();
 
+        // Then
         assertThat(header.get("type")).isEqualTo(TokenType.ACCESS_TOKEN.getValue());
         assertThat(claims.getSubject()).isEqualTo(member.getOAuth2Details().getProviderId());
         assertThat(issuedAt).isNotNull();
@@ -105,19 +108,23 @@ public class JwtServiceTest {
     @DisplayName("토큰 발행[성공 - Refresh]")
     public void issueRefreshToken() {
 
+
+        // Given
         mockedClockUtil
                 .when(() -> ClockUtil.getExpirationDate(fixedLocalDateTime, REFRESH_TOKEN_EXPIRATION))
                 .thenReturn(
                         Date.from(fixedLocalDateTime.plusSeconds(REFRESH_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
                 );
 
-        java.lang.String refreshToken = jwtService.issueToken(member.getOAuth2Details().getProviderId(), TokenType.REFRESH_TOKEN);
+        String refreshToken = jwtService.issueToken(member.getOAuth2Details().getProviderId(), TokenType.REFRESH_TOKEN);
         Header header = jwtService.parseHeader(refreshToken);
         Claims claims = jwtService.parseClaims(refreshToken);
 
+        // When
         Date issuedAt = claims.getIssuedAt();
         Date expiration = claims.getExpiration();
 
+        // Then
         assertThat(header.get("type")).isEqualTo(TokenType.REFRESH_TOKEN.getValue());
         assertThat(claims.getSubject()).isEqualTo(member.getOAuth2Details().getProviderId());
         assertThat(issuedAt).isNotNull();
@@ -167,7 +174,7 @@ public class JwtServiceTest {
     @DisplayName("토큰 검증[유효하지 않은 형식]")
     public void invalidateFormatToken() {
 
-        java.lang.String invalidToken = TOKEN_PREFIX.concat("invalidTokenString");
+        String invalidToken = TOKEN_PREFIX.concat("invalidTokenString");
         assertThatThrownBy(() -> jwtService.isValid(invalidToken))
                 .isInstanceOf(InvalidFormatException.class);
 
@@ -183,7 +190,7 @@ public class JwtServiceTest {
                         Date.from(fixedLocalDateTime.minusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
                 );
 
-        java.lang.String expiredToken = jwtService.issueToken(member.getOAuth2Details().getProviderId(), TokenType.ACCESS_TOKEN);
+        String expiredToken = jwtService.issueToken(member.getOAuth2Details().getProviderId(), TokenType.ACCESS_TOKEN);
         assertThatThrownBy(() -> jwtService.isValid(expiredToken))
                 .isInstanceOf(ExpiredTokenException.class);
 
