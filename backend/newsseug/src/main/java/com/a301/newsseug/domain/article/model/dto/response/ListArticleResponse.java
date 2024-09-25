@@ -4,11 +4,12 @@ import com.a301.newsseug.domain.article.model.dto.SimpleArticleDto;
 import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
 import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Builder;
 
 import java.util.List;
 
-@Builder
+@Builder(access = AccessLevel.PRIVATE)
 @Schema(name = "기사 목록", description = "기사 목록을 조회한 결과")
 public record ListArticleResponse(
 

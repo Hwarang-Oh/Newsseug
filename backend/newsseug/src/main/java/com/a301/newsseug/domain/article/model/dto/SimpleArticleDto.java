@@ -7,9 +7,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import lombok.AccessLevel;
 import lombok.Builder;
 
-@Builder
+@Builder(access = AccessLevel.PRIVATE)
 @Schema(name = "기사 정보", description = "기사 목록에 노출할 기사 정보")
 public record SimpleArticleDto(
 
@@ -47,13 +49,13 @@ public record SimpleArticleDto(
         public static List<SimpleArticleDto> fromArticle(List<Article> articles) {
                 return articles.stream()
                         .map(SimpleArticleDto::of)
-                        .collect(Collectors.toList());
+                        .toList();
         }
 
         public static List<SimpleArticleDto> fromBookmark(List<Bookmark> bookmarks) {
                 return bookmarks.stream()
                         .map(bookmark -> SimpleArticleDto.of(bookmark.getArticle()))
-                        .collect(Collectors.toList());
+                        .toList();
         }
 
 }

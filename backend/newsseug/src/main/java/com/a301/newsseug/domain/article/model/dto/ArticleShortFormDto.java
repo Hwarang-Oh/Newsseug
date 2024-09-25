@@ -2,11 +2,12 @@ package com.a301.newsseug.domain.article.model.dto;
 
 import com.a301.newsseug.domain.article.model.entity.Article;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
 
-@Builder
+@Builder(access = AccessLevel.PRIVATE)
 @Schema(name = "기사 숏폼 정보", description = "숏폼 재생 시 기사에 대해 노출할 정보.")
 public record ArticleShortFormDto(
 

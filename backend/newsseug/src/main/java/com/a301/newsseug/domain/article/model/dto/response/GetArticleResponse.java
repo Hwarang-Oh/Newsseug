@@ -6,9 +6,10 @@ import com.a301.newsseug.domain.interaction.model.dto.SimpleHateDto;
 import com.a301.newsseug.domain.interaction.model.dto.SimpleLikeDto;
 import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Builder;
 
-@Builder
+@Builder(access = AccessLevel.PRIVATE)
 @Schema(name = "기사 상세 정보", description = "하나의 기사를 조회한 정보")
 public record GetArticleResponse(
 
