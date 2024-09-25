@@ -1,7 +1,7 @@
 package com.a301.newsseug.domain.folder.factory;
 
 import com.a301.newsseug.domain.folder.model.entity.Folder;
-import com.a301.newsseug.domain.member.factory.MemberFactory;
+import com.a301.newsseug.domain.member.factory.entity.MemberFactory;
 import org.springframework.test.util.ReflectionTestUtils;
 
 public class FolderFactory {
@@ -10,7 +10,7 @@ public class FolderFactory {
 
         Folder folder = Folder.builder()
                 .name(name)
-                .member(MemberFactory.memberOfKakao())
+                .member(MemberFactory.memberOfKakao(1L))
                 .build();
 
 

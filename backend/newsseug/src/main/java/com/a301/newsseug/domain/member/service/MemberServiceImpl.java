@@ -1,7 +1,8 @@
 package com.a301.newsseug.domain.member.service;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
-import com.a301.newsseug.domain.member.model.dto.request.MemberUpdateRequest;
+import com.a301.newsseug.domain.member.model.dto.request.UpdateMemberRequest;
+import com.a301.newsseug.domain.member.model.dto.response.GetMemberResponse;
 import com.a301.newsseug.domain.member.model.entity.type.GenderType;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.model.entity.Subscribe;
@@ -31,7 +32,15 @@ public class MemberServiceImpl implements MemberService {
     private final SubscribeRepository subscribeRepository;
 
     @Override
-    public void updateMember(CustomUserDetails UserDetails, MemberUpdateRequest request) {
+    public GetMemberResponse getMember(CustomUserDetails userDetails) {
+
+        Member loginMember = userDetails.getMember();
+        return GetMemberResponse.of(loginMember.getNickname(), loginMember.getProfileImageUrl());
+
+    }
+
+    @Override
+    public void updateMember(CustomUserDetails UserDetails, UpdateMemberRequest request) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 

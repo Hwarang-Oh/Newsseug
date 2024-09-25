@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-import com.a301.newsseug.domain.member.factory.MemberFactory;
+import com.a301.newsseug.domain.member.factory.entity.MemberFactory;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.external.jwt.config.JwtProperties;
 import com.a301.newsseug.external.jwt.exception.ExpiredTokenException;
@@ -59,7 +59,7 @@ public class JwtServiceTest {
         lenient().when(expiration.getAccess()).thenReturn(ACCESS_TOKEN_EXPIRATION);
         lenient().when(expiration.getRefresh()).thenReturn(REFRESH_TOKEN_EXPIRATION);
 
-        member = MemberFactory.memberOfKakao();
+        member = MemberFactory.memberOfKakao(1L);
         clock = Clock.systemDefaultZone();
         fixedLocalDateTime = LocalDateTime.now(clock);
         fixedDate = Date.from(fixedLocalDateTime.atZone(ZoneId.systemDefault()).toInstant());
