@@ -1,28 +1,31 @@
 import styled from 'styled-components';
 import expandIcon from 'assets/expandIcon.svg';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { PressDescriptionProps } from 'types/press';
 
-function PressDescription() {
+function PressDescription({ description }: Readonly<PressDescriptionProps>) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [text, setText] = useState<string>(
-    '안녕하세요! 연합뉴스TV에 오신 것을 환영합니다. 연합뉴스TV는 대한민국의24시간 뉴스 전문 방송채널로, 신속하고 정확한 뉴스 보도를 통해 여러분의 일상에 꼭 필요한 정보를 제공합니다. 저희 채널은 24시간 현장의 생생한 소식을 전달하며, 공정하고 균형 잡힌 보도를 통해 다양한 뉴스를 중립적인 시각으로 제공합니다. 또한, 뉴스의 현장을 생생하게 전달하여 현장감 있는 정보를 제공하고, 정치, 경제, 문화, 스포츠 등 다양한 분야의 소식을 다룹니다. 구독하시면 대한민국의 최신 뉴스와 중요한 사회 이슈를 실시간으로 접하실 수 있습니다. 연합뉴스TV와 함께 세상의 변화를 빠르고 정확하게 파악하세요! 이렇게 작성된 소개글은 간결하면서도 연합뉴스TV의 핵심 내용을 잘 전달합니다.',
-  );
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const [descriptionHeight, setDescriptionHeight] = useState<number>(0);
 
   const handleOpen = () => {
     setIsOpen((prev) => !prev);
   };
 
-  const truncateText = (text: string) => {
-    if (text.length > 110) {
-      return text.slice(0, 110) + '...';
+  useEffect(() => {
+    if (descriptionRef.current) {
+      setDescriptionHeight(descriptionRef.current.scrollHeight);
     }
-    return text;
-  };
+  }, [description, isOpen]);
 
   return (
     <Wrapper>
-      <DescriptionText isOpen={isOpen}>
-        {isOpen ? text : truncateText(text)}
+      <DescriptionText
+        ref={descriptionRef}
+        isOpen={isOpen}
+        maxHeight={isOpen ? `${descriptionHeight}px` : '61.2px'}
+      >
+        {description}
       </DescriptionText>
       <OpenBtn onClick={handleOpen}>
         <BtnText>{isOpen ? '닫기' : '전체보기'}</BtnText>
@@ -47,9 +50,9 @@ const Wrapper = styled.div`
   background: ${({ theme }) => theme.descriptionBgColor};
 `;
 
-const DescriptionText = styled.p<{ isOpen: boolean }>`
+const DescriptionText = styled.p<{ isOpen: boolean; maxHeight: string }>`
   display: block;
-  overflow: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
+  overflow: hidden;
   text-overflow: ellipsis;
   color: ${({ theme }) => theme.textColor};
   font-family: Pretendard;
@@ -59,7 +62,9 @@ const DescriptionText = styled.p<{ isOpen: boolean }>`
   line-height: 170%;
   letter-spacing: -0.3px;
 
-  max-height: ${({ isOpen }) => (isOpen ? 'none' : 'calc(20.4px * 3)')};
+  // max-height 애니메이션
+  max-height: ${({ maxHeight }) => maxHeight};
+  transition: max-height 0.3s ease-out;
 `;
 
 const OpenBtn = styled.button`

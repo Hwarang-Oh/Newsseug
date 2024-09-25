@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ArticleListCardProps } from 'types/common/common';
+import { formatNumber } from 'utils/formatNumber';
 
 /**
  * IMP : ArticleListCard ( News Card ) Component
@@ -21,9 +22,7 @@ function ArticleListCard({
       <PressTag width={width}>{pressName}</PressTag>
       <ArticleInfo>
         <ArticleTitle width={width}>{title}</ArticleTitle>
-        <ViewCount width={width}>
-          조회수 {formatViewCount(viewCount)}회
-        </ViewCount>
+        <ViewCount width={width}>조회수 {formatNumber(viewCount)}회</ViewCount>
       </ArticleInfo>
     </Wrapper>
   );
@@ -120,15 +119,3 @@ const PressTag = styled.div<{ width: string }>`
   line-height: 140%;
   letter-spacing: -0.2px;
 `;
-
-function formatViewCount(viewCount: number): string {
-  if (viewCount >= 1000000000) {
-    return (viewCount / 1000000000).toFixed(1) + 'B'; // billion 단위
-  } else if (viewCount >= 1000000) {
-    return (viewCount / 1000000).toFixed(1) + 'M'; // million 단위
-  } else if (viewCount >= 1000) {
-    return (viewCount / 1000).toFixed(1) + 'K'; // thousand 단위
-  } else {
-    return viewCount.toString(); // 천 이하일 경우 그대로 출력
-  }
-}
