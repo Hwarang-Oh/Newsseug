@@ -1,14 +1,20 @@
-package com.a301.newsseug.domain.member.model.entity;
+package com.a301.newsseug.domain.member.model.entity.type;
 
 import com.a301.newsseug.domain.member.exception.InvalidProviderTypeException;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
+@Schema(description = "OAuth 로그인 제공자")
 public enum ProviderType {
 
-    KAKAO("kakao"), GOOGLE("google");
+    @Schema(description = "카카오")
+    KAKAO("kakao"),
+
+    @Schema(description = "구글")
+    GOOGLE("google");
 
     private final String value;
 

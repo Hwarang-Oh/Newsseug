@@ -1,9 +1,9 @@
 package com.a301.newsseug.domain.member.factory;
 
-import com.a301.newsseug.domain.member.model.entity.GenderType;
+import com.a301.newsseug.domain.member.model.entity.type.GenderType;
 import com.a301.newsseug.domain.member.model.entity.Member;
-import com.a301.newsseug.domain.member.model.entity.ProviderType;
-import com.a301.newsseug.domain.member.model.entity.Role;
+import com.a301.newsseug.domain.member.model.entity.type.ProviderType;
+import com.a301.newsseug.domain.member.model.entity.type.RoleType;
 import java.time.LocalDate;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -15,8 +15,8 @@ public class MemberFactory {
                 .nickName("test")
                 .gender(GenderType.MALE)
                 .birth(LocalDate.now())
-                .role(Role.ROLE_MEMBER)
-                .providerType(ProviderType.KAKAO)
+                .role(RoleType.ROLE_MEMBER)
+                .provider(ProviderType.KAKAO)
                 .providerId("test")
                 .build();
 

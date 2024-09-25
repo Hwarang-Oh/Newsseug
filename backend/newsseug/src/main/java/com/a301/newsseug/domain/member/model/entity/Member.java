@@ -1,7 +1,9 @@
 package com.a301.newsseug.domain.member.model.entity;
 
+import com.a301.newsseug.domain.member.model.entity.type.GenderType;
+import com.a301.newsseug.domain.member.model.entity.type.ProviderType;
+import com.a301.newsseug.domain.member.model.entity.type.RoleType;
 import com.a301.newsseug.global.model.entity.BaseEntity;
-import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -42,12 +44,12 @@ public class Member extends BaseEntity {
 
     @Builder
     public Member(
-            String nickName, GenderType gender, LocalDate birth, ProviderType providerType, String providerId, Role role
+            String nickName, GenderType gender, LocalDate birth, ProviderType provider, String providerId, RoleType role
     ) {
         this.nickname = nickName;
         this.gender = gender;
         this.birth = birth;
-        this.oAuth2Details = OAuth2Details.of(providerType, providerId, role);
+        this.oAuth2Details = OAuth2Details.of(provider, providerId, role);
     }
 
 }

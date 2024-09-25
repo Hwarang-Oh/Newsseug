@@ -6,8 +6,8 @@ import com.a301.newsseug.domain.auth.model.entity.KakaoUserDetails;
 import com.a301.newsseug.domain.auth.model.entity.OAuth2UserDetails;
 import com.a301.newsseug.domain.member.exception.InvalidProviderTypeException;
 import com.a301.newsseug.domain.member.model.entity.Member;
-import com.a301.newsseug.domain.member.model.entity.ProviderType;
-import com.a301.newsseug.domain.member.model.entity.Role;
+import com.a301.newsseug.domain.member.model.entity.type.ProviderType;
+import com.a301.newsseug.domain.member.model.entity.type.RoleType;
 import com.a301.newsseug.domain.member.repository.MemberRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -49,9 +49,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                         memberRepository.save(
                                 Member.builder()
                                         .nickName("Test")
-                                        .providerType(ProviderType.convertToEnum(provider))
+                                        .provider(ProviderType.convertToEnum(provider))
                                         .providerId(providerId)
-                                        .role(Role.ROLE_MEMBER)
+                                        .role(RoleType.ROLE_MEMBER)
                                         .build()
                 )),
                 isFirst,

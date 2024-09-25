@@ -2,7 +2,7 @@ package com.a301.newsseug.domain.article.model.entity.type;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "사용자가 기사를 신고하는 유형에 대한 정보.")
+@Schema(description = "신고 유형")
 public enum ReportType {
 
     @Schema(description = "마음에 들지 않습니다.")
