@@ -1,6 +1,7 @@
 package com.a301.newsseug.external.jwt.filter;
 
 import static com.a301.newsseug.global.constant.ErrorMessage.UNTRUSTWORTHY_TOKEN_MESSAGE;
+import static com.a301.newsseug.global.constant.RegEx.EXCEPTION_URI_REGEX;
 
 import com.a301.newsseug.domain.auth.service.CustomUserDetailsService;
 import com.a301.newsseug.external.jwt.service.JwtService;
@@ -54,6 +55,19 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
        } finally {
            filterChain.doFilter(request, response);
        }
+
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+
+        for (String regex : EXCEPTION_URI_REGEX) {
+            if (request.getRequestURI().matches(regex)) {
+                return true;
+            }
+        }
+
+        return false;
 
     }
 
