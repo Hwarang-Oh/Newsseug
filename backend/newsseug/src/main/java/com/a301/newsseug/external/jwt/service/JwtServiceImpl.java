@@ -5,6 +5,7 @@ import com.a301.newsseug.external.jwt.exception.ExpiredTokenException;
 import com.a301.newsseug.external.jwt.exception.FailToIssueTokenException;
 import com.a301.newsseug.external.jwt.exception.InvalidFormatException;
 import com.a301.newsseug.external.jwt.exception.InvalidSignatureException;
+import com.a301.newsseug.external.jwt.exception.UntrustworthyTokenException;
 import com.a301.newsseug.external.jwt.model.entity.TokenType;
 import com.a301.newsseug.global.util.ClockUtil;
 import io.jsonwebtoken.Claims;
@@ -52,6 +53,7 @@ public class JwtServiceImpl implements JwtService {
                 case REFRESH_TOKEN -> {
                     return createToken(providerId, jwtProperties.getExpiration().getRefresh(), type);
                 }
+
             }
 
         }
@@ -129,11 +131,11 @@ public class JwtServiceImpl implements JwtService {
 
     private String removePrefix(String token) {
 
-        if (!Objects.isNull(token) && token.startsWith(TOKEN_PREFIX)) {
-            return token.replace(TOKEN_PREFIX, "");
+        if (!token.startsWith(TOKEN_PREFIX)) {
+            throw new UntrustworthyTokenException();
         }
 
-        return null;
+        return token.replace(TOKEN_PREFIX, "");
 
     }
 
