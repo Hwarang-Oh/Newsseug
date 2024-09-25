@@ -1,12 +1,10 @@
 package com.a301.newsseug.domain.press.service;
 
-import java.util.Optional;
-
-import com.a301.newsseug.domain.press.model.dto.GetPressBrandingResponseDto;
-import com.a301.newsseug.domain.press.model.dto.GetPressResponseDto;
+import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
+import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
 
 public interface PressService {
-	GetPressBrandingResponseDto getPressBranding();
+	ListSimplePressResponse getSimplePress();
 
-	Optional<GetPressResponseDto> getPress(Long pressId);
+	GetPressResponse getPress(Long pressId);
 }
