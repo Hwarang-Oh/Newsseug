@@ -22,7 +22,14 @@ export interface ArticleVideoProp {
   setIsModalOpen: (isOpen: boolean) => void;
 }
 
+interface ArticleLike {
+  isLike: boolean;
+  likeCount: number;
+}
+
 export interface ArticleButtonsProp {
+  likeInfo: ArticleLike;
+  dislikeInfo: ArticleLike;
   handleScrapClick: () => void;
   handleReportClick: () => void;
 }

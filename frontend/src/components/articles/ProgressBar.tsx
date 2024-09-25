@@ -1,11 +1,19 @@
+import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { ProgressBarProps } from 'types/article';
 
 function ProgressBar({ progress, isPlaying, onSeek }: ProgressBarProps) {
+  const progressBarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (progressBarRef.current) {
+      progressBarRef.current.style.width = `${progress * 100}%`;
+    }
+  }, [progress]);
   return (
     <ProgressSection $isPlaying={isPlaying}>
       <ProgressBarWrap>
-        <ProgressBarFill $progress={progress} />
+        <ProgressBarFill ref={progressBarRef} />
         {!isPlaying && (
           <ProgressInput
             type="range"
@@ -34,11 +42,10 @@ const ProgressBarWrap = styled.div`
   cursor: pointer;
 `;
 
-const ProgressBarFill = styled.div<{ $progress: number }>`
+const ProgressBarFill = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: ${({ $progress }) => `${$progress * 100}%`};
   background: ${({ theme }) => theme.mainColor};
   height: 100%;
 `;
