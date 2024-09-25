@@ -16,3 +16,9 @@ interface PressBranding {
   name: string;
   imageUrl: string;
 }
+
+export interface PressDetail extends PressBranding {
+  pressId: number;
+  description: string;
+  subscribeCount: number;
+}

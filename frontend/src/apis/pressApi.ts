@@ -1,3 +1,4 @@
+import { PressDetail } from 'types/api/press';
 import api from 'apis/commonApi';
 import { AxiosResponse, isAxiosError } from 'axios';
 const PRESS_URL = `/api/v1/press`;
@@ -20,16 +21,12 @@ export const getPressList = async (): Promise<void> => {
 /**
  * IMP : 언론사 상세 조회를 위한 API
  */
-export const getPressDetail = async (pressId: number): Promise<void> => {
+export const getPressDetail = async (pressId: number): Promise<PressDetail> => {
   try {
-    const response: AxiosResponse<boolean> = await api.get(
-      `${PRESS_URL}/${pressId}`,
-    );
-  } catch (error: unknown) {
-    if (isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        throw new Error('Not Found');
-      } else throw error;
-    } else throw error;
+    const response = await api.get(`${PRESS_URL}/${pressId}`);
+    return response.data;
+  } catch (error) {
+    console.error('언론사 정보 조회 실패:', error);
+    throw error;
   }
 };

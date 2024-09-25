@@ -1,12 +1,23 @@
 import styled from 'styled-components';
 import PressProfile from './PressProfile';
 import PressDescription from './PressDescription';
+import { PressDetail } from 'types/api/press';
 
-function PressInfo() {
+function PressInfo({
+  name,
+  imageUrl,
+  pressId,
+  description,
+  subscribeCount,
+}: Readonly<PressDetail>) {
   return (
     <Wrapper>
-      <PressProfile />
-      <PressDescription />
+      <PressProfile
+        name={name}
+        imageUrl={imageUrl}
+        subscribeCount={subscribeCount}
+      />
+      <PressDescription description={description} />
     </Wrapper>
   );
 }
@@ -19,7 +30,6 @@ const Wrapper = styled.div`
   display: flex;
   padding: 12px 15px;
   flex-direction: column;
-  align-items: flex-start;
   align-items: flex-start;
   gap: 12px;
 `;

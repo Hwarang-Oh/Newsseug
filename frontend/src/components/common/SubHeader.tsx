@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import ArrowIcon from 'assets/arrowIcon.svg';
 import { useNavigate } from 'react-router-dom';
 import { SubLayoutProps } from 'types/common/layout';
+import { useEffect, useState } from 'react';
+import { parseRgbString } from 'utils/parseRgbString';
+import { getBrightness } from 'utils/getBrightness';
 
 /**
  * IMP : SubHeader Component ( SubLayout ) => BackBtn ( 뒤로가기 ), MainSection ( children )
@@ -16,6 +19,14 @@ function SubHeader({
   headerColor,
 }: Readonly<SubLayoutProps>) {
   const navigate = useNavigate();
+  const [brightness, setBrightness] = useState<number>(0);
+
+  useEffect(() => {
+    if (headerColor) {
+      const [r, g, b] = parseRgbString(headerColor);
+      setBrightness(getBrightness(r, g, b));
+    }
+  }, [headerColor]);
 
   const handleGoBack = () => {
     navigate(-1);
@@ -25,7 +36,9 @@ function SubHeader({
       <BackBtn onClick={handleGoBack}>
         <img src={ArrowIcon} alt="back arrow icon" />
       </BackBtn>
-      <MainSection $isSearch={!!isSearch}>{children}</MainSection>
+      <MainSection $brightness={brightness} $isSearch={!!isSearch}>
+        {children}
+      </MainSection>
     </Wrapper>
   );
 }
@@ -67,7 +80,7 @@ const BackBtn = styled.button`
   }
 `;
 
-const MainSection = styled.div<{ $isSearch?: boolean }>`
+const MainSection = styled.div<{ $brightness: number; $isSearch?: boolean }>`
   display: flex;
   width: ${({ $isSearch }) => ($isSearch ? 'fit-content' : 'auto')};
   padding: 6px 12px;
@@ -82,4 +95,5 @@ const MainSection = styled.div<{ $isSearch?: boolean }>`
   border: ${({ $isSearch, theme }) =>
     $isSearch ? `1px solid ${theme.relaxColor.light}` : 'none'};
   flex-grow: ${({ $isSearch }) => ($isSearch ? 1 : 0)};
+  color: ${({ $brightness }) => ($brightness > 128 ? '#202020' : '#fff')};
 `;
