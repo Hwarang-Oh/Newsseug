@@ -2,17 +2,17 @@ import styled, { keyframes } from 'styled-components';
 import NormalWord from 'components/splash/NormalWord';
 import VectorWord from 'components/common/VectorWord';
 import { LogoIconS } from 'components/icon/LogoIcon';
-import { DelayProps } from '@/types/splash';
+import { DelayProps } from 'types/splash';
 
 const VectorWordIcon = LogoIconS();
 
-function SecondAppear({ delay }: Readonly<DelayProps>) {
+function SecondAppear({ delay, onAnimationEnd }: Readonly<DelayProps>) {
   return (
     <SecondAppearStyle $delay={delay}>
       <NormalWordWrapper $delay={delay}>
         <NormalWord text="한번에" />
       </NormalWordWrapper>
-      <VectorWordWrapper $delay={delay}>
+      <VectorWordWrapper $delay={delay} onAnimationEnd={onAnimationEnd}>
         <VectorWord icon={VectorWordIcon} color={'#FFFFFF'} />
       </VectorWordWrapper>
     </SecondAppearStyle>

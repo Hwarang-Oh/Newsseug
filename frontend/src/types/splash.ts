@@ -4,4 +4,5 @@ export interface NormalWordProps {
 
 export interface DelayProps {
   delay: string;
+  onAnimationEnd?: () => void;
 }

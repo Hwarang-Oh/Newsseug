@@ -1,19 +1,19 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Scrap from './pages/Scrap';
-import AllScraps from './pages/AllScraps';
-import MyPage from './pages/MyPage';
-import AllSubscribes from './pages/AllSubscribes';
-import Subscribes from './pages/Subscribes';
-import AllArticles from './pages/AllArticles';
-import Login from './pages/Login';
-import Search from './pages/Search';
-import Splash from './pages/Splash';
-import Press from './pages/Press';
-import Article from './pages/Article';
-import History from './pages/History';
-import SearchResult from './pages/SearchResult';
-import UserInput from './pages/UserInput';
+import Splash from 'pages/Splash';
+import Login from 'pages/Login';
+import Register from 'pages/Register';
+import Home from 'pages/Home';
+import AllArticles from 'pages/AllArticles';
+import AllSubscribes from 'pages/AllSubscribes';
+import AllScraps from 'pages/AllScraps';
+import MyPage from 'pages/MyPage';
+import Search from 'pages/Search';
+import SearchResult from 'pages/SearchResult';
+import Subscribes from 'pages/Subscribes';
+import Press from 'pages/Press';
+import Article from 'pages/Article';
+import History from 'pages/History';
+import Scrap from 'pages/Scrap';
 
 function Router() {
   return (
@@ -22,7 +22,8 @@ function Router() {
         <Route path="/" element={<Home />} />
         <Route path="/splash" element={<Splash />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<UserInput />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/:dataName/allArticles" element={<AllArticles />} />
 
         <Route path="/articles">
           <Route path="all" element={<AllArticles />} />

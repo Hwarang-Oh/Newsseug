@@ -1,6 +1,8 @@
+import { ProviderType } from './api/member';
+
 export interface LoginItemProps {
   icon: React.ReactNode;
-  provider: string;
+  provider: ProviderType;
 }
 
 export interface LoginListProps {

@@ -1,6 +1,8 @@
 import LoginWord from 'components/login/LoginWord';
 import Layout from 'components/common/Layout';
 import LoginList from 'components/login/LoginList';
+import styled, { keyframes } from 'styled-components';
+import { ProviderType } from 'types/api/member';
 import { GoogleLogin, KakaoLogin } from 'components/icon/LoginIcon';
 
 /**
@@ -11,15 +13,17 @@ import { GoogleLogin, KakaoLogin } from 'components/icon/LoginIcon';
 function Login() {
   return (
     <Layout>
-      <LoginWord />
-      <LoginList loginItemList={LoginItems} />
+      <FadeInWrapper>
+        <LoginWord />
+        <LoginList loginItemList={LoginItems} />
+      </FadeInWrapper>
     </Layout>
   );
 }
 
 export default Login;
 
-const LoginItems = [
+const LoginItems: { icon: JSX.Element; provider: ProviderType }[] = [
   {
     icon: <GoogleLogin />,
     provider: 'google',
@@ -29,3 +33,16 @@ const LoginItems = [
     provider: 'kakao',
   },
 ];
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const FadeInWrapper = styled.div`
+  animation: ${fadeIn} 0.8s ease-in-out;
+`;

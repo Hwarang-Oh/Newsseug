@@ -2,15 +2,21 @@ import MainLayout from 'components/common/MainLayout';
 import Section from 'components/home/Section';
 import { useEffect, useState } from 'react';
 import { ArticleListCardProps } from 'types/common/common';
-import { fetchAllArticles, fetchArticlesByCategory } from 'apis/articleApi';
 import { Article } from 'types/api/article';
-
+import {
+  fetchAllArticles,
+  fetchArticlesByAge,
+  fetchArticlesByToday,
+} from 'apis/articleApi';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useAutoLogin from 'hooks/useAutoLogin';
 /**
  * IMP : Home Page
  * TODO : Home Page의 Section에서 '더보기'를 누르면 All Articles Page로 이동하도록 구현
  * @returns
  */
 function Home() {
+  useAutoLogin();
   const articleListTransform = (article: Article[]): ArticleListCardProps[] => {
     return article.map((item: any) => ({
       imgUrl: item.thumbnailUrl,
@@ -21,16 +27,18 @@ function Home() {
   };
   const [articleLists, setArticleLists] = useState<ArticleListCardProps[][]>(
     [],
-  ); // 각 데이터 리스트를 배열로 관리
-  const [loading, setLoading] = useState(true); // 로딩 상태 관리
-
+  );
   useEffect(() => {
+    // TODO : Home 화면 Page가 뜨면 해야할 행동 -> Member 정보 Fetch, Article 정보 Fetch
+    // TODO : Member 정보를 가져오면 -> Member Slice에 넣어야 한다.
+    // TODO : 자동화 해야 한다.
+
     const loadAllArticles = async () => {
       try {
         // 3개의 비동기 데이터를 동시에 가져오기
         const [data1, data2, data3] = await Promise.all([
-          fetchArticlesByCategory('오늘의 뉴스'),
-          fetchArticlesByCategory('20대 관심 기사'),
+          fetchArticlesByToday(),
+          fetchArticlesByAge(20),
           fetchAllArticles(),
         ]);
 
@@ -42,33 +50,27 @@ function Home() {
         ]);
       } catch (error) {
         console.error('Error fetching articles:', error);
-      } finally {
-        setLoading(false); // 로딩 상태 해제
       }
     };
 
     loadAllArticles();
   }, []); // 컴포넌트가 마운트될 때 한 번 실행
 
-  if (loading) {
-    return <div>Loading...</div>; // 로딩 중일 때 보여줄 컴포넌트
-  }
-
   return (
     <MainLayout>
       <Section
         subTitle="오늘의 뉴스"
-        moreLink={'/'}
+        moreLink={`/todayNews/allArticles`}
         articleList={articleLists[0]} // 첫 번째 데이터 리스트
       />
       <Section
         subTitle="20대 관심 기사"
-        moreLink={'/'}
+        moreLink={'/20Article/allArticles'}
         articleList={articleLists[1]} // 두 번째 데이터 리스트
       />
       <Section
         subTitle="전체 기사"
-        moreLink={'/'}
+        moreLink={'/allArticles'}
         articleList={articleLists[2]} // 세 번째 데이터 리스트
       />
     </MainLayout>
