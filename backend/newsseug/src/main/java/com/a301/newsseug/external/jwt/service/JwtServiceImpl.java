@@ -1,6 +1,5 @@
 package com.a301.newsseug.external.jwt.service;
 
-import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.external.jwt.config.JwtProperties;
 import com.a301.newsseug.external.jwt.exception.ExpiredTokenException;
 import com.a301.newsseug.external.jwt.exception.FailToIssueTokenException;
@@ -29,8 +28,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
 
-    private static final java.lang.String AUTHORIZATION = "Authorization";
-    private static final java.lang.String TOKEN_PREFIX = "Bearer ";
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String TOKEN_PREFIX = "Bearer ";
     private final JwtProperties jwtProperties;
 
     /**
@@ -41,7 +40,7 @@ public class JwtServiceImpl implements JwtService {
      * @return 발행된 JWT 토큰
      * @throws FailToIssueTokenException 토큰 발행 실패 시 예외 발생
      */
-    public java.lang.String issueToken(String providerId, TokenType type) throws FailToIssueTokenException {
+    public String issueToken(String providerId, TokenType type) throws FailToIssueTokenException {
 
         if (Objects.nonNull(type)) {
 
@@ -69,7 +68,7 @@ public class JwtServiceImpl implements JwtService {
      * @param type           토큰 타입 (ACCESS_TOKEN, REFRESH_TOKEN)
      * @return 생성된 JWT 토큰
      */
-    private java.lang.String createToken(String providerId, long expirationTime, TokenType type) {
+    private String createToken(String providerId, long expirationTime, TokenType type) {
 
         LocalDateTime now = ClockUtil.getLocalDateTime();
 
@@ -93,7 +92,7 @@ public class JwtServiceImpl implements JwtService {
      * @param token JWT 토큰
      * @return 파싱된 헤더
      */
-    public Header parseHeader(java.lang.String token) {
+    public Header parseHeader(String token) {
 
         return Jwts.parser()
                 .verifyWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
@@ -108,7 +107,7 @@ public class JwtServiceImpl implements JwtService {
      * @param token JWT 토큰
      * @return 파싱된 클레임
      */
-    public Claims parseClaims(java.lang.String token) {
+    public Claims parseClaims(String token) {
 
         return Jwts.parser()
                 .verifyWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
@@ -124,11 +123,11 @@ public class JwtServiceImpl implements JwtService {
      * @param request HttpServletRequest 객체
      * @return 추출된 JWT 토큰
      */
-    public java.lang.String resolveToken(HttpServletRequest request) throws InvalidFormatException {
-        return removePrefix(request.getHeader(AUTHORIZATION));
+    public String resolveToken(HttpServletRequest request) throws InvalidFormatException {
+        return request.getHeader(AUTHORIZATION);
     }
 
-    private java.lang.String removePrefix(java.lang.String token) {
+    private String removePrefix(String token) {
 
         if (!Objects.isNull(token) && token.startsWith(TOKEN_PREFIX)) {
             return token.replace(TOKEN_PREFIX, "");
@@ -144,7 +143,7 @@ public class JwtServiceImpl implements JwtService {
      * @param token JWT 토큰
      * @return 토큰이 유효한지 여부
      */
-    public boolean isValid(java.lang.String token) throws JwtException {
+    public boolean isValid(String token) throws JwtException {
 
         if (Objects.isNull(token)) {
             return false;

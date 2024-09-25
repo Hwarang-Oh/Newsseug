@@ -33,6 +33,9 @@ public class Member extends BaseEntity {
     private String nickname;
 
     @Setter
+    private String profileImageUrl;
+
+    @Setter
     @Enumerated(EnumType.STRING)
     private GenderType gender;
 
@@ -44,9 +47,10 @@ public class Member extends BaseEntity {
 
     @Builder
     public Member(
-            String nickName, GenderType gender, LocalDate birth, ProviderType provider, String providerId, RoleType role
+            String nickName, String profileImageUrl, GenderType gender, LocalDate birth, ProviderType provider, String providerId, RoleType role
     ) {
         this.nickname = nickName;
+        this.profileImageUrl = profileImageUrl;
         this.gender = gender;
         this.birth = birth;
         this.oAuth2Details = OAuth2Details.of(provider, providerId, role);

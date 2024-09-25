@@ -4,6 +4,7 @@ import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.folder.service.FolderService;
 import com.a301.newsseug.domain.member.model.dto.request.MemberUpdateRequest;
 import com.a301.newsseug.domain.folder.model.dto.response.ListFolderResponse;
+import com.a301.newsseug.domain.member.model.dto.response.GetMemberResponse;
 import com.a301.newsseug.domain.member.service.MemberService;
 import com.a301.newsseug.domain.press.model.dto.response.ListPressResponse;
 import com.a301.newsseug.global.model.dto.Result;
@@ -30,6 +31,14 @@ public class MemberController {
 
     private final MemberService memberService;
     private final FolderService folderService;
+
+    @Operation(summary = "사용자 정보 조회 API", description = "사용자 정보를 조회한다.")
+    @GetMapping()
+    public ResponseEntity<Result<GetMemberResponse>> updateMember(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        return ResponseUtil.ok(Result.of(memberService.getMember(userDetails)));
+    }
 
     @Operation(summary = "사용자 정보 등록 API", description = "사용자 정보를 등록한다.")
     @PutMapping()
