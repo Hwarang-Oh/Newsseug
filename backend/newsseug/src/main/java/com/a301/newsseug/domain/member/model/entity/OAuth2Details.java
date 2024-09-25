@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Embeddable
-@Builder
+@Builder(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class OAuth2Details {
