@@ -5,10 +5,13 @@ export interface SubscribeHeaderProps {
 }
 
 export interface PressInfo {
-  id: string;
+  id: number;
   name: string;
   imgUrl: string;
-  isSubscribed?: boolean;
+}
+
+export interface AllPressInfo extends PressInfo {
+  isSubscribed: boolean;
 }
 
 // 구독 페이지
@@ -21,8 +24,8 @@ export interface SubscribePressCardProps {
 
 export interface SubscribePressFilterProps {
   subscribeData: PressInfo[];
-  activePress: string | null;
-  setActivePress: (press: string | null) => void;
+  activePress: number | null;
+  setActivePress: (press: number | null) => void;
 }
 
 // 구독 관리(전체 언론사) 페이지
@@ -30,6 +33,7 @@ export interface PressCardListProp {
   pressList: PressInfo[];
   subscriptionStatus: { [key: string]: boolean };
   toggleSubscribe: (press: PressInfo) => void;
+  isAll: boolean;
 }
 
 export interface PressCardProps {

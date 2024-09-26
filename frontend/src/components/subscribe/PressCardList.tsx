@@ -6,9 +6,10 @@ function PressCardList({
   pressList,
   subscriptionStatus,
   toggleSubscribe,
+  isAll,
 }: PressCardListProp) {
   return (
-    <Container>
+    <Container $isAll={isAll}>
       {pressList.map((press) => (
         <PressCard
           key={press.id}
@@ -23,11 +24,12 @@ function PressCardList({
 
 export default PressCardList;
 
-const Container = styled.div`
+const Container = styled.div<{ $isAll: boolean }>`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   justify-items: center;
   align-items: center;
   align-content: center;
+  margin-bottom: ${({ $isAll }) => $isAll && '70px'};
 `;
