@@ -85,10 +85,9 @@ services:
       - /home/ubuntu/volume/grafana-data:/var/lib/grafana
     networks:
       - newsseug-network
-      -
+
   newsseug-backend:
     image: newsseug-backend
-    build: ./backend/newsseug
     container_name: newsseug-backend
     depends_on:
       - mariadb
