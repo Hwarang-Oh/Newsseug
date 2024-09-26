@@ -66,7 +66,7 @@ services:
     depends_on:
       - newsseug-backend
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - /var/jenkins_home/workspace/newsseug-server/backend/newsseug/prometheus.yml:/etc/prometheus/prometheus.yml
       - /home/ubuntu/volume/prometheus-data:/var/lib/prometheus
     ports:
       - 9000:9090
