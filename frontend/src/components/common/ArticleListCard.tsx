@@ -9,16 +9,18 @@ import { formatNumber } from 'utils/formatNumber';
  * @returns
  */
 function ArticleListCard({
-  imgUrl,
+  thumbnailUrl,
   title,
   viewCount,
   pressName,
+  id,
+  createdAt,
   width = '180px',
   height = '250px',
 }: Readonly<ArticleListCardProps>) {
   return (
     <Wrapper width={width} height={height}>
-      <Thumbnail src={imgUrl} />
+      <Thumbnail src={thumbnailUrl} />
       <PressTag width={width}>{pressName}</PressTag>
       <ArticleInfo>
         <ArticleTitle width={width}>{title}</ArticleTitle>

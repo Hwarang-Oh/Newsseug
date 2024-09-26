@@ -6,6 +6,7 @@ import { store } from './redux/index';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme } from './styles/theme';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { HelmetProvider } from 'react-helmet-async';
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
@@ -23,13 +24,15 @@ enableMocking().then(() => {
   );
   root.render(
     <React.StrictMode>
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={lightTheme}>
-            <App />
-          </ThemeProvider>
-        </QueryClientProvider>
-      </Provider>
+      <HelmetProvider>
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider theme={lightTheme}>
+              <App />
+            </ThemeProvider>
+          </QueryClientProvider>
+        </Provider>
+      </HelmetProvider>
     </React.StrictMode>,
   );
 });

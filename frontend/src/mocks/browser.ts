@@ -1,5 +1,16 @@
 import { setupWorker } from 'msw/browser';
-import { presshandlers } from './presshandlers';
+import {
+  memberhandlers,
+  presshandlers,
+  memberfolderhandles,
+  folderhandles,
+} from './handlers';
 import { subscribepresshandlers } from './subscribepresshandler';
 
-export const worker = setupWorker(...presshandlers, ...subscribepresshandlers);
+export const worker = setupWorker(
+  ...presshandlers,
+  ...memberhandlers,
+  ...memberfolderhandles,
+  ...folderhandles,
+  ...subscribepresshandlers,
+);

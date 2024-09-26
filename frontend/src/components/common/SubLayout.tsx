@@ -15,7 +15,7 @@ import { SubLayoutProps } from 'types/common/layout';
 function SubLayout({
   children,
   isSearch = false,
-  headerColor = '#fff',
+  headerColor = 'rgb(255,255,255)',
   isPaddingZero = false,
 }: React.PropsWithChildren<Readonly<SubLayoutProps>>) {
   const [headerChildren, containerChildren] = React.Children.toArray(children);

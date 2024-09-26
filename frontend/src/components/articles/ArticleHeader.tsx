@@ -1,4 +1,5 @@
 import ArrowIcon from 'assets/arrowIconWhite.svg';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -9,6 +10,9 @@ function ArticleHeader() {
   };
   return (
     <Wrapper>
+      <Helmet>
+        <meta name="theme-color" content="#000" />
+      </Helmet>
       <BackBtn onClick={handleGoBack}>
         <img src={ArrowIcon} alt="back arrow icon" />
       </BackBtn>
