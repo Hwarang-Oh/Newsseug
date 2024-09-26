@@ -4,7 +4,7 @@ services:
     container_name: mariadb
     image: 'mariadb:11.5.2'
     ports:
-      - '3306:3306'
+      - 3306:3306
     environment:
       TZ: Asia/Seoul
       MYSQL_USER: newsseug
@@ -12,7 +12,7 @@ services:
       MYSQL_PASSWORD: newsseug1234
       MARIADB_ROOT_PASSWORD: newsseug1234
     volumes:
-      - mydata:/var/lib/mysql
+      - /home/ubuntu/volume/mysql-data:/var/lib/mysql
     restart: on-failure
     networks:
       - newsseug-network
@@ -21,11 +21,11 @@ services:
     container_name: redis
     image: 'redis:latest'
     ports:
-      - '6379:6379'
+      - 6379:6379
     environment:
       TZ: Asia/Seoul
     volumes:
-      - redisdata:/data
+      - /home/ubuntu/volume/redis-data:/data
     restart: on-failure
     networks:
       - newsseug-network
@@ -59,24 +59,48 @@ services:
     networks:
       - newsseug-network
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    depends_on:
+      - newsseug-backend
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - /home/ubuntu/volume/prometheus-data:/var/lib/prometheus
+    ports:
+      - 9090:9090
+    extra_hosts:
+      host.docker.internal: host-gateway
+    networks:
+      - local-bridge
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    depends_on:
+      - newsseug-backend
+    ports:
+      - 3030:3000
+    volumes:
+      - /home/ubuntu/volume/grafana-data:/var/lib/grafana
+    networks:
+      - local-bridge
+
   newsseug-backend:
-    container_name: newsseug-backend
-    build: ./backend/newsseug
     image: newsseug-backend
+    build: ./backend/newsseug
+    container_name: newsseug-backend
     depends_on:
       - mariadb
       - redis
+      - es
     environment:
       - TZ=Asia/Seoul
     ports:
-      - '8080:8080'
+      - 8080:8080
     restart: always
     networks:
       - newsseug-network
-
-volumes:
-  mydata:
-  redisdata:
 
 networks:
   newsseug-network:

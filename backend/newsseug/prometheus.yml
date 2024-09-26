@@ -1,0 +1,6 @@
+scrape_configs:
+  - job_name: 'newsseug-server'
+    scrape_interval: 15s
+    metrics_path: '/newsseug/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8888']

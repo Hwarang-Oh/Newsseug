@@ -7,3 +7,22 @@ spring:
 
   config:
     import: application-jwt.yml, application-oauth.yml
+
+management:
+
+  server:
+    port: 8888
+
+  endpoint:
+    health:
+      show-details: always
+
+  endpoints:
+    web:
+      base-path: /newsseug
+      exposure:
+        include: health, prometheus
+
+    jmx:
+      exposure:
+        exclude: '*'
