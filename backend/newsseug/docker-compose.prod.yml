@@ -60,7 +60,6 @@ services:
       - newsseug-network
 
   prometheus:
-    user: root
     image: prom/prometheus:latest
     container_name: prometheus
     depends_on:
