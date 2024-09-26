@@ -25,8 +25,14 @@ export const getPressDetail = async (pressId: number): Promise<PressDetail> => {
   try {
     const response = await api.get(`${PRESS_URL}/${pressId}`);
     return response.data;
-  } catch (error) {
-    console.error('언론사 정보 조회 실패:', error);
-    throw error;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error('Not Found');
+      } else {
+        console.error('언론사 정보 조회 실패:', error);
+        throw error;
+      }
+    } else throw error;
   }
 };

@@ -1,8 +1,10 @@
 export interface ArticleListCardProps {
-  imgUrl: string;
+  thumbnailUrl: string;
   title: string;
   viewCount: number;
   pressName: string;
+  id: number;
+  createdAt: string;
   width?: string;
   height?: string;
 }

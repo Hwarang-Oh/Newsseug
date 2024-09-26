@@ -37,9 +37,9 @@ function Router() {
 
         <Route path="/mypage">
           <Route path="" element={<MyPage />} />
-          <Route path="scraps" element={<AllScraps />} />
+          <Route path="folders" element={<AllScraps />} />
           <Route path="history" element={<History />} />
-          <Route path="scraps/:scrapId" element={<Scrap />} />
+          <Route path="folders/:folderId" element={<Scrap />} />
         </Route>
 
         <Route path="/search" element={<Search />} />

@@ -54,3 +54,8 @@ export interface MemberStore {
   providerType: ProviderType;
   providerId: string;
 }
+
+export interface MemberInfo {
+  nickname: string;
+  profileImageUrl: string;
+}

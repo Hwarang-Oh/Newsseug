@@ -1,18 +1,23 @@
+import { Folder, FolderList } from 'types/api/folder';
 import api from 'apis/commonApi';
 import { AxiosResponse, isAxiosError } from 'axios';
 const FOLDERS_URL = `/api/v1/folders`;
 
 /**
  * IMP : 사용자 폴더 목록 조회를 위한 API
- * TODO : 폴더 Type 정의 필요
  */
-export const getFolderList = async (): Promise<void> => {
+export const getFolderList = async (): Promise<FolderList> => {
   try {
+    const response: AxiosResponse<FolderList> = await api.get(`${FOLDERS_URL}`);
+    return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
         throw new Error('Not Found');
-      } else throw error;
+      } else {
+        console.error('폴더 목록 조회 실패:', error);
+        throw error;
+      }
     } else throw error;
   }
 };
@@ -54,13 +59,10 @@ export const saveArticleToFolder = async (
 /**
  * IMP : 사용자가 폴더에 저장한 기사 목록을 조회하는 API
  */
-export const getArticleListInFolder = async (
-  folderId: number,
-): Promise<void> => {
+export const getFolderInfo = async (folderId: number): Promise<Folder> => {
   try {
-    const response: AxiosResponse<boolean> = await api.get(
-      `${FOLDERS_URL}/${folderId}`,
-    );
+    const response = await api.get(`${FOLDERS_URL}/${folderId}`);
+    return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

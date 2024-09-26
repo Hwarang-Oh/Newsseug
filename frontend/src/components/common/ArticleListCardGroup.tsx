@@ -13,13 +13,15 @@ function ArticleListCardGroup({
 }: Readonly<ArticleListCardGroupProps>) {
   return (
     <Container>
-      {articleList.map((article, idx) => (
+      {articleList.map((article) => (
         <ArticleListCard
-          key={idx}
-          imgUrl={article.imgUrl}
+          key={article.id}
+          thumbnailUrl={article.thumbnailUrl}
           title={article.title}
           viewCount={article.viewCount}
           pressName={article.pressName}
+          id={article.id}
+          createdAt={article.createdAt}
           width="100%"
         />
       ))}

@@ -9,7 +9,7 @@ function Scrap({
   scrapTitle,
   scrapCnt,
   onClick,
-}: ScrapProps) {
+}: Readonly<ScrapProps>) {
   return (
     <Wrapper width={width} height={height} url={thumbnailUrl} onClick={onClick}>
       <ScrapTitle width={width}>{scrapTitle}</ScrapTitle>

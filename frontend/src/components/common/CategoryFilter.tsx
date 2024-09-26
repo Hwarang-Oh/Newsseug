@@ -7,6 +7,8 @@ import React, {
   useMemo,
 } from 'react';
 import { CategoryFilterProps } from 'types/common/common';
+import { parseRgbString } from 'utils/parseRgbString';
+import { getBrightness } from 'utils/getBrightness';
 
 /**
  * IMP : CategoryFilter ( News Category Filter ) Component
@@ -27,8 +29,17 @@ function CategoryFilter({
   );
 
   const [isSticky, setIsSticky] = useState(false);
+  const [brightness, setBrightness] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyTriggerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (bgColor) {
+      const [r, g, b] = parseRgbString(bgColor);
+
+      setBrightness(getBrightness(r, g, b));
+    }
+  }, [bgColor]);
 
   const handleIntersect = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -47,8 +58,7 @@ function CategoryFilter({
   useEffect(() => {
     if (isPressPage && stickyTriggerRef.current) {
       const observer = new IntersectionObserver(handleIntersect, {
-        threshold: [0, 1],
-        rootMargin: '47px 0px 0px 0px',
+        rootMargin: '200px 0px 0px 0px',
       });
       observer.observe(stickyTriggerRef.current);
       return () => observer.disconnect();
@@ -74,6 +84,7 @@ function CategoryFilter({
         {categories.map((category) => (
           <FilterButton
             key={category}
+            $brightness={brightness}
             $isPressPage={isPressPage}
             $isSticky={isSticky}
             $active={activeCategory === category}
@@ -94,7 +105,7 @@ const StickyTrigger = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
+  height: 0px;
   visibility: hidden;
 `;
 
@@ -116,7 +127,7 @@ const Container = styled.div<{
   scroll-behavior: smooth;
   position: ${({ $isPressPage: isPressPage }) =>
     isPressPage ? 'sticky' : 'static'};
-  top: ${({ $isPressPage: isPressPage }) => (isPressPage ? '48px' : 'auto')};
+  top: ${({ $isPressPage: isPressPage }) => (isPressPage ? '45px' : 'auto')};
   background-color: ${({
     $isSticky,
     $isPressPage: isPressPage,
@@ -125,7 +136,7 @@ const Container = styled.div<{
   }) => (isPressPage && $isSticky ? bgColor : theme.bgColor)};
   z-index: ${({ $isPressPage: isPressPage }) => (isPressPage ? '999' : 'auto')};
   will-change: background-color;
-  transition: background-color 0.1s ease-out;
+  transition: background-color 0.05s ease-out;
 
   &::-webkit-scrollbar {
     display: none;
@@ -146,13 +157,17 @@ const getBorder = (
 };
 
 const getColor = (
+  $brightness: number,
   $isSticky: boolean,
   theme: any,
   $active?: boolean,
   $isPressPage?: boolean,
 ) => {
   if ($isPressPage && $isSticky) {
-    return theme.textColor;
+    if ($active) {
+      return theme.textColor;
+    }
+    return $brightness > 128 ? '#202020' : '#ffffff';
   }
   return $active ? theme.bgColor : theme.textColor;
 };
@@ -170,6 +185,7 @@ const getBackgroundColor = (
 };
 
 const FilterButton = styled.button<{
+  $brightness: number;
   $active?: boolean;
   $isPressPage?: boolean;
   $isSticky: boolean;
@@ -183,8 +199,8 @@ const FilterButton = styled.button<{
   padding: 6px 12px;
   justify-content: center;
   align-items: center;
-  color: ${({ $active, theme, $isPressPage, $isSticky }) =>
-    getColor($isSticky, theme, $active, $isPressPage)};
+  color: ${({ $brightness, $active, theme, $isPressPage, $isSticky }) =>
+    getColor($brightness, $isSticky, theme, $active, $isPressPage)};
   border-radius: 3px;
   background-color: ${({ $active, $isPressPage, $isSticky, theme }) =>
     getBackgroundColor($isSticky, theme, $active, $isPressPage)};

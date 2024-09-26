@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 import ArrowIcon from 'assets/arrowIcon.svg';
+import ArrowIconWhite from 'assets/arrowIconWhite.svg';
 import { useNavigate } from 'react-router-dom';
 import { SubLayoutProps } from 'types/common/layout';
 import { useEffect, useState } from 'react';
 import { parseRgbString } from 'utils/parseRgbString';
 import { getBrightness } from 'utils/getBrightness';
+import { Helmet } from 'react-helmet-async';
+import { rgbToHex } from 'utils/rgbToHex';
 
 /**
  * IMP : SubHeader Component ( SubLayout ) => BackBtn ( 뒤로가기 ), MainSection ( children )
@@ -20,10 +23,12 @@ function SubHeader({
 }: Readonly<SubLayoutProps>) {
   const navigate = useNavigate();
   const [brightness, setBrightness] = useState<number>(0);
+  const [hexaColor, setHexaColor] = useState<string>('');
 
   useEffect(() => {
     if (headerColor) {
       const [r, g, b] = parseRgbString(headerColor);
+      setHexaColor(rgbToHex(r, g, b));
       setBrightness(getBrightness(r, g, b));
     }
   }, [headerColor]);
@@ -31,15 +36,24 @@ function SubHeader({
   const handleGoBack = () => {
     navigate(-1);
   };
+
   return (
-    <Wrapper $headerColor={headerColor}>
-      <BackBtn onClick={handleGoBack}>
-        <img src={ArrowIcon} alt="back arrow icon" />
-      </BackBtn>
-      <MainSection $brightness={brightness} $isSearch={!!isSearch}>
-        {children}
-      </MainSection>
-    </Wrapper>
+    <>
+      <Helmet>
+        <meta name="theme-color" content={hexaColor} />
+      </Helmet>
+      <Wrapper $headerColor={headerColor}>
+        <BackBtn onClick={handleGoBack}>
+          <img
+            src={brightness > 128 ? ArrowIcon : ArrowIconWhite}
+            alt="back arrow icon"
+          />
+        </BackBtn>
+        <MainSection $brightness={brightness} $isSearch={!!isSearch}>
+          {children}
+        </MainSection>
+      </Wrapper>
+    </>
   );
 }
 
@@ -64,19 +78,15 @@ const BackBtn = styled.button`
   border: none;
   outline: none;
   background: none;
+  padding: 0;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10000;
   &:focus {
     transition: 0.2s;
     background-color: ${({ theme }) => theme.relaxColor.light + 70};
-  }
-  img {
-    width: 20px;
-    height: 20px;
   }
 `;
 
