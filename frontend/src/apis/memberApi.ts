@@ -6,11 +6,6 @@ import { MemberFolderList } from '@/types/api/folder';
 const MEMBER_URL = '/api/v1/members';
 
 /**
- * IMP : JWT 토큰을 이용한 로그인을 위한 API
- */
-export const login = async (): Promise<void> => {};
-
-/**
  * IMP : 회원 정보 등록을 위한 API
  * @param input
  * @returns
@@ -33,7 +28,7 @@ export const registerMember = async (
 };
 
 /**
- * IMP : 정보 조회를 위한 API
+ * IMP : 회원 정보 조회를 위한 API
  */
 export const getMemberInfo = async (): Promise<MemberInfo> => {
   try {

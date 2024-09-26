@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MemberState, MemberStore, ProviderType } from 'types/api/member';
 
-// TODO : Folder, History State는 따로 관리한다.
 const initialState: MemberStore = {
-  member: { nickname: '노래하는마라샹궈', gender: 'MALE', age: 27 },
+  member: { nickname: '', gender: 'MALE', age: 27 },
   AccessToken: '',
   providerType: 'none',
   providerId: '',
