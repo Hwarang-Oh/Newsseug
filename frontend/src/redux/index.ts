@@ -1,6 +1,7 @@
 import throttle from 'lodash.throttle';
 import memberReducer from './memberSlice';
 import articleReducer from './articleSlice';
+import memberFolderReducer from './memberFolderSlice';
 import { configureStore } from '@reduxjs/toolkit';
 import {
   saveStateToSessionStorage,

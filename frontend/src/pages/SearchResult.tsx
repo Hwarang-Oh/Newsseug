@@ -5,6 +5,7 @@ import InputSection from 'components/search/InputSection';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
+import article from 'db/article.json';
 
 const dummydata = [
   {
@@ -41,7 +42,7 @@ function SearchResult() {
           activeCategory={activeCategory}
           setActiveCategory={setActiveCategory}
         />
-        {dummydata.map((item, idx) => {
+        {article.articles.map((item, idx) => {
           if (Array.isArray(item)) {
             return <ArticleListCardGroup key={idx} articleList={item} />;
           } else if (typeof item === 'object' && item != null) {
