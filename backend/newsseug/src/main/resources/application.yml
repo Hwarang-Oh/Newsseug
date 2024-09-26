@@ -10,6 +10,9 @@ spring:
 
 management:
 
+  server:
+    port: 8888
+
   endpoint:
     health:
       show-details: always
