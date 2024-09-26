@@ -50,7 +50,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 12px 0;
+  padding-top: 12px;
   align-items: center;
   align-self: stretch;
 `;

@@ -1,6 +1,7 @@
 import throttle from 'lodash.throttle';
 import memberReducer from './memberSlice';
 import articleReducer from './articleSlice';
+import subscribeReducer from './subscribeSlice';
 import memberFolderReducer from './memberFolderSlice';
 import { configureStore } from '@reduxjs/toolkit';
 import {
@@ -15,6 +16,7 @@ export const store = configureStore({
     member: memberReducer,
     memberFolder: memberFolderReducer,
     article: articleReducer,
+    subscribedPress: subscribeReducer,
   },
   preloadedState: persistedState,
 });

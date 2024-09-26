@@ -7,7 +7,7 @@ function SubscribePressFilter({
   activePress,
   setActivePress,
 }: Readonly<SubscribePressFilterProps>) {
-  const handleCardClick = (id: string) => {
+  const handleCardClick = (id: number) => {
     setActivePress(id === activePress ? null : id);
   };
   return (

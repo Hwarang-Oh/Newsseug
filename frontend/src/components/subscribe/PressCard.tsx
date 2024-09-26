@@ -13,7 +13,7 @@ function PressCard({ press, isSubscribed, toggleSubscribe }: PressCardProps) {
   return (
     <Container onClick={() => toggleSubscribe(press)}>
       <CustomLogoContainer $isSubscribed={isSubscribed}>
-        <PressLogo src={press.imgUrl} />
+        {/* <PressLogo src={press.imgUrl} /> */}
         <SubscribeIcon>
           {isSubscribed ? (
             <img src={SubscribeMinusIcon} alt="plus icon" />
@@ -22,7 +22,7 @@ function PressCard({ press, isSubscribed, toggleSubscribe }: PressCardProps) {
           )}
         </SubscribeIcon>
       </CustomLogoContainer>
-      {/* <PressName>{press.pressName}</PressName> */}
+      <PressName>{press.name}</PressName>
     </Container>
   );
 }

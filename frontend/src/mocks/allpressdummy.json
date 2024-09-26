@@ -1,0 +1,125 @@
+{
+  "press": [
+    {
+      "id": 1,
+      "name": "YTN",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/b4d5/3d0f/103a4efd4d2d73d5579df2ae68bfb62a?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=bCibBHL8VpVT6D0cQDK-s5mShPEQxJrmPYVEGYUwM0160nZDIHP5TDFvgPBFe1~c53SQh0vEuVS7~2-bub5kE1cANrBDF1oUWqU7SqhPzJ3dTu3e26sZHj0zTtYtBCQV~9qfFABBfqgN0bHR3o10MBEjhjlfB52hK-24hk0PnEmbj0CDL29TXV9gs-UWiozl8rUIsH2u-TelgPka98eARIsL9gfQ7p7e-jiNMV-dwSSH3arpOSaIPFQ5jBj8uSKUrbbiD1ODv7gg7ZhqZP6o~PvmkIaVNQLh4GtY5boTqU1rtyuv2ZWiO188Kwz-tThj77V8-X4GHx8kXPArB3oFPg__",
+      "isSubscribed": false
+    },
+    {
+      "id": 2,
+      "name": "KBS",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/040b/d313/600f3e479ead8ab6994454ceaafa2832?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=HaVzOepAPkm7y6tZ4PTkfn5IJUj1CRHZ3mU43Yhf2rbDKY15GVmEA4Cl2Kb-vXM1exvsPF2gG9V2uAW5KJqFHwTU8m2iPqBGACYHhk7nQkU2E3oOXzX~ikkdi97Cb20rZonE6XmkPVVtQJByQ2PVyhPDAuDhsnd5xNytR6GaT9pteBXnYNTJig5alxg6B0jxCxxu1KP6xXLGWlY1lw0UOFwTn7NOlC2Pcvhzo74lZevrJLfAofM0jBRzQQ0Cr4tiHKunOcCtI1JtCQnMbAjSAeRDVDCr2kfi0C0rYGTTlfJYFzYEcIwFZ9sUTiRrZ5I6-GTVanQNYMTBADHH8wQKJw__",
+      "isSubscribed": false
+    },
+    {
+      "id": 3,
+      "name": "MBC",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/12f4/1c3d/9a1b5a92bfe40d1a5d6f98f0e40d6e65",
+      "isSubscribed": false
+    },
+    {
+      "id": 4,
+      "name": "SBS",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/d6a5/4c7f/b3f4abf7e1e6b95e1f8db939d7a2f4c4",
+      "isSubscribed": false
+    },
+    {
+      "id": 5,
+      "name": "JTBC",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/9f1d/1b4e/67434b9f4ab78a1e1d7e88fdb63cb746",
+      "isSubscribed": false
+    },
+    {
+      "id": 6,
+      "name": "연합뉴스",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/b2b3/b157/223ce4970ed0dc7746167ac18aab02aa?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=osUXFvY9uPriVzI0ZA3THKj5eWNR223k~Mrf4q~rhrajtuLCn6A4qyYf4rFgNJ0f1H0AJ9AMQ7DnSPRB3Adlj1V49Sy53KN8~a7MTdteNVAAqaMNLEx5TE9j4H5QgfJiks2f~ADiTJOKeNnPS1YyW3VEE8S23rQRhHBwFee7qRlcy~ITGMS3vYcuiVWKv5k0pB5EHEs0zHKCHbs9Ct3WyfJgBS4dQUgPW35zbOWqTaK6ccAGh2GG6NiJwiMuSOZ7Ac8iEg2yxxbGcuy4FeTxrNrON2p-FKvjB6Sf-6tg7u-iirefFQjRl~SpYYP-3EQBtVFdL1oUoGHKGJwqJVio-Q__",
+      "isSubscribed": false
+    },
+    {
+      "id": 7,
+      "name": "동아일보",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/1d3f/7e3d/c3a7b2b6c2b68e8d7f32759ea2ab6c97",
+      "isSubscribed": false
+    },
+    {
+      "id": 8,
+      "name": "경향신문",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/84a5/017b/40ace5b75f1a2f623d239ecdca4b2146?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ejW2YuG5NgMEx0R-qSw8Ha~3Y7p~mhEyV2J8pOg03ZE1nOk4EW566jsH3N4VtZ2eFANfxsaMcsSQfr8IG-dqZk4uIZWtRrJvMKwnPCzdaYGfAMXTVCMOnnBDqgO3Udi4MjsjptlL2B-pGEjRS~uV9f72tkAz462MMmByoIeRTrvXaZAK8QPssiOkBqhNyNl2GHCzwoO-AlhJjRse5hHH-1Ix-0ODFioHpnH0Sb4DDhGP19fIvoYCMCgf0oDGwdSO3WQ1O6Ld3nnVE2m1C8qpyQhxEHT2dj6PB3VYrIMg6t5xxPRQIzTObqBoLijQT7Zo8~0HXC-g5ixYmhQ9PPebGQ__",
+      "isSubscribed": false
+    },
+    {
+      "id": 9,
+      "name": "조선일보",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/3d1f/2c2d/7a9f1b1a71c7b6345d824f4e5cbbfbd4",
+      "isSubscribed": false
+    },
+    {
+      "id": 10,
+      "name": "매일경제",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/2d5e/3d1f/27b2b6e7d3f4b4a7c3b4f4a7a9b3a4b6",
+      "isSubscribed": false
+    },
+    {
+      "id": 11,
+      "name": "한국경제",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/9f1d/2f2d/72f1b3a4d6f7c5f64a2b4e5f7a9b8c5f",
+      "isSubscribed": false
+    },
+    {
+      "id": 12,
+      "name": "세계일보",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/3f1d/2d2e/92f1b4d6a8c4f5a7b3c4e5f9f2b4d7c6",
+      "isSubscribed": false
+    },
+    {
+      "id": 13,
+      "name": "국민일보",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/8f1d/3d2f/62b3a4f6e4a5c7b8f2c7d8a9f3a9d5c7",
+      "isSubscribed": false
+    },
+    {
+      "id": 14,
+      "name": "한국일보",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/1f2e/1d3f/41d4a7e8f9b2c5a7b3d4e8a9d4b2e7f6",
+      "isSubscribed": false
+    },
+    {
+      "id": 15,
+      "name": "서울신문",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/5e2d/4d2e/82f1b4a6d7a4b5f7a4d8f6a3b7d9f3a5",
+      "isSubscribed": false
+    },
+    {
+      "id": 16,
+      "name": "노컷뉴스",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/9d3e/2d1f/83d4a7f8e4a5b7d8f2c8a9d7f2b4e5d9",
+      "isSubscribed": false
+    },
+    {
+      "id": 17,
+      "name": "오마이뉴스",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/2f4e/2d3f/74b4d6e9f3a4c7f5b2c7e9a3d4b5f2e4",
+      "isSubscribed": false
+    },
+    {
+      "id": 18,
+      "name": "미디어오늘",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/5e2e/1d2f/74d6a8f9e4b3c5f7a2c9f7b8f3a9d5e6",
+      "isSubscribed": false
+    },
+    {
+      "id": 19,
+      "name": "한겨레",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/5429/92b8/ea563bff94050e6001d9b09458e0864f?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=HnnJ6d9u9kTNAy3WonXKX~v34bmNVzLtOPsl-TZ-Z0JUD3Ncr9d1-C9AaA~C7CoRFT7Z8rRaTD2tybut2i~G2lCWA7FnuzngYuLjE2ts2PH2VfODyNgy7rFgFIY7xeYVqMBE1T6nnDJRgYoYfZuTwP0k~gbVJ0nu2FvEzcA1K~IoojTNIuSFg7CfMwHp6dBHYEr~KKO96YoxsXK8d73N3xM6CtUxEMPFdvUks9iPp0Ba4WMt8gtHoLwiO0q7jwThbFrFFXIuf9I2ahnolMaeCnHRUrGxnHnlAF0E0Em43~26ocd0kwtNZSrid4FTU3XTrY7M2nGtTj8twLu5IS674w__",
+      "isSubscribed": false
+    },
+    {
+      "id": 20,
+      "name": "프레시안",
+      "imgUrl": "https://s3-alpha-sig.figma.com/img/6f2d/2d3e/62f1a9f8e5c7d4b8f2d9f7a8f3c4b5d6",
+      "isSubscribed": false
+    }
+  ],
+  "isSubscribed": false
+}
