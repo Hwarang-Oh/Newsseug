@@ -42,12 +42,14 @@ dependencies {
      * - Web
      * - Security
      * - OAuth2
+     * - Actuator
      */
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation "org.springframework.boot:spring-boot-starter-security"
     testImplementation "org.springframework.security:spring-security-test"
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     /**
      * DB 의존성
@@ -68,9 +70,10 @@ dependencies {
      * - Lombok
      * - Swagger
      * - Docker
-     * - validation
-     * - jjwt
+     * - Validation
+     * - Jwt (jjwt)
      *  - api, impl, jackson
+     * - Prometheus
      */
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -80,6 +83,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
 
     /**
      * Test 의존성

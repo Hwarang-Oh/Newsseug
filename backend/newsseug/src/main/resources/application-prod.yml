@@ -6,8 +6,6 @@ app:
     base-url: https://j11a301.p.ssafy.io
   oauth:
     base-url: https://j11a301.p.ssafy.io
-  es:
-    base-url: http://es:9200
 
 spring:
   docker:
@@ -33,5 +31,6 @@ spring:
       port: 6379
 
     elasticsearch:
+      url: es:9200
       repositories:
         enabled: true
