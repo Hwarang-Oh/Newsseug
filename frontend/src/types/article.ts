@@ -9,10 +9,6 @@ export interface ModalProps {
   onRequestClose: () => void;
 }
 
-export interface MiddleModalProps extends ModalProps {
-  modalTitle: string;
-}
-
 export interface ScrapModalProps extends ModalProps {
   onCreateModalOpen: () => void;
 }
@@ -32,13 +28,4 @@ export interface ArticleButtonsProp {
   dislikeInfo: ArticleLike;
   handleScrapClick: () => void;
   handleReportClick: () => void;
-}
-
-export interface ReportModalProp {
-  submitValue: string;
-  setSubmitValue: (submitValue: string) => void;
-}
-
-export interface CreateScrapModalProps extends ReportModalProp {
-  isOpen: boolean;
 }

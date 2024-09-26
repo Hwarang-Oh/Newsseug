@@ -1,4 +1,4 @@
-import { Folder, FolderList } from 'types/api/folder';
+import { Folder, FolderList, MemberFolderList } from 'types/api/folder';
 import api from 'apis/commonApi';
 import { AxiosResponse, isAxiosError } from 'axios';
 const FOLDERS_URL = `/api/v1/folders`;
@@ -25,8 +25,12 @@ export const getFolderList = async (): Promise<FolderList> => {
 /**
  * IMP : 사용자 폴더 생성을 위한 API
  */
-export const createFolder = async (): Promise<void> => {
+export const createFolder = async (
+  folderName: string,
+): Promise<MemberFolderList> => {
   try {
+    const response = await api.post(`${FOLDERS_URL}`, { name: folderName });
+    return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

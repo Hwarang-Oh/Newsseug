@@ -6,7 +6,8 @@ import ScrapModal from 'components/articles/ScrapModal';
 import ArticleButtons from 'components/articles/ArticleButtons';
 import playIcon from 'assets/playIcon.svg';
 import { ArticleVideoProp } from 'types/article';
-import MiddleModal from 'components/articles/MiddleModal';
+import CreateScrapModal from './CreateScrapModal';
+import ReportModal from './ReportModal';
 
 const likeInfo = {
   isLike: false,
@@ -18,7 +19,7 @@ const dislikeInfo = {
   likeCount: 1000,
 };
 
-function ArticleVideo({ src, setIsModalOpen }: ArticleVideoProp) {
+function ArticleVideo({ src, setIsModalOpen }: Readonly<ArticleVideoProp>) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -101,22 +102,20 @@ function ArticleVideo({ src, setIsModalOpen }: ArticleVideoProp) {
           />
         )}
         {isCreateModalOpen && (
-          <MiddleModal
+          <CreateScrapModal
             isOpen={isCreateModalOpen}
             onRequestClose={() => {
               setIsScrapModalOpen(true);
               setIsCreateModalOpen(false);
             }}
-            modalTitle="새 폴더 생성"
           />
         )}
         {isReportModalOpen && (
-          <MiddleModal
+          <ReportModal
             isOpen={isReportModalOpen}
             onRequestClose={() => {
               setIsReportModalOpen(false);
             }}
-            modalTitle="동영상 신고하기"
           />
         )}
       </VideoWrapper>
