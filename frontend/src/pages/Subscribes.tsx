@@ -3,31 +3,25 @@ import CategoryFilter from 'components/common/CategoryFilter';
 import MainLayout from 'components/common/MainLayout';
 import { useEffect, useState } from 'react';
 import SubscribePressFilter from 'components/subscribe/SubscribePressFilter';
-import { getSubscribedPressList } from 'apis/subscribe';
-import { PressInfo } from 'types/subscribe';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/index';
+import { fetchSubscribedPress } from '../redux/subscribeSlice';
 
 function Subscribes() {
   const [activeCategory, setActiveCategory] = useState<string>('전체');
-  const [activePress, setActivePress] = useState<string | null>(null);
+  const [activePress, setActivePress] = useState<number | null>(null);
 
-  const [subscribedPress, setSubscribedPress] = useState<PressInfo[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const { subscribedPress, loading, error } = useSelector(
+    (state: RootState) => state.subscribedPress,
+  );
 
   useEffect(() => {
-    const fetchSubscribedPress = async () => {
-      try {
-        const data = await getSubscribedPressList();
-        setSubscribedPress(data);
-      } catch (error) {
-        setError('Failed to fetch subscribed press');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSubscribedPress(); // 데이터 로드 실행
-  }, []);
+    // subscribedPress에 값이 없을 때만 API 호출
+    if (subscribedPress.length === 0) {
+      dispatch(fetchSubscribedPress());
+    }
+  }, [dispatch, subscribedPress.length]);
 
   // 로딩 상태 처리
   if (loading) return <p>Loading...</p>;
