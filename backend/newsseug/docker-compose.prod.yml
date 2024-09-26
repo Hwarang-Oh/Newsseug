@@ -68,7 +68,7 @@ services:
       - /home/ubuntu/config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - /home/ubuntu/volume/prometheus-data:/var/lib/prometheus
     ports:
-      - 9000:9090
+      - 8887:9090
     extra_hosts:
       host.docker.internal: host-gateway
     networks:
