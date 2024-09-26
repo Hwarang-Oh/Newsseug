@@ -3,7 +3,6 @@ import MainLayout from 'components/common/MainLayout';
 import Section from 'components/home/Section';
 import useAutoLogin from 'hooks/useAutoLogin';
 import { useEffect, useState } from 'react';
-import { Article } from 'types/api/article';
 import { ArticleListCardProps } from 'types/common/common';
 import {
   fetchAllArticles,
@@ -17,14 +16,6 @@ import {
  */
 function Home() {
   useAutoLogin();
-  const articleListTransform = (article: Article[]): ArticleListCardProps[] => {
-    return article.map((item: any) => ({
-      imgUrl: item.thumbnailUrl,
-      title: item.title,
-      viewCount: item.viewCount,
-      pressName: item.pressName,
-    }));
-  };
   const [articleLists, setArticleLists] = useState<ArticleListCardProps[][]>(
     [],
   );
@@ -40,19 +31,13 @@ function Home() {
         ]);
 
         // 데이터를 변환하고 상태로 업데이트
-        setArticleLists([
-          articleListTransform(data1),
-          articleListTransform(data2),
-          articleListTransform(data3),
-        ]);
+        setArticleLists([data1, data2, data3]);
       } catch (error) {
         console.error('Error fetching articles:', error);
       }
     };
-
     loadAllArticles();
   }, []);
-
   return (
     <MainLayout>
       <FadeInWrapper>

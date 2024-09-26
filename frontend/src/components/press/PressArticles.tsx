@@ -1,14 +1,13 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import SubTitle from '../mypage/SubTitle';
-import ArticleListCardGroup from '../common/ArticleListCardGroup';
-import data from 'db/data.json';
+import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
+import article from 'db/article.json';
 
 function PressArticles() {
   return (
     <Wrapper>
       <SubTitle title="업로드한 영상" />
-      <ArticleListCardGroup articleList={data.articles} />
+      <ArticleListCardGroup articleList={article.articles} />
     </Wrapper>
   );
 }

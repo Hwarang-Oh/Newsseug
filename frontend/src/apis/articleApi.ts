@@ -1,7 +1,8 @@
 import api from 'apis/commonApi';
 import article from 'db/article.json';
 import { AxiosResponse, isAxiosError } from 'axios';
-import { Article } from 'types/api/article';
+import { ArticleListCardProps } from '@/types/common/common';
+import { G } from 'msw/lib/core/GraphQLHandler-Cu4Xvg4S';
 const ARTICLES_URL = `/api/v1/articles`;
 
 /**
@@ -13,16 +14,17 @@ const ARTICLES_URL = `/api/v1/articles`;
 /**
  * IMP : Home 화면에서 사용하는 모든 Articles를 Fetch하는 API
  */
-export const fetchAllArticles = async (): Promise<Article[]> => {
+export const fetchAllArticles = async (): Promise<ArticleListCardProps[]> => {
   try {
-    const response: AxiosResponse<Article[]> = await api.get(
+    const response: AxiosResponse<ArticleListCardProps[]> = await api.get(
       `${ARTICLES_URL}/all`,
     );
-    return response.data;
+    // return response.data;
+    return article.articles;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       // IMP : API 없거나, 404 Not Found Error가 발생할 경우 Mock Data를 사용하고 있음.
-      if (error.response?.status === 401) {
+      if (error.response?.status === 400) {
         console.warn('API가 없으므로 Mock 데이터를 반환합니다.');
         return article.articles;
       } else throw error;
@@ -33,15 +35,22 @@ export const fetchAllArticles = async (): Promise<Article[]> => {
 /**
  * IMP : Home 화면에서 사용하는 '오늘의 뉴스' Articles를 Fetch하는 API
  */
-export const fetchArticlesByToday = async (): Promise<Article[]> => {
+export const fetchArticlesByToday = async (): Promise<
+  ArticleListCardProps[]
+> => {
   try {
-    const response: AxiosResponse<Article[]> = await api.get(
+    const response: AxiosResponse<ArticleListCardProps[]> = await api.get(
       `${ARTICLES_URL}/today`,
     );
-    return response.data;
+    // return response.data;
+    return (
+      article.articleByCategory.find(
+        (eachSection) => eachSection.category === '오늘의 뉴스',
+      )?.articleList || []
+    );
   } catch (error: unknown) {
     if (isAxiosError(error)) {
-      if (error.response?.status === 401) {
+      if (error.response?.status === 400) {
         console.warn('API가 없으므로 Mock 데이터를 반환합니다.');
         return (
           article.articleByCategory.find(
@@ -56,15 +65,18 @@ export const fetchArticlesByToday = async (): Promise<Article[]> => {
 /**
  * IMP : Home 화면에서 사용하는 '연령대별 뉴스' Articles를 Fetch하는 API
  */
-export const fetchArticlesByAge = async (age: number): Promise<Article[]> => {
+export const fetchArticlesByAge = async (
+  age: number,
+): Promise<ArticleListCardProps[]> => {
   try {
-    const response: AxiosResponse<Article[]> = await api.get(
+    const response: AxiosResponse<ArticleListCardProps[]> = await api.get(
       `${ARTICLES_URL}?age=${encodeURIComponent(age)}`,
     );
-    return response.data;
+    // return response.data;
+    return [];
   } catch (error: unknown) {
     if (isAxiosError(error)) {
-      if (error.response?.status === 401) {
+      if (error.response?.status === 400) {
         return [];
       } else throw error;
     } else throw error;
@@ -77,15 +89,20 @@ export const fetchArticlesByAge = async (age: number): Promise<Article[]> => {
  */
 export const fetchArticlesByCategory = async (
   category: string,
-): Promise<Article[]> => {
+): Promise<ArticleListCardProps[]> => {
   try {
-    const response: AxiosResponse<Article[]> = await api.get(
+    const response: AxiosResponse<ArticleListCardProps[]> = await api.get(
       `${ARTICLES_URL}?category=${encodeURIComponent(category)}`,
     );
-    return response.data;
+    // return response.data;
+    return (
+      article.articleByCategory.find(
+        (eachSection) => eachSection.category === category,
+      )?.articleList || []
+    );
   } catch (error) {
     if (isAxiosError(error)) {
-      if (error.response?.status === 401) {
+      if (error.response?.status === 400) {
         console.warn('API가 없으므로 Mock 데이터를 반환합니다.');
         return (
           article.articleByCategory.find(
@@ -102,15 +119,17 @@ export const fetchArticlesByCategory = async (
  * *  ArticleId를 통해 각 Article 1개를 Fetch한다.
  * @param articleId
  */
-export const fetchEachArticle = async (articleId: number): Promise<Article> => {
+export const fetchEachArticle = async (
+  articleId: number,
+): Promise<ArticleListCardProps> => {
   try {
-    const response: AxiosResponse<Article> = await api.get(
+    const response: AxiosResponse<ArticleListCardProps> = await api.get(
       `${ARTICLES_URL}/${articleId}`,
     );
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
-      if (error.response?.status === 404) {
+      if (error.response?.status === 400) {
         throw new Error('Not Found');
       } else throw error;
     } else throw error;
