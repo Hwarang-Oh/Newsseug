@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { store } from '../redux/store';
+import { store } from '../redux/index';
 
 /**
  * IMP : Axios를 사용한 API 호출을 위한 기본 설정.

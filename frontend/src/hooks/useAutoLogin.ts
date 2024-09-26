@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from 'redux/store';
+import { AppDispatch } from 'redux/index';
 import { getAccessToken } from 'apis/loginApi';
 import { setProviderInfo } from '../redux/memberSlice';
 import { setCookie } from 'utils/cookieUtil';
