@@ -22,7 +22,7 @@ function PressCard({ press, isSubscribed, toggleSubscribe }: PressCardProps) {
           )}
         </SubscribeIcon>
       </CustomLogoContainer>
-      <PressName>{press.pressName}</PressName>
+      {/* <PressName>{press.pressName}</PressName> */}
     </Container>
   );
 }

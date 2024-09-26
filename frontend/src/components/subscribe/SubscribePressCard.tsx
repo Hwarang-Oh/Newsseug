@@ -22,7 +22,7 @@ function SubscribePressCard({
       <LogoContainer>
         <PressLogo src={press.imgUrl} />
       </LogoContainer>
-      <PressName>{press.pressName}</PressName>
+      <PressName>{press.name}</PressName>
     </Container>
   );
 }

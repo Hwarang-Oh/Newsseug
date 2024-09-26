@@ -6,7 +6,7 @@ export interface SubscribeHeaderProps {
 
 export interface PressInfo {
   id: string;
-  pressName: string;
+  name: string;
   imgUrl: string;
   isSubscribed?: boolean;
 }

@@ -8,9 +8,9 @@ import data from 'db/data.json';
 
 function AllSubscribes() {
   // 구독한 언론사 리스트 객체
-  const [subscribeList, setSubscribeList] = useState<PressInfo[]>(
-    data.subscribeData,
-  );
+  // const [subscribeList, setSubscribeList] = useState<PressInfo[]>(
+  //   data.subscribeData,
+  // );
 
   // 전체 언론사에 대해 구독 여부 저장하는 id:isSubscribed 형태의 객체 상태
   const [subscriptionStatus, setSubscriptionStatus] = useState<{
@@ -26,28 +26,28 @@ function AllSubscribes() {
   });
 
   // 구독 or 구독 취소 토글
-  const toggleSubscribe = (press: PressInfo) => {
-    const isSubscribed = subscriptionStatus[press.id];
-    // 구독 상태 변경
-    setSubscriptionStatus((prev) => ({
-      ...prev,
-      [press.id]: !prev[press.id],
-    }));
+  // const toggleSubscribe = (press: PressInfo) => {
+  //   const isSubscribed = subscriptionStatus[press.id];
+  //   // 구독 상태 변경
+  //   setSubscriptionStatus((prev) => ({
+  //     ...prev,
+  //     [press.id]: !prev[press.id],
+  //   }));
 
-    // 구독 리스트 업데이트
-    if (isSubscribed) {
-      setSubscribeList((prev) => prev.filter((p) => p.id !== press.id));
-    } else {
-      setSubscribeList((prev) => [
-        ...prev,
-        {
-          id: press.id,
-          pressName: press.pressName,
-          imgUrl: press.imgUrl,
-        },
-      ]);
-    }
-  };
+  //   // 구독 리스트 업데이트
+  //   if (isSubscribed) {
+  //     setSubscribeList((prev) => prev.filter((p) => p.id !== press.id));
+  //   } else {
+  //     setSubscribeList((prev) => [
+  //       ...prev,
+  //       {
+  //         id: press.id,
+  //         name: press.name,
+  //         imgUrl: press.imgUrl,
+  //       },
+  //     ]);
+  //   }
+  // };
 
   const preventClose = (e: BeforeUnloadEvent) => {
     // 페이지 닫기 & 새로고침 감지;
@@ -79,7 +79,7 @@ function AllSubscribes() {
     <SubLayout>
       <div>내 구독목록</div>
       <div>
-        <SubscribeHeader
+        {/* <SubscribeHeader
           title="구독한 언론사"
           subscribeNumber={subscribeList.length}
           variant="all"
@@ -94,7 +94,7 @@ function AllSubscribes() {
           pressList={data.allPress}
           subscriptionStatus={subscriptionStatus}
           toggleSubscribe={toggleSubscribe}
-        />
+        /> */}
       </div>
     </SubLayout>
   );

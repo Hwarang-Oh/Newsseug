@@ -1,4 +1,5 @@
 import { setupWorker } from 'msw/browser';
 import { presshandlers } from './presshandlers';
+import { subscribepresshandlers } from './subscribepresshandler';
 
-export const pressworker = setupWorker(...presshandlers);
+export const worker = setupWorker(...presshandlers, ...subscribepresshandlers);
