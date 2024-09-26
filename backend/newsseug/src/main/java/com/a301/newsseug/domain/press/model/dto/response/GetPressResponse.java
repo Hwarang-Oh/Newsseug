@@ -23,8 +23,11 @@ public record GetPressResponse(
 	String description,
 
 	@Schema(description = "구독자 수")
-	Long subscribeCount
-	
+	Long subscribeCount,
+
+	@Schema(description = "구독 여부")
+	Boolean isSubscribed
+
 ) {
 
 	public static GetPressResponse of(Press press) {
@@ -34,6 +37,18 @@ public record GetPressResponse(
 			.imageUrl(press.getPressBranding().getImageUrl())
 			.description(press.getDescription())
 			.subscribeCount(press.getSubscribeCount())
+			.isSubscribed(false)
+			.build();
+	}
+
+	public static GetPressResponse of(Press press, Boolean isSubscribed) {
+		return GetPressResponse.builder()
+			.id(press.getPressId())
+			.name(press.getPressBranding().getName())
+			.imageUrl(press.getPressBranding().getImageUrl())
+			.description(press.getDescription())
+			.subscribeCount(press.getSubscribeCount())
+			.isSubscribed(isSubscribed)
 			.build();
 	}
 

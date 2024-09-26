@@ -14,6 +14,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.verify;
 import static org.mockito.BDDMockito.given;
 
+import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+import com.a301.newsseug.domain.member.factory.entity.MemberFactory;
+import com.a301.newsseug.domain.member.model.entity.Member;
+import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.exception.NotExistPressException;
 import com.a301.newsseug.domain.press.factory.PressFactory;
 import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
@@ -29,6 +33,9 @@ public class PressServiceTest {
 	@Mock
 	private PressRepository pressRepository;
 
+	@Mock
+	private SubscribeRepository subscribeRepository;
+
 	@InjectMocks
 	private PressServiceImpl pressService;
 
@@ -39,36 +46,61 @@ public class PressServiceTest {
 		Press press1 = PressFactory.press(0L);
 		Press press2 = PressFactory.press(1L);
 
+		Member member = MemberFactory.memberOfKakao(0L);
+		CustomUserDetails customUserDetails = CustomUserDetails.of(member);
+
+
 		given(pressRepository.findAll()).willReturn(List.of(press1, press2));
+		given(subscribeRepository.existsByMemberAndPress(member, press1)).willReturn(true);
+		given(subscribeRepository.existsByMemberAndPress(member, press2)).willReturn(true);
 
 		// When
-		ListSimplePressResponse response = pressService.getSimplePress();
+		ListSimplePressResponse response = pressService.getSimplePress(customUserDetails);
 
 		// Then
 		assertThat(response.press()).hasSize(2);
 		assertThat(response.press())
-			.extracting(SimplePressDto::id, SimplePressDto::name, SimplePressDto::imageUrl)
+			.extracting(SimplePressDto::id, SimplePressDto::name, SimplePressDto::imageUrl, SimplePressDto::isSubscribed)
 			.containsExactlyInAnyOrder(
-				tuple(0L, "name", "imageUrl"),
-				tuple(1L, "name", "imageUrl")
+				tuple(0L, "name", "imageUrl", true),
+				tuple(1L, "name", "imageUrl", true)
 			);
 
 		verify(pressRepository).findAll();
+		verify(subscribeRepository).existsByMemberAndPress(member, press1);
+		verify(subscribeRepository).existsByMemberAndPress(member, press2);
 	}
 
 	@Test
 	@DisplayName("언론사 단순 정보 목록 조회")
 	void getSimplePressEmpty() {
 		// Given
-		given(pressRepository.findAll()).willReturn(List.of());
+		Press press1 = PressFactory.press(0L);
+		Press press2 = PressFactory.press(1L);
+
+		Member member = MemberFactory.memberOfKakao(0L);
+		CustomUserDetails customUserDetails = CustomUserDetails.of(member);
+
+
+		given(pressRepository.findAll()).willReturn(List.of(press1, press2));
+		given(subscribeRepository.existsByMemberAndPress(member, press1)).willReturn(true);
+		given(subscribeRepository.existsByMemberAndPress(member, press2)).willReturn(false);
 
 		// When
-		ListSimplePressResponse response = pressService.getSimplePress();
+		ListSimplePressResponse response = pressService.getSimplePress(customUserDetails);
 
 		// Then
-		assertThat(response.press()).isEmpty();
+		assertThat(response.press()).hasSize(2);
+		assertThat(response.press())
+			.extracting(SimplePressDto::id, SimplePressDto::name, SimplePressDto::imageUrl, SimplePressDto::isSubscribed)
+			.containsExactlyInAnyOrder(
+				tuple(0L, "name", "imageUrl", true),
+				tuple(1L, "name", "imageUrl", false)
+			);
 
 		verify(pressRepository).findAll();
+		verify(subscribeRepository).existsByMemberAndPress(member, press1);
+		verify(subscribeRepository).existsByMemberAndPress(member, press2);
 	}
 
 	@Test
@@ -89,11 +121,12 @@ public class PressServiceTest {
 		assertThat(response.name()).isEqualTo(press.getPressBranding().getName());
 		assertThat(response.imageUrl()).isEqualTo(press.getPressBranding().getImageUrl());
 		assertThat(response.description()).isEqualTo(press.getDescription());
+		assertThat(response.isSubscribed()).isNull();
 		assertThat(response.subscribeCount()).isEqualTo(0L);
 	}
 
 	@Test
-	@DisplayName("언론사 상세 조회[존재하지 않는 폴더]")
+	@DisplayName("존재하지 않는 언론사 상세 조회")
 	void getPressNotExistPress() {
 		// Given
 		Press press = PressFactory.press(0L);
@@ -102,5 +135,59 @@ public class PressServiceTest {
 
 		// Then
 		assertThatThrownBy(() -> pressService.getPress(press.getPressId())).isInstanceOf(NotExistPressException.class);
+	}
+
+	@Test
+	@DisplayName("로그인 유저 구독한 언론사 상세 조회")
+	void getPressWithLoginUser() {
+		// Given
+		Press press = PressFactory.press(0L);
+
+		Member member = MemberFactory.memberOfKakao(0L);
+		CustomUserDetails userDetails = CustomUserDetails.of(member);
+
+		given(pressRepository.getOrThrow(press.getPressId())).willReturn(press);
+		given(subscribeRepository.existsByMemberAndPress(member, press)).willReturn(true);
+
+		// When
+		GetPressResponse response = pressService.getPress(press.getPressId(), userDetails);
+
+		// Then
+		verify(pressRepository).getOrThrow(press.getPressId());
+		verify(subscribeRepository).existsByMemberAndPress(member, press);
+
+		assertThat(response.id()).isEqualTo(press.getPressId());
+		assertThat(response.name()).isEqualTo(press.getPressBranding().getName());
+		assertThat(response.imageUrl()).isEqualTo(press.getPressBranding().getImageUrl());
+		assertThat(response.description()).isEqualTo(press.getDescription());
+		assertThat(response.isSubscribed()).isTrue();
+		assertThat(response.subscribeCount()).isEqualTo(0L);
+	}
+
+	@Test
+	@DisplayName("로그인 유저 구독하지 않은 언론사 상세 조회")
+	void getPressWithLoginUserNotSubscribe() {
+		// Given
+		Press press = PressFactory.press(0L);
+
+		Member member = MemberFactory.memberOfKakao(0L);
+		CustomUserDetails userDetails = CustomUserDetails.of(member);
+
+		given(pressRepository.getOrThrow(press.getPressId())).willReturn(press);
+		given(subscribeRepository.existsByMemberAndPress(member, press)).willReturn(false);
+
+		// When
+		GetPressResponse response = pressService.getPress(press.getPressId(), userDetails);
+
+		// Then
+		verify(pressRepository).getOrThrow(press.getPressId());
+		verify(subscribeRepository).existsByMemberAndPress(member, press);
+
+		assertThat(response.id()).isEqualTo(press.getPressId());
+		assertThat(response.name()).isEqualTo(press.getPressBranding().getName());
+		assertThat(response.imageUrl()).isEqualTo(press.getPressBranding().getImageUrl());
+		assertThat(response.description()).isEqualTo(press.getDescription());
+		assertThat(response.isSubscribed()).isFalse();
+		assertThat(response.subscribeCount()).isEqualTo(0L);
 	}
 }
