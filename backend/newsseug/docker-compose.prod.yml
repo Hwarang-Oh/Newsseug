@@ -65,7 +65,7 @@ services:
     depends_on:
       - newsseug-backend
     volumes:
-      - ./prometheus:/etc/prometheus
+      -
       - /home/ubuntu/volume/prometheus-data:/var/lib/prometheus
     ports:
       - 9000:9090
@@ -82,6 +82,7 @@ services:
     ports:
       - 3030:3000
     volumes:
+      - /home/ubuntu/config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - /home/ubuntu/volume/grafana-data:/var/lib/grafana
     networks:
       - newsseug-network
