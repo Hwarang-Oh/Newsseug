@@ -1,12 +1,12 @@
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 import SubLayout from 'components/common/SubLayout';
-import data from 'db/data.json';
+import article from 'db/article.json';
 
 function History() {
   return (
     <SubLayout>
       <span>내 시청 기록</span>
-      <ArticleListCardGroup articleList={data.articles} />
+      <ArticleListCardGroup articleList={article.articles} />
     </SubLayout>
   );
 }
