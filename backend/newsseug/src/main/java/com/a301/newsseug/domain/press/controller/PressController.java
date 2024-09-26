@@ -1,5 +1,6 @@
 package com.a301.newsseug.domain.press.controller;
 
+import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
 import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
 import com.a301.newsseug.domain.press.service.PressService;
@@ -15,6 +16,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,13 +34,13 @@ public class PressController {
     private final PressService pressService;
 
     @GetMapping
-    @Operation(summary = "모든 언론사 조회 API", description = "모든 언론사의 정보를 조회하는 API",
+    @Operation(summary = "모든 언론사 단순 정보 조회 API", description = "모든 언론사의 식별자, 이름 그리고 로고를 조회하는 API",
     responses = {
         @ApiResponse(description = "조회 성공", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ListSimplePressResponse.class))),
         @ApiResponse(description = "조회 실패", responseCode = "400")
     })
-    public ResponseEntity<Result<ListSimplePressResponse>> getPressBranding() {
-        return ResponseUtil.ok(Result.of(pressService.getSimplePress()));
+    public ResponseEntity<Result<ListSimplePressResponse>> getSimplePress(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseUtil.ok(Result.of(pressService.getSimplePress(userDetails)));
     }
 
     @GetMapping("/{pressId}")
@@ -45,7 +50,14 @@ public class PressController {
         @ApiResponse(description = "조회 실패", responseCode = "400")
     })
     public ResponseEntity<Result<GetPressResponse>> getPress(@Parameter(name = "언론사 식별자") @PathVariable("pressId") Long pressId) {
-		return ResponseUtil.ok(Result.of(pressService.getPress(pressId)));
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()) {
+            CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return ResponseUtil.ok(Result.of(pressService.getPress(pressId, userDetails)));
+        }
+
+        return ResponseUtil.ok(Result.of(pressService.getPress(pressId)));
 	}
 }
