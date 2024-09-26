@@ -1,4 +1,3 @@
-import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 import SubLayout from 'components/common/SubLayout';
 import article from 'db/article.json';
 

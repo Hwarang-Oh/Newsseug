@@ -2,14 +2,13 @@ import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, useAnimation, PanInfo } from 'framer-motion';
 import scrapPlusIcon from 'assets/scrapPlusIcon.svg';
-import scrapCheckIcon from 'assets/scrapCheckIcon.svg';
 import { ScrapModalProps } from 'types/article';
 
 function ScrapModal({
   isOpen,
   onRequestClose,
   onCreateModalOpen,
-}: ScrapModalProps) {
+}: Readonly<ScrapModalProps>) {
   const [checkedItems, setCheckedItems] = useState<boolean[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
