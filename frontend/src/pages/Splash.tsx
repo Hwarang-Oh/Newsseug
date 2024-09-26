@@ -12,7 +12,7 @@ function Splash() {
   const navigate = useNavigate();
   const handleAnimationEnd = () => {
     setTimeout(() => {
-      navigate('/login');
+      navigate('/');
     }, 1500);
   };
 

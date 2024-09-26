@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import PrivateRoute from 'components/login/PrivateRoute';
 import Splash from 'pages/Splash';
 import Login from 'pages/Login';
 import Register from 'pages/Register';
@@ -30,12 +31,15 @@ function Router() {
           <Route path=":articleId" element={<Article />} />
         </Route>
 
-        <Route path="/subscribes">
+        <Route
+          path="/subscribes"
+          element={<PrivateRoute component={<Subscribes />} />}
+        >
           <Route path="" element={<Subscribes />} />
           <Route path="all" element={<AllSubscribes />} />
         </Route>
 
-        <Route path="/mypage">
+        <Route path="/mypage" element={<PrivateRoute component={<MyPage />} />}>
           <Route path="" element={<MyPage />} />
           <Route path="folders" element={<AllScraps />} />
           <Route path="history" element={<History />} />

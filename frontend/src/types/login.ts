@@ -8,3 +8,12 @@ export interface LoginItemProps {
 export interface LoginListProps {
   loginItemList: LoginItemProps[];
 }
+
+export interface LoginModalProps {
+  onCancel: () => void;
+  onLogin: () => void;
+}
+
+export interface PrivateRoutePros {
+  component: React.ReactElement;
+}
