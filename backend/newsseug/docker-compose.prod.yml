@@ -60,12 +60,13 @@ services:
       - newsseug-network
 
   prometheus:
+    user: root
     image: prom/prometheus:latest
     container_name: prometheus
     depends_on:
       - newsseug-backend
     volumes:
-      - ./prometheus.yml:/etc/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - /home/ubuntu/volume/prometheus-data:/var/lib/prometheus
     ports:
       - 9000:9090
