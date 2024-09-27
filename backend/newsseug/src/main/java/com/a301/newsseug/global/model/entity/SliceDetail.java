@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Schema(description = "슬라이스 상제 정보")
+@Schema(description = "슬라이스 상세 정보")
 public class SliceDetail {
 
     @Schema(description = "현재 페이지")

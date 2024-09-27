@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Schema(description = "페이지네이션 상제 정보")
+@Schema(description = "페이지네이션 상세 정보")
 public class PaginationDetail {
 
     @Schema(description = "전체 페이지 수")

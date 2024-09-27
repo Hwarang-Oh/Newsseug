@@ -1,9 +1,6 @@
 package com.a301.newsseug.domain.article.controller;
 
-import com.a301.newsseug.domain.article.model.dto.response.AllArticlesResponse;
-import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
-import com.a301.newsseug.domain.article.model.dto.response.TodayArticlesResponse;
-import com.a301.newsseug.domain.article.model.dto.response.ListArticleResponse;
+import com.a301.newsseug.domain.article.model.dto.response.*;
 import com.a301.newsseug.domain.article.service.ArticleService;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.global.model.dto.Result;
@@ -13,6 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "기사 API")
 @RestController
@@ -42,18 +41,15 @@ public class ArticleController {
 
     }
 
-    @Operation(summary = "단일 기사 조회 API", description = "단일 기사를 조회한다.")
-    @GetMapping("/{articleId}")
-    public ResponseEntity<Result<GetArticleResponse>> getArticle(
+    @Operation(summary = "기사 상세 정보 조회 API", description = "기사 상세 정보를 조회한다.")
+    @GetMapping("/short-form")
+    public ResponseEntity<Result<GetArticleListResponse>> getArticle(
             CustomUserDetails userDetails,
-            @PathVariable(name = "articleId") Long articleId) {
+            @RequestParam(value = "page", defaultValue = "0") int page) {
 
-        GetArticleResponse result = articleService.getArticle(userDetails, articleId);
-        return ResponseUtil.ok(
-                Result.of(
-                        result
-                ));
+        GetArticleListResponse result = articleService.getArticleList(userDetails, page);
 
+        return ResponseUtil.ok(Result.of(result));
     }
 
     @Operation(summary = "카테고리별 기사 조회 API", description = "카테고리별 기사 리스트를 조회한다.")

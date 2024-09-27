@@ -1,10 +1,7 @@
 package com.a301.newsseug.domain.article.service;
 
 import com.a301.newsseug.domain.article.model.dto.SimpleArticleDto;
-import com.a301.newsseug.domain.article.model.dto.response.AllArticlesResponse;
-import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
-import com.a301.newsseug.domain.article.model.dto.response.ListArticleResponse;
-import com.a301.newsseug.domain.article.model.dto.response.TodayArticlesResponse;
+import com.a301.newsseug.domain.article.model.dto.response.*;
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.article.model.entity.type.CategoryType;
 import com.a301.newsseug.domain.article.repository.ArticleRepository;
@@ -17,12 +14,15 @@ import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
+import com.a301.newsseug.global.model.entity.PaginationDetail;
 import com.a301.newsseug.global.util.ClockUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,28 +74,39 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public GetArticleResponse getArticle(CustomUserDetails userDetails, Long articleId) {
+    @Transactional(readOnly = true)
+    public GetArticleListResponse getArticleList(CustomUserDetails userDetails, int page) {
 
         Member loginMember = userDetails.getMember();
 
-        Article article = articleRepository.getOrThrow(articleId);
-        Press press = article.getPress();
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<Article> articlesPage = articleRepository.findAll(pageRequest);
 
-        Boolean isSubscribe = subscribeRepository.existsByMemberAndPress(loginMember, press);
+        List<GetArticleResponse> articles = articlesPage.getContent().stream()
+                .map(article -> {
+                    Press press = article.getPress();
+                    Boolean isSubscribe = subscribeRepository.existsByMemberAndPress(loginMember, press);
+                    Boolean isLike = likeRepository.existsByMemberAndArticle(loginMember, article);
+                    Integer likeCount = likeRepository.countByArticle(article);
+                    Boolean isHate = hateRepository.existsByMemberAndArticle(loginMember, article);
+                    Integer hateCount = hateRepository.countByArticle(article);
 
-        Boolean isLike = likeRepository.existsByMemberAndArticle(loginMember, article);
-        Integer likeCount = likeRepository.countByArticle(article);
+                    return GetArticleResponse.of(
+                            article,
+                            isSubscribe,
+                            SimpleLikeDto.of(isLike, likeCount),
+                            SimpleHateDto.of(isHate, hateCount)
+                    );
+                })
+                .toList();
 
-        Boolean isHate = hateRepository.existsByMemberAndArticle(loginMember, article);
-        Integer hateCount = hateRepository.countByArticle(article);
-
-        return GetArticleResponse.of(
-                article,
-                isSubscribe,
-                SimpleLikeDto.of(isLike, likeCount),
-                SimpleHateDto.of(isHate, hateCount)
+        PaginationDetail paginationDetail = PaginationDetail.of(
+                articlesPage.getTotalPages(),
+                articlesPage.getTotalElements(),
+                articlesPage.getNumber()
         );
 
+        return GetArticleListResponse.of(articles, paginationDetail);
     }
 
     /**

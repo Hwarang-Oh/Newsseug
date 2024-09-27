@@ -1,6 +1,6 @@
 package com.a301.newsseug.domain.article.model.dto.response;
 
-import com.a301.newsseug.domain.article.model.dto.ArticleShortFormDto;
+import com.a301.newsseug.domain.article.model.dto.ArticleDetailDto;
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.interaction.model.dto.SimpleHateDto;
 import com.a301.newsseug.domain.interaction.model.dto.SimpleLikeDto;
@@ -10,11 +10,11 @@ import lombok.AccessLevel;
 import lombok.Builder;
 
 @Builder(access = AccessLevel.PRIVATE)
-@Schema(name = "기사 상세 정보", description = "하나의 기사를 조회한 정보")
+@Schema(name = "기사 상세 정보", description = "사용자가 요청한 기사의 상세 정보")
 public record GetArticleResponse(
 
         @Schema(description = "기사 정보", examples = {"Object"})
-        ArticleShortFormDto article,
+        ArticleDetailDto article,
 
         @Schema(description = "언론사 정보", examples = {"Object"})
         SimplePressDto press,
@@ -37,7 +37,7 @@ public record GetArticleResponse(
             SimpleHateDto hateInfo) {
 
         return GetArticleResponse.builder()
-                .article(ArticleShortFormDto.of(article))
+                .article(ArticleDetailDto.of(article))
                 .press(SimplePressDto.of(article.getPress()))
                 .isSubscribe(isSubscribe)
                 .likeInfo(likeInfo)
