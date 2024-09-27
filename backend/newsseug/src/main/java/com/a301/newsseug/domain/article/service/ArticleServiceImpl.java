@@ -118,39 +118,66 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional(readOnly = true)
-    public SlicedResponse<List<GetArticleDetailsResponse>> getArticleDetailList(CustomUserDetails userDetails, int page) {
+    public GetArticleDetailsResponse getArticleDetail(CustomUserDetails userDetails, Long articleId) {
 
-        Member loginMember = userDetails.getMember();
+        Article article = articleRepository.getOrThrow(articleId);
+        Press press = article.getPress();
 
-        PageRequest pageRequest = PageRequest.of(page, 10);
-        Slice<Article> articlesPage = articleRepository.findAll(pageRequest);
+        Boolean isSubscribe = false;
+        Boolean isLike = false;
+        Integer likeCount = likeRepository.countByArticle(article);
+        Boolean isHate = false;
+        Integer hateCount = hateRepository.countByArticle(article);
 
-        List<GetArticleDetailsResponse> articles = articlesPage.getContent().stream()
-                .map(article -> {
-                    Press press = article.getPress();
-                    Boolean isSubscribe = subscribeRepository.existsByMemberAndPress(loginMember, article.getPress());
-                    Boolean isLike = likeRepository.existsByMemberAndArticle(loginMember, article);
-                    Integer likeCount = likeRepository.countByArticle(article);
-                    Boolean isHate = hateRepository.existsByMemberAndArticle(loginMember, article);
-                    Integer hateCount = hateRepository.countByArticle(article);
+        if (!Objects.isNull(userDetails)) {
+            Member loginMember = userDetails.getMember();
 
-                    return GetArticleDetailsResponse.of(
-                            article,
-                            subscribeRepository.existsByMemberAndPress(loginMember, article.getPress()),
-                            SimpleLikeDto.of(isLike, likeCount),
-                            SimpleHateDto.of(isHate, hateCount)
-                    );
-                })
-                .toList();
+            isSubscribe = subscribeRepository.existsByMemberAndPress(loginMember, press);
+            isLike = likeRepository.existsByMemberAndArticle(loginMember, article);
+            isHate = hateRepository.existsByMemberAndArticle(loginMember, article);
+        }
 
-        SliceDetails sliceDetails = SliceDetails.of(
-                articlesPage.getNumber(),
-                articlesPage.isFirst(),
-                articlesPage.hasNext()
-        );
-
-        return SlicedResponse.of(sliceDetails, articles);
-
+        return GetArticleDetailsResponse.of(article,
+                isSubscribe,
+                SimpleLikeDto.of(isLike, likeCount),
+                SimpleHateDto.of(isHate, hateCount));
     }
+
+//    @Override
+//    @Transactional(readOnly = true)
+//    public SlicedResponse<List<GetArticleDetailsResponse>> getArticleDetailList(CustomUserDetails userDetails, int page) {
+//
+//        Member loginMember = userDetails.getMember();
+//
+//        PageRequest pageRequest = PageRequest.of(page, 10);
+//        Slice<Article> articlesPage = articleRepository.findAll(pageRequest);
+//
+//        List<GetArticleDetailsResponse> articles = articlesPage.getContent().stream()
+//                .map(article -> {
+//                    Press press = article.getPress();
+//                    Boolean isSubscribe = subscribeRepository.existsByMemberAndPress(loginMember, article.getPress());
+//                    Boolean isLike = likeRepository.existsByMemberAndArticle(loginMember, article);
+//                    Integer likeCount = likeRepository.countByArticle(article);
+//                    Boolean isHate = hateRepository.existsByMemberAndArticle(loginMember, article);
+//                    Integer hateCount = hateRepository.countByArticle(article);
+//
+//                    return GetArticleDetailsResponse.of(
+//                            article,
+//                            subscribeRepository.existsByMemberAndPress(loginMember, article.getPress()),
+//                            SimpleLikeDto.of(isLike, likeCount),
+//                            SimpleHateDto.of(isHate, hateCount)
+//                    );
+//                })
+//                .toList();
+//
+//        SliceDetails sliceDetails = SliceDetails.of(
+//                articlesPage.getNumber(),
+//                articlesPage.isFirst(),
+//                articlesPage.hasNext()
+//        );
+//
+//        return SlicedResponse.of(sliceDetails, articles);
+//
+//    }
 
 }

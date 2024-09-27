@@ -14,10 +14,12 @@ public interface ArticleService {
 
     SlicedResponse<List<GetArticleResponse>> getArticleListByCategory(String category, int page);
 
+    GetArticleDetailsResponse getArticleDetail(CustomUserDetails userDetails, Long articleId);
+
     SlicedResponse<List<GetArticleResponse>> getArticlesByPress(Long pressId, int pageNumber, String category, String criteria);
 
 //    List<GetArticleResponse> getAllArticles();
 
-    SlicedResponse<List<GetArticleDetailsResponse>> getArticleDetailList(CustomUserDetails userDetails, int page);
+//    SlicedResponse<List<GetArticleDetailsResponse>> getArticleDetailList(CustomUserDetails userDetails, int page);
 
 }
