@@ -21,7 +21,6 @@ function LoginModal({ onCancel, onLogin }: Readonly<LoginModalProps>) {
 
 export default LoginModal;
 
-// Styled-components
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;

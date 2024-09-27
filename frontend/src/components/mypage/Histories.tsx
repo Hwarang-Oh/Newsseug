@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import ArticleSlideBox from '../home/ArticleSlideBox';
-import article from 'db/article.json';
+import article from 'mocks/article.json';
 
 function Histories() {
   const width = '120px';

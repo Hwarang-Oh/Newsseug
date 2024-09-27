@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { ArticleListCardProps } from 'types/common/common';
 import {
   fetchAllArticles,
-  fetchArticlesByAge,
+  fetchArticlesByCategory,
   fetchArticlesByToday,
 } from 'apis/articleApi';
 /**
@@ -15,7 +15,7 @@ import {
  * @returns
  */
 function Home() {
-  useAutoLogin();
+  useAutoLogin(); // IMP : 외부 Login을 수행하는 Custom Hook
   const [articleLists, setArticleLists] = useState<ArticleListCardProps[][]>(
     [],
   );
@@ -26,7 +26,7 @@ function Home() {
         // 3개의 비동기 데이터를 동시에 가져오기
         const [data1, data2, data3] = await Promise.all([
           fetchArticlesByToday(),
-          fetchArticlesByAge(20),
+          fetchArticlesByCategory('정치'),
           fetchAllArticles(),
         ]);
 
@@ -47,7 +47,7 @@ function Home() {
           articleList={articleLists[0]} // 첫 번째 데이터 리스트
         />
         <Section
-          subTitle="20대 관심 기사"
+          subTitle="정치 기사"
           moreLink={'/20Article/allArticles'}
           articleList={articleLists[1]} // 두 번째 데이터 리스트
         />

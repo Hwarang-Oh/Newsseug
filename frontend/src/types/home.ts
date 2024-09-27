@@ -1,4 +1,4 @@
-import { ArticleListCardProps } from '@/types/common/common';
+import { ArticleListCardProps } from 'types/common/common';
 
 export interface SectionProps {
   subTitle: string;

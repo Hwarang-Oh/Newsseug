@@ -1,5 +1,5 @@
-import { Folder, FolderList, MemberFolderList } from 'types/api/folder';
 import api from 'apis/commonApi';
+import { Folder, FolderList, MemberFolderList } from 'types/api/folder';
 import { AxiosResponse, isAxiosError } from 'axios';
 const FOLDERS_URL = `/api/v1/folders`;
 
@@ -51,6 +51,7 @@ export const saveArticleToFolder = async (
     const response: AxiosResponse<boolean> = await api.post(
       `${FOLDERS_URL}/${folderId}/articles/${articleId}`,
     );
+    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

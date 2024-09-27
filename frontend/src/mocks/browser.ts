@@ -4,9 +4,10 @@ import {
   presshandlers,
   memberfolderhandles,
   folderhandles,
-} from './handlers';
-import { subscribepresshandlers } from './subscribepresshandler';
-import { unsubscribepresshandlers } from './unsubscribepresshandler';
+  articlehandlers,
+} from 'mocks/handlers';
+import { subscribepresshandlers } from 'mocks/subscribepresshandler';
+import { unsubscribepresshandlers } from 'mocks/unsubscribepresshandler';
 
 export const worker = setupWorker(
   ...presshandlers,
@@ -15,4 +16,5 @@ export const worker = setupWorker(
   ...folderhandles,
   ...subscribepresshandlers,
   ...unsubscribepresshandlers,
+  ...articlehandlers,
 );

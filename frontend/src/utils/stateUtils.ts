@@ -1,4 +1,7 @@
 import { Cookies } from 'react-cookie';
+import { jwtDecode } from 'jwt-decode';
+import { DecodedToken } from 'types/api/member';
+
 /**
  * IMP : Cookies
  */
@@ -20,6 +23,18 @@ export const removeCookie = (name: string, option?: any) => {
     ...option,
   });
 };
+
+export function getTokenExpiration(token: string): number | null {
+  try {
+    if (!token) return null;
+    const decoded: DecodedToken = jwtDecode(token);
+    console.log(decoded);
+    return decoded.exp * 1000;
+  } catch (error: unknown) {
+    console.error('Error in decoding token', error);
+    return null;
+  }
+}
 
 /**
  * IMP : Session Storage
