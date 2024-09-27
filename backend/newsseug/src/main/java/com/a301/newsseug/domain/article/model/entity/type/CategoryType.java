@@ -23,7 +23,13 @@ public enum CategoryType {
     ACCIDENT("accident"),
 
     @Schema(description = "과학")
-    SCIENCE("science");
+    SCIENCE("science"),
+
+    @Schema(description = "과학")
+    SOCIETY("science"),
+
+    @Schema(description = "스포츠")
+    SPORTS("science");
 
     private final String value;
 

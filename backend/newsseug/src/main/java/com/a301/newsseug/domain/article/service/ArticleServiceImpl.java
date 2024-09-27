@@ -3,7 +3,7 @@ package com.a301.newsseug.domain.article.service;
 import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
 import com.a301.newsseug.domain.article.model.dto.response.*;
 import com.a301.newsseug.domain.article.model.entity.Article;
-import com.a301.newsseug.domain.article.model.entity.type.CategoryType;
+import com.a301.newsseug.domain.article.repository.ArticleCustomRepository;
 import com.a301.newsseug.domain.article.repository.ArticleRepository;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.interaction.model.dto.SimpleHateDto;
@@ -14,15 +14,20 @@ import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
-import com.a301.newsseug.global.model.dto.PaginatedResponse;
-import com.a301.newsseug.global.model.entity.PaginationDetails;
+import com.a301.newsseug.global.enums.SortingCriteria;
+import com.a301.newsseug.global.model.dto.SlicedResponse;
+import com.a301.newsseug.global.model.entity.SliceDetails;
 import com.a301.newsseug.global.util.ClockUtil;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,39 +44,91 @@ public class ArticleServiceImpl implements ArticleService {
     private final SubscribeRepository subscribeRepository;
 
     @Override
-    public List<GetArticleResponse> getHomeArticles() {
+    public SlicedResponse<List<GetArticleResponse>> getTodayArticleListByCategory(String category, int page) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Slice<Article> articlesPage = null;
+
         LocalDateTime startOfDay = ClockUtil.getLocalDateTime().toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1);
-        List<Article> todayArticles = articleRepository.findByCreatedAtBetween(startOfDay, endOfDay);
-        return GetArticleResponse.of(todayArticles);
+
+        if (Objects.isNull(category)) {
+
+//            articlesPage = articleRepository.findByCreatedAtBetweenAndCategory(startOfDay, endOfDay, categoryType, pageRequest);
+        } else {
+            articlesPage = articleRepository.findByCreatedAtBetween(startOfDay, endOfDay, pageRequest);
+        }
+
+        List<GetArticleResponse> articles = GetArticleResponse.of(articlesPage.getContent());
+
+        SliceDetails sliceDetails = SliceDetails.of(
+                articlesPage.getNumber(),
+                articlesPage.isFirst(),
+                articlesPage.hasNext()
+        );
+
+        return SlicedResponse.of(sliceDetails, articles);
     }
 
     @Override
-    public List<GetArticleResponse> getAllArticles() {
-        List<Article> articles = articleRepository.findAllByOrderByCreatedAtDesc();
-        return GetArticleResponse.of(articles);
+    public SlicedResponse<List<GetArticleResponse>> getArticleListByCategory(String category, int page) {
+
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Slice<Article> articlesPage = null;
+
+        if (!"ALL".equalsIgnoreCase(category)) {
+//            articlesPage = articleRepository.findByCategoryOrderByCreatedAtDesc(categoryType, pageRequest);
+        } else {
+            articlesPage = articleRepository.findAllByOrderByCreatedAtDesc(pageRequest);
+        }
+
+        List<GetArticleResponse> articles = GetArticleResponse.of(articlesPage.getContent());
+
+        SliceDetails sliceDetails = SliceDetails.of(
+                articlesPage.getNumber(),   // Current page number
+                articlesPage.isFirst(),     // Whether it's the first slice
+                articlesPage.hasNext()      // Whether there's a next slice
+        );
+
+        return SlicedResponse.of(sliceDetails, articles);
     }
 
-    @Override
-    public List<GetArticleResponse> getArticlesByCategory(String categoryName) {
-        CategoryType categoryType = CategoryType.valueOf(categoryName.toUpperCase());
-        List<Article> articles = articleRepository.findByCategoryOrderByCreatedAtDesc(categoryType);
-        return GetArticleResponse.of(articles);
+    @Transactional(readOnly = true)
+    public SlicedResponse<List<GetArticleResponse>> getArticlesByPress(
+            Long pressId, int pageNumber, String category, String criteria) {
+
+        Press press = pressRepository.getOrThrow(pressId);
+
+        Pageable pageable = PageRequest.of(
+                pageNumber,
+                20,
+                Sort.by(Sort.Direction.DESC, SortingCriteria.convertToEnum(criteria.toUpperCase()).getValue()
+                )
+        );
+
+        Slice<Article> sliced = articleRepository.findAllByPressAndCategory(
+                press, category, pageable
+        );
+
+        return SlicedResponse.of(
+                SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
+                GetArticleResponse.of(sliced.getContent())
+        );
+
     }
 
     @Override
     @Transactional(readOnly = true)
-    public PaginatedResponse<List<GetArticleDetailsResponse>> getArticleList(CustomUserDetails userDetails, int page) {
+    public SlicedResponse<List<GetArticleDetailsResponse>> getArticleDetailList(CustomUserDetails userDetails, int page) {
 
         Member loginMember = userDetails.getMember();
 
         PageRequest pageRequest = PageRequest.of(page, 10);
-        Page<Article> articlesPage = articleRepository.findAll(pageRequest);
+        Slice<Article> articlesPage = articleRepository.findAll(pageRequest);
 
         List<GetArticleDetailsResponse> articles = articlesPage.getContent().stream()
                 .map(article -> {
                     Press press = article.getPress();
-                    Boolean isSubscribe = subscribeRepository.existsByMemberAndPress(loginMember, press);
+                    Boolean isSubscribe = subscribeRepository.existsByMemberAndPress(loginMember, article.getPress());
                     Boolean isLike = likeRepository.existsByMemberAndArticle(loginMember, article);
                     Integer likeCount = likeRepository.countByArticle(article);
                     Boolean isHate = hateRepository.existsByMemberAndArticle(loginMember, article);
@@ -79,20 +136,20 @@ public class ArticleServiceImpl implements ArticleService {
 
                     return GetArticleDetailsResponse.of(
                             article,
-                            isSubscribe,
+                            subscribeRepository.existsByMemberAndPress(loginMember, article.getPress()),
                             SimpleLikeDto.of(isLike, likeCount),
                             SimpleHateDto.of(isHate, hateCount)
                     );
                 })
                 .toList();
 
-        PaginationDetails paginationDetails = PaginationDetails.of(
-                articlesPage.getTotalPages(),
-                articlesPage.getTotalElements(),
-                articlesPage.getNumber()
+        SliceDetails sliceDetails = SliceDetails.of(
+                articlesPage.getNumber(),
+                articlesPage.isFirst(),
+                articlesPage.hasNext()
         );
 
-        return PaginatedResponse.of(paginationDetails, articles);
+        return SlicedResponse.of(sliceDetails, articles);
 
     }
 
