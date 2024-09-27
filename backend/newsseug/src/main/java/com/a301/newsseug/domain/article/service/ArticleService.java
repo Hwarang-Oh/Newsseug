@@ -3,16 +3,17 @@ package com.a301.newsseug.domain.article.service;
 import com.a301.newsseug.domain.article.model.dto.response.*;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 
+import com.a301.newsseug.global.model.dto.PaginatedResponse;
 import java.util.List;
 
 public interface ArticleService {
 
-    TodayArticlesResponse getHomeArticles();
+    List<GetArticleResponse> getHomeArticles();
 
-    AllArticlesResponse getAllArticles();
+    List<GetArticleResponse> getAllArticles();
 
-    ListArticleResponse getArticlesByCategory(String categoryName);
+    List<GetArticleResponse> getArticlesByCategory(String categoryName);
 
-    GetArticleListResponse getArticleList(CustomUserDetails userDetails, int page);
+    PaginatedResponse<List<GetArticleDetailsResponse>> getArticleList(CustomUserDetails userDetails, int page);
 
 }

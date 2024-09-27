@@ -1,6 +1,6 @@
 package com.a301.newsseug.domain.folder.service;
 
-import com.a301.newsseug.domain.article.model.dto.SimpleArticleDto;
+import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.bookmark.model.entity.Bookmark;
 import com.a301.newsseug.domain.bookmark.repository.BookmarkRepository;
@@ -36,7 +36,7 @@ public class FolderServiceImpl implements FolderService {
 
         return GetFolderDetailsResponse.of(
                 folder,
-                SimpleArticleDto.fromBookmark(bookmarks)
+                GetArticleResponse.fromBookmark(bookmarks)
                 );
 
     }

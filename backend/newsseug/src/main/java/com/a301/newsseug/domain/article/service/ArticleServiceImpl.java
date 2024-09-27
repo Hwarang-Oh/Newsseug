@@ -1,6 +1,6 @@
 package com.a301.newsseug.domain.article.service;
 
-import com.a301.newsseug.domain.article.model.dto.SimpleArticleDto;
+import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
 import com.a301.newsseug.domain.article.model.dto.response.*;
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.article.model.entity.type.CategoryType;
@@ -14,11 +14,11 @@ import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
-import com.a301.newsseug.global.model.entity.PaginationDetail;
+import com.a301.newsseug.global.model.dto.PaginatedResponse;
+import com.a301.newsseug.global.model.entity.PaginationDetails;
 import com.a301.newsseug.global.util.ClockUtil;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -39,50 +39,36 @@ public class ArticleServiceImpl implements ArticleService {
     private final SubscribeRepository subscribeRepository;
 
     @Override
-    public TodayArticlesResponse getHomeArticles() {
-
+    public List<GetArticleResponse> getHomeArticles() {
         LocalDateTime startOfDay = ClockUtil.getLocalDateTime().toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1);
         List<Article> todayArticles = articleRepository.findByCreatedAtBetween(startOfDay, endOfDay);
-
-        return TodayArticlesResponse.of(
-                mapToListArticleResponse(todayArticles)
-        );
-
+        return GetArticleResponse.of(todayArticles);
     }
 
     @Override
-    public AllArticlesResponse getAllArticles() {
-
-        List<Article> allArticles = articleRepository.findAllByOrderByCreatedAtDesc();
-
-        return AllArticlesResponse.of(
-                mapToListArticleResponse(allArticles)
-        );
-
+    public List<GetArticleResponse> getAllArticles() {
+        List<Article> articles = articleRepository.findAllByOrderByCreatedAtDesc();
+        return GetArticleResponse.of(articles);
     }
 
     @Override
-    public ListArticleResponse getArticlesByCategory(String categoryName) {
-
+    public List<GetArticleResponse> getArticlesByCategory(String categoryName) {
         CategoryType categoryType = CategoryType.valueOf(categoryName.toUpperCase());
-
         List<Article> articles = articleRepository.findByCategoryOrderByCreatedAtDesc(categoryType);
-
-        return mapToListArticleResponse(articles);
-
+        return GetArticleResponse.of(articles);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public GetArticleListResponse getArticleList(CustomUserDetails userDetails, int page) {
+    public PaginatedResponse<List<GetArticleDetailsResponse>> getArticleList(CustomUserDetails userDetails, int page) {
 
         Member loginMember = userDetails.getMember();
 
         PageRequest pageRequest = PageRequest.of(page, 10);
         Page<Article> articlesPage = articleRepository.findAll(pageRequest);
 
-        List<GetArticleResponse> articles = articlesPage.getContent().stream()
+        List<GetArticleDetailsResponse> articles = articlesPage.getContent().stream()
                 .map(article -> {
                     Press press = article.getPress();
                     Boolean isSubscribe = subscribeRepository.existsByMemberAndPress(loginMember, press);
@@ -91,7 +77,7 @@ public class ArticleServiceImpl implements ArticleService {
                     Boolean isHate = hateRepository.existsByMemberAndArticle(loginMember, article);
                     Integer hateCount = hateRepository.countByArticle(article);
 
-                    return GetArticleResponse.of(
+                    return GetArticleDetailsResponse.of(
                             article,
                             isSubscribe,
                             SimpleLikeDto.of(isLike, likeCount),
@@ -100,36 +86,14 @@ public class ArticleServiceImpl implements ArticleService {
                 })
                 .toList();
 
-        PaginationDetail paginationDetail = PaginationDetail.of(
+        PaginationDetails paginationDetails = PaginationDetails.of(
                 articlesPage.getTotalPages(),
                 articlesPage.getTotalElements(),
                 articlesPage.getNumber()
         );
 
-        return GetArticleListResponse.of(articles, paginationDetail);
-    }
-
-    /**
-     * Article 리스트를 ListArticleResponse 리스트로 변환하는 메서드
-     */
-    private ListArticleResponse mapToListArticleResponse(List<Article> articles) {
-
-        return ListArticleResponse.of(
-                articles.stream()
-                    .map(SimpleArticleDto::of)
-                    .toList()
-        );
+        return PaginatedResponse.of(paginationDetails, articles);
 
     }
 
-    /**
-     * Press ID를 통해 해당 언론사의 이름을 가져오는 메서드
-     */
-    private String getPressName(Long pressId) {
-
-        Press press = pressRepository.getOrThrow(pressId);
-
-        return press.getPressBranding().getName();
-
-    }
 }
