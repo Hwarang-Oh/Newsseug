@@ -2,20 +2,19 @@ package com.a301.newsseug.domain.interaction.model.entity;
 
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.member.model.entity.Member;
-import com.a301.newsseug.global.util.ClockUtil;
+import com.a301.newsseug.global.model.entity.BaseEntity;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
 @Table(name = "histories")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class History {
+public class History extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -32,12 +31,11 @@ public class History {
     @Column(nullable = false)
     private int playTime;
 
-    @CreatedDate
-    @Column(updatable = false, columnDefinition = "TIMESTAMP")
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    protected void onPrePersist() {
-        this.createdAt = ClockUtil.getLocalDateTime();
+    @Builder
+    public History(Member member, Article article, int playTime) {
+        this.member = member;
+        this.article = article;
+        this.playTime = playTime;
     }
+
 }
