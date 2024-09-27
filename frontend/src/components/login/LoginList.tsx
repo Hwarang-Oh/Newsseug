@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import LoginItem from 'components/login/LoginItem';
-import { LoginListProps } from 'types/login';
+import { LoginListProps } from 'types/props/login';
 
 function LoginList({ loginItemList }: Readonly<LoginListProps>) {
   return (

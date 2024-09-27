@@ -1,4 +1,4 @@
-import { ModalProps } from 'types/article';
+import { ModalProps } from 'types/props/articleVideo';
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';

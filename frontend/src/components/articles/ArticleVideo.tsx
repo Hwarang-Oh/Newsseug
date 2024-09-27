@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import ArticleInfo from 'components/articles/ArticleInfo';
 import ProgressBar from 'components/articles/ProgressBar';
 import ScrapModal from 'components/articles/ScrapModal';
 import ArticleButtons from 'components/articles/ArticleButtons';
 import playIcon from 'assets/playIcon.svg';
-import { ArticleVideoProp } from 'types/article';
 import CreateScrapModal from './CreateScrapModal';
 import ReportModal from './ReportModal';
+import { useEffect, useRef, useState } from 'react';
+import { ArticleVideoProp } from 'types/props/articleVideo';
 
 const likeInfo = {
   isLike: false,

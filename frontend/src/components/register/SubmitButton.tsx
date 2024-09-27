@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { SubmitButtonProps } from 'types/register';
+import { SubmitButtonProps } from 'types/props/register';
 
 function SubmitButton({ disabled, onClick }: Readonly<SubmitButtonProps>) {
   return (

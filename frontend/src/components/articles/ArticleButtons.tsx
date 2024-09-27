@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import reportIcon from 'assets/reportIcon.svg';
-import { ArticleButtonsProp } from 'types/article';
+import { ArticleButtonsProp } from 'types/props/articleVideo';
 
 function ArticleButtons({
   likeInfo,
   dislikeInfo,
   handleScrapClick,
   handleReportClick,
-}: ArticleButtonsProp) {
+}: Readonly<ArticleButtonsProp>) {
   const theme = useTheme();
 
   const [isLike, setIslike] = useState<boolean>(likeInfo.isLike);

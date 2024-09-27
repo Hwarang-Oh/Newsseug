@@ -1,8 +1,12 @@
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { ProgressBarProps } from 'types/article';
+import { ProgressBarProps } from 'types/props/articleVideo';
 
-function ProgressBar({ progress, isPlaying, onSeek }: ProgressBarProps) {
+function ProgressBar({
+  progress,
+  isPlaying,
+  onSeek,
+}: Readonly<ProgressBarProps>) {
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

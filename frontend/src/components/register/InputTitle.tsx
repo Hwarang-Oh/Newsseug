@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { InputTitleProps } from 'types/register';
+import { InputTitleProps } from 'types/props/register';
 
 function InputTitle({ title }: Readonly<InputTitleProps>) {
   return (

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { LoginModalProps } from 'types/login';
+import { LoginModalProps } from 'types/props/login';
 
 function LoginModal({ onCancel, onLogin }: Readonly<LoginModalProps>) {
   return (

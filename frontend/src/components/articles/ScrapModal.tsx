@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, useAnimation, PanInfo } from 'framer-motion';
 import scrapPlusIcon from 'assets/scrapPlusIcon.svg';
-import { ScrapModalProps } from 'types/article';
+import { ScrapModalProps } from 'types/props/articleVideo';
 
 function ScrapModal({
   isOpen,

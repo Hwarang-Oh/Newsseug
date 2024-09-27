@@ -2,12 +2,12 @@ import PressInfo from 'components/press/PressInfo';
 import SubLayout from 'components/common/SubLayout';
 import PressArticles from 'components/press/PressArticles';
 import CategoryFilter from 'components/common/CategoryFilter';
+import ColorThief from 'colorthief';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPressDetail } from 'apis/pressApi';
 import { PressDetail } from 'types/api/press';
 import { useQuery } from 'react-query';
-import ColorThief from 'colorthief';
 
 function Press() {
   const [activeCategory, setActiveCategory] = useState<string>('전체');
@@ -61,11 +61,12 @@ function Press() {
       <h1>{isSticky ? pressDetail?.name : null}</h1>
       <>
         <PressInfo
+          id={pressDetail?.id ?? 0}
           name={pressDetail?.name ?? ''}
           imageUrl={pressDetail?.imageUrl ?? ''}
-          pressId={pressDetail?.pressId ?? 0}
           description={pressDetail?.description ?? ''}
           subscribeCount={pressDetail?.subscribeCount ?? 0}
+          isSubscribed={false}
         />
 
         <CategoryFilter

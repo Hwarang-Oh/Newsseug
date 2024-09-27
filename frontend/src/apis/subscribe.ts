@@ -1,13 +1,13 @@
 import api from 'apis/commonApi';
 import { isAxiosError } from 'axios';
-import { AllPressInfo, PressInfo } from '@/types/props/subscribe';
+import { PressBasic } from 'types/api/press';
 
 const MEMBER_URL = '/api/v1/members';
 
 /**
  * IMP : 언론사 구독 목록 조회를 위한 API
  */
-export const getSubscribedPressList = async (): Promise<PressInfo[]> => {
+export const getSubscribedPressList = async (): Promise<PressBasic[]> => {
   try {
     const response = await api.get(`${MEMBER_URL}/press`);
     console.log(response.data);
@@ -24,7 +24,7 @@ export const getSubscribedPressList = async (): Promise<PressInfo[]> => {
 /**
  * IMP : 전체 언론사 조회
  */
-export const getAllPressList = async (): Promise<AllPressInfo[]> => {
+export const getAllPressList = async (): Promise<PressBasic[]> => {
   try {
     const response = await api.get(`api/v1/press`);
     return response.data.press;

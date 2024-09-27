@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import ArticleListCard from 'components/common/ArticleListCard';
-import { ArticleSlideBoxProps } from 'types/home';
+import { ArticleSlideBoxProps } from 'types/props/home';
 
 /**
  * IMP : ArticleSlideBox Component ( Article Slide Box ) => 가로 슬라이드로 넘어가는 뉴스 기사

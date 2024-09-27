@@ -1,6 +1,6 @@
 import LoginModal from 'components/login/LoginModal';
 import { useState, useEffect } from 'react';
-import { PrivateRoutePros } from 'types/login';
+import { PrivateRoutePros } from 'types/props/login';
 import { getCookie, setCookie } from 'utils/stateUtils';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getAccessToken } from 'apis/loginApi';

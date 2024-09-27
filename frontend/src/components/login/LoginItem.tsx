@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { getLogin } from 'apis/loginApi';
-import { LoginItemProps } from 'types/login';
+import { LoginItemProps } from 'types/props/login';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'redux/index';
 import { setProviderType } from '../../redux/memberSlice';

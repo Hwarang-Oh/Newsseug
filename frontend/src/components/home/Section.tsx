@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import SubTitle from 'components/home/SubTitle';
 import ArticleSlideBox from 'components/home/ArticleSlideBox';
-import { SectionProps } from 'types/home';
+import { SectionProps } from 'types/props/home';
 
 /**
  * IMP : Section Component ( Section )

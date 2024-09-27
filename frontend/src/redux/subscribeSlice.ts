@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { getSubscribedPressList } from 'apis/subscribe';
-import { PressInfo } from '@/types/props/subscribe';
+import { PressBasic } from 'types/api/press';
 
 // 초기 상태 정의
 interface SubscribeState {
-  subscribedPress: PressInfo[];
+  subscribedPress: PressBasic[];
   loading: boolean;
   error: string | null;
 }
@@ -29,7 +29,7 @@ const subscribeSlice = createSlice({
   name: 'subscribe',
   initialState,
   reducers: {
-    updateSubscribedPress: (state, action: PayloadAction<PressInfo[]>) => {
+    updateSubscribedPress: (state, action: PayloadAction<PressBasic[]>) => {
       state.subscribedPress = action.payload; // 새로운 구독 리스트로 업데이트
     },
   },

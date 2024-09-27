@@ -14,7 +14,7 @@ import Subscribes from 'pages/Subscribes';
 import Press from 'pages/Press';
 import Article from 'pages/Article';
 import History from 'pages/History';
-import Scrap from 'pages/Scrap';
+import Folder from 'pages/Folder';
 
 function Router() {
   return (
@@ -43,7 +43,7 @@ function Router() {
           <Route path="" element={<MyPage />} />
           <Route path="folders" element={<AllScraps />} />
           <Route path="history" element={<History />} />
-          <Route path="folders/:folderId" element={<Scrap />} />
+          <Route path="folders/:folderId" element={<Folder />} />
         </Route>
 
         <Route path="/search" element={<Search />} />

@@ -1,5 +1,5 @@
 import styled, { useTheme } from 'styled-components';
-import { KeywordProps } from 'types/search';
+import { KeywordProps } from 'types/props/search';
 import { useNavigate } from 'react-router-dom';
 
 function Keyword({ isHistory = true, keywordText }: Readonly<KeywordProps>) {
