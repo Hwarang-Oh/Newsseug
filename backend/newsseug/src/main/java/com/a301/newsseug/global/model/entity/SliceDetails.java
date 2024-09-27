@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Schema(description = "슬라이스 상세 정보")
-public class SliceDetail {
+public class SliceDetails {
 
     @Schema(description = "현재 페이지")
     private int currentPage;
@@ -21,14 +21,14 @@ public class SliceDetail {
     private boolean hasNext;
 
     @Builder
-    public SliceDetail(int currentPage, boolean hasFirst, boolean hasNext) {
+    public SliceDetails(int currentPage, boolean hasFirst, boolean hasNext) {
         this.currentPage = currentPage;
         this.hasFirst = hasFirst;
         this.hasNext = hasNext;
     }
 
-    public static SliceDetail of(int currentPage, boolean hasFirst, boolean hasNext) {
-        return SliceDetail.builder()
+    public static SliceDetails of(int currentPage, boolean hasFirst, boolean hasNext) {
+        return SliceDetails.builder()
                 .currentPage(currentPage)
                 .hasFirst(hasFirst)
                 .hasNext(hasNext)

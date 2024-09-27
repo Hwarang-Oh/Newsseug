@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Schema(description = "페이지네이션 상세 정보")
-public class PaginationDetail {
+public class PaginationDetails {
 
     @Schema(description = "전체 페이지 수")
     private int totalPages;
@@ -22,14 +22,14 @@ public class PaginationDetail {
 
 
     @Builder
-    public PaginationDetail(int totalPages, long totalElements, int pageNumber) {
+    public PaginationDetails(int totalPages, long totalElements, int pageNumber) {
         this.totalPages = totalPages;
         this.totalElements = totalElements;
         this.pageNumber = pageNumber;
     }
 
-    public static PaginationDetail of(int totalPages, long totalElements, int pageNumber) {
-        return PaginationDetail.builder()
+    public static PaginationDetails of(int totalPages, long totalElements, int pageNumber) {
+        return PaginationDetails.builder()
                 .totalPages(totalPages)
                 .totalElements(totalElements)
                 .pageNumber(pageNumber)
