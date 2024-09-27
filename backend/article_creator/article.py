@@ -43,14 +43,14 @@ class Speech:
         self.data = data
         self.sample_rate = sample_rate
 
-def create_article(article_content: str) -> Optional[mp.VideoClip]:
+def create_article(article_content: str) -> Optional[tuple[mp.VideoClip, Image.Image]]:
     """뉴스 기사로 숏츠를 생성하는 함수
 
     Args:
         article_content (str): 원본 뉴스 기사 내용
     
     Returns:
-        Optional[mp.VideoClip]: 비디오 숏폼 파일
+        Optional[tuple[mp.VideoClip, Image.Image]]: 비디오 숏폼 파일, 썸네일 이미지
     """
 
     scenes = generate_scenes(article_content)
@@ -71,6 +71,8 @@ def create_article(article_content: str) -> Optional[mp.VideoClip]:
         
         images.append(base64_to_np(image))
         speeches.append(read_speech(speech))
+        
+    thumnail = Image.fromarray(images[0], mode="RGB")
     
     audio_clip, durations = create_audio_clip_and_durations(speeches)
     
@@ -78,7 +80,7 @@ def create_article(article_content: str) -> Optional[mp.VideoClip]:
     
     vdieo_clip = create_video_clip(image_clip, audio_clip)
     
-    return vdieo_clip
+    return vdieo_clip, thumnail
 
 def generate_scenes(article_content: str) -> Optional[List[Scene]]:
     """기사 내용으로 8개의 그림 장면 묘사를 만드는 함수
