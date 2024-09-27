@@ -56,9 +56,9 @@ public class FolderController {
     @PostMapping
     public ResponseEntity<Result<Boolean>> createFolder(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestParam(name = "name") @NotBlank String name
+            @RequestParam(name = "title") @NotBlank String title
     ) {
-        folderService.createFolder(userDetails, name);
+        folderService.createFolder(userDetails, title);
         return ResponseUtil.created(Result.of(Boolean.TRUE));
     }
 

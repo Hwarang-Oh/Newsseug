@@ -15,6 +15,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
@@ -31,14 +32,18 @@ public class Folder extends BaseEntity {
     private Member member;
 
     @Column(columnDefinition = "VARCHAR(10)", nullable = false)
-    private String name;
+    private String title;
+
+    @Setter
+    private String thumbnailUrl;
 
     private Long articleCount;
 
     @Builder
-    public Folder(String name, Member member) {
-        this.name = name;
+    public Folder(Member member, String title, String thumbnailUrl) {
+        this.title = title;
         this.member = member;
+        this.thumbnailUrl = thumbnailUrl;
         this.articleCount = 0L;
     }
 

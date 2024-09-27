@@ -6,6 +6,7 @@ import com.a301.newsseug.domain.bookmark.model.entity.Bookmark;
 import com.a301.newsseug.domain.bookmark.repository.BookmarkRepository;
 import com.a301.newsseug.domain.folder.exception.InaccessibleFolderException;
 import com.a301.newsseug.domain.folder.model.dto.FolderDto;
+import com.a301.newsseug.domain.folder.model.dto.response.CreateFolderResponse;
 import com.a301.newsseug.domain.folder.model.dto.response.GetFolderResponse;
 import com.a301.newsseug.domain.folder.model.entity.Folder;
 import com.a301.newsseug.domain.folder.model.dto.response.ListFolderResponse;
@@ -13,7 +14,6 @@ import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.global.model.entity.ActivateStatus;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class FolderServiceImpl implements FolderService {
 
         return GetFolderResponse.of(
                 folderId,
-                folder.getName(),
+                folder.getTitle(),
                 SimpleArticleDto.fromBookmark(bookmarks)
                 );
 
@@ -58,15 +58,17 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public void createFolder(CustomUserDetails userDetails, String name) {
+    public CreateFolderResponse createFolder(CustomUserDetails userDetails, String title) {
 
         Member loginMember = userDetails.getMember();
-        Folder folder = Folder.builder()
-                .member(loginMember)
-                .name(name)
-                .build();
 
-        folderRepository.save(folder);
+        return CreateFolderResponse.of(
+                folderRepository.save(
+                        Folder.builder()
+                                .member(loginMember)
+                                .title(title)
+                                .build()
+        ));
 
     }
 

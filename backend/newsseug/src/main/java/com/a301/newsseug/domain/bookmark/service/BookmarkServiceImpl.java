@@ -13,8 +13,10 @@ import com.a301.newsseug.global.model.entity.ActivateStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class BookmarkServiceImpl implements BookmarkService {
@@ -33,6 +35,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
         Article article = articleRepository.getOrThrow(articleId);
 
+        folder.setThumbnailUrl(article.getThumbnailUrl());
         Bookmark bookmark = Bookmark.builder()
                 .folder(folder)
                 .article(article)
