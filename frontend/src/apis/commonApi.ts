@@ -19,27 +19,44 @@ const api = axios.create({
   },
 });
 
+const refreshInstance = axios.create({
+  baseURL: `${process.env.REACT_APP_API_BASE_URL}/api/v1/auth/login`,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 /**
  * IMP : API Interceptor.request => 요청에, Authorization Header를 추가합니다.
  * IMP : AccessToken이 만료되었는지, 확인하고 만료되었다면 ProviderId를 통해 재발급
  */
 api.interceptors.request.use(async (config) => {
-  let token = getCookie('AccessToken');
-  const tokenExpiration = getTokenExpiration(token);
-  if (!token || (tokenExpiration && Date.now() >= tokenExpiration)) {
-    const providerId = getCookie('ProviderId');
-    if (providerId) {
-      try {
-        token = await getAccessToken(providerId);
-        setCookie('AccessToken', token, { maxAge: 900 });
-      } catch (error: unknown) {
-        console.error('Error in getting AccessToken', error);
-        removeCookie('AccessToken');
-        removeCookie('ProviderId');
-      }
-    } else console.log('비로그인 사용자 혹은 Session 만료 상태');
-  }
-  if (token) config.headers.Authorization = token;
+  let accessToken = getCookie('AccessToken');
+  const tokenExpiration = getTokenExpiration(accessToken);
+  if (!accessToken || (tokenExpiration && Date.now() >= tokenExpiration)) {
+    if (!getCookie('ProviderId')) {
+      console.log('비로그인 사용자입니다.');
+      return config;
+    }
+    try {
+      const {
+        data: {
+          data: { accessToken: newAccessToken },
+        },
+      } = await refreshInstance.get(
+        `?providerId=${encodeURIComponent(getCookie('ProviderId'))}`,
+      );
+      setCookie('AccessTokenBeforeAPI', newAccessToken, {
+        maxAge: 900,
+        secure: true,
+      });
+      config.headers.Authorization = newAccessToken;
+    } catch (error: unknown) {
+      console.error('Error in getting AccessToken', error);
+      removeCookie('AccessToken');
+      removeCookie('ProviderId');
+    }
+  } else config.headers.Authorization = accessToken;
   return config;
 });
 
@@ -63,7 +80,10 @@ api.interceptors.response.use(
         removeCookie('ProviderId');
         window.location.href = '/login';
       }
-    } else console.log('비로그인 사용자의 401 Error를 처리하고 있습니다.');
+    } else
+      console.log(
+        '비로그인 401에러를 제외한 나머지의 에러가 발생하고 있습니다.',
+      );
     return Promise.reject(AuthorizationError);
   },
 );

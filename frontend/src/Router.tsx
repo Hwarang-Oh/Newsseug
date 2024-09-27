@@ -6,7 +6,7 @@ import Register from 'pages/Register';
 import Home from 'pages/Home';
 import AllArticles from 'pages/AllArticles';
 import AllSubscribes from 'pages/AllSubscribes';
-import AllScraps from 'pages/AllFolders';
+import AllFolders from 'pages/AllFolders';
 import MyPage from 'pages/MyPage';
 import Search from 'pages/Search';
 import SearchResult from 'pages/SearchResult';
@@ -31,15 +31,15 @@ function Router() {
           <Route path=":articleId" element={<ArticleVideo />} />
         </Route>
 
-        {/* element={<PrivateRoute component={<Subscribes />} />} */}
-        <Route path="/subscribes">
+        <Route path="/subscribes" element={<PrivateRoute />}>
           <Route path="" element={<Subscribes />} />
-          <Route path="all" element={<AllSubscribes />} />
+          <Route path="all" element={<AllSubscribes />} />{' '}
+          {/* 추가로 감싸지 않아도 상위 경로로 보호됨 */}
         </Route>
 
-        <Route path="/mypage" element={<PrivateRoute component={<MyPage />} />}>
+        <Route path="/mypage" element={<PrivateRoute />}>
           <Route path="" element={<MyPage />} />
-          <Route path="folders" element={<AllScraps />} />
+          <Route path="folders" element={<AllFolders />} />
           <Route path="history" element={<History />} />
           <Route path="folders/:folderId" element={<Folder />} />
         </Route>

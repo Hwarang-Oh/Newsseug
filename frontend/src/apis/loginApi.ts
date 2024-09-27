@@ -35,9 +35,9 @@ export const getAccessToken = async (providerId: string): Promise<string> => {
       data: {
         data: { accessToken },
       },
-    } = await api.get(LOGIN_API_URL, {
-      params: { providerId },
-    });
+    } = await api.get(
+      `${LOGIN_API_URL}?providerId=${encodeURIComponent(providerId)}`,
+    );
     return accessToken;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
@@ -51,36 +51,57 @@ export const getAccessToken = async (providerId: string): Promise<string> => {
 /**
  * IMP : Provider ID를 기반으로 AccessToken을 재발급 받는 API
  * TODO : AccessToken이 재발급되지 않으면, ProviderId를 재발급 받기 위한 처리가 필요함.
+ * TODO : AccessToken maxAge는 900으로 설정해야 함.
  */
-export function scheduleTokenRefresh() {
-  const accessToken = getCookie('AccessToken');
-  const expirationTime = accessToken ? getTokenExpiration(accessToken) : null;
+export async function scheduleTokenRefresh() {
+  let accessToken = getCookie('AccessToken');
+  let providerId = getCookie('ProviderId');
 
-  if (expirationTime) {
-    const currentTime = Date.now();
-    const timeUntilExpiration = expirationTime - currentTime - 60000;
+  // IMP : 1. AccessToken이 없는 경우 - ProviderId를 통해 AccessToken 재발급
+  if (!accessToken && providerId) {
+    try {
+      const newAccessToken = await getAccessToken(providerId);
+      setCookie('AccessToken', newAccessToken, {
+        maxAge: 900,
+        secure: true,
+      });
+      scheduleTokenRefresh();
+      return;
+    } catch (error: unknown) {
+      console.error('AccessToken 재발급 실패:', error);
+      removeCookie('AccessToken');
+      window.location.href = '/login'; // 필요 시 로그인 리다이렉트
+      return;
+    }
+  }
 
-    if (timeUntilExpiration > 0) {
-      setTimeout(async () => {
-        const providerId = getCookie('ProviderId');
-
-        if (providerId) {
-          try {
-            const newAccessToken = await getAccessToken(providerId);
-            setCookie('AccessToken', newAccessToken, {
-              expires: 1,
-              secure: true,
-            });
-            scheduleTokenRefresh();
-          } catch (error) {
-            console.error('AccessToken 재발급 실패:', error);
-            removeCookie('AccessToken');
-            window.location.href = '/login';
+  // IMP : 2. AccessToken이 있는 경우 - 만료 시간 확인
+  else {
+    const expirationTime = accessToken ? getTokenExpiration(accessToken) : null;
+    if (expirationTime) {
+      const currentTime = Date.now();
+      const timeUntilExpiration = expirationTime - currentTime - 60000;
+      if (timeUntilExpiration > 0) {
+        setTimeout(async () => {
+          const providerId = getCookie('ProviderId');
+          if (providerId) {
+            try {
+              const newAccessToken = await getAccessToken(providerId);
+              setCookie('AccessToken', newAccessToken, {
+                maxAge: 900,
+                secure: true,
+              });
+              scheduleTokenRefresh();
+            } catch (error) {
+              console.error('AccessToken 재발급 실패:', error);
+              removeCookie('AccessToken');
+              window.location.href = '/login';
+            }
+          } else {
+            console.log('비로그인 사용자, AccessToken 재발급 없이 상태 유지');
           }
-        } else {
-          console.log('비로그인 사용자, AccessToken 재발급 없이 상태 유지');
-        }
-      }, timeUntilExpiration);
+        }, timeUntilExpiration);
+      }
     }
   }
 }
