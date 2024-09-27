@@ -3,7 +3,7 @@ import ArticleSlider from 'components/articles/ArticleSlider';
 import ArticleHeader from 'components/articles/ArticleHeader';
 import { useEffect } from 'react';
 
-function Article() {
+function ArticleVideo() {
   useEffect(() => {
     const setHeight = () => {
       const containerElement = document.getElementById('container');
@@ -28,7 +28,7 @@ function Article() {
   );
 }
 
-export default Article;
+export default ArticleVideo;
 
 const Container = styled.div`
   position: relative;
