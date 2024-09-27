@@ -1,11 +1,10 @@
 import LoginModal from 'components/login/LoginModal';
 import { useState, useEffect } from 'react';
-import { PrivateRoutePros } from 'types/props/login';
 import { getCookie, setCookie } from 'utils/stateUtils';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { getAccessToken } from 'apis/loginApi';
 
-function PrivateRoute({ component }: Readonly<PrivateRoutePros>) {
+function PrivateRoute() {
   const [showModal, setShowModal] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
@@ -14,10 +13,10 @@ function PrivateRoute({ component }: Readonly<PrivateRoutePros>) {
   useEffect(() => {
     const checkAuthentication = async () => {
       let accessToken = getCookie('AccessToken');
-      const provicerId = getCookie('ProviderId');
-      if (!accessToken && provicerId) {
+      const providerId = getCookie('ProviderId');
+      if (!accessToken && providerId) {
         try {
-          accessToken = await getAccessToken(provicerId);
+          accessToken = await getAccessToken(providerId);
           setCookie('AccessToken', accessToken, { maxAge: 900 });
           setIsAuthenticated(true);
         } catch (error: unknown) {
@@ -44,7 +43,7 @@ function PrivateRoute({ component }: Readonly<PrivateRoutePros>) {
     navigate(-1);
   };
 
-  if (isAuthenticated) return component;
+  if (isAuthenticated) return <Outlet />;
 
   return (
     <>
