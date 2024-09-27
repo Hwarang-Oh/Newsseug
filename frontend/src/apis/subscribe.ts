@@ -27,7 +27,6 @@ export const getSubscribedPressList = async (): Promise<PressBasic[]> => {
 export const getAllPressList = async (): Promise<PressBasic[]> => {
   try {
     const response = await api.get(`api/v1/press`);
-    return response.data.press;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -42,10 +41,13 @@ export const getAllPressList = async (): Promise<PressBasic[]> => {
  */
 export const subscribePress = async (pressId: number) => {
   try {
-    const response = await api.post(`${MEMBER_URL}/press/${pressId}`);
-    console.log(response);
+    await api.post(`${MEMBER_URL}/press/${pressId}`);
   } catch (error: unknown) {
-    throw error;
+    if (isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error('Not Found');
+      } else throw error;
+    } else throw error;
   }
 };
 
@@ -54,9 +56,12 @@ export const subscribePress = async (pressId: number) => {
  */
 export const unsubscribePress = async (pressId: number) => {
   try {
-    const response = await api.put(`${MEMBER_URL}/press/${pressId}`);
-    console.log(response);
+    await api.put(`${MEMBER_URL}/press/${pressId}`);
   } catch (error: unknown) {
-    throw error;
+    if (isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error('Not Found');
+      } else throw error;
+    } else throw error;
   }
 };

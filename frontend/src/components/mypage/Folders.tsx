@@ -1,13 +1,13 @@
 import styled from 'styled-components';
-import Scrap from './Folder';
+import Folder from './Folder';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { MemberFolderInfo, MemberFolderList } from 'types/api/folder';
-import { getMemberFolderList } from 'apis/memberApi';
 import { useDispatch } from 'react-redux';
 import { setMemberFolder } from '../../redux/memberFolderSlice';
+import { getFolderList } from 'apis/folderApi';
 
-function Scraps() {
+function Folders() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const width = '120px';
@@ -20,15 +20,11 @@ function Scraps() {
     data: memberFolderList,
     isLoading,
     error,
-  } = useQuery<MemberFolderList>(
-    ['memberFolderList'],
-    () => getMemberFolderList(),
-    {
-      onSuccess: (data) => {
-        dispatch(setMemberFolder(data));
-      },
+  } = useQuery<MemberFolderList>(['memberFolderList'], () => getFolderList(), {
+    onSuccess: (data) => {
+      dispatch(setMemberFolder(data));
     },
-  );
+  });
 
   if (isLoading) {
     return <div>로딩 중</div>;
@@ -44,21 +40,21 @@ function Scraps() {
     <Wrapper>
       {Array.isArray(memberFolderList?.folders) &&
         memberFolderList?.folders.map((folder: MemberFolderInfo) => (
-          <Scrap
+          <Folder
             key={folder.id}
             width={width}
             height={height}
             thumbnailUrl={folder.thumbnailUrl}
             folderCnt={folder.articleCount}
-            folderTitle={folder.name}
-            onClick={() => handleClick(folder.id, folder.name)}
+            folderTitle={folder.title}
+            onClick={() => handleClick(folder.id, folder.title)}
           />
         ))}
     </Wrapper>
   );
 }
 
-export default Scraps;
+export default Folders;
 
 const Wrapper = styled.div`
   display: flex;

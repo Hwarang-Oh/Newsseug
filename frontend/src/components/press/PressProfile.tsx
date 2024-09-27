@@ -1,17 +1,35 @@
 import { PressInfoProps } from 'types/props/press';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { formatNumber } from 'utils/formatNumber';
+import { subscribePress, unsubscribePress } from 'apis/subscribe';
 
 function PressProfile({
+  id,
   name,
   imageUrl,
   subscribeCount,
+  isSubscribed,
 }: Readonly<PressInfoProps>) {
-  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+  const [isSub, setIsSub] = useState<boolean>(false);
 
-  const handleSubscribe = () => {
-    setIsSubscribed((prev) => !prev);
+  useEffect(() => {
+    setIsSub(isSubscribed);
+    console.log(isSubscribed, subscribeCount, id);
+  }, []);
+
+  const handleSubscribe = async () => {
+    try {
+      if (isSub) {
+        await unsubscribePress(id);
+        setIsSub(false);
+      } else {
+        await subscribePress(id);
+        setIsSub(true);
+      }
+    } catch (err) {
+      console.error('구독/구독취소 실패', err);
+    }
   };
   return (
     <Wrapper>
@@ -21,8 +39,8 @@ function PressProfile({
           <PressName>{name}</PressName>
           <PressSubCnt>구독자 {formatNumber(subscribeCount)}명</PressSubCnt>
         </InfoArea>
-        <SubscribeBtn onClick={handleSubscribe} isSubscribed={isSubscribed}>
-          {isSubscribed ? '구독 중' : '구독하기'}
+        <SubscribeBtn onClick={handleSubscribe} isSubscribed={isSub}>
+          {isSub ? '구독 중' : '구독하기'}
         </SubscribeBtn>
       </TextArea>
     </Wrapper>

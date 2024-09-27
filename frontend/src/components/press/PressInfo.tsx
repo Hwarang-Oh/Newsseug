@@ -9,13 +9,16 @@ function PressInfo({
   imageUrl,
   description,
   subscribeCount,
+  isSubscribed,
 }: Readonly<PressDetail>) {
   return (
     <Wrapper>
       <PressProfile
+        id={id}
         name={name}
         imageUrl={imageUrl}
         subscribeCount={subscribeCount}
+        isSubscribed={isSubscribed}
       />
       <PressDescription description={description} />
     </Wrapper>

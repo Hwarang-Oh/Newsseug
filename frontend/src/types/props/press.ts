@@ -3,7 +3,9 @@ export interface PressDescriptionProps {
 }
 
 export interface PressInfoProps {
+  id: number;
   name: string;
   imageUrl: string;
   subscribeCount: number;
+  isSubscribed: boolean;
 }

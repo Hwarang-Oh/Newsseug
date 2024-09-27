@@ -2,7 +2,7 @@ import { FolderProps } from 'types/props/mypage';
 import styled from 'styled-components';
 import scrapIcon from 'assets/scrapIcon.svg';
 
-function Scrap({
+function Folder({
   width = '180px',
   height = '250px',
   thumbnailUrl,
@@ -12,16 +12,16 @@ function Scrap({
 }: Readonly<FolderProps>) {
   return (
     <Wrapper width={width} height={height} url={thumbnailUrl} onClick={onClick}>
-      <ScrapTitle width={width}>{folderTitle}</ScrapTitle>
-      <ScrapTag width={width}>
-        <ScrapTagIcon width={width} src={scrapIcon} />
-        <ScrapTagCnt width={width}>{folderCnt}</ScrapTagCnt>
-      </ScrapTag>
+      <FolderTitle width={width}>{folderTitle}</FolderTitle>
+      <FolderTag width={width}>
+        <FolderTagIcon width={width} src={scrapIcon} />
+        <FolderTagCnt width={width}>{folderCnt}</FolderTagCnt>
+      </FolderTag>
     </Wrapper>
   );
 }
 
-export default Scrap;
+export default Folder;
 
 const Wrapper = styled.div<{ width?: string; height?: string; url: string }>`
   padding: 40px 10px;
@@ -57,7 +57,7 @@ const Wrapper = styled.div<{ width?: string; height?: string; url: string }>`
   }
 `;
 
-const ScrapTitle = styled.h1<{ width: string }>`
+const FolderTitle = styled.h1<{ width: string }>`
   color: #fff;
   font-size: ${({ width }) =>
     width === '180px' || width === '100%' ? '18px' : '14px'};
@@ -73,7 +73,7 @@ const ScrapTitle = styled.h1<{ width: string }>`
   -webkit-box-orient: vertical; /* 수직 방향 클램프 */
 `;
 
-const ScrapTag = styled.div<{ width: string }>`
+const FolderTag = styled.div<{ width: string }>`
   position: absolute;
   top: 8px;
   left: 8px;
@@ -86,14 +86,14 @@ const ScrapTag = styled.div<{ width: string }>`
   }
 `;
 
-const ScrapTagIcon = styled.img<{ width: string }>`
+const FolderTagIcon = styled.img<{ width: string }>`
   width: ${({ width }) =>
     width === '180px' || width === '100%' ? '25px' : '20px'};
   height: ${({ width }) =>
     width === '180px' || width === '100%' ? '25px' : '20px'};
 `;
 
-const ScrapTagCnt = styled.p<{ width: string }>`
+const FolderTagCnt = styled.p<{ width: string }>`
   display: inline-block;
   line-height: ${({ width }) =>
     width === '180px' || width === '100%' ? '25px' : '20px'};

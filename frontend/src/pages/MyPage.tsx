@@ -10,7 +10,7 @@ function MyPage() {
       <UserInfo />
       <SubTitle title="시청 기록" url="history" />
       {/* <Histories /> */}
-      <SubTitle title="스크랩" url="folders" />
+      <SubTitle title="내 폴더" url="folders" />
       <Folders />
     </MainLayout>
   );

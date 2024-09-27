@@ -3,22 +3,43 @@ import styled from 'styled-components';
 import { motion, useAnimation, PanInfo } from 'framer-motion';
 import scrapPlusIcon from 'assets/scrapPlusIcon.svg';
 import { ScrapModalProps } from 'types/props/articleVideo';
+import { MemberFolderList } from 'types/api/folder';
+import { useQuery } from 'react-query';
+import { useDispatch } from 'react-redux';
+import { getFolderList } from 'apis/folderApi';
+import { setMemberFolder } from '../../redux/memberFolderSlice';
 
 function ScrapModal({
   isOpen,
   onRequestClose,
   onCreateModalOpen,
 }: Readonly<ScrapModalProps>) {
+  const dispatch = useDispatch();
   const [checkedItems, setCheckedItems] = useState<boolean[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
 
   const windowHeight = window.screen.height;
-  const defaultHeight = windowHeight * 0.6;
+  const maxHeight = windowHeight * 0.6;
+  // 나중에 삭제할 코드
+  useEffect(() => {}, [checkedItems]);
+
+  // 수정 필요
+  const {
+    data: memberFolderList,
+    isLoading,
+    error,
+  } = useQuery<MemberFolderList>(['memberFolderList'], () => getFolderList(), {
+    onSuccess: (data) => {
+      dispatch(setMemberFolder(data));
+      console.log(data);
+      setCheckedItems(new Array(data.folders.length).fill(false));
+    },
+  });
 
   useEffect(() => {
     if (isOpen) {
-      controls.start({ y: 0, height: defaultHeight });
+      controls.start({ y: 0 });
       document.body.style.overflow = 'hidden';
     } else {
       controls.start({ y: '100%' });
@@ -27,12 +48,7 @@ function ScrapModal({
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [controls, defaultHeight, isOpen]);
-
-  useEffect(() => {
-    // 초기 상태로 모든 아이템의 체크 상태를 false로 설정
-    setCheckedItems(new Array(25).fill(false));
-  }, []);
+  }, [controls, isOpen]);
 
   const handleClick = (index: number) => {
     setCheckedItems((prev) =>
@@ -83,6 +99,16 @@ function ScrapModal({
     onCreateModalOpen();
   };
 
+  if (isLoading) {
+    return <div>로딩 중</div>;
+  }
+
+  if (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : '알 수 없는 오류';
+    return <div>비디오 별 폴더 목록 조회 실패: {errorMessage}</div>;
+  }
+
   return (
     <ModalOverlay
       initial={{ opacity: 0 }}
@@ -95,7 +121,7 @@ function ScrapModal({
         animate={controls}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        style={{ height: defaultHeight }}
+        style={{ maxHeight }} // 최대 높이를 60%로 설정
         drag="y"
         dragConstraints={{ top: 0, bottom: 0 }}
         dragElastic={1}
@@ -113,22 +139,23 @@ function ScrapModal({
         </ModalHeader>
         <ContentWrapper ref={contentRef}>
           <ModalBody>
-            {[...Array(25)].map((_, index) => (
-              <ScrapItem key={index} onClick={() => handleClick(index)}>
-                <HiddenCheckbox />
-                <StyledCheckbox $checked={checkedItems[index]}>
-                  <svg width="16px" height="16px" viewBox="0 0 24 24">
-                    <polyline
-                      points="20 6 9 17 4 12"
-                      stroke="white"
-                      strokeWidth="2"
-                      fill="none"
-                    />
-                  </svg>
-                </StyledCheckbox>
-                <ScrapName>폴더 {index + 1}</ScrapName>
-              </ScrapItem>
-            ))}
+            {Array.isArray(memberFolderList?.folders) &&
+              memberFolderList?.folders.map((folder, index) => (
+                <ScrapItem key={folder.id} onClick={() => handleClick(index)}>
+                  <HiddenCheckbox />
+                  <StyledCheckbox $checked={checkedItems[index]}>
+                    <svg width="16px" height="16px" viewBox="0 0 24 24">
+                      <polyline
+                        points="20 6 9 17 4 12"
+                        stroke="white"
+                        strokeWidth="2"
+                        fill="none"
+                      />
+                    </svg>
+                  </StyledCheckbox>
+                  <ScrapName>{folder.title}</ScrapName>
+                </ScrapItem>
+              ))}
           </ModalBody>
         </ContentWrapper>
         <ModalFooter>
@@ -167,12 +194,17 @@ const ModalContent = styled(motion.div)`
   position: relative;
   margin: 20px 0;
   border: none;
+  height: auto; // 내용에 맞춰 높이 설정
+  max-height: 60vh; // 최대 높이는 화면의 60%
 `;
 
 const ContentWrapper = styled.div`
   overflow-y: auto;
   flex-grow: 1;
   overscroll-behavior: contain;
+  max-height: calc(
+    60vh - 80px
+  ); // 헤더 및 푸터 높이를 제외한 내용 영역의 최대 높이 설정
 `;
 
 const DraggableBar = styled.div`

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Scrap from 'components/mypage/Folder';
+import Folder from 'components/mypage/Folder';
 import SubLayout from 'components/common/SubLayout';
 import scrapPlusIcon from 'assets/scrapPlusIcon.svg';
 import CreateScrapModal from 'components/articles/CreateScrapModal';
@@ -9,14 +9,14 @@ import { RootState } from '../redux/index';
 import { useNavigate } from 'react-router-dom';
 import { MemberFolderInfo } from 'types/api/folder';
 
-function AllScraps() {
+function AllFolders() {
   const navigate = useNavigate();
 
   const memberFolderList = useSelector(
     (state: RootState) => state.memberFolder?.folders,
   );
 
-  const handleClick = (folderId: number, title: string) => {
+  const handleClick = (folderId: number) => {
     navigate(`${folderId}`);
   };
 
@@ -43,12 +43,12 @@ function AllScraps() {
         )}
         {Array.isArray(memberFolderList) &&
           memberFolderList.map((folder: MemberFolderInfo) => (
-            <Scrap
+            <Folder
               key={folder.id}
               thumbnailUrl={folder.thumbnailUrl}
               folderCnt={folder.articleCount}
-              folderTitle={folder.name}
-              onClick={() => handleClick(folder.id, folder.name)}
+              folderTitle={folder.title}
+              onClick={() => handleClick(folder.id)}
               width="100%"
             />
           ))}
@@ -57,7 +57,7 @@ function AllScraps() {
   );
 }
 
-export default AllScraps;
+export default AllFolders;
 
 const CreateScrap = styled.button`
   border: none;
