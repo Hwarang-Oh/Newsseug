@@ -4,9 +4,9 @@ import PressDescription from './PressDescription';
 import { PressDetail } from 'types/api/press';
 
 function PressInfo({
+  id,
   name,
   imageUrl,
-  pressId,
   description,
   subscribeCount,
 }: Readonly<PressDetail>) {

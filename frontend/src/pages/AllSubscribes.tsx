@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import SubscribeHeader from 'components/subscribe/SubscribeHeader';
 import SubLayout from 'components/common/SubLayout';
 import PressCardList from 'components/subscribe/PressCardList';
-import { AllPressInfo, PressInfo } from '@/types/props/subscribe';
+import { PressBasic } from 'types/api/press';
 
 import {
   getAllPressList,
@@ -25,8 +25,8 @@ function AllSubscribes() {
   );
 
   // 구독한 언론사 리스트 객체
-  const [allPressList, setAllPressList] = useState<AllPressInfo[]>([]);
-  const [subscribeList, setSubscribeList] = useState<PressInfo[]>([]);
+  const [allPressList, setAllPressList] = useState<PressBasic[]>([]);
+  const [subscribeList, setSubscribeList] = useState<PressBasic[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -73,7 +73,7 @@ function AllSubscribes() {
   }, [allPressList, subscribeList]);
 
   // 구독 or 구독 취소 토글
-  const toggleSubscribe = (press: PressInfo) => {
+  const toggleSubscribe = (press: PressBasic) => {
     const isSubscribed = subscriptionStatus[press.id];
     // 구독 상태 변경
     setSubscriptionStatus((prev) => ({
@@ -90,7 +90,8 @@ function AllSubscribes() {
         {
           id: press.id,
           name: press.name,
-          imgUrl: press.imgUrl,
+          imageUrl: press.imageUrl,
+          isSubscribed: true,
         },
       ]);
     }
@@ -103,12 +104,12 @@ function AllSubscribes() {
     const newSubscribe = subscribeList.filter(
       (press) =>
         !subscribedPress.some(
-          (subPress: PressInfo) => subPress.id === press.id,
+          (subPress: PressBasic) => subPress.id === press.id,
         ),
     );
 
-    const removeSubscribe: PressInfo[] = subscribedPress.filter(
-      (press: PressInfo) =>
+    const removeSubscribe: PressBasic[] = subscribedPress.filter(
+      (press: PressBasic) =>
         !subscribeList.some((subPress) => subPress.id === press.id),
     );
 

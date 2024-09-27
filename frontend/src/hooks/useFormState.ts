@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { UserInputProps } from 'types/register';
+import { UserInputProps } from 'types/props/register';
 import { useNavigate } from 'react-router-dom';
 import { AppDispatch } from 'redux/index';
 import { useDispatch } from 'react-redux';

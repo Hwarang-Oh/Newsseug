@@ -1,4 +1,4 @@
-import { PressInfoProps } from 'types/press';
+import { PressInfoProps } from 'types/props/press';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { formatNumber } from 'utils/formatNumber';

@@ -49,8 +49,8 @@ function Scraps() {
             width={width}
             height={height}
             thumbnailUrl={folder.thumbnailUrl}
-            scrapCnt={folder.articleCount}
-            scrapTitle={folder.name}
+            folderCnt={folder.articleCount}
+            folderTitle={folder.name}
             onClick={() => handleClick(folder.id, folder.name)}
           />
         ))}

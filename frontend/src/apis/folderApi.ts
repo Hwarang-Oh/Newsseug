@@ -1,14 +1,16 @@
 import api from 'apis/commonApi';
-import { Folder, FolderList, MemberFolderList } from 'types/api/folder';
+import { FolderDetail, MemberFolderList } from 'types/api/folder';
 import { AxiosResponse, isAxiosError } from 'axios';
 const FOLDERS_URL = `/api/v1/folders`;
 
 /**
  * IMP : 사용자 폴더 목록 조회를 위한 API
  */
-export const getFolderList = async (): Promise<FolderList> => {
+export const getFolderList = async (): Promise<MemberFolderList> => {
   try {
-    const response: AxiosResponse<FolderList> = await api.get(`${FOLDERS_URL}`);
+    const response: AxiosResponse<MemberFolderList> = await api.get(
+      `${FOLDERS_URL}`,
+    );
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
@@ -64,7 +66,9 @@ export const saveArticleToFolder = async (
 /**
  * IMP : 사용자가 폴더에 저장한 기사 목록을 조회하는 API
  */
-export const getFolderInfo = async (folderId: number): Promise<Folder> => {
+export const getFolderInfo = async (
+  folderId: number,
+): Promise<FolderDetail> => {
   try {
     const response = await api.get(`${FOLDERS_URL}/${folderId}`);
     return response.data;

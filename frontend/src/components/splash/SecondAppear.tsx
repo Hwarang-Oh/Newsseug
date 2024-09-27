@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 import NormalWord from 'components/splash/NormalWord';
 import VectorWord from 'components/common/VectorWord';
 import { LogoIconS } from 'components/icon/LogoIcon';
-import { DelayProps } from 'types/splash';
+import { DelayProps } from 'types/props/splash';
 
 const VectorWordIcon = LogoIconS();
 

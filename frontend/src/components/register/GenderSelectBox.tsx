@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import InputTitle from 'components/register/InputTitle';
 import GenderBox from 'components/register/GenderBox';
-import { GenderSelectBoxProps } from 'types/register';
+import { GenderSelectBoxProps } from 'types/props/register';
 
 function GenderSelectBox({
   title,

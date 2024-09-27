@@ -1,20 +1,20 @@
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 import SubLayout from 'components/common/SubLayout';
-import { useLocation, useParams } from 'react-router-dom';
 import data from 'db/data.json';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
-import { Folder } from 'types/api/folder';
+import { FolderDetail } from 'types/api/folder';
 import { getFolderInfo } from 'apis/folderApi';
+import { useLocation, useParams } from 'react-router-dom';
 
-function Scrap() {
+function Folder() {
   const { folderId } = useParams();
 
   const {
     data: folderInfo,
     isLoading,
     error,
-  } = useQuery<Folder>(
+  } = useQuery<FolderDetail>(
     ['folderInfo', folderId],
     () => getFolderInfo(Number(folderId)),
     {
@@ -43,7 +43,7 @@ function Scrap() {
   );
 }
 
-export default Scrap;
+export default Folder;
 
 const ScrapTitle = styled.span`
   max-width: 250px;

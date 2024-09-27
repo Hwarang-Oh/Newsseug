@@ -12,7 +12,7 @@ function SubscribePressCard({
   isActive,
   isAllActive,
   onClick,
-}: SubscribePressCardProps) {
+}: Readonly<SubscribePressCardProps>) {
   return (
     <Container
       $isActive={isActive}
@@ -20,7 +20,7 @@ function SubscribePressCard({
       onClick={onClick}
     >
       <LogoContainer>
-        <PressLogo src={press.imgUrl} />
+        <PressLogo src={press.imageUrl} />
       </LogoContainer>
       <PressName>{press.name}</PressName>
     </Container>

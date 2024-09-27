@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { ModalProps } from 'types/article';
+import { ModalProps } from 'types/props/articleVideo';
 
 function ReportModal({ isOpen, onRequestClose }: Readonly<ModalProps>) {
   const [reportValue, setReportValue] = useState<string>('');

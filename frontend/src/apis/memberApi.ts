@@ -1,6 +1,6 @@
 import api from 'apis/commonApi';
 import { AxiosResponse, isAxiosError } from 'axios';
-import { UserInputProps } from 'types/register';
+import { UserInputProps } from 'types/props/register';
 import { MemberInfo } from 'types/api/member';
 import { MemberFolderList } from '@/types/api/folder';
 const MEMBER_URL = '/api/v1/members';

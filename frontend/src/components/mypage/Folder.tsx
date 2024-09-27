@@ -1,4 +1,4 @@
-import { ScrapProps } from '@/types/mypage';
+import { FolderProps } from 'types/props/mypage';
 import styled from 'styled-components';
 import scrapIcon from 'assets/scrapIcon.svg';
 
@@ -6,16 +6,16 @@ function Scrap({
   width = '180px',
   height = '250px',
   thumbnailUrl,
-  scrapTitle,
-  scrapCnt,
+  folderTitle,
+  folderCnt,
   onClick,
-}: Readonly<ScrapProps>) {
+}: Readonly<FolderProps>) {
   return (
     <Wrapper width={width} height={height} url={thumbnailUrl} onClick={onClick}>
-      <ScrapTitle width={width}>{scrapTitle}</ScrapTitle>
+      <ScrapTitle width={width}>{folderTitle}</ScrapTitle>
       <ScrapTag width={width}>
         <ScrapTagIcon width={width} src={scrapIcon} />
-        <ScrapTagCnt width={width}>{scrapCnt}</ScrapTagCnt>
+        <ScrapTagCnt width={width}>{folderCnt}</ScrapTagCnt>
       </ScrapTag>
     </Wrapper>
   );

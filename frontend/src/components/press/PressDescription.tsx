@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import expandIcon from 'assets/expandIcon.svg';
 import { useState, useRef, useEffect } from 'react';
-import { PressDescriptionProps } from 'types/press';
+import { PressDescriptionProps } from 'types/props/press';
 
 function PressDescription({ description }: Readonly<PressDescriptionProps>) {
   const [isOpen, setIsOpen] = useState<boolean>(false);

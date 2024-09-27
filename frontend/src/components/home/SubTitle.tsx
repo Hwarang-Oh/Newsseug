@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { SubTitleProps } from 'types/home';
+import { SubTitleProps } from 'types/props/home';
 
 /**
  * IMP : SubTitle Component ( SubTitle )

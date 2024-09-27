@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { InputSectionProps } from 'types/search';
+import { InputSectionProps } from 'types/props/search';
 
 function InputSection({ keywordText = '' }: Readonly<InputSectionProps>) {
   const navigate = useNavigate();

@@ -1,8 +1,8 @@
-import { SubTitleProps } from '@/types/mypage';
+import { SubTitleProps } from 'types/props/mypage';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-function SubTitle({ title, url }: SubTitleProps) {
+function SubTitle({ title, url }: Readonly<SubTitleProps>) {
   const navigate = useNavigate();
   const handleAllBtnClick = () => {
     if (url) {

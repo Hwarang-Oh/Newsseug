@@ -1,8 +1,8 @@
+import Folders from 'components/mypage/Folders';
 import UserInfo from 'components/mypage/UserInfo';
-import MainLayout from 'components/common/MainLayout';
 import SubTitle from 'components/mypage/SubTitle';
 import Histories from 'components/mypage/Histories';
-import Scraps from 'components/mypage/Scraps';
+import MainLayout from 'components/common/MainLayout';
 
 function MyPage() {
   return (
@@ -11,7 +11,7 @@ function MyPage() {
       <SubTitle title="시청 기록" url="history" />
       {/* <Histories /> */}
       <SubTitle title="스크랩" url="folders" />
-      <Scraps />
+      <Folders />
     </MainLayout>
   );
 }

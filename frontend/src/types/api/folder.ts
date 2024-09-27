@@ -10,7 +10,7 @@ export interface MemberFolderInfo {
 export interface MemberFolderList {
   folders: MemberFolderInfo[];
 }
-export interface Folder {
+export interface FolderDetail {
   articles: Article[];
   id: number;
   name: string;

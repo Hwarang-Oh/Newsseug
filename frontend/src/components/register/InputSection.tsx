@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import InputTitle from 'components/register/InputTitle';
 import InputBox from 'components/register/InputBox';
-import { InputSectionProps } from 'types/register';
+import { InputSectionProps } from 'types/props/register';
 
 function InputSection({
   title,
