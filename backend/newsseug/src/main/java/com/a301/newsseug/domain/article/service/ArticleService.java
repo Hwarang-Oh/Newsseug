@@ -1,10 +1,9 @@
 package com.a301.newsseug.domain.article.service;
 
-import com.a301.newsseug.domain.article.model.dto.response.AllArticlesResponse;
-import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
-import com.a301.newsseug.domain.article.model.dto.response.TodayArticlesResponse;
-import com.a301.newsseug.domain.article.model.dto.response.ListArticleResponse;
+import com.a301.newsseug.domain.article.model.dto.response.*;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+
+import java.util.List;
 
 public interface ArticleService {
 
@@ -14,6 +13,6 @@ public interface ArticleService {
 
     ListArticleResponse getArticlesByCategory(String categoryName);
 
-    GetArticleResponse getArticle(CustomUserDetails userDetails, Long articleId);
+    GetArticleListResponse getArticleList(CustomUserDetails userDetails, int page);
 
 }
