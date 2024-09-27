@@ -1,0 +1,27 @@
+{
+  "timestamp": "string",
+  "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "data": {
+    "article": {
+      "id": 0,
+      "title": "신촌에만 스터디카페 50개…된다하면 '불나방 창업' 골병",
+      "contentUrl": "https://n.news.naver.com/article/newspaper/025/0003388901?date=20240927",
+      "videoUrl": "https://videos.pexels.com/video-files/3046247/3046247-hd_1080_1920_30fps.mp4",
+      "createdAt": "2024-09-27T05:28:52.265Z"
+    },
+    "press": {
+      "id": 0,
+      "name": "중앙일보",
+      "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000025/logo/2021/08/20/A_163345038.png?type=u144_144",
+      "isSubscribed": false
+    },
+    "likeInfo": {
+      "isLike": false,
+      "likeCount": 100
+    },
+    "hateInfo": {
+      "isHate": false,
+      "hateCount": 1000
+    }
+  }
+}

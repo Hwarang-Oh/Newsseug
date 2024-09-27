@@ -12,7 +12,7 @@ import Search from 'pages/Search';
 import SearchResult from 'pages/SearchResult';
 import Subscribes from 'pages/Subscribes';
 import Press from 'pages/Press';
-import Article from 'pages/Article';
+import ArticleVideo from 'pages/ArticleVideo';
 import History from 'pages/History';
 import Folder from 'pages/Folder';
 
@@ -28,13 +28,11 @@ function Router() {
 
         <Route path="/articles">
           <Route path="all" element={<AllArticles />} />
-          <Route path=":articleId" element={<Article />} />
+          <Route path=":articleId" element={<ArticleVideo />} />
         </Route>
 
-        <Route
-          path="/subscribes"
-          element={<PrivateRoute component={<Subscribes />} />}
-        >
+        {/* element={<PrivateRoute component={<Subscribes />} />} */}
+        <Route path="/subscribes">
           <Route path="" element={<Subscribes />} />
           <Route path="all" element={<AllSubscribes />} />
         </Route>
