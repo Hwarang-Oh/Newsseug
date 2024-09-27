@@ -16,6 +16,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -92,7 +93,7 @@ public class MemberController {
     }
 
     @Operation(summary = "언론사 구독 해제", description = "사용자가 언론사 구독을 해제한다.")
-    @PutMapping("/press/{pressId}")
+    @DeleteMapping("/press/{pressId}")
     public ResponseEntity<Result<Boolean>> unsubscribePress(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable(name = "pressId") Long pressId
