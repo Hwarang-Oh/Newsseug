@@ -14,3 +14,8 @@ export interface SubTitleProps {
 export interface ArticleSlideBoxProps {
   articleList?: ArticleListCardProps[];
 }
+
+export interface AllArticlesProps {
+  pageTitle?: string;
+  articleList?: ArticleListCardProps[];
+}

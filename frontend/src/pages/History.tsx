@@ -5,7 +5,7 @@ function History() {
   return (
     <SubLayout>
       <span>내 시청 기록</span>
-      <ArticleListCardGroup articleList={article.articles} />
+      {/* <ArticleListCardGroup articleList={article.articles} /> */}
     </SubLayout>
   );
 }

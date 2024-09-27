@@ -6,7 +6,7 @@ import Register from 'pages/Register';
 import Home from 'pages/Home';
 import AllArticles from 'pages/AllArticles';
 import AllSubscribes from 'pages/AllSubscribes';
-import AllScraps from 'pages/AllScraps';
+import AllScraps from 'pages/AllFolders';
 import MyPage from 'pages/MyPage';
 import Search from 'pages/Search';
 import SearchResult from 'pages/SearchResult';

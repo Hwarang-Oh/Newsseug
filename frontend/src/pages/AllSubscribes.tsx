@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import SubscribeHeader from 'components/subscribe/SubscribeHeader';
 import SubLayout from 'components/common/SubLayout';
 import PressCardList from 'components/subscribe/PressCardList';
-import { AllPressInfo, PressInfo } from 'types/subscribe';
+import { AllPressInfo, PressInfo } from '@/types/props/subscribe';
 
 import {
   getAllPressList,

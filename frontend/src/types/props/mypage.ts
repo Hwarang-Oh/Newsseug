@@ -3,11 +3,11 @@ export interface SubTitleProps {
   url?: string;
 }
 
-export interface ScrapProps {
+export interface FolderProps {
   width?: string;
   height?: string;
   thumbnailUrl: string;
-  scrapTitle: string;
-  scrapCnt: number;
+  folderTitle: string;
+  folderCnt: number;
   onClick?: () => void;
 }
