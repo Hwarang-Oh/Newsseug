@@ -14,6 +14,7 @@ import com.a301.newsseug.domain.folder.exception.InaccessibleFolderException;
 import com.a301.newsseug.domain.folder.factory.entity.FolderFactory;
 import com.a301.newsseug.domain.folder.factory.fixtures.FolderFixtures;
 import com.a301.newsseug.domain.folder.model.dto.FolderDto;
+import com.a301.newsseug.domain.folder.model.dto.response.CreateFolderResponse;
 import com.a301.newsseug.domain.folder.model.dto.response.GetFolderResponse;
 import com.a301.newsseug.domain.folder.model.dto.response.ListFolderResponse;
 import com.a301.newsseug.domain.folder.model.entity.Folder;
@@ -24,6 +25,7 @@ import com.a301.newsseug.global.model.entity.ActivateStatus;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,7 +78,7 @@ class FolderServiceTest {
         verify(bookmarkRepository).findAllByFolder(folder);
 
         assertThat(folder.getFolderId()).isEqualTo(response.id());
-        assertThat(folder.getName()).isEqualTo(response.name());
+        assertThat(folder.getTitle()).isEqualTo(response.name());
         assertThat(response.articles().isEmpty()).isTrue();
 
     }
@@ -119,25 +121,29 @@ class FolderServiceTest {
         assertThat(response.folders())
                 .extracting(FolderDto::id, FolderDto::name, FolderDto::articleCount)
                 .containsExactlyInAnyOrder(
-                        tuple(1L, FolderFixtures.name, 0L),
-                        tuple(2L, FolderFixtures.name, 0L)
+                        tuple(1L, FolderFixtures.title, 0L),
+                        tuple(2L, FolderFixtures.title, 0L)
                 );
 
     }
 
     @Test
-    @DisplayName("폴더 생성 [성공]")
+    @DisplayName("폴더 생성[성공]")
     void createFolder() {
 
         // Given
-        Folder folder = FolderFactory.folder(1L);
+        Folder saveFolder = FolderFactory.folder(1L);
+        given(folderRepository.save(any(Folder.class))).willReturn(saveFolder);
 
         // When
-        folderService.createFolder(userDetails, folder.getName());
+        CreateFolderResponse response = folderService.createFolder(userDetails, FolderFixtures.title);
 
         // Then
         verify(folderRepository).save(any(Folder.class));
-
+        assertThat(response.id()).isEqualTo(saveFolder.getFolderId());
+        assertThat(response.title()).isEqualTo(saveFolder.getTitle());
+        assertThat(response.thumbnailUrl()).isEqualTo(saveFolder.getThumbnailUrl());
+        assertThat(response.articleCount()).isEqualTo(saveFolder.getArticleCount());
 
     }
 

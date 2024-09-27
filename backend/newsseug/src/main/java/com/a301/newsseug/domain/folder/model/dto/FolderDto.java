@@ -22,7 +22,7 @@ public record FolderDto(
     public static FolderDto of(Folder folder) {
         return FolderDto.builder()
                 .id(folder.getFolderId())
-                .name(folder.getName())
+                .name(folder.getTitle())
                 .articleCount(folder.getArticleCount())
                 .build();
     }
