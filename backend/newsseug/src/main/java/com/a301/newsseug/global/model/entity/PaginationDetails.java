@@ -20,7 +20,6 @@ public class PaginationDetails {
     @Schema(description = "현재 페이지")
     private int pageNumber;
 
-
     @Builder
     public PaginationDetails(int totalPages, long totalElements, int pageNumber) {
         this.totalPages = totalPages;
