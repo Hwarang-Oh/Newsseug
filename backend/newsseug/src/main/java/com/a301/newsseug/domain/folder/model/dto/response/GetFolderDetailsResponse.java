@@ -1,6 +1,6 @@
 package com.a301.newsseug.domain.folder.model.dto.response;
 
-import com.a301.newsseug.domain.article.model.dto.SimpleArticleDto;
+import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
 import com.a301.newsseug.domain.folder.model.entity.Folder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
@@ -18,11 +18,11 @@ public record GetFolderDetailsResponse(
         String title,
 
         @Schema(description = "스크랩한 기사 목록")
-        List<SimpleArticleDto> articles
+        List<GetArticleResponse> articles
 
 ) {
 
-    public static GetFolderDetailsResponse of(Folder folder, List<SimpleArticleDto> articles) {
+    public static GetFolderDetailsResponse of(Folder folder, List<GetArticleResponse> articles) {
         return GetFolderDetailsResponse.builder()
                 .id(folder.getFolderId())
                 .title(folder.getTitle())
