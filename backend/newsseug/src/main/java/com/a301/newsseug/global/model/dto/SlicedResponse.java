@@ -14,11 +14,11 @@ public class SlicedResponse<T> {
     private SliceDetails sliceDetails;
 
     @Schema(description = "결과")
-    private T data;
+    private T content;
 
-    private SlicedResponse(SliceDetails sliceDetails, T data) {
+    private SlicedResponse(SliceDetails sliceDetails, T content) {
         this.sliceDetails = sliceDetails;
-        this.data = data;
+        this.content = content;
     }
 
     public static <T> SlicedResponse<T> of(SliceDetails sliceDetails, T data) {
