@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 
 @Builder(access = AccessLevel.PRIVATE)
-@Schema(name = "폴더 생성 응답", description = "생성된 폴더에 대한 정보.")
+@Schema(name = "생성된 폴더 정보", description = "생성된 폴더에 대한 정보.")
 public record CreateFolderResponse(
 
         @Schema(description = "식별자")
