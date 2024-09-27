@@ -1,6 +1,7 @@
 package com.a301.newsseug.domain.folder.controller;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+import com.a301.newsseug.domain.folder.model.dto.response.CreateFolderResponse;
 import com.a301.newsseug.domain.folder.model.dto.response.GetFolderResponse;
 import com.a301.newsseug.domain.folder.model.dto.response.ListFolderResponse;
 import com.a301.newsseug.domain.folder.service.FolderService;
@@ -54,12 +55,15 @@ public class FolderController {
 
     @Operation(summary = "폴더 생성", description = "사용자가 폴더를 생성한다.")
     @PostMapping
-    public ResponseEntity<Result<Boolean>> createFolder(
+    public ResponseEntity<Result<CreateFolderResponse>> createFolder(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam(name = "title") @NotBlank String title
     ) {
-        folderService.createFolder(userDetails, title);
-        return ResponseUtil.created(Result.of(Boolean.TRUE));
+        return ResponseUtil.created(
+                Result.of(
+                        folderService.createFolder(userDetails, title)
+                )
+        );
     }
 
 
