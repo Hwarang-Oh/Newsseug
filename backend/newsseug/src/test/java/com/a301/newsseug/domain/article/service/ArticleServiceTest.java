@@ -50,7 +50,7 @@ public class ArticleServiceTest {
         List<Article> mockArticles = Arrays.asList(article1, article2);
 
         // Mock repository behavior for finding all articles ordered by creation date
-        given(articleRepository.findAllByOrderByCreatedAtDesc()).willReturn(mockArticles);
+//        given(articleRepository.findAllByOrderByCreatedAtDesc()).willReturn(mockArticles);
 
         // Act: Call the service method to get all articles
 //        List<Article> result = articleService.getAllArticles();

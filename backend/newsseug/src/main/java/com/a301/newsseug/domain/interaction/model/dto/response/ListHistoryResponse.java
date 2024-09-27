@@ -3,7 +3,6 @@ package com.a301.newsseug.domain.interaction.model.dto.response;
 import java.util.List;
 
 import com.a301.newsseug.domain.interaction.model.dto.HistoryDto;
-import com.a301.newsseug.global.model.entity.PaginationDetail;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;

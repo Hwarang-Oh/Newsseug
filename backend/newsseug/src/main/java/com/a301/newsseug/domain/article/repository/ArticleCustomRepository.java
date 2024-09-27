@@ -5,7 +5,7 @@ import com.a301.newsseug.domain.press.model.entity.Press;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
-public interface ArticlePressCustomRepository {
+public interface ArticleCustomRepository {
 
     Slice<Article> findAllByPressAndCategory(Press press, String category, Pageable pageable);
 

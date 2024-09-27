@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ArticlePressCustomRepositoryImpl implements ArticlePressCustomRepository  {
+public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
