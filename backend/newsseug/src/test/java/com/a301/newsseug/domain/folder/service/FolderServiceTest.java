@@ -13,10 +13,9 @@ import com.a301.newsseug.domain.bookmark.repository.BookmarkRepository;
 import com.a301.newsseug.domain.folder.exception.InaccessibleFolderException;
 import com.a301.newsseug.domain.folder.factory.entity.FolderFactory;
 import com.a301.newsseug.domain.folder.factory.fixtures.FolderFixtures;
-import com.a301.newsseug.domain.folder.model.dto.FolderDto;
-import com.a301.newsseug.domain.folder.model.dto.response.CreateFolderResponse;
 import com.a301.newsseug.domain.folder.model.dto.response.GetFolderResponse;
-import com.a301.newsseug.domain.folder.model.dto.response.ListFolderResponse;
+import com.a301.newsseug.domain.folder.model.dto.response.CreateFolderResponse;
+import com.a301.newsseug.domain.folder.model.dto.response.GetFolderDetailsResponse;
 import com.a301.newsseug.domain.folder.model.entity.Folder;
 import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.factory.entity.MemberFactory;
@@ -25,7 +24,6 @@ import com.a301.newsseug.global.model.entity.ActivateStatus;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,18 +49,21 @@ class FolderServiceTest {
     private FolderServiceImpl folderService;
 
     private Member loginMember;
+    private Folder folder;
 
     @BeforeEach
     void beforeEach() {
+
         loginMember = MemberFactory.memberOfKakao(1L);
+        folder = FolderFactory.folder(1L);
+
         given(userDetails.getMember()).willReturn(loginMember);
+
     }
 
     @Test
     @DisplayName("폴더 조회[성공]")
     void getFolder() {
-
-        Folder folder = FolderFactory.folder(1L);
 
         // Given
         given(folderRepository.findByFolderIdAndMemberAndStatus(folder.getFolderId(), loginMember, ActivateStatus.ACTIVE))
@@ -71,14 +72,14 @@ class FolderServiceTest {
         given(bookmarkRepository.findAllByFolder(folder)).willReturn(Collections.emptyList());
 
         // When
-        GetFolderResponse response = folderService.getFolder(userDetails, folder.getFolderId());
+        GetFolderDetailsResponse response = folderService.getFolder(userDetails, folder.getFolderId());
 
         // Then
         verify(folderRepository).findByFolderIdAndMemberAndStatus(folder.getFolderId(), loginMember, ActivateStatus.ACTIVE);
         verify(bookmarkRepository).findAllByFolder(folder);
 
         assertThat(folder.getFolderId()).isEqualTo(response.id());
-        assertThat(folder.getTitle()).isEqualTo(response.name());
+        assertThat(folder.getTitle()).isEqualTo(response.title());
         assertThat(response.articles().isEmpty()).isTrue();
 
     }
@@ -88,7 +89,6 @@ class FolderServiceTest {
     void getFolderInaccessibleFolder() {
 
         // Given
-        Folder folder = FolderFactory.folder(1L);
         when(userDetails.getMember()).thenReturn(loginMember);
         when(folderRepository.findByFolderIdAndMemberAndStatus(folder.getFolderId(), loginMember, ActivateStatus.ACTIVE))
                 .thenReturn(Optional.empty());
@@ -112,14 +112,14 @@ class FolderServiceTest {
                 ));
 
         // When
-        ListFolderResponse response = folderService.getFoldersByMember(userDetails);
+        List<GetFolderResponse> response = folderService.getFoldersByMember(userDetails);
 
         // Then
         verify(folderRepository).findAllByMember(loginMember);
 
-        assertThat(response.folders()).hasSize(2);
-        assertThat(response.folders())
-                .extracting(FolderDto::id, FolderDto::name, FolderDto::articleCount)
+        assertThat(response).hasSize(2);
+        assertThat(response)
+                .extracting(GetFolderResponse::id, GetFolderResponse::title, GetFolderResponse::articleCount)
                 .containsExactlyInAnyOrder(
                         tuple(1L, FolderFixtures.title, 0L),
                         tuple(2L, FolderFixtures.title, 0L)
@@ -132,18 +132,17 @@ class FolderServiceTest {
     void createFolder() {
 
         // Given
-        Folder saveFolder = FolderFactory.folder(1L);
-        given(folderRepository.save(any(Folder.class))).willReturn(saveFolder);
+        given(folderRepository.save(any(Folder.class))).willReturn(folder);
 
         // When
         CreateFolderResponse response = folderService.createFolder(userDetails, FolderFixtures.title);
 
         // Then
         verify(folderRepository).save(any(Folder.class));
-        assertThat(response.id()).isEqualTo(saveFolder.getFolderId());
-        assertThat(response.title()).isEqualTo(saveFolder.getTitle());
-        assertThat(response.thumbnailUrl()).isEqualTo(saveFolder.getThumbnailUrl());
-        assertThat(response.articleCount()).isEqualTo(saveFolder.getArticleCount());
+        assertThat(response.id()).isEqualTo(folder.getFolderId());
+        assertThat(response.title()).isEqualTo(folder.getTitle());
+        assertThat(response.thumbnailUrl()).isEqualTo(folder.getThumbnailUrl());
+        assertThat(response.articleCount()).isEqualTo(folder.getArticleCount());
 
     }
 

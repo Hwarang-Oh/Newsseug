@@ -1,9 +1,9 @@
 package com.a301.newsseug.domain.member.controller;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+import com.a301.newsseug.domain.folder.model.dto.response.GetFolderResponse;
 import com.a301.newsseug.domain.folder.service.FolderService;
 import com.a301.newsseug.domain.member.model.dto.request.UpdateMemberRequest;
-import com.a301.newsseug.domain.folder.model.dto.response.ListFolderResponse;
 import com.a301.newsseug.domain.member.model.dto.response.GetMemberResponse;
 import com.a301.newsseug.domain.member.service.MemberService;
 import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
@@ -12,6 +12,7 @@ import com.a301.newsseug.global.util.ResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -54,7 +55,7 @@ public class MemberController {
 
     @Operation(summary = "사용자 폴더 목록 조회 API", description = "사용자 폴더 목록을 조회한다.")
     @GetMapping("/folders")
-    public ResponseEntity<Result<ListFolderResponse>> getFolders(
+    public ResponseEntity<Result<List<GetFolderResponse>>> getFolders(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
 
