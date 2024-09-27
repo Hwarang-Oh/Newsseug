@@ -4,8 +4,7 @@ import static com.a301.newsseug.domain.member.model.entity.type.RoleType.*;
 
 import com.a301.newsseug.domain.auth.service.CustomOAuth2UserService;
 import com.a301.newsseug.domain.auth.service.CustomUserDetailsService;
-import com.a301.newsseug.domain.member.model.entity.type.RoleType;
-import com.a301.newsseug.external.jwt.filter.JwtAuthorizationFilter;
+import com.a301.newsseug.external.jwt.filter.AuthorizationFilter;
 import com.a301.newsseug.external.jwt.handler.JwtAccessDeniedHandler;
 import com.a301.newsseug.external.jwt.handler.JwtAuthenticationEntryPoint;
 import com.a301.newsseug.external.jwt.service.JwtService;
@@ -91,7 +90,7 @@ public class SecurityConfig {
                                         .successHandler(oAuth2AuthenticationSuccessHandler)
                 )
 
-                .addFilterBefore(new JwtAuthorizationFilter(jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new AuthorizationFilter(jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class)
 
                 .exceptionHandling(
                         handling ->
