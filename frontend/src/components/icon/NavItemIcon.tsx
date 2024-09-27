@@ -3,15 +3,6 @@
  * ! 주의 : SVG 파일이 너무 길어서 Convention을 깨고 export를 앞에 두었음.
  * @returns
  */
-
-export {
-  HomeNavItem,
-  SubScribeNavItem,
-  ShortFormNavItem,
-  SearchNavItem,
-  MyPageNavItem,
-};
-
 function HomeNavItem() {
   return (
     <svg
@@ -239,3 +230,11 @@ function MyPageNavItem() {
     </svg>
   );
 }
+
+export {
+  HomeNavItem,
+  SubScribeNavItem,
+  ShortFormNavItem,
+  SearchNavItem,
+  MyPageNavItem,
+};

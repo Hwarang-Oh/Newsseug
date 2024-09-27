@@ -1,5 +1,3 @@
-export { GoogleLogin, KakaoLogin };
-
 function GoogleLogin() {
   return (
     <svg
@@ -195,3 +193,5 @@ function KakaoLogin() {
     </svg>
   );
 }
+
+export { GoogleLogin, KakaoLogin };

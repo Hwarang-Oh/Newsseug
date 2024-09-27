@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { getAccessToken } from 'apis/loginApi';
-import { getCookie, setCookie, removeCookie } from 'utils/stateUtils';
+import {
+  getCookie,
+  setCookie,
+  removeCookie,
+  getTokenExpiration,
+} from 'utils/stateUtils';
 
 /**
  * IMP : Axios를 사용한 API 호출을 위한 기본 설정.
@@ -16,24 +21,30 @@ const api = axios.create({
 
 /**
  * IMP : API Interceptor.request => 요청에, Authorization Header를 추가합니다.
- * IMP : AccessToken이 만료되었지, 확인하고 만료되었다면 ProviderId를 통해 재발급
+ * IMP : AccessToken이 만료되었는지, 확인하고 만료되었다면 ProviderId를 통해 재발급
  */
-api.interceptors.request.use(
-  (config) => {
-    const token = getCookie('AccessToken');
-    if (token) {
-      config.headers.Authorization = token;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
+api.interceptors.request.use(async (config) => {
+  let token = getCookie('AccessToken');
+  const tokenExpiration = getTokenExpiration(token);
+  if (!token || (tokenExpiration && Date.now() >= tokenExpiration)) {
+    const providerId = getCookie('ProviderId');
+    if (providerId) {
+      try {
+        token = await getAccessToken(providerId);
+        setCookie('AccessToken', token, { maxAge: 900 });
+      } catch (error: unknown) {
+        console.error('Error in getting AccessToken', error);
+        removeCookie('AccessToken');
+        removeCookie('ProviderId');
+      }
+    } else console.log('비로그인 사용자 혹은 Session 만료 상태');
+  }
+  if (token) config.headers.Authorization = token;
+  return config;
+});
 
 /**
  * IMP : API Interceptor.response => 응답이 401일 경우, AccessToken, ProviderID 재발급을 통해, Login 상태를 유지함.
- * TODO : Refresh Token이 만료된 경우, Login 페이지로 Modal 처리가 필요하지 않을까?
  */
 api.interceptors.response.use(
   (response) => response,
@@ -43,17 +54,16 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       const providerId = getCookie('ProviderId');
       try {
-        const accessToken = await getAccessToken(providerId);
-        setCookie('AccessToken', accessToken, { maxAge: 900 });
-        originalRequest.headers.Authorization = accessToken;
+        const token = await getAccessToken(providerId);
+        setCookie('AccessToken', token, { maxAge: 900 });
+        originalRequest.headers.Authorization = token;
       } catch (RefreshError) {
         console.error('Refresh token is expired, redirecting to login.');
         removeCookie('AccessToken');
         removeCookie('ProviderId');
         window.location.href = '/login';
-        return Promise.reject(RefreshError);
       }
-    }
+    } else console.log('비로그인 사용자의 401 Error를 처리하고 있습니다.');
     return Promise.reject(AuthorizationError);
   },
 );

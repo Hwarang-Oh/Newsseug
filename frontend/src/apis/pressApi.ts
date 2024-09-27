@@ -1,5 +1,5 @@
-import { PressDetail } from 'types/api/press';
 import api from 'apis/commonApi';
+import { PressDetail } from 'types/api/press';
 import { AxiosResponse, isAxiosError } from 'axios';
 const PRESS_URL = `/api/v1/press`;
 
@@ -9,6 +9,7 @@ const PRESS_URL = `/api/v1/press`;
 export const getPressList = async (): Promise<void> => {
   try {
     const response: AxiosResponse<boolean> = await api.get(PRESS_URL);
+    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

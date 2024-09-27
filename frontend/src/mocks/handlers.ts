@@ -1,9 +1,9 @@
+import press from 'mocks/pressdummy.json';
+import memberinfo from 'mocks/memberdummy.json';
+import memberfolder from 'mocks/memberfolderdummy.json';
+import folder from 'mocks/folderdummy.json';
+import article from 'mocks/article.json';
 import { http, HttpResponse } from 'msw';
-import press from './pressdummy.json';
-import memberinfo from './memberdummy.json';
-import memberfolder from './memberfolderdummy.json';
-import folder from './folderdummy.json';
-
 const BASE_URL = 'https://j11a301.p.ssafy.io/api/v1';
 
 let folders = memberfolder;
@@ -55,5 +55,36 @@ export const folderhandles = [
     } else {
       return HttpResponse.json(folder);
     }
+  }),
+];
+
+export const articlehandlers = [
+  http.get(BASE_URL + '/articles', ({ request }) => {
+    const url = new URL(request.url);
+    const categoryName = url.searchParams.get('categoryName');
+    const foundArticles = article.articleByCategory.filter(
+      (a) => a.category === categoryName,
+    );
+    console.log(foundArticles[0].articleList);
+    return HttpResponse.json(foundArticles[0].articleList);
+  }),
+
+  // 오늘 뉴스 기사 조회 API
+  http.get(BASE_URL + '/articles/today', () => {
+    return HttpResponse.json(article.todayArticles);
+  }),
+
+  // 단일 기사 조회 API (articleId)
+  http.get(BASE_URL + '/articles/{articleId}', (req) => {
+    const { articleId } = req.params;
+    const foundArticle = article.targetArticles.find(
+      (a) => a.id === Number(articleId),
+    );
+    return HttpResponse.json(foundArticle || {});
+  }),
+
+  // 전체 기사 조회 API
+  http.get(BASE_URL + '/articles/all', () => {
+    return HttpResponse.json(article.articles);
   }),
 ];

@@ -73,6 +73,7 @@ export const subscribePress = async (pressId: number): Promise<void> => {
     const response: AxiosResponse<boolean> = await api.post(
       `${MEMBER_URL}/press/${pressId}`,
     );
+    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -90,6 +91,7 @@ export const unsubscribePress = async (pressId: number): Promise<void> => {
     const response: AxiosResponse<boolean> = await api.put(
       `${MEMBER_URL}/press/${pressId}`,
     );
+    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -108,6 +110,7 @@ export const getSubscribedPressList = async (): Promise<void> => {
     const response: AxiosResponse<boolean> = await api.post(
       `${MEMBER_URL}/press`,
     );
+    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

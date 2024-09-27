@@ -1,5 +1,11 @@
 import api from 'apis/commonApi';
-import { AxiosResponse, isAxiosError } from 'axios';
+import { isAxiosError } from 'axios';
+import {
+  getCookie,
+  removeCookie,
+  setCookie,
+  getTokenExpiration,
+} from 'utils/stateUtils';
 
 /**
  * IMP : 아래 함수는 API가 아님. Redirect를 통해 외부 URL로 이동하는 함수
@@ -43,6 +49,43 @@ export const getAccessToken = async (providerId: string): Promise<string> => {
 };
 
 /**
+ * IMP : Provider ID를 기반으로 AccessToken을 재발급 받는 API
+ * TODO : AccessToken이 재발급되지 않으면, ProviderId를 재발급 받기 위한 처리가 필요함.
+ */
+export function scheduleTokenRefresh() {
+  const accessToken = getCookie('AccessToken');
+  const expirationTime = accessToken ? getTokenExpiration(accessToken) : null;
+
+  if (expirationTime) {
+    const currentTime = Date.now();
+    const timeUntilExpiration = expirationTime - currentTime - 60000;
+
+    if (timeUntilExpiration > 0) {
+      setTimeout(async () => {
+        const providerId = getCookie('ProviderId');
+
+        if (providerId) {
+          try {
+            const newAccessToken = await getAccessToken(providerId);
+            setCookie('AccessToken', newAccessToken, {
+              expires: 1,
+              secure: true,
+            });
+            scheduleTokenRefresh();
+          } catch (error) {
+            console.error('AccessToken 재발급 실패:', error);
+            removeCookie('AccessToken');
+            window.location.href = '/login';
+          }
+        } else {
+          console.log('비로그인 사용자, AccessToken 재발급 없이 상태 유지');
+        }
+      }, timeUntilExpiration);
+    }
+  }
+}
+
+/**
  * IMP: 로그아웃을 위한 API
  * TODO : 로그아웃 후, 어떤 처리를 해줄 지 정의해야 한다. ( State 관리, Cookie 관리, Page 이동 등 )
  * IMP : Authorization Header가 필요한 API ( 로그인 기능 )
@@ -50,7 +93,8 @@ export const getAccessToken = async (providerId: string): Promise<string> => {
 const LOGOUT_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1/logout`;
 export const getLogout = async (): Promise<void> => {
   try {
-    const response: AxiosResponse<void> = await api.get(LOGOUT_URL);
+    const response = await api.get(LOGOUT_URL);
+    console.log(response.data);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

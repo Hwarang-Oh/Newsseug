@@ -1,5 +1,3 @@
-export { MaleIcon, FemaleIcon };
-
 function MaleIcon() {
   return (
     <svg
@@ -42,3 +40,5 @@ function FemaleIcon() {
     </svg>
   );
 }
+
+export { MaleIcon, FemaleIcon };
