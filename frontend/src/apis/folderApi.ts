@@ -8,16 +8,14 @@ const FOLDERS_URL = `/api/v1/folders`;
  */
 export const getFolderList = async (): Promise<MemberFolderList> => {
   try {
-    const response: AxiosResponse<MemberFolderList> = await api.get(
-      `${FOLDERS_URL}`,
-    );
+    const response = await api.get(`${FOLDERS_URL}`);
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
         throw new Error('Not Found');
       } else {
-        console.error('폴더 목록 조회 실패:', error);
+        console.error('마이페이지 폴더 목록 조회 실패:', error);
         throw error;
       }
     } else throw error;
@@ -31,7 +29,7 @@ export const createFolder = async (
   folderName: string,
 ): Promise<MemberFolderList> => {
   try {
-    const response = await api.post(`${FOLDERS_URL}`, { name: folderName });
+    const response = await api.post(`${FOLDERS_URL}`, { title: folderName });
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {

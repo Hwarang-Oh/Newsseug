@@ -1,11 +1,10 @@
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 import SubLayout from 'components/common/SubLayout';
-import data from 'db/data.json';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
 import { FolderDetail } from 'types/api/folder';
 import { getFolderInfo } from 'apis/folderApi';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function Folder() {
   const { folderId } = useParams();
@@ -20,7 +19,7 @@ function Folder() {
     {
       enabled: !!folderId,
       onSuccess: () => {
-        console.log(data);
+        console.log('???', folderInfo);
       },
     },
   );
@@ -37,7 +36,7 @@ function Folder() {
 
   return (
     <SubLayout>
-      <ScrapTitle>{folderInfo?.name}</ScrapTitle>
+      <ScrapTitle>{folderInfo?.title}</ScrapTitle>
       <ArticleListCardGroup articleList={folderInfo?.articles || []} />
     </SubLayout>
   );

@@ -1,6 +1,6 @@
 import api from 'apis/commonApi';
 import { AxiosResponse, isAxiosError } from 'axios';
-import { ArticleListCardProps } from '@/types/common/common';
+import { ArticleListCardProps } from 'types/common/common';
 const ARTICLES_URL = `/api/v1/articles`;
 
 /**

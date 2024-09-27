@@ -2,7 +2,7 @@ import api from 'apis/commonApi';
 import { AxiosResponse, isAxiosError } from 'axios';
 import { UserInputProps } from 'types/props/register';
 import { MemberInfo } from 'types/api/member';
-import { MemberFolderList } from '@/types/api/folder';
+import { MemberFolderList } from 'types/api/folder';
 const MEMBER_URL = '/api/v1/members';
 
 /**
@@ -40,25 +40,6 @@ export const getMemberInfo = async (): Promise<MemberInfo> => {
         throw new Error('Not Found');
       } else {
         console.error('사용자 정보 조회 실패:', error);
-        throw error;
-      }
-    } else throw error;
-  }
-};
-
-/**
- * IMP : 사용자 폴더 목록 조회를 위한 API (mypage에서 사용)
- */
-export const getMemberFolderList = async (): Promise<MemberFolderList> => {
-  try {
-    const response = await api.get(`${MEMBER_URL}/folders`);
-    return response.data;
-  } catch (error: unknown) {
-    if (isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        throw new Error('Not Found');
-      } else {
-        console.error('마이페이지 폴더 목록 조회 실패:', error);
         throw error;
       }
     } else throw error;

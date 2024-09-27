@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import PressCard from 'components/subscribe/PressCard';
-import { PressCardListProp } from '@/types/props/subscribe';
+import { PressCardListProp } from 'types/props/subscribe';
 
 function PressCardList({
   pressList,

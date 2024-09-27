@@ -2,7 +2,7 @@ import { Article } from './article';
 
 export interface MemberFolderInfo {
   id: number;
-  name: string;
+  title: string;
   articleCount: number;
   thumbnailUrl: string;
 }
@@ -13,5 +13,5 @@ export interface MemberFolderList {
 export interface FolderDetail {
   articles: Article[];
   id: number;
-  name: string;
+  title: string;
 }

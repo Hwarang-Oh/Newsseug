@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import SubscribePressCard from 'components/subscribe/SubscribePressCard';
-import { SubscribePressFilterProps } from '@/types/props/subscribe';
+import { SubscribePressFilterProps } from 'types/props/subscribe';
 
 function SubscribePressFilter({
   subscribeData,
