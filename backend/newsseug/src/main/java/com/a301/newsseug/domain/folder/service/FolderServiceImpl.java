@@ -5,11 +5,10 @@ import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.bookmark.model.entity.Bookmark;
 import com.a301.newsseug.domain.bookmark.repository.BookmarkRepository;
 import com.a301.newsseug.domain.folder.exception.InaccessibleFolderException;
-import com.a301.newsseug.domain.folder.model.dto.FolderDto;
-import com.a301.newsseug.domain.folder.model.dto.response.CreateFolderResponse;
 import com.a301.newsseug.domain.folder.model.dto.response.GetFolderResponse;
+import com.a301.newsseug.domain.folder.model.dto.response.CreateFolderResponse;
+import com.a301.newsseug.domain.folder.model.dto.response.GetFolderDetailsResponse;
 import com.a301.newsseug.domain.folder.model.entity.Folder;
-import com.a301.newsseug.domain.folder.model.dto.response.ListFolderResponse;
 import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.global.model.entity.ActivateStatus;
@@ -27,7 +26,7 @@ public class FolderServiceImpl implements FolderService {
     private final BookmarkRepository bookmarkRepository;
 
     @Override
-    public GetFolderResponse getFolder(CustomUserDetails userDetails, Long folderId) {
+    public GetFolderDetailsResponse getFolder(CustomUserDetails userDetails, Long folderId) {
 
         Member loginMember = userDetails.getMember();
         Folder folder = folderRepository.findByFolderIdAndMemberAndStatus(folderId, loginMember, ActivateStatus.ACTIVE)
@@ -35,25 +34,20 @@ public class FolderServiceImpl implements FolderService {
 
         List<Bookmark> bookmarks = bookmarkRepository.findAllByFolder(folder);
 
-        return GetFolderResponse.of(
-                folderId,
-                folder.getTitle(),
+        return GetFolderDetailsResponse.of(
+                folder,
                 SimpleArticleDto.fromBookmark(bookmarks)
                 );
 
     }
 
     @Override
-    public ListFolderResponse getFoldersByMember(CustomUserDetails userDetails) {
+    public List<GetFolderResponse> getFoldersByMember(CustomUserDetails userDetails) {
 
         Member loginMember = userDetails.getMember();
         List<Folder> folders = folderRepository.findAllByMember(loginMember);
 
-        return ListFolderResponse.of(
-                folders.stream()
-                        .map(FolderDto::of)
-                        .toList()
-        );
+        return GetFolderResponse.of(folders);
 
     }
 
