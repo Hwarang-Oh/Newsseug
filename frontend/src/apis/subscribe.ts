@@ -1,6 +1,6 @@
 import api from 'apis/commonApi';
 import { isAxiosError } from 'axios';
-import { AllPressInfo, PressInfo } from 'types/subscribe';
+import { AllPressInfo, PressInfo } from '@/types/props/subscribe';
 
 const MEMBER_URL = '/api/v1/members';
 

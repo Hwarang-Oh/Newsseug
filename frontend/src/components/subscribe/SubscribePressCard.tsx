@@ -1,4 +1,4 @@
-import { SubscribePressCardProps } from '@/types/subscribe';
+import { SubscribePressCardProps } from '@/types/props/subscribe';
 import styled from 'styled-components';
 import {
   PressLogo,

@@ -1,13 +1,13 @@
 import SubLayout from 'components/common/SubLayout';
-import Scrap from 'components/mypage/Scrap';
+import Scrap from '@/components/mypage/Folder';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import scrapPlusIcon from 'assets/scrapPlusIcon.svg';
 import { useState } from 'react';
-import MiddleModal from 'components/articles/MiddleModal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/index';
 import { MemberFolderInfo } from 'types/api/folder';
+import CreateScrapModal from 'components/articles/CreateScrapModal';
 
 function AllScraps() {
   const navigate = useNavigate();
@@ -36,10 +36,9 @@ function AllScraps() {
       </Header>
       <ScrapContainer>
         {isCreateOpen && (
-          <MiddleModal
+          <CreateScrapModal
             isOpen={isCreateOpen}
             onRequestClose={() => setIsCreateOpen(false)}
-            modalTitle="새 폴더 생성"
           />
         )}
         {Array.isArray(memberFolderList) &&

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { getSubscribedPressList } from 'apis/subscribe';
-import { PressInfo } from 'types/subscribe';
+import { PressInfo } from '@/types/props/subscribe';
 
 // 초기 상태 정의
 interface SubscribeState {

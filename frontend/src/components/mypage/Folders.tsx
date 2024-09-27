@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Scrap from './Scrap';
+import Scrap from './Folder';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { MemberFolderInfo, MemberFolderList } from 'types/api/folder';

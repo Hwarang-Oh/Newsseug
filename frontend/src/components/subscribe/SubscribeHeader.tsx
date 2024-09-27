@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { SubscribeHeaderProps } from 'types/subscribe';
+import { SubscribeHeaderProps } from '@/types/props/subscribe';
 import { useNavigate } from 'react-router-dom';
 
 function SubscribeHeader({
