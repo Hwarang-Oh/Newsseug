@@ -26,21 +26,21 @@ public class ArticleController {
     @Operation(summary = "오늘의 뉴스 조회 API", description = "홈 화면 내 \"오늘의 뉴스\"를 조회한다.")
     @GetMapping("/today")
     public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getTodaysArticles(
-            @RequestParam(value = "category", defaultValue = "null") String category,
-            @RequestParam(value = "page", defaultValue = "10") int page
+            @RequestParam(required = false, defaultValue = "ALL", value = "category") String category,
+            @RequestParam(required = false, defaultValue = "10", value = "pageNumber") int pageNumber
     ) {
 
-        return ResponseUtil.ok(Result.of(articleService.getTodayArticleListByCategory(category, page)));
+        return ResponseUtil.ok(Result.of(articleService.getTodayArticleListByCategory(category, pageNumber)));
     }
 
     @Operation(summary = "카테고리별 기사 조회 API", description = "카테고리별 기사 리스트를 조회한다.")
     @GetMapping()
     public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getArticlesByCategory(
-            @RequestParam(value = "category", defaultValue = "null") String category,
-            @RequestParam(value = "page", defaultValue = "10") int page
+            @RequestParam(required = false, defaultValue = "ALL", value = "category") String category,
+            @RequestParam(required = false, defaultValue = "10", value = "pageNumber") int pageNumber
     ) {
 
-        return ResponseUtil.ok(Result.of(articleService.getArticleListByCategory(category, page)));
+        return ResponseUtil.ok(Result.of(articleService.getArticleListByCategory(category, pageNumber)));
     }
 
     @Operation(summary = "단일 기사 상세 정보 조회 API", description = "단일 기사 상세 정보를 조회한다.")

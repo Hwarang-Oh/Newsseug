@@ -44,8 +44,8 @@ public class ArticleServiceImpl implements ArticleService {
     private final SubscribeRepository subscribeRepository;
 
     @Override
-    public SlicedResponse<List<GetArticleResponse>> getTodayArticleListByCategory(String category, int page) {
-        PageRequest pageRequest = PageRequest.of(page, 10);
+    public SlicedResponse<List<GetArticleResponse>> getTodayArticleListByCategory(String category, int pageNumber) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, 10);
         Slice<Article> articlesPage = null;
 
         LocalDateTime startOfDay = ClockUtil.getLocalDateTime().toLocalDate().atStartOfDay();
@@ -70,9 +70,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public SlicedResponse<List<GetArticleResponse>> getArticleListByCategory(String category, int page) {
+    public SlicedResponse<List<GetArticleResponse>> getArticleListByCategory(String category, int pageNumber) {
 
-        PageRequest pageRequest = PageRequest.of(page, 10);
+        PageRequest pageRequest = PageRequest.of(pageNumber, 10);
         Slice<Article> articlesPage = null;
 
         if (!"ALL".equalsIgnoreCase(category)) {

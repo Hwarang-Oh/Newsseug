@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface ArticleService {
 
-    SlicedResponse<List<GetArticleResponse>> getTodayArticleListByCategory(String category, int page);
+    SlicedResponse<List<GetArticleResponse>> getTodayArticleListByCategory(String category, int pageNumber);
 
-    SlicedResponse<List<GetArticleResponse>> getArticleListByCategory(String category, int page);
+    SlicedResponse<List<GetArticleResponse>> getArticleListByCategory(String category, int pageNumber);
 
     GetArticleDetailsResponse getArticleDetail(CustomUserDetails userDetails, Long articleId);
 
