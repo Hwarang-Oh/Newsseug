@@ -5,7 +5,7 @@ import article from 'mocks/article.json';
 function Histories() {
   const width = '120px';
   const height = '160px';
-  return <ArticleSlideBox articleList={article.articles} />;
+  return <ArticleSlideBox articleList={article.targetArticles} />;
 }
 
 export default Histories;

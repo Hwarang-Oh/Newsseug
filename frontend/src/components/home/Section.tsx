@@ -9,11 +9,23 @@ import { SectionProps } from 'types/props/home';
  * @param param0
  * @returns
  */
-function Section({ subTitle, articleList, moreLink }: Readonly<SectionProps>) {
+function Section({
+  subTitle,
+  articleList,
+  moreLink,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+}: Readonly<SectionProps>) {
   return (
     <SectionStyle>
       <SubTitle subTitle={subTitle} moreLink={moreLink} />
-      <ArticleSlideBox articleList={articleList} />
+      <ArticleSlideBox
+        articleList={articleList}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+      />
     </SectionStyle>
   );
 }

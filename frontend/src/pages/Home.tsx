@@ -1,61 +1,39 @@
-import styled, { keyframes } from 'styled-components';
-import MainLayout from 'components/common/MainLayout';
 import Section from 'components/home/Section';
+import MainLayout from 'components/common/MainLayout';
 import useAutoLogin from 'hooks/useAutoLogin';
-import { useEffect, useState } from 'react';
-import { ArticleListCardProps } from 'types/common/common';
-import {
-  fetchAllArticles,
-  fetchArticlesByCategory,
-  fetchArticlesByToday,
-} from 'apis/articleApi';
+import useContentsFetch from 'hooks/useContentsFetch';
+import styled, { keyframes } from 'styled-components';
+import { fetchTodayArticlesByPage } from 'apis/articleApi';
 /**
- * IMP : Home Page
- * TODO : Home Page의 Section에서 '더보기'를 누르면 All Articles Page로 이동하도록 구현
+ * IMP : useAutoLogin() : 외부 Login을 수행하는 Custom Hook
  * @returns
  */
-function Home() {
-  useAutoLogin(); // IMP : 외부 Login을 수행하는 Custom Hook
-  const [articleLists, setArticleLists] = useState<ArticleListCardProps[][]>(
-    [],
-  );
-  useEffect(() => {
-    // TODO : Home 화면 Page가 Mount되면 해야하는 작업 -> Member 정보 Fetch, Article 정보 Fetch
-    const loadAllArticles = async () => {
-      try {
-        // 3개의 비동기 데이터를 동시에 가져오기
-        const [data1, data2, data3] = await Promise.all([
-          fetchArticlesByToday(),
-          fetchArticlesByCategory('정치'),
-          fetchAllArticles(),
-        ]);
 
-        // 데이터를 변환하고 상태로 업데이트
-        setArticleLists([data1, data2, data3]);
-      } catch (error) {
-        console.error('Error fetching articles:', error);
-      }
-    };
-    loadAllArticles();
-  }, []);
+function Home() {
+  useAutoLogin();
+  const {
+    allData,
+    fetchNextPage: fetchNextTodayPage,
+    hasNextPage: hasNextTodayPage,
+    isFetchingNextPage: isFetchingNextTodayPage,
+  } = useContentsFetch(fetchTodayArticlesByPage, ['todayArticles']);
+
   return (
     <MainLayout>
       <FadeInWrapper>
         <Section
-          subTitle="오늘의 뉴스"
-          moreLink={`/todayNews/allArticles`}
-          articleList={articleLists[0]} // 첫 번째 데이터 리스트
-        />
-        <Section
-          subTitle="정치 기사"
-          moreLink={'/20Article/allArticles'}
-          articleList={articleLists[1]} // 두 번째 데이터 리스트
-        />
-        <Section
-          subTitle="전체 기사"
+          subTitle="오늘의 기사"
           moreLink={'/allArticles'}
-          articleList={articleLists[2]} // 세 번째 데이터 리스트
+          articleList={allData}
+          fetchNextPage={fetchNextTodayPage}
+          hasNextPage={hasNextTodayPage}
+          isFetchingNextPage={isFetchingNextTodayPage}
         />
+        {hasNextTodayPage && (
+          <button onClick={() => fetchNextTodayPage()}>
+            Load More Today's Articles
+          </button>
+        )}
       </FadeInWrapper>
     </MainLayout>
   );

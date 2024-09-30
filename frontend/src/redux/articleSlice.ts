@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Article } from 'types/api/article';
+import { ArticleInfo } from 'types/api/articleVideo';
 
 // TODO : 현재 시청하고 있는 Article List에 대한 상태 관리
 interface CurrentArticleList {
-  ArticleList: Article[];
+  ArticleList: ArticleInfo[];
   pastArticleId: number;
   currentArticleId: number;
   nextArticleId: number;
@@ -20,7 +20,7 @@ const articleSlice = createSlice({
   name: 'article',
   initialState,
   reducers: {
-    setCurrentArticles: (state, action: PayloadAction<Article[]>) => {
+    setCurrentArticles: (state, action: PayloadAction<ArticleInfo[]>) => {
       state.ArticleList = action.payload;
     },
   },

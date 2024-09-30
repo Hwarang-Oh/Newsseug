@@ -19,4 +19,7 @@ export interface CategoryFilterProps {
 
 export interface ArticleListCardGroupProps {
   articleList: ArticleListCardProps[];
+  fetchNextPage?: () => void;
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
 }

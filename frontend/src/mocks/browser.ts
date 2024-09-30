@@ -4,6 +4,7 @@ import {
   presshandlers,
   memberfolderhandles,
   folderhandles,
+  articlePaginationhandlers,
 } from './handlers';
 import { subscribepresshandlers } from './subscribepresshandler';
 import { unsubscribepresshandlers } from './unsubscribepresshandler';
@@ -27,6 +28,7 @@ export const worker = setupWorker(
   ...subscribepresslisthandler,
   ...allpresshandlers,
   ...articlevideohandler,
+  ...articlePaginationhandlers,
   ...articlelikehandler,
   ...articledislikehandler,
   ...articlehatehandler,

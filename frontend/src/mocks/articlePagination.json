@@ -1,0 +1,484 @@
+{
+  "articlesPagination": [
+    {
+      "id": 1,
+      "pressName": "KBS",
+      "thumbnailUrl": "https://i.ytimg.com/vi/CEpKaDzwlNU/maxresdefault.jpg",
+      "title": "전국 민속놀이 대회 개최 소식",
+      "viewCount": 123456789,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 2,
+      "pressName": "MBC",
+      "thumbnailUrl": "https://images.khan.co.kr/article/2023/06/30/news-p.v1.20230116.9f1e8356a39f4424b19caa94ebadf067_P1.jpg",
+      "title": "전국 민속놀이 대회 개최 소식",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 3,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://cdn.newsculture.press/news/photo/202201/502077_604562_4858.jpg",
+      "title": "새로운 코로나 변종 발견",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 4,
+      "pressName": "JTBC",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKW7vREO9WPJkO9Iq38r4ujnsrbaE3ciuKJA&s",
+      "title": "2024년 올림픽 개최지 발표",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 5,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8u8YzEzPV1LdzPoGoLGBlZhXQwwnXWabG4Q&s",
+      "title": "기후 변화에 대한 대책 논의",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 6,
+      "pressName": "YTN",
+      "thumbnailUrl": "https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2022/08/11/e4edf509-9a8b-45bd-9a36-979784f9d582.jpg",
+      "title": "주식 시장, 역대 최고치 갱신",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 7,
+      "pressName": "KBS",
+      "thumbnailUrl": "https://i.namu.wiki/i/ceQin0MpsKhCXv2MmoYdhUw7B1vzAS8FcKBEq4g2yDWpyEYSQO_uss84MD9drRTlkDOCFP8fft2t5l2B6ru5GA.webp",
+      "title": "영화, 우주전쟁, 대흥행",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 8,
+      "pressName": "MBC",
+      "thumbnailUrl": "https://i.namu.wiki/i/wM1NIm8GSJ_N4aQZG8Yph6E3OML46jhX1W6N6cs5K_bOvKVlp6iWhPizLlKOiYOKLbUwtSvCcph6qzE2tNK7xA.webp",
+      "title": "한국, 세계적인 KPOP 아티스트 배출",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 9,
+      "pressName": "MBC",
+      "thumbnailUrl": "https://i.ytimg.com/vi/Ebe8GnDOLSo/sddefault.jpg",
+      "title": "전국 고속도로 상황 개편",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 10,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://archivenew.vop.co.kr/images/2ef9668eecec0682ce7871bf62cd0ea9/2018-10/30120423__HAN4860.jpg",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 11,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRudnLCSWiFUOBGrlZk7NNjF3rm7tKAnO1lpA&s",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 12,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRUqN8I9AtdeNfy_RaYUnSZ0Xd96WZsrmKxw&s",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 13,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdrTZTJAZ0Ac-NkVH5D9Ct6kpwQLeBEOUQTA&s",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 14,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://i.ytimg.com/vi/K7P0O1z56zo/maxresdefault.jpg",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 15,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1xwRUEA4bIsoiKFB1He3y-shJeYjB4E5PpQ&s",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 16,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://m.other-worldly.com/file_data/otherworldly/2022/05/29/ca68e7f5b46992ccc7e6a91735eaf83a.jpg",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 17,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://i.ytimg.com/vi/yglwAIYeZnI/maxresdefault.jpg",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 18,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://image.xportsnews.com/contents/images/upload/article/2024/0206/mb_1707207210229863.jpg",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 19,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSMlsouyniGXyGvK9iO5vkibUQducDX1IbZQ&s",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 20,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://cdn.pickdailynews.com/news/photo/202310/479_882_945.jpg",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 21,
+      "pressName": "YTN",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpTeMegkzaviUE8dyJgJLkTajRpiNZaGMsbA&s",
+      "title": "주식 시장, 역대 최고치 갱신",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id":22,
+      "pressName": "KBS",
+      "thumbnailUrl": "https://image.xportsnews.com/contents/images/upload/article/2023/0825/mb_1692925582785123.jpg",
+      "title": "영화, 우주전쟁, 대흥행",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 23,
+      "pressName": "MBC",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGK0ru8O4mJH_FIVISz8i5WJq9aq5wdovx5A&s",
+      "title": "한국, 세계적인 KPOP 아티스트 배출",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 24,
+      "pressName": "MBC",
+      "thumbnailUrl": "https://m.segye.com/content/image/2024/02/01/20240201510731.jpg",
+      "title": "전국 고속도로 상황 개편",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 25,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ8D_3hgAsFh2W9ABB-l3JJYdeYMEwSO-BcA&s",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 26,
+      "pressName": "KBS",
+      "thumbnailUrl": "https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2024/05/20/e7af373f-d806-4f30-b829-0338e04ce181.jpg",
+      "title": "전국 민속놀이 대회 개최 소식",
+      "viewCount": 123456789,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 27,
+      "pressName": "MBC",
+      "thumbnailUrl": "https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2024/05/20/e7af373f-d806-4f30-b829-0338e04ce181.jpg",
+      "title": "전국 민속놀이 대회 개최 소식",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 28,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2024/05/20/e7af373f-d806-4f30-b829-0338e04ce181.jpg",
+      "title": "새로운 코로나 변종 발견",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 29,
+      "pressName": "JTBC",
+      "thumbnailUrl": "https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2024/05/20/e7af373f-d806-4f30-b829-0338e04ce181.jpg",
+      "title": "2024년 올림픽 개최지 발표",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 30,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2024/05/20/e7af373f-d806-4f30-b829-0338e04ce181.jpg",
+      "title": "기후 변화에 대한 대책 논의",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 31,
+      "pressName": "KBS",
+      "thumbnailUrl": "https://pimg.mk.co.kr/news/cms/202404/01/news-p.v1.20240401.080f09bc3cf442f9a21f12c1efb2a4cb_R.jpg",
+      "title": "전국 민속놀이 대회 개최 소식",
+      "viewCount": 123456789,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 32,
+      "pressName": "MBC",
+      "thumbnailUrl": "https://pimg.mk.co.kr/news/cms/202404/01/news-p.v1.20240401.080f09bc3cf442f9a21f12c1efb2a4cb_R.jpg",
+      "title": "전국 민속놀이 대회 개최 소식",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 33,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://pimg.mk.co.kr/news/cms/202404/01/news-p.v1.20240401.080f09bc3cf442f9a21f12c1efb2a4cb_R.jpg",
+      "title": "새로운 코로나 변종 발견",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 34,
+      "pressName": "JTBC",
+      "thumbnailUrl": "https://pimg.mk.co.kr/news/cms/202404/01/news-p.v1.20240401.080f09bc3cf442f9a21f12c1efb2a4cb_R.jpg",
+      "title": "2024년 올림픽 개최지 발표",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 35,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://pimg.mk.co.kr/news/cms/202404/01/news-p.v1.20240401.080f09bc3cf442f9a21f12c1efb2a4cb_R.jpg",
+      "title": "기후 변화에 대한 대책 논의",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 36,
+      "pressName": "KBS",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTI0ov4JNfedM_sCdyCTJD1I0sXL5s4wv83nA&s",
+      "title": "전국 민속놀이 대회 개최 소식",
+      "viewCount": 123456789,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 37,
+      "pressName": "MBC",
+      "thumbnailUrl": "https://news.nateimg.co.kr/orgImg/nn/2023/06/30/202306301308183510_1.jpg",
+      "title": "전국 민속놀이 대회 개최 소식",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 38,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLWwTGXgzzK40w-pJ_XXwmh2DVDxvJXuek-A&s",
+      "title": "새로운 코로나 변종 발견",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 39,
+      "pressName": "JTBC",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZzI7BT7Ri38BD4laYGbvhIVNsi2ehd_umkQ&s",
+      "title": "2024년 올림픽 개최지 발표",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 40,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ7QJeyXwpiFaxSdI2JRIiN-Yc6-sOnzEYLQ&s",
+      "title": "기후 변화에 대한 대책 논의",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 41,
+      "pressName": "KBS",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL0CD1B6O2Q-iHYLTTqiN3YMbUupxcGh78Sw&s",
+      "title": "고기가 이븐하게 익지 않았어요",
+      "viewCount": 123456789,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 42,
+      "pressName": "MBC",
+      "thumbnailUrl": "https://www.chosun.com/resizer/v2/XCKCHILEXQE4X46YXLULM22J2Y.jpg?auth=54f1bb5a9c3a0583ab46949d29894e3f6b5803c5e88656d71088d07458b8d97d&width=616",
+      "title": "당신이 생각하는 서프 앤 터프는 무엇인가요?",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 43,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://img.allurekorea.com/allure/2024/09/style_66eed8fe99e41-960x1200.jpg",
+      "title": "오리의 퀴숑이 완벽했어요",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 44,
+      "pressName": "JTBC",
+      "thumbnailUrl": "https://img5.yna.co.kr/photo/yna/YH/2024/09/11/PYH2024091108930001300_P4.jpg",
+      "title": "알리브 올리오의 간은 완벽했습니다",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 45,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://i0.wp.com/alzablog.com/wp-content/uploads/2024/09/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7-2024-09-24-155456-optimized.png?resize=528%2C311&ssl=1",
+      "title": "저는 전달되지 않는 테크닉은 테크닉이 아니라고 생각해요",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 46,
+      "pressName": "KBS",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA2QUpNPeDIjRyVDXudn1fU_UZtdZME2y75A&s",
+      "title": "전국 민속놀이 대회 개최 소식",
+      "viewCount": 123456789,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 47,
+      "pressName": "MBC",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhNxif-euVqeQkVypM9Z9HhbP3M851nnCmdg&s",
+      "title": "전국 민속놀이 대회 개최 소식",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 48,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAZvVD09jB0rpTGGSoul0oZcbshc4pzXte7A&s",
+      "title": "새로운 코로나 변종 발견",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 49,
+      "pressName": "JTBC",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNpZtWnp2o8dqydF91DibhbJJxOOaX-f0G5g&s",
+      "title": "2024년 올림픽 개최지 발표",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 50,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiCMC5Se2m1vEwIDWCAh8rW-q78_jlUTqzcw&s",
+      "title": "기후 변화에 대한 대책 논의",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 51,
+      "pressName": "YTN",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQotfD__i3lYJZeTa3VtMkzb3A3fpuUX8soyw&s",
+      "title": "주식 시장, 역대 최고치 갱신",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 52,
+      "pressName": "KBS",
+      "thumbnailUrl": "https://img.khan.co.kr/news/2022/08/24/news-p.v1.20220823.fbda44f96e7d4296b5c9ca418a1e01b4_P1.jpg",
+      "title": "영화, 우주전쟁, 대흥행",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 53,
+      "pressName": "MBC",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp9fJgaXTkAZoeSww_I0t2Ol1uCeLtmGv9AQ&s",
+      "title": "한국, 세계적인 KPOP 아티스트 배출",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 54,
+      "pressName": "MBC",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMEuk4juClAcgzjjPD6PY9usAQu-IgPXkXZw&s",
+      "title": "전국 고속도로 상황 개편",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 55,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsOx9ZH0bDBVJu2iFJJOSh0xoUFxBIHwNO8w&s",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 56,
+      "pressName": "연합뉴스",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsOx9ZH0bDBVJu2iFJJOSh0xoUFxBIHwNO8w&s",
+      "title": "전통 음식의 세계화",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 57,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiCMC5Se2m1vEwIDWCAh8rW-q78_jlUTqzcw&s",
+      "title": "기후 변화에 대한 대책 논의",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 58,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://i0.wp.com/alzablog.com/wp-content/uploads/2024/09/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7-2024-09-24-155456-optimized.png?resize=528%2C311&ssl=1",
+      "title": "저는 전달되지 않는 테크닉은 테크닉이 아니라고 생각해요",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 59,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ7QJeyXwpiFaxSdI2JRIiN-Yc6-sOnzEYLQ&s",
+      "title": "기후 변화에 대한 대책 논의",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    },
+    {
+      "id": 60,
+      "pressName": "SBS",
+      "thumbnailUrl": "https://pimg.mk.co.kr/news/cms/202404/01/news-p.v1.20240401.080f09bc3cf442f9a21f12c1efb2a4cb_R.jpg",
+      "title": "기후 변화에 대한 대책 논의",
+      "viewCount": 987654321,
+      "createdAt": "2024-09-26T03:16:01.299Z"
+    }
+  ]
+}
