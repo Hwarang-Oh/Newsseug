@@ -5,11 +5,14 @@ import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.global.model.entity.ActivateStatus;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FolderRepository extends JpaRepository<Folder, Long> {
 
     Optional<Folder> findByFolderIdAndMemberAndStatus(Long id, Member member, ActivateStatus status);
+
+    @EntityGraph(attributePaths = {"bookmark", "article"})
     List<Folder> findAllByMember(Member member);
 
 }
