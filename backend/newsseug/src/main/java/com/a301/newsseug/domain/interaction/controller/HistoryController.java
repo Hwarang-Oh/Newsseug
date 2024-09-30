@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @Tag(name = "시청기록 API")
 @RestController
-@RequestMapping("/api/v1/interactions/histories")
+@RequestMapping("/api/v1/histories")
 @RequiredArgsConstructor
 public class HistoryController {
 

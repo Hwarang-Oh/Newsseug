@@ -116,7 +116,7 @@ public class SwaggerConfig {
 
         return GroupedOpenApi.builder()
                 .group("Interaction")
-                .pathsToMatch("/api/v1/likes/**", "/api/v1/hates/**", "/api/v1/reports/**")
+                .pathsToMatch("/api/v1/likes/**", "/api/v1/hates/**", "/api/v1/reports/**", "/api/v1/histories/**")
                 .addOpenApiCustomizer(openApi
                                 -> openApi.addSecurityItem(
                                 new SecurityRequirement().addList("Bearer")
