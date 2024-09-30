@@ -12,10 +12,10 @@ import java.util.Optional;
 public interface ArticleRepository extends JpaRepository<Article, Long>, ArticleCustomRepository {
 
     default Article getOrThrow(Long id) {
-        return findByIdAndConversionStatus(id, ConversionStatus.SUCCESS)
+        return findByArticleIdAndConversionStatus(id, ConversionStatus.SUCCESS)
                 .orElseThrow(NotExistArticleException::new);
     }
 
-    Optional<Article> findByIdAndConversionStatus(Long id, ConversionStatus conversionStatus);
+    Optional<Article> findByArticleIdAndConversionStatus(Long id, ConversionStatus conversionStatus);
 
 }
