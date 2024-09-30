@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Entity
 @Table(name = "articles")
@@ -30,6 +32,9 @@ public class Article extends BaseEntity {
 
     @Column(nullable = false)
     private String sourceUrl;
+
+    @Column(updatable = false, columnDefinition = "TIMESTAMP")
+    private LocalDateTime sourceCreatedAt;
 
     @Column(nullable = true)
     private String contentUrl;
