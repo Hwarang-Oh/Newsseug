@@ -12,7 +12,9 @@ import com.a301.newsseug.domain.folder.model.entity.Folder;
 import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.global.model.entity.ActivateStatus;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,8 +48,22 @@ public class FolderServiceImpl implements FolderService {
 
         Member loginMember = userDetails.getMember();
         List<Folder> folders = folderRepository.findAllByMember(loginMember);
+        Map<Folder, List<Bookmark>> foldersWithBookmark = getBookmarkFromFolder(folders);
 
-        return GetFolderResponse.of(folders);
+        return GetFolderResponse.of(foldersWithBookmark);
+
+    }
+
+    private Map<Folder, List<Bookmark>> getBookmarkFromFolder(List<Folder> folders) {
+
+        Map<Folder, List<Bookmark>> foldersWithBookmark = new HashMap<>();
+
+        for (Folder folder : folders) {
+            List<Bookmark> bookmarks = bookmarkRepository.findAllByFolder(folder);
+            foldersWithBookmark.put(folder, bookmarks);
+        }
+
+        return foldersWithBookmark;
 
     }
 

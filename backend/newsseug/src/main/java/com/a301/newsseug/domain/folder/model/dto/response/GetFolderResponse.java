@@ -1,8 +1,10 @@
 package com.a301.newsseug.domain.folder.model.dto.response;
 
+import com.a301.newsseug.domain.bookmark.model.entity.Bookmark;
 import com.a301.newsseug.domain.folder.model.entity.Folder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import java.util.Map;
 import lombok.Builder;
 
 @Builder
@@ -18,22 +20,26 @@ public record GetFolderResponse(
         @Schema(description = "썸네일")
         String thumbnailUrl,
 
-        @Schema(description = "스크랩 기사수")
-        Long articleCount
+        @Schema(description = "저장된 기사 정보")
+        List<Long> articles
 
 ) {
 
-    public static GetFolderResponse of(Folder folder) {
+    public static GetFolderResponse of(Folder folder, List<Bookmark> bookmarks) {
         return GetFolderResponse.builder()
                 .id(folder.getFolderId())
                 .title(folder.getTitle())
-                .articleCount(folder.getArticleCount())
+                .articles(
+                        bookmarks.stream()
+                                .map(bookmark -> bookmark.getArticle().getArticleId())
+                                .toList()
+                )
                 .build();
     }
 
-    public static List<GetFolderResponse> of(List<Folder> folder) {
-        return folder.stream()
-                .map(GetFolderResponse::of)
+    public static List<GetFolderResponse> of(Map<Folder, List<Bookmark>> folders) {
+        return folders.entrySet().stream()
+                .map(entry -> GetFolderResponse.of(entry.getKey(), entry.getValue()))
                 .toList();
     }
 

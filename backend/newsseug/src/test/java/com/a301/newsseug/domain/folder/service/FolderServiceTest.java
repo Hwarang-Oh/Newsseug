@@ -46,7 +46,7 @@ class FolderServiceTest {
     private CustomUserDetails userDetails;
 
     @InjectMocks
-    private FolderService folderService;
+    private FolderServiceImpl folderService;
 
     private Member loginMember;
     private Folder folder;
@@ -89,7 +89,6 @@ class FolderServiceTest {
     void getFolderInaccessibleFolder() {
 
         // Given
-        when(userDetails.getMember()).thenReturn(loginMember);
         when(folderRepository.findByFolderIdAndMemberAndStatus(folder.getFolderId(), loginMember, ActivateStatus.ACTIVE))
                 .thenReturn(Optional.empty());
 
@@ -105,24 +104,25 @@ class FolderServiceTest {
     void getFolderByMember() {
 
         // Given
-        given(folderRepository.findAllByMember(loginMember)).willReturn(
-                List.of(
-                        FolderFactory.folder(1L),
-                        FolderFactory.folder(2L)
-                ));
+        List<Folder> folders = List.of(FolderFactory.folder(1L), FolderFactory.folder(2L));
+        given(folderRepository.findAllByMember(loginMember)).willReturn(folders);
+        given(bookmarkRepository.findAllByFolder(folders.get(0))).willReturn(List.of());
+        given(bookmarkRepository.findAllByFolder(folders.get(1))).willReturn(List.of());
 
         // When
         List<GetFolderResponse> response = folderService.getFoldersByMember(userDetails);
 
         // Then
         verify(folderRepository).findAllByMember(loginMember);
+        verify(bookmarkRepository).findAllByFolder(folders.get(0));
+        verify(bookmarkRepository).findAllByFolder(folders.get(1));
 
         assertThat(response).hasSize(2);
         assertThat(response)
-                .extracting(GetFolderResponse::id, GetFolderResponse::title, GetFolderResponse::articleCount)
+                .extracting(GetFolderResponse::id, GetFolderResponse::title, GetFolderResponse::articles)
                 .containsExactlyInAnyOrder(
-                        tuple(1L, FolderFixtures.title, 0L),
-                        tuple(2L, FolderFixtures.title, 0L)
+                        tuple(1L, FolderFixtures.title, List.of()),
+                        tuple(2L, FolderFixtures.title, List.of())
                 );
 
     }
