@@ -24,6 +24,30 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
+    public Slice<Article> findAllByCategoryInOrderByCreatedAtDesc(String category, Pageable pageable) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        addCategoryCondition(builder, category, article.category::eq);
+
+        List<Article> content = jpaQueryFactory
+                .selectFrom(article)
+                .join(article.press).fetchJoin()
+                .where(builder)
+                .orderBy(article.createdAt.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+
+        boolean hasNext = content.size() > pageable.getPageSize();
+
+        if (hasNext) {
+            content.remove(content.size() - 1);
+        }
+
+        return new SliceImpl<>(content, pageable, hasNext);
+    }
+
+    @Override
     public Slice<Article> findAllByPressAndCategory(Press press, String category, Pageable pageable) {
 
         BooleanBuilder builder = new BooleanBuilder();
@@ -33,6 +57,34 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
                 .selectFrom(article)
                 .join(article.press).fetchJoin()
                 .where(builder)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+
+        boolean hasNext = content.size() > pageable.getPageSize();
+
+        if (hasNext) {
+            content.remove(content.size() - 1);
+        }
+
+        return new SliceImpl<>(content, pageable, hasNext);
+
+    }
+
+    @Override
+    public Slice<Article> findByPressInOrderByCreatedAtDesc(List<Press> pressList, String category, Pageable pageable) {
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        builder.and(article.press.in(pressList));
+
+        addCategoryCondition(builder, category, article.category::eq);
+
+        List<Article> content = jpaQueryFactory
+                .selectFrom(article)
+                .join(article.press).fetchJoin()
+                .where(builder)
+                .orderBy(article.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();

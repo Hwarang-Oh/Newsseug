@@ -7,6 +7,7 @@ import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleService {
 
@@ -16,10 +17,6 @@ public interface ArticleService {
 
     GetArticleDetailsResponse getArticleDetail(CustomUserDetails userDetails, Long articleId);
 
-    SlicedResponse<List<GetArticleResponse>> getArticlesByPress(Long pressId, int pageNumber, String category, String criteria);
-
-//    List<GetArticleResponse> getAllArticles();
-
-//    SlicedResponse<List<GetArticleDetailsResponse>> getArticleDetailList(CustomUserDetails userDetails, int page);
+    SlicedResponse<List<GetArticleResponse>> getArticlesByPress(CustomUserDetails userDetails, Optional<Long> pressId, int pageNumber, String category, String criteria);
 
 }
