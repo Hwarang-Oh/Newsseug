@@ -10,6 +10,12 @@ import { unsubscribepresshandlers } from './unsubscribepresshandler';
 import { subscribepresslisthandler } from './subscribepresslisthandler';
 import { allpresshandlers } from './allpresshandler';
 import { articlevideohandler } from './articlevideohandler';
+import {
+  articlelikehandler,
+  articledislikehandler,
+  articlehatehandler,
+  articledishatehandler,
+} from './articlevideointeractionhandler';
 
 export const worker = setupWorker(
   ...presshandlers,
@@ -21,4 +27,8 @@ export const worker = setupWorker(
   ...subscribepresslisthandler,
   ...allpresshandlers,
   ...articlevideohandler,
+  ...articlelikehandler,
+  ...articledislikehandler,
+  ...articlehatehandler,
+  ...articledishatehandler,
 );

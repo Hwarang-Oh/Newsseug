@@ -1,3 +1,5 @@
+import { HateInfo, LikeInfo } from '../api/articleVideo';
+
 export interface ProgressBarProps {
   progress: number;
   isPlaying: boolean;
@@ -14,18 +16,15 @@ export interface ScrapModalProps extends ModalProps {
 }
 
 export interface ArticleVideoProp {
+  articleId: number;
   src: string;
   setIsModalOpen: (isOpen: boolean) => void;
 }
 
-interface ArticleLike {
-  isLike: boolean;
-  likeCount: number;
-}
-
 export interface ArticleButtonsProp {
-  likeInfo: ArticleLike;
-  dislikeInfo: ArticleLike;
+  articleId: number;
+  likeInfo: LikeInfo;
+  hateInfo: HateInfo;
   handleScrapClick: () => void;
   handleReportClick: () => void;
 }

@@ -59,7 +59,11 @@ function ArticleSlider() {
       >
         {videos.map((video) => (
           <SwiperSlide key={video.id} data-history={video.id}>
-            <ArticleVideo src={video.src} setIsModalOpen={setIsModalOpen} />
+            <ArticleVideo
+              articleId={video.id}
+              src={video.src}
+              setIsModalOpen={setIsModalOpen}
+            />
           </SwiperSlide>
         ))}
       </Swiper>
