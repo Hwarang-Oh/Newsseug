@@ -10,7 +10,7 @@ public interface FolderService {
 
     GetFolderDetailsResponse getFolder(CustomUserDetails userDetails, Long folderId);
 
-    List<GetFolderResponse> getFoldersByMember(CustomUserDetails userDetails);
+    List<GetFolderResponse> getFolders(CustomUserDetails userDetails);
 
     CreateFolderResponse createFolder(CustomUserDetails userDetails, String title);
 

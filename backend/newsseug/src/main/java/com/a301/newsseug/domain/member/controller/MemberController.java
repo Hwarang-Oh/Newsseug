@@ -4,6 +4,7 @@ import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.folder.model.dto.response.GetFolderResponse;
 import com.a301.newsseug.domain.folder.service.FolderService;
 import com.a301.newsseug.domain.member.model.dto.request.UpdateMemberRequest;
+import com.a301.newsseug.domain.member.model.dto.response.GetMemberFolderResponse;
 import com.a301.newsseug.domain.member.model.dto.response.GetMemberResponse;
 import com.a301.newsseug.domain.member.service.MemberService;
 import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
@@ -32,9 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
-    private final FolderService folderService;
 
-    @Operation(summary = "사용자 정보 조회 API", description = "사용자 정보를 조회한다.")
+    @Operation(summary = "사용자 정보 조회", description = "사용자 정보를 조회한다.")
     @GetMapping()
     public ResponseEntity<Result<GetMemberResponse>> updateMember(
             @AuthenticationPrincipal CustomUserDetails userDetails
@@ -42,7 +42,7 @@ public class MemberController {
         return ResponseUtil.ok(Result.of(memberService.getMember(userDetails)));
     }
 
-    @Operation(summary = "사용자 정보 등록 API", description = "사용자 정보를 등록한다.")
+    @Operation(summary = "사용자 정보 등록", description = "사용자 정보를 등록한다.")
     @PutMapping()
     public ResponseEntity<Result<Boolean>> updateMember(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -54,18 +54,17 @@ public class MemberController {
 
     }
 
-    @Operation(summary = "사용자 폴더 목록 조회 API", description = "사용자 폴더 목록을 조회한다.")
+    @Operation(summary = "사용자 폴더 목록 조회", description = "사용자 폴더 목록을 조회한다.")
     @GetMapping("/folders")
-    public ResponseEntity<Result<List<GetFolderResponse>>> getFolders(
+    public ResponseEntity<Result<List<GetMemberFolderResponse>>> getFolders(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
 
         return ResponseUtil.ok(
-                Result.of(folderService.getFoldersByMember(userDetails))
+                Result.of(memberService.getFoldersByMember(userDetails))
         );
 
     }
-
 
     @Operation(summary = "구독한 언론사 목록 조회", description = "사용자가 구독한 언론사 목록을 조회한다.")
     @GetMapping("/press")

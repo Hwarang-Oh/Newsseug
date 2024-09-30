@@ -42,14 +42,14 @@ public class FolderController {
 
     }
 
-    @Operation(summary = "폴더 목록 조회", description = "사용자가 생성한 폴더 목록을 조회한다.")
+    @Operation(summary = "기사를 저장할 폴더 목록 조회", description = "기사를 저장하기 위해 생성한 폴더 목록을 조회한다.")
     @GetMapping
-    public ResponseEntity<Result<List<GetFolderResponse>>> getFolders(
+    public ResponseEntity<Result<List<GetFolderResponse>>> getFoldersForBookmark(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
 
         return ResponseEntity.ok(
-                Result.of(folderService.getFoldersByMember(userDetails))
+                Result.of(folderService.getFolders(userDetails))
         );
 
     }

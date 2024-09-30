@@ -2,15 +2,20 @@ package com.a301.newsseug.domain.member.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.mockito.Mockito.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+import com.a301.newsseug.domain.folder.factory.entity.FolderFactory;
+import com.a301.newsseug.domain.folder.factory.fixtures.FolderFixtures;
+import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.factory.entity.MemberFactory;
 import com.a301.newsseug.domain.member.factory.dto.MemberRequestFactory;
 import com.a301.newsseug.domain.member.factory.entity.SubscribeFactory;
 import com.a301.newsseug.domain.member.model.dto.request.UpdateMemberRequest;
+import com.a301.newsseug.domain.member.model.dto.response.GetMemberFolderResponse;
 import com.a301.newsseug.domain.member.model.dto.response.GetMemberResponse;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.model.entity.Subscribe;
@@ -43,6 +48,9 @@ class MemberServiceImplTest {
 
     @Mock
     private SubscribeRepository subscribeRepository;
+
+    @Mock
+    private FolderRepository folderRepository;
 
     @Mock
     private CustomUserDetails userDetails;
@@ -109,6 +117,29 @@ class MemberServiceImplTest {
         // Then
         verify(subscribeRepository).findAllByMember(loginMember);
         assertThat(response.press()).hasSize(1);
+
+    }
+
+    @Test
+    @DisplayName("내 폴더 목록 조회[성공]")
+    void getFoldersByMember() {
+
+        // Given
+        given(folderRepository.findAllByMember(loginMember)).willReturn(
+                List.of(
+                        FolderFactory.folder(1L),
+                        FolderFactory.folder(2L)
+                ));
+
+        List<GetMemberFolderResponse> response = memberService.getFoldersByMember(userDetails);
+
+        assertThat(response)
+                .extracting(GetMemberFolderResponse::id, GetMemberFolderResponse::title, GetMemberFolderResponse::articleCount)
+                .containsExactlyInAnyOrder(
+                        tuple(1L, FolderFixtures.title, 0L),
+                        tuple(2L, FolderFixtures.title, 0L)
+                );
+
 
     }
 
