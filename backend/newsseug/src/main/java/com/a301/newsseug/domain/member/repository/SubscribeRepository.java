@@ -5,8 +5,11 @@ import com.a301.newsseug.domain.member.model.entity.Subscribe;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import java.util.List;
 import java.util.Optional;
+
+import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,5 +21,8 @@ public interface SubscribeRepository extends JpaRepository<Subscribe, Long> {
     List<Subscribe> findAllByMember(Member member);
 
     Boolean existsByMemberAndPress(Member member, Press press);
+
+    @Query("SELECT s.press FROM Subscribe s WHERE s.member = :member")
+    List<Press> findPressByMember(@Param("member") Member member);
 
 }
