@@ -1,12 +1,12 @@
 import api from 'apis/commonApi';
-import { FolderDetail, MemberFolderList } from 'types/api/folder';
-import { AxiosResponse, isAxiosError } from 'axios';
+import { FolderDetail, FolderInfo, MemberFolderInfo } from 'types/api/folder';
+import { isAxiosError } from 'axios';
 const FOLDERS_URL = `/api/v1/folders`;
 
 /**
  * IMP : 사용자 폴더 목록 조회를 위한 API
  */
-export const getFolderList = async (): Promise<MemberFolderList> => {
+export const getFolderList = async (): Promise<FolderInfo[]> => {
   try {
     const response = await api.get(`${FOLDERS_URL}`);
     return response.data;
@@ -27,7 +27,7 @@ export const getFolderList = async (): Promise<MemberFolderList> => {
  */
 export const createFolder = async (
   folderName: string,
-): Promise<MemberFolderList> => {
+): Promise<MemberFolderInfo[]> => {
   try {
     const response = await api.post(`${FOLDERS_URL}`, { title: folderName });
     return response.data;
@@ -44,14 +44,14 @@ export const createFolder = async (
  * IMP : 사용자가 기사를 폴더에 저장하는 API
  */
 export const saveArticleToFolder = async (
-  folderId: number,
+  folderIds: number[],
   articleId: number,
 ): Promise<void> => {
   try {
-    const response: AxiosResponse<boolean> = await api.post(
-      `${FOLDERS_URL}/${folderId}/articles/${articleId}`,
-    );
-    console.log(response.data);
+    await api.post(`/api/v1/bookmarks`, {
+      folderIds,
+      articleId,
+    });
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
