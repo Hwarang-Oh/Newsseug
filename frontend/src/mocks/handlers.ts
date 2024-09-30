@@ -3,11 +3,12 @@ import memberinfo from 'mocks/memberdummy.json';
 import memberfolder from 'mocks/memberfolderdummy.json';
 import folder from 'mocks/folderdummy.json';
 import article from 'mocks/article.json';
-import articlePagination from 'mocks/articlePagination.json';
+import folders from 'mocks/foldersdummy.json';
 import { http, HttpResponse } from 'msw';
 const BASE_URL = 'https://j11a301.p.ssafy.io/api/v1';
 
-let folders = memberfolder;
+let newmemberfolders = memberfolder;
+let newfolders = folders;
 let pressInfo = press;
 
 export const presshandlers = [
@@ -16,49 +17,35 @@ export const presshandlers = [
   }),
 
   // 구독
-  http.post(
-    BASE_URL + '/members/press/:pressId',
-    async ({ request, params }) => {
-      const { pressId } = params;
+  http.post(BASE_URL + '/members/press/:pressId', async () => {
+    // 구독 상태 변경
+    pressInfo.isSubscribed = true;
 
-      // JSON 데이터 처리
-      const requestData = await request.json(); // request.json() 사용
-      console.log('구독 요청 받은 언론사 ID:', pressId);
-
-      // 구독 상태 변경
-      pressInfo.isSubscribed = true;
-
-      // 상태 반환
-      return HttpResponse.json(pressInfo);
-    },
-  ),
+    // 상태 반환
+    return HttpResponse.json(pressInfo);
+  }),
 
   // 구독 취소
-  http.put(
-    BASE_URL + '/members/press/:pressId',
-    async ({ request, params }) => {
-      const { pressId } = params;
+  http.put(BASE_URL + '/members/press/:pressId', async () => {
+    pressInfo.isSubscribed = false;
 
-      // 구독 취소 상태 변경
-      console.log('구독 취소 요청 받은 언론사 ID:', pressId);
-
-      pressInfo.isSubscribed = false;
-
-      // 상태 반환
-      return HttpResponse.json(pressInfo);
-    },
-  ),
+    // 상태 반환
+    return HttpResponse.json(pressInfo);
+  }),
 ];
 
 export const memberhandlers = [
   http.get(BASE_URL + '/members', () => {
     return HttpResponse.json(memberinfo);
   }),
+  http.get(BASE_URL + '/members/folders', () => {
+    return HttpResponse.json(memberfolder.data);
+  }),
 ];
 
-export const memberfolderhandles = [
+export const folderhandles = [
   http.get(BASE_URL + '/folders', () => {
-    return HttpResponse.json(memberfolder);
+    return HttpResponse.json(folders.data);
   }),
 
   http.post(BASE_URL + '/folders', async ({ request }) => {
@@ -66,21 +53,47 @@ export const memberfolderhandles = [
     const { title } = data; // 폴더 이름 추출
 
     const newFolder = {
-      id: memberfolder.folders.length + 1, // id는 폴더 길이로 임시 설정
+      id: memberfolder.data.length + 1, // id는 폴더 길이로 임시 설정
       title,
-      articleCount: 0, // 초기 articleCount는 0
+      articles: [],
       thumbnailUrl: '#',
     };
 
-    folders.folders.push(newFolder);
+    const newMemberFolder = {
+      id: memberfolder.data.length + 1, // id는 폴더 길이로 임시 설정
+      title,
+      articleCount: 0,
+      thumbnailUrl: '#',
+    };
 
-    return HttpResponse.json(folders);
+    newfolders.data.push(newFolder);
+    newmemberfolders.data.push(newMemberFolder);
   }),
-];
-
-export const folderhandles = [
   http.get(BASE_URL + '/folders/:folderId', ({ params }) => {
     return HttpResponse.json(folder);
+  }),
+  http.post(BASE_URL + '/bookmarks', async ({ request }) => {
+    const data = (await request.json()) as {
+      folderIds: number[];
+      articleId: number;
+    };
+    const { folderIds, articleId } = data; // folderIds와 articleId 추출
+
+    // 각 폴더 ID에 해당하는 폴더에서 articleId를 추가 또는 제거
+    newfolders.data.forEach((folder) => {
+      if (folderIds.includes(folder.id)) {
+        // folderIds에 포함된 폴더라면 articleId를 추가
+        if (!folder.articles.includes(articleId)) {
+          folder.articles.push(articleId);
+        }
+      } else {
+        // folderIds에 포함되지 않은 폴더라면 articleId를 제거
+        folder.articles = folder.articles.filter((id) => id !== articleId);
+      }
+    });
+
+    // 최종적으로 수정된 newfolders 데이터 반환
+    return HttpResponse.json(newfolders);
   }),
 ];
 

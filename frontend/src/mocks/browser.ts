@@ -2,7 +2,6 @@ import { setupWorker } from 'msw/browser';
 import {
   memberhandlers,
   presshandlers,
-  memberfolderhandles,
   folderhandles,
   articlePaginationhandlers,
 } from './handlers';
@@ -25,7 +24,6 @@ import {
 export const worker = setupWorker(
   ...presshandlers,
   ...memberhandlers,
-  ...memberfolderhandles,
   ...folderhandles,
   ...subscribepresshandlers,
   ...unsubscribepresshandlers,

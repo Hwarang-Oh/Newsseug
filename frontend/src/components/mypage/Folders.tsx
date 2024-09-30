@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import Folder from './Folder';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { MemberFolderInfo, MemberFolderList } from 'types/api/folder';
+import { MemberFolderInfo } from 'types/api/folder';
 import { useDispatch } from 'react-redux';
 import { setMemberFolder } from '../../redux/memberFolderSlice';
-import { getFolderList } from 'apis/folderApi';
+import { getMemberFolderList } from 'apis/memberApi';
 
 function Folders() {
   const dispatch = useDispatch();
@@ -20,9 +20,14 @@ function Folders() {
     data: memberFolderList,
     isLoading,
     error,
-  } = useQuery<MemberFolderList>(['memberFolderList'], () => getFolderList(), {
-    onSuccess: (data) => {
-      dispatch(setMemberFolder(data));
+  } = useQuery<MemberFolderInfo[]>(
+    ['memberFolderList'],
+    () => getMemberFolderList(),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+        dispatch(setMemberFolder(data));
+      },
     },
   });
 
@@ -38,8 +43,8 @@ function Folders() {
 
   return (
     <Wrapper>
-      {Array.isArray(memberFolderList?.folders) &&
-        memberFolderList?.folders.map((folder: MemberFolderInfo) => (
+      {Array.isArray(memberFolderList) &&
+        memberFolderList?.map((folder: MemberFolderInfo) => (
           <Folder
             key={folder.id}
             width={width}

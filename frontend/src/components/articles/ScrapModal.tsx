@@ -3,37 +3,42 @@ import styled from 'styled-components';
 import { motion, useAnimation, PanInfo } from 'framer-motion';
 import scrapPlusIcon from 'assets/scrapPlusIcon.svg';
 import { ScrapModalProps } from 'types/props/articleVideo';
-import { MemberFolderList } from 'types/api/folder';
+import { FolderInfo } from 'types/api/folder';
 import { useQuery } from 'react-query';
-import { useDispatch } from 'react-redux';
-import { getFolderList } from 'apis/folderApi';
-import { setMemberFolder } from '../../redux/memberFolderSlice';
+import { getFolderList, saveArticleToFolder } from 'apis/folderApi';
+import { useParams } from 'react-router-dom';
 
 function ScrapModal({
+  // articleId
   isOpen,
   onRequestClose,
   onCreateModalOpen,
 }: Readonly<ScrapModalProps>) {
-  const dispatch = useDispatch();
-  const [checkedItems, setCheckedItems] = useState<boolean[]>([]);
+  const [checkedItems, setCheckedItems] = useState<
+    { id: number; hasThisArticle: boolean }[]
+  >([]);
   const contentRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
 
   const windowHeight = window.screen.height;
   const maxHeight = windowHeight * 0.6;
-  // 나중에 삭제할 코드
-  useEffect(() => {}, [checkedItems]);
+
+  const { articleId } = useParams();
 
   // 수정 필요
   const {
-    data: memberFolderList,
+    data: folderList,
     isLoading,
     error,
-  } = useQuery<MemberFolderList>(['memberFolderList'], () => getFolderList(), {
+  } = useQuery<FolderInfo[]>(['folderList'], () => getFolderList(), {
     onSuccess: (data) => {
-      dispatch(setMemberFolder(data));
-      console.log(data);
-      setCheckedItems(new Array(data.folders.length).fill(false));
+      const initialCheckedItems = data.map((folder) => ({
+        id: folder.id,
+        hasThisArticle: folder.articles.some(
+          (article) => article === Number(articleId),
+        ),
+      }));
+      setCheckedItems(initialCheckedItems);
     },
   });
 
@@ -50,9 +55,13 @@ function ScrapModal({
     };
   }, [controls, isOpen]);
 
-  const handleClick = (index: number) => {
+  const handleClick = (id: number) => {
     setCheckedItems((prev) =>
-      prev.map((checked, i) => (i === index ? !checked : checked)),
+      prev.map((item) =>
+        item.id === id
+          ? { ...item, hasThisArticle: !item.hasThisArticle }
+          : item,
+      ),
     );
   };
 
@@ -99,6 +108,19 @@ function ScrapModal({
     onCreateModalOpen();
   };
 
+  const handleSubmitClick = async () => {
+    try {
+      const folderIds = checkedItems
+        .filter((item) => item.hasThisArticle)
+        .map((item) => item.id);
+
+      saveArticleToFolder(folderIds, Number(articleId));
+      onRequestClose();
+    } catch (err) {
+      console.error('비디오 폴더에 저장 실패', err);
+    }
+  };
+
   if (isLoading) {
     return <div>로딩 중</div>;
   }
@@ -121,7 +143,7 @@ function ScrapModal({
         animate={controls}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        style={{ maxHeight }} // 최대 높이를 60%로 설정
+        style={{ maxHeight }}
         drag="y"
         dragConstraints={{ top: 0, bottom: 0 }}
         dragElastic={1}
@@ -139,11 +161,19 @@ function ScrapModal({
         </ModalHeader>
         <ContentWrapper ref={contentRef}>
           <ModalBody>
-            {Array.isArray(memberFolderList?.folders) &&
-              memberFolderList?.folders.map((folder, index) => (
-                <ScrapItem key={folder.id} onClick={() => handleClick(index)}>
+            {Array.isArray(folderList) &&
+              folderList.map((folder, index) => (
+                <ScrapItem
+                  key={folder.id}
+                  onClick={() => handleClick(folder.id)}
+                >
                   <HiddenCheckbox />
-                  <StyledCheckbox $checked={checkedItems[index]}>
+                  <StyledCheckbox
+                    $checked={
+                      checkedItems.find((item) => item.id === folder.id)
+                        ?.hasThisArticle ?? false
+                    }
+                  >
                     <svg width="16px" height="16px" viewBox="0 0 24 24">
                       <polyline
                         points="20 6 9 17 4 12"
@@ -162,7 +192,9 @@ function ScrapModal({
           <Btn onClick={handleOverlayClick} $isSubmit={false}>
             취소
           </Btn>
-          <Btn $isSubmit={true}>완료</Btn>
+          <Btn onClick={handleSubmitClick} $isSubmit={true}>
+            완료
+          </Btn>
         </ModalFooter>
       </ModalContent>
     </ModalOverlay>
