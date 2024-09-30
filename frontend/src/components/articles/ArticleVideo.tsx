@@ -14,12 +14,16 @@ const likeInfo = {
   likeCount: 10,
 };
 
-const dislikeInfo = {
-  isLike: false,
-  likeCount: 1000,
+const HateInfo = {
+  isHate: false,
+  hateCount: 1000,
 };
 
-function ArticleVideo({ src, setIsModalOpen }: Readonly<ArticleVideoProp>) {
+function ArticleVideo({
+  articleId,
+  src,
+  setIsModalOpen,
+}: Readonly<ArticleVideoProp>) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -86,8 +90,9 @@ function ArticleVideo({ src, setIsModalOpen }: Readonly<ArticleVideoProp>) {
           </PlayButton>
         )}
         <ArticleButtons
+          articleId={articleId}
           likeInfo={likeInfo}
-          dislikeInfo={dislikeInfo}
+          hateInfo={HateInfo}
           handleScrapClick={handleScrapClick}
           handleReportClick={handleReportClick}
         />

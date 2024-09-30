@@ -25,3 +25,102 @@ export const fetchEachArticle = async (
     } else throw error;
   }
 };
+
+/**
+ * IMP : 기사 좋아요
+ * @param articleId
+ */
+export const fetchLikeArticle = async (articleId: number) => {
+  try {
+    const response = await api.post(`/api/v1/likes/articles/${articleId}`);
+    console.log(response.data);
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 400) {
+        throw new Error('좋아요 실패');
+      } else if (error.response?.status === 404) {
+        throw new Error('기사 또는 사용자 조회 실패');
+      } else throw error;
+    } else throw error;
+  }
+};
+
+/**
+ * IMP : 기사 좋아요 취소
+ * @param articleId
+ */
+export const fetchDislikeArticle = async (articleId: number) => {
+  try {
+    const response = await api.delete(`/api/v1/likes/articles/${articleId}`);
+    console.log(response.data);
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 400) {
+        throw new Error('좋아요 취소 실패');
+      } else if (error.response?.status === 404) {
+        throw new Error('기사 또는 사용자 조회 실패');
+      } else throw error;
+    } else throw error;
+  }
+};
+
+/**
+ * IMP : 기사 싫어요
+ * @param articleId
+ */
+export const fetchHateArticle = async (articleId: number) => {
+  try {
+    const response = await api.post(`/api/v1/hates/articles/${articleId}`);
+    console.log(response.data);
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 400) {
+        throw new Error('좋아요 실패');
+      } else if (error.response?.status === 404) {
+        throw new Error('기사 또는 사용자 조회 실패');
+      } else throw error;
+    } else throw error;
+  }
+};
+
+/**
+ * IMP : 기사 싫어요 취소
+ * @param articleId
+ */
+export const fetchDishateArticle = async (articleId: number) => {
+  try {
+    const response = await api.delete(`/api/v1/hates/articles/${articleId}`);
+    console.log(response.data);
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 400) {
+        throw new Error('좋아요 취소 실패');
+      } else if (error.response?.status === 404) {
+        throw new Error('기사 또는 사용자 조회 실패');
+      } else throw error;
+    } else throw error;
+  }
+};
+
+/**
+ * IMP : 기사 신고
+ * @param articleId
+ * @param reportType
+ */
+export const fetchReportArticle = async (
+  articleId: number,
+  reportType: string,
+) => {
+  try {
+    const response = await api.post(`/api/v1/reports/articles/${articleId}`, {
+      params: { reportType },
+    });
+    console.log(response.data);
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 400) {
+        throw new Error('신고 실패');
+      } else throw error;
+    } else throw error;
+  }
+};
