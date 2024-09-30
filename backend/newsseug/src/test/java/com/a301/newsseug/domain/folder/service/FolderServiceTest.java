@@ -110,7 +110,7 @@ class FolderServiceTest {
         given(bookmarkRepository.findAllByFolder(folders.get(1))).willReturn(List.of());
 
         // When
-        List<GetFolderResponse> response = folderService.getFoldersByMember(userDetails);
+        List<GetFolderResponse> response = folderService.getFolders(userDetails);
 
         // Then
         verify(folderRepository).findAllByMember(loginMember);

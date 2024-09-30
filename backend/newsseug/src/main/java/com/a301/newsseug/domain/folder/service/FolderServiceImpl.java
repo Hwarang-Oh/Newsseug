@@ -18,8 +18,10 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class FolderServiceImpl implements FolderService {
@@ -28,6 +30,7 @@ public class FolderServiceImpl implements FolderService {
     private final BookmarkRepository bookmarkRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public GetFolderDetailsResponse getFolder(CustomUserDetails userDetails, Long folderId) {
 
         Member loginMember = userDetails.getMember();
@@ -44,7 +47,8 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public List<GetFolderResponse> getFoldersByMember(CustomUserDetails userDetails) {
+    @Transactional(readOnly = true)
+    public List<GetFolderResponse> getFolders(CustomUserDetails userDetails) {
 
         Member loginMember = userDetails.getMember();
         List<Folder> folders = folderRepository.findAllByMember(loginMember);

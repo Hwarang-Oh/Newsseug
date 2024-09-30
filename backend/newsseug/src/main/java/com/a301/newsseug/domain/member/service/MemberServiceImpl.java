@@ -1,7 +1,10 @@
 package com.a301.newsseug.domain.member.service;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+import com.a301.newsseug.domain.folder.model.entity.Folder;
+import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.model.dto.request.UpdateMemberRequest;
+import com.a301.newsseug.domain.member.model.dto.response.GetMemberFolderResponse;
 import com.a301.newsseug.domain.member.model.dto.response.GetMemberResponse;
 import com.a301.newsseug.domain.member.model.entity.type.GenderType;
 import com.a301.newsseug.domain.member.model.entity.Member;
@@ -30,8 +33,10 @@ public class MemberServiceImpl implements MemberService {
 
     private final PressRepository pressRepository;
     private final SubscribeRepository subscribeRepository;
+    private final FolderRepository folderRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public GetMemberResponse getMember(CustomUserDetails userDetails) {
 
         Member loginMember = userDetails.getMember();
@@ -53,6 +58,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ListSimplePressResponse getPressByMember(CustomUserDetails userDetails) {
 
         Member loginMember = userDetails.getMember();
@@ -61,6 +67,16 @@ public class MemberServiceImpl implements MemberService {
         return ListSimplePressResponse.of(
                 SimplePressDto.fromSubscribe(subscribes)
         );
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<GetMemberFolderResponse> getFoldersByMember(CustomUserDetails userDetails) {
+
+        Member loginMember = userDetails.getMember();
+        List<Folder> folders = folderRepository.findAllByMember(loginMember);
+        return GetMemberFolderResponse.of(folders);
 
     }
 
