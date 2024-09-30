@@ -51,6 +51,7 @@ public class ArticleController {
         return ResponseUtil.ok(Result.of(articleService.getArticleListByCategory(filter, pageNumber)));
     }
 
+    @Operation(summary = "언론사 & 카테고리별 기사 조회 API", description = "언론사 & 카테고리별 기사 리스트를 조회한다.")
     @GetMapping(value = {"/press", "/press/{pressId}"})
     public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getArticlesByPress(
             @AuthenticationPrincipal CustomUserDetails userDetails,
