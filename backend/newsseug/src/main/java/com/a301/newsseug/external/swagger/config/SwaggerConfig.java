@@ -86,7 +86,7 @@ public class SwaggerConfig {
 
         return GroupedOpenApi.builder()
                 .group(Folder.class.getSimpleName())
-                .pathsToMatch("/api/v1/folders/**")
+                .pathsToMatch("/api/v1/folders/**", "/api/v1/bookmarks/**")
                 .addOpenApiCustomizer(openApi
                                 -> openApi.addSecurityItem(
                                 new SecurityRequirement().addList("Bearer")

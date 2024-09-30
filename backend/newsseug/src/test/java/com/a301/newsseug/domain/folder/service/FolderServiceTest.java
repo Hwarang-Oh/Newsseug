@@ -46,7 +46,7 @@ class FolderServiceTest {
     private CustomUserDetails userDetails;
 
     @InjectMocks
-    private FolderServiceImpl folderService;
+    private FolderService folderService;
 
     private Member loginMember;
     private Folder folder;
