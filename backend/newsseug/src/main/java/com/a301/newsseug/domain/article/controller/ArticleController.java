@@ -56,7 +56,7 @@ public class ArticleController {
     @GetMapping(value = {"/press", "/press/{pressId}"})
     public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getArticlesByPress(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable(name = "pressId") Optional<Long> pressId,
+            @PathVariable(required = false, name = "pressId") Optional<Long> pressId,
             @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber,
             @RequestParam(required = false, defaultValue = "ALL", value = "filter") String filter,
             @RequestParam(required = false, defaultValue = "TIME", value = "criteria") String criteria
