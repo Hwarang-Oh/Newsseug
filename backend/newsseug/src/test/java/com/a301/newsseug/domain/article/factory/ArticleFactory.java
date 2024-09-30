@@ -17,7 +17,7 @@ public class ArticleFactory {
                 .category(CategoryType.POLITICS)
                 .build();
 
-        ReflectionTestUtils.setField(article, "id", id);
+        ReflectionTestUtils.setField(article, "articleId", id);
 
         return article;
     }
