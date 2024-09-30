@@ -81,9 +81,9 @@ public class ArticleServiceImpl implements ArticleService {
         List<GetArticleResponse> articles = GetArticleResponse.of(sliced.getContent());
 
         SliceDetails sliceDetails = SliceDetails.of(
-                sliced.getNumber(),   // Current page number
-                sliced.isFirst(),     // Whether it's the first slice
-                sliced.hasNext()      // Whether there's a next slice
+                sliced.getNumber(),
+                sliced.isFirst(),
+                sliced.hasNext()
         );
 
         return SlicedResponse.of(sliceDetails, articles);
