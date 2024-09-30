@@ -1,4 +1,4 @@
-import { PressBasic } from './press';
+import { PressBasic } from 'types/api/press';
 
 export interface ArticleInfo {
   id: number;

@@ -3,6 +3,7 @@ import memberinfo from 'mocks/memberdummy.json';
 import memberfolder from 'mocks/memberfolderdummy.json';
 import folder from 'mocks/folderdummy.json';
 import article from 'mocks/article.json';
+import articlePagination from 'mocks/articlePagination.json';
 import { http, HttpResponse } from 'msw';
 const BASE_URL = 'https://j11a301.p.ssafy.io/api/v1';
 
@@ -83,33 +84,26 @@ export const folderhandles = [
   }),
 ];
 
-export const articlehandlers = [
-  http.get(BASE_URL + '/articles', ({ request }) => {
-    const url = new URL(request.url);
-    const categoryName = url.searchParams.get('categoryName');
-    const foundArticles = article.articleByCategory.filter(
-      (a) => a.category === categoryName,
+export const articlePaginationhandlers = [
+  http.get(BASE_URL + '/articles/today', ({ request }) => {
+    const pageNumber =
+      Number(new URL(request.url).searchParams.get('page')) || 1;
+    const startIdx = (pageNumber - 1) * 5;
+    const endIdx = pageNumber * 5;
+    const paginatedArticles = articlePagination.articlesPagination.slice(
+      startIdx,
+      endIdx,
     );
-    console.log(foundArticles[0].articleList);
-    return HttpResponse.json(foundArticles[0].articleList);
-  }),
-
-  // 오늘 뉴스 기사 조회 API
-  http.get(BASE_URL + '/articles/today', () => {
-    return HttpResponse.json(article.todayArticles);
-  }),
-
-  // 단일 기사 조회 API (articleId)
-  http.get(BASE_URL + '/articles/{articleId}', (req) => {
-    const { articleId } = req.params;
-    const foundArticle = article.targetArticles.find(
-      (a) => a.id === Number(articleId),
-    );
-    return HttpResponse.json(foundArticle || {});
-  }),
-
-  // 전체 기사 조회 API
-  http.get(BASE_URL + '/articles/all', () => {
-    return HttpResponse.json(article.articles);
+    const hasNextPage = endIdx < articlePagination.articlesPagination.length;
+    return HttpResponse.json({
+      data: {
+        sliceDetails: {
+          currentPage: pageNumber,
+          hasFirst: pageNumber === 0,
+          hasNext: hasNextPage,
+        },
+        content: paginatedArticles,
+      },
+    });
   }),
 ];

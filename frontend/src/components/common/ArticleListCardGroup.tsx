@@ -4,7 +4,6 @@ import { ArticleListCardGroupProps } from 'types/common/common';
 
 /**
  * IMP : ArticleListCardGroup ( News Card Group ) Component
- * TYPE : articleList -> data.json에서 가져와야 한다. ( import data from '@/db/data.json';)
  * @param param0
  * @returns
  */

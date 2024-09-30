@@ -1,6 +1,5 @@
 import api from 'apis/commonApi';
-import { AxiosResponse, isAxiosError } from 'axios';
-import { ArticleListCardProps } from 'types/common/common';
+import { isAxiosError } from 'axios';
 const ARTICLES_URL = `/api/v1/articles`;
 
 /**
@@ -10,14 +9,23 @@ const ARTICLES_URL = `/api/v1/articles`;
  */
 
 /**
- * IMP : Home 화면에서 사용하는 모든 Articles를 Fetch하는 API
+ * IMP : Article을 가져오는 API ( Pagination & Infinite Scroll Version )
+ * TODO : Pagination & Infinite Scroll을 위한 API 구현
+ * TODO : React Query를 사용하여, 최적화를 고려해야 한다.
+ * TODO : 이와 관련한 Dummy Data를 구현해야 한다.
  */
-export const fetchAllArticles = async (): Promise<ArticleListCardProps[]> => {
+export const fetchArticlesByPage = async ({
+  category = null,
+  page = 1,
+}: {
+  category?: string | null;
+  page: number;
+}) => {
   try {
-    const response: AxiosResponse<ArticleListCardProps[]> = await api.get(
-      `${ARTICLES_URL}/all`,
-    );
-    return response.data;
+    const response = await api.get(ARTICLES_URL, {
+      params: { category: category || null, page },
+    });
+    return response.data.content;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -27,63 +35,22 @@ export const fetchAllArticles = async (): Promise<ArticleListCardProps[]> => {
   }
 };
 
-/**
- * IMP : Home 화면에서 사용하는 '오늘의 뉴스' Articles를 Fetch하는 API
- */
-export const fetchArticlesByToday = async (): Promise<
-  ArticleListCardProps[]
-> => {
+export const fetchTodayArticlesByPage = async ({
+  category,
+  pageParam,
+}: {
+  category?: string;
+  pageParam: number;
+}) => {
   try {
-    const response: AxiosResponse<ArticleListCardProps[]> = await api.get(
-      `${ARTICLES_URL}/today`,
-    );
-    return response.data;
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const response = await api.get(`${ARTICLES_URL}/today`, {
+      params: { category: category || null, page: pageParam },
+    });
+    return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
-        throw new Error('Not Found');
-      } else throw error;
-    } else throw error;
-  }
-};
-
-/**
- * IMP : 각 Category에 해당하는 Articles[]를 Fetch하는 API => Query Parameter로 Category를 받아서 Fetch
- * @param category
- */
-export const fetchArticlesByCategory = async (
-  category: string,
-): Promise<ArticleListCardProps[]> => {
-  try {
-    const response: AxiosResponse<ArticleListCardProps[]> = await api.get(
-      `${ARTICLES_URL}?categoryName=${encodeURIComponent(category)}`,
-    );
-    return response.data;
-  } catch (error) {
-    if (isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        throw new Error('Not Found');
-      } else throw error;
-    } else throw error;
-  }
-};
-
-/**
- * IMP : 각 Article을 Fetch하는 API
- * *  ArticleId를 통해 각 Article 1개를 Fetch한다.
- * @param articleId
- */
-export const fetchEachArticle = async (
-  articleId: number,
-): Promise<ArticleListCardProps> => {
-  try {
-    const response: AxiosResponse<ArticleListCardProps> = await api.get(
-      `${ARTICLES_URL}/${articleId}`,
-    );
-    return response.data;
-  } catch (error: unknown) {
-    if (isAxiosError(error)) {
-      if (error.response?.status === 400) {
         throw new Error('Not Found');
       } else throw error;
     } else throw error;

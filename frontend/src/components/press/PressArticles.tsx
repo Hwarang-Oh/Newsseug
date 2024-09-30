@@ -7,7 +7,7 @@ function PressArticles() {
   return (
     <Wrapper>
       <SubTitle title="업로드한 영상" />
-      <ArticleListCardGroup articleList={article.articles} />
+      <ArticleListCardGroup articleList={article.targetArticles} />
     </Wrapper>
   );
 }

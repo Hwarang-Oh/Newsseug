@@ -1,8 +1,12 @@
-export interface Article {
-  id: number;
-  pressName: string;
-  thumbnailUrl: string;
-  title: string;
-  viewCount: number;
-  createdAt: string;
+import { ArticleListCardProps } from 'types/common/common';
+
+interface SliceDetails {
+  currentPage: number;
+  hasFirst: boolean;
+  hasNext: boolean;
+}
+
+export interface PageType {
+  sliceDetails: SliceDetails;
+  content: ArticleListCardProps[];
 }

@@ -42,7 +42,7 @@ function SearchResult() {
           activeCategory={activeCategory}
           setActiveCategory={setActiveCategory}
         />
-        {article.articles.map((item, idx) => {
+        {article.targetArticles.map((item, idx) => {
           if (Array.isArray(item)) {
             return <ArticleListCardGroup key={idx} articleList={item} />;
           } else if (typeof item === 'object' && item != null) {
