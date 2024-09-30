@@ -1,4 +1,4 @@
-package com.a301.newsseug.domain.article.model.entity.type;
+package com.a301.newsseug.domain.interaction.model.entity.type;
 
 import com.a301.newsseug.domain.article.exception.InvalidReportTypeException;
 import io.swagger.v3.oas.annotations.media.Schema;

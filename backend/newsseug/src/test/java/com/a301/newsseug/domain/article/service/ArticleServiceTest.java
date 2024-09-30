@@ -87,7 +87,9 @@ public class ArticleServiceTest {
         PageRequest pageRequest = PageRequest.of(0, 10);
         Slice<Article> articlesPage = new SliceImpl<>(Collections.singletonList(article), pageRequest, false);
 
-        given(articleRepository.findByCreatedAtBetween(startOfDay, endOfDay, pageRequest)).willReturn(articlesPage);
+        String category;
+
+//        given(articleRepository.findAllByCategoryAndCreatedAtBetween(category, endOfDay, pageRequest)).willReturn(articlesPage);
 
         // When
         SlicedResponse<List<GetArticleResponse>> response = articleService.getTodayArticleListByCategory(null, 0);
@@ -122,8 +124,8 @@ public class ArticleServiceTest {
 
         // Then
         assertThat(response.isSubscribed()).isTrue();
-        assertThat(response.likeInfo()).isEqualTo(SimpleLikeDto.of(Boolean.TRUE, 5));
-        assertThat(response.hateInfo()).isEqualTo(SimpleHateDto.of(Boolean.FALSE, 1));
+        assertThat(response.likeInfo()).isEqualTo(SimpleLikeDto.of(Boolean.TRUE, 5L));
+        assertThat(response.hateInfo()).isEqualTo(SimpleHateDto.of(Boolean.FALSE, 1L));
 
     }
 
@@ -141,8 +143,8 @@ public class ArticleServiceTest {
 
         // Then
         assertThat(response.isSubscribed()).isFalse();
-        assertThat(response.likeInfo()).isEqualTo(SimpleLikeDto.of(Boolean.FALSE, 5));
-        assertThat(response.hateInfo()).isEqualTo(SimpleHateDto.of(Boolean.FALSE, 1));
+        assertThat(response.likeInfo()).isEqualTo(SimpleLikeDto.of(Boolean.FALSE, 5L));
+        assertThat(response.hateInfo()).isEqualTo(SimpleHateDto.of(Boolean.FALSE, 1L));
 
     }
 
