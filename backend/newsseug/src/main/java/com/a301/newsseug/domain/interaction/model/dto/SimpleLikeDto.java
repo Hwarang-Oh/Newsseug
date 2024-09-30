@@ -9,11 +9,11 @@ public record SimpleLikeDto(
 
         Boolean isLike,
 
-        Integer likeCount
+        Long likeCount
 
 ) {
 
-    public static SimpleLikeDto of(Boolean isLike, Integer likeCount) {
+    public static SimpleLikeDto of(Boolean isLike, Long likeCount) {
         return SimpleLikeDto.builder()
                 .isLike(isLike)
                 .likeCount(likeCount)

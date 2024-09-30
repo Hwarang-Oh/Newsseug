@@ -17,7 +17,7 @@ public enum CategoryType {
     ECONOMY("economy"),
 
     @Schema(description = "국제")
-    world("world"),
+    WORLD("world"),
 
     @Schema(description = "사건")
     ACCIDENT("accident"),
@@ -25,8 +25,8 @@ public enum CategoryType {
     @Schema(description = "과학")
     SCIENCE("science"),
 
-    @Schema(description = "과학")
-    SOCIETY("science"),
+    @Schema(description = "사회")
+    SOCIETY("society"),
 
     @Schema(description = "스포츠")
     SPORTS("science");
@@ -45,4 +45,5 @@ public enum CategoryType {
 
         return categoryType;
     }
+
 }

@@ -9,11 +9,11 @@ public record SimpleHateDto(
 
         Boolean isHate,
 
-        Integer hateCount
+        Long hateCount
 
 ) {
 
-    public static SimpleHateDto of(Boolean isHate, Integer hateCount) {
+    public static SimpleHateDto of(Boolean isHate, Long hateCount) {
         return SimpleHateDto.builder()
                 .isHate(isHate)
                 .hateCount(hateCount)

@@ -1,6 +1,6 @@
 package com.a301.newsseug.domain.interaction.controller;
 
-import com.a301.newsseug.domain.article.model.entity.type.ReportType;
+import com.a301.newsseug.domain.interaction.model.entity.type.ReportType;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.interaction.service.ReportService;
 import com.a301.newsseug.global.model.dto.Result;
