@@ -7,6 +7,7 @@ export interface ProgressBarProps {
 }
 
 export interface ModalProps {
+  // articleId: number;
   isOpen: boolean;
   onRequestClose: () => void;
 }

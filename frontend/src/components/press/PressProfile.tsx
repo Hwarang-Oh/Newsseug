@@ -15,7 +15,6 @@ function PressProfile({
 
   useEffect(() => {
     setIsSub(isSubscribed);
-    console.log(isSubscribed, subscribeCount, id);
   }, []);
 
   const handleSubscribe = async () => {

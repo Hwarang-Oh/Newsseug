@@ -1,7 +1,7 @@
-import { MemberFolderList } from 'types/api/folder';
+import { MemberFolderInfo, MemberFolderState } from 'types/api/folder';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: MemberFolderList = {
+const initialState: MemberFolderState = {
   folders: [],
 };
 
@@ -9,8 +9,8 @@ const memberFolderSlice = createSlice({
   name: 'memberFolder',
   initialState,
   reducers: {
-    setMemberFolder: (state, action: PayloadAction<MemberFolderList>) => {
-      state.folders = action.payload.folders;
+    setMemberFolder: (state, action: PayloadAction<MemberFolderInfo[]>) => {
+      state.folders = action.payload;
     },
   },
 });

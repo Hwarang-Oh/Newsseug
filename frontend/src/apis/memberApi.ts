@@ -2,7 +2,7 @@ import api from 'apis/commonApi';
 import { AxiosResponse, isAxiosError } from 'axios';
 import { UserInputProps } from 'types/props/register';
 import { MemberInfo } from 'types/api/member';
-import { MemberFolderList } from 'types/api/folder';
+import { MemberFolderInfo } from 'types/api/folder';
 const MEMBER_URL = '/api/v1/members';
 
 /**
@@ -84,7 +84,6 @@ export const unsubscribePress = async (pressId: number): Promise<void> => {
 
 /**
  * IMP : 언론사 구독 목록 조회를 위한 API
- * TODO : 언론사 Type 정의 필요
  */
 export const getSubscribedPressList = async (): Promise<void> => {
   try {
@@ -97,6 +96,25 @@ export const getSubscribedPressList = async (): Promise<void> => {
       if (error.response?.status === 404) {
         throw new Error('Not Found');
       } else throw error;
+    } else throw error;
+  }
+};
+
+/**
+ * IMP : 사용자 폴더 목록 조회를 위한 API
+ */
+export const getMemberFolderList = async (): Promise<MemberFolderInfo[]> => {
+  try {
+    const response = await api.get(`${MEMBER_URL}/folders`);
+    return response.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error('Not Found');
+      } else {
+        console.error('마이페이지 폴더 목록 조회 실패:', error);
+        throw error;
+      }
     } else throw error;
   }
 };

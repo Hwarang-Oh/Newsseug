@@ -1,16 +1,25 @@
-import { ArticleListCardProps } from 'types/common/common';
-export interface MemberFolderInfo {
+import { Article } from './article';
+
+export interface FolderBasic {
   id: number;
   title: string;
-  articleCount: number;
   thumbnailUrl: string;
 }
 
-export interface MemberFolderList {
-  folders: MemberFolderInfo[];
+export interface MemberFolderInfo extends FolderBasic {
+  articleCount: number;
 }
+
 export interface FolderDetail {
   articles: ArticleListCardProps[];
   id: number;
   title: string;
+}
+
+export interface FolderInfo extends FolderBasic {
+  articles: number[];
+}
+
+export interface MemberFolderState {
+  folders: MemberFolderInfo[];
 }
