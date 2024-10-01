@@ -77,7 +77,7 @@ public class ArticleServiceImpl implements ArticleService {
         Pageable pageable = PageRequest.of(
                 pageNumber,
                 10,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.TIME.getValue())
+                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
         );
         LocalDateTime startOfDay = ClockUtil.getLocalDateTime().toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1);
@@ -97,7 +97,7 @@ public class ArticleServiceImpl implements ArticleService {
         Pageable pageable = PageRequest.of(
                 pageNumber,
                 10,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.TIME.getValue())
+                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
         );
         Slice<Article> sliced = articleRepository.findAllByCategory(category, pageable);
 
@@ -123,7 +123,7 @@ public class ArticleServiceImpl implements ArticleService {
         Pageable pageable = PageRequest.of(
                 pageNumber,
                 20,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.TIME.getValue())
+                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
         );
 
         Slice<Article> sliced;

@@ -26,6 +26,8 @@ import com.a301.newsseug.domain.press.factory.PressFactory;
 import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
+import com.a301.newsseug.global.enums.SortingCriteria;
+import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.model.entity.ActivateStatus;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -38,6 +40,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.Sort;
 
 @DisplayName("멤버 관련 기능")
 @ExtendWith(MockitoExtension.class)
@@ -125,13 +131,18 @@ class MemberServiceImplTest {
     void getFoldersByMember() {
 
         // Given
-        given(folderRepository.findAllByMember(loginMember)).willReturn(
-                List.of(
-                        FolderFactory.folder(1L),
-                        FolderFactory.folder(2L)
-                ));
+        Pageable pageable = PageRequest.of(
+                0,
+                10,
+                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+        );
 
-        List<GetMemberFolderResponse> response = memberService.getFoldersByMember(userDetails);
+        given(folderRepository.findAllByMember(loginMember, pageable)).willReturn(
+                new SliceImpl<>(List.of(FolderFactory.folder(1L), FolderFactory.folder(2L)), pageable, true)
+        );
+
+        SlicedResponse<List<GetMemberFolderResponse>> slicedResponse = memberService.getFoldersByMember(userDetails, 0);
+        List<GetMemberFolderResponse> response = slicedResponse.getContent();
 
         assertThat(response)
                 .extracting(GetMemberFolderResponse::id, GetMemberFolderResponse::title, GetMemberFolderResponse::articleCount)

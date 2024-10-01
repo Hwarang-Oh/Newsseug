@@ -5,6 +5,7 @@ import com.a301.newsseug.domain.member.model.dto.request.UpdateMemberRequest;
 import com.a301.newsseug.domain.member.model.dto.response.GetMemberFolderResponse;
 import com.a301.newsseug.domain.member.model.dto.response.GetMemberResponse;
 import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
+import com.a301.newsseug.global.model.dto.SlicedResponse;
 import java.util.List;
 
 public interface MemberService {
@@ -15,7 +16,7 @@ public interface MemberService {
 
     ListSimplePressResponse getPressByMember(CustomUserDetails userDetails);
 
-    List<GetMemberFolderResponse> getFoldersByMember(CustomUserDetails userDetails);
+    SlicedResponse<List<GetMemberFolderResponse>> getFoldersByMember(CustomUserDetails userDetails, int pageNumber);
 
     void subscribe(CustomUserDetails userDetails, Long pressId);
 

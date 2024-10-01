@@ -15,6 +15,9 @@ import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
 import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
+import com.a301.newsseug.global.enums.SortingCriteria;
+import com.a301.newsseug.global.model.dto.SlicedResponse;
+import com.a301.newsseug.global.model.entity.SliceDetails;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,6 +25,10 @@ import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,11 +79,21 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<GetMemberFolderResponse> getFoldersByMember(CustomUserDetails userDetails) {
+    public SlicedResponse<List<GetMemberFolderResponse>> getFoldersByMember(CustomUserDetails userDetails, int pageNumber) {
+
+        Pageable pageable = PageRequest.of(
+                pageNumber,
+                10,
+                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+        );
 
         Member loginMember = userDetails.getMember();
-        List<Folder> folders = folderRepository.findAllByMember(loginMember);
-        return GetMemberFolderResponse.of(folders);
+        Slice<Folder> sliced = folderRepository.findAllByMember(loginMember, pageable);
+
+        return SlicedResponse.of(
+                SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
+                GetMemberFolderResponse.of(sliced.getContent())
+        );
 
     }
 
