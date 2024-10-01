@@ -1,5 +1,6 @@
 import api from 'apis/commonApi';
 import { isAxiosError } from 'axios';
+import { PageParamsType, PageType } from '@/types/api/article';
 const ARTICLES_URL = `/api/v1/articles`;
 
 /**
@@ -8,51 +9,38 @@ const ARTICLES_URL = `/api/v1/articles`;
  * Type : Promise<AxiosResponse> => AxiosResponse의 Case에 대한 Promise를 반환해야 함.
  */
 
-/**
- * IMP : Article을 가져오는 API ( Pagination & Infinite Scroll Version )
- * TODO : Pagination & Infinite Scroll을 위한 API 구현
- * TODO : React Query를 사용하여, 최적화를 고려해야 한다.
- * TODO : 이와 관련한 Dummy Data를 구현해야 한다.
- */
-export const fetchArticlesByPage = async ({
-  category = null,
+export const fetchArticles = async ({
+  category = 'ALL',
   page = 1,
-}: {
-  category?: string | null;
-  page: number;
-}) => {
-  try {
-    const response = await api.get(ARTICLES_URL, {
-      params: { category: category || null, page },
-    });
-    return response.data.content;
-  } catch (error: unknown) {
-    if (isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        throw new Error('Not Found');
-      } else throw error;
-    } else throw error;
-  }
-};
-
-export const fetchTodayArticlesByPage = async ({
-  category,
-  pageParam,
-}: {
-  category?: string;
-  pageParam: number;
-}) => {
+}: PageParamsType): Promise<PageType> => {
   try {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    const response = await api.get(`${ARTICLES_URL}/today`, {
-      params: { category: category || null, page: pageParam },
+    const response = await api.get(ARTICLES_URL, {
+      params: { category, page },
     });
     return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        throw new Error('Not Found');
-      } else throw error;
+      if (error.response?.status === 404) throw new Error('Not Found');
+      else throw error;
+    } else throw error;
+  }
+};
+
+export const fetchArticlesByToday = async ({
+  category = 'ALL',
+  page = 1,
+}: PageParamsType): Promise<PageType> => {
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const response = await api.get(`${ARTICLES_URL}/today`, {
+      params: { category, page },
+    });
+    return response.data.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 404) throw new Error('Not Found');
+      else throw error;
     } else throw error;
   }
 };

@@ -24,17 +24,15 @@ function Router() {
         <Route path="/splash" element={<Splash />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/:dataName/allArticles" element={<AllArticles />} />
 
         <Route path="/articles">
-          <Route path="all" element={<AllArticles />} />
+          <Route path="section/:sectionType" element={<AllArticles />} />
           <Route path=":articleId" element={<ArticleVideo />} />
         </Route>
 
         <Route path="/subscribes" element={<PrivateRoute />}>
           <Route path="" element={<Subscribes />} />
           <Route path="all" element={<AllSubscribes />} />{' '}
-          {/* 추가로 감싸지 않아도 상위 경로로 보호됨 */}
         </Route>
 
         <Route path="/mypage" element={<PrivateRoute />}>

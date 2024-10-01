@@ -5,7 +5,7 @@ import InputSection from 'components/search/InputSection';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
-import article from 'mocks/article.json';
+import article from 'mocks/articlecategorydummy.json';
 
 const dummydata = [
   {

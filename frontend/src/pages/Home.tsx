@@ -3,37 +3,45 @@ import MainLayout from 'components/common/MainLayout';
 import useAutoLogin from 'hooks/useAutoLogin';
 import useContentsFetch from 'hooks/useContentsFetch';
 import styled, { keyframes } from 'styled-components';
-import { fetchTodayArticlesByPage } from 'apis/articleApi';
+import { SectionType, SectionTypeMatch } from 'types/api/article';
+import { useNavigate } from 'react-router-dom';
+import { fetchArticles, fetchArticlesByToday } from 'apis/articleApi';
 /**
  * IMP : useAutoLogin() : 외부 Login을 수행하는 Custom Hook
  * @returns
  */
 
 function Home() {
+  const navigate = useNavigate();
   useAutoLogin();
-  const {
-    allData,
-    fetchNextPage: fetchNextTodayPage,
-    hasNextPage: hasNextTodayPage,
-    isFetchingNextPage: isFetchingNextTodayPage,
-  } = useContentsFetch(fetchTodayArticlesByPage, ['todayArticles']);
+  const sections = [
+    useContentsFetch('today', fetchArticlesByToday, 'todayArticles'),
+    useContentsFetch('age', fetchArticlesByToday, 'ageArticles'),
+    useContentsFetch('all', fetchArticles, 'allArticles'),
+  ];
 
   return (
     <MainLayout>
       <FadeInWrapper>
-        <Section
-          subTitle="오늘의 기사"
-          moreLink={'/allArticles'}
-          articleList={allData}
-          fetchNextPage={fetchNextTodayPage}
-          hasNextPage={hasNextTodayPage}
-          isFetchingNextPage={isFetchingNextTodayPage}
-        />
-        {hasNextTodayPage && (
-          <button onClick={() => fetchNextTodayPage()}>
-            Load More Today's Articles
-          </button>
-        )}
+        {sections.map((section) => (
+          <Section
+            key={section.sectionType}
+            subTitle={SectionTypeMatch[section.sectionType as SectionType]}
+            moreLink={() =>
+              navigate(`/articles/section/${section.sectionType}`, {
+                state: {
+                  articleList: section.articleList,
+                  sliceDetails: section.sliceDetails,
+                  sectionType: section.sectionType,
+                },
+              })
+            }
+            articleList={section.articleList}
+            fetchNextPage={section.fetchNextPage}
+            hasNextPage={section.hasNextPage}
+            isFetchingNextPage={section.isFetchingNextPage}
+          />
+        ))}
       </FadeInWrapper>
     </MainLayout>
   );

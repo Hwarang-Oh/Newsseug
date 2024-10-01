@@ -1,5 +1,5 @@
-import styled, { keyframes } from 'styled-components';
 import ArticleListCard from 'components/common/ArticleListCard';
+import styled, { keyframes } from 'styled-components';
 import { useRef, useEffect } from 'react';
 import { ArticleListCardGroupProps } from 'types/common/common';
 
@@ -40,9 +40,9 @@ function ArticleSlideBox({
       {articleList.map((article, index) => (
         <ArticleListCard key={index} {...article} />
       ))}
-      <div ref={observerRef} style={{ width: '1px', height: '1px' }}>
+      <LoadingContainer ref={observerRef}>
         {isFetchingNextPage && <LoadingIndicator></LoadingIndicator>}
-      </div>
+      </LoadingContainer>
     </ArticleSlideBoxStyle>
   );
 }
@@ -61,9 +61,12 @@ const ArticleSlideBoxStyle = styled.div`
     display: none;
   }
 `;
-// TODO : Loading 제대로 구현하기
 
-const spinner = keyframes`
+const LoadingContainer = styled.div`
+  align-self: center;
+`;
+
+const Spinner = keyframes`
   0% {
     transform: rotate(0deg);
   }
@@ -79,6 +82,6 @@ const LoadingIndicator = styled.div`
   border: 3px solid rgba(195, 195, 195, 0.6);
   border-radius: 50%;
   border-top-color: #636767;
-  animation: ${spinner} 0.6s linear infinite;
+  animation: ${Spinner} 0.6s linear infinite;
   margin: 0 auto;
 `;
