@@ -105,22 +105,3 @@ export async function scheduleTokenRefresh() {
     }
   }
 }
-
-/**
- * IMP: 로그아웃을 위한 API
- * TODO : 로그아웃 후, 어떤 처리를 해줄 지 정의해야 한다. ( State 관리, Cookie 관리, Page 이동 등 )
- * IMP : Authorization Header가 필요한 API ( 로그인 기능 )
- */
-const LOGOUT_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1/logout`;
-export const getLogout = async (): Promise<void> => {
-  try {
-    const response = await api.get(LOGOUT_URL);
-    console.log(response.data);
-  } catch (error: unknown) {
-    if (isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        throw new Error('Not Found');
-      } else throw error;
-    } else throw error;
-  }
-};

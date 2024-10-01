@@ -1,3 +1,5 @@
+import { Category } from 'types/api/article';
+
 export interface ArticleListCardProps {
   thumbnailUrl: string;
   title: string;

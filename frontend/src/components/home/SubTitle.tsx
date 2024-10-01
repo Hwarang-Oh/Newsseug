@@ -12,7 +12,7 @@ function SubTitle({ subTitle, moreLink }: Readonly<SubTitleProps>) {
   return (
     <SubTitleBoxStyle>
       <SubTitleStyle>{subTitle}</SubTitleStyle>
-      <MoreLinkStyle to={moreLink}>더보기</MoreLinkStyle>
+      <MoreLinkStyle onClick={moreLink}>더보기</MoreLinkStyle>
     </SubTitleBoxStyle>
   );
 }
@@ -36,7 +36,7 @@ const SubTitleStyle = styled.p`
   letter-spacing: -0.4px;
 `;
 
-const MoreLinkStyle = styled(Link)`
+const MoreLinkStyle = styled.div`
   color: #58d7a2;
   text-decoration: none;
   font-family: Pretendard;
