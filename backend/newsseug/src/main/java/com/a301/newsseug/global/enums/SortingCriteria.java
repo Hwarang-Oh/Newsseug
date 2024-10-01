@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 @Schema(description = "정렬 기준")
 public enum SortingCriteria {
 
-    TIME("createdAt");
+    CREATED_AT("createdAt"),
+
+    UPDATE_AT("updatedAt");
 
     private final String value;
 

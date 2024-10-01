@@ -35,8 +35,8 @@ public class ArticleController {
     @Operation(summary = "오늘의 뉴스 조회 API", description = "홈 화면 내 \"오늘의 뉴스\"를 조회한다.")
     @GetMapping("/today")
     public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getTodaysArticles(
-            @RequestParam(required = false, defaultValue = "ALL", value = "filter") String filter,
-            @RequestParam(required = false, defaultValue = "10", value = "pageNumber") int pageNumber
+            @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber,
+            @RequestParam(required = false, defaultValue = "ALL", value = "filter") String filter
     ) {
         return ResponseUtil.ok(Result.of(articleService.getTodayArticleListByCategory(filter, pageNumber)));
     }
@@ -44,14 +44,14 @@ public class ArticleController {
     @Operation(summary = "카테고리별 기사 조회 API", description = "카테고리별 기사 리스트를 조회한다.")
     @GetMapping()
     public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getArticlesByCategory(
-            @RequestParam(required = false, defaultValue = "ALL", value = "filter") String filter,
-            @RequestParam(required = false, defaultValue = "10", value = "pageNumber") int pageNumber
+            @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber,
+            @RequestParam(required = false, defaultValue = "ALL", value = "filter") String filter
 
     ) {
         return ResponseUtil.ok(Result.of(articleService.getArticleListByCategory(filter, pageNumber)));
     }
 
-    @Operation(summary = "언론사 & 카테고리별 기사 조회 API", description = "언론사 & 카테고리별 기사 리스트를 조회한다.")
+    @Operation(summary = "언론사별 기사 조회 API", description = "언론사별 기사 리스트를 조회한다.")
     @GetMapping(value = {"/press", "/press/{pressId}"})
     public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getArticlesByPress(
             @AuthenticationPrincipal CustomUserDetails userDetails,
