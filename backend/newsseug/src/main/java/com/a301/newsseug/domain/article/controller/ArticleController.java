@@ -41,7 +41,7 @@ public class ArticleController {
         return ResponseUtil.ok(Result.of(articleService.getTodayArticleListByCategory(filter, pageNumber)));
     }
 
-    @Operation(summary = "카테고리별 기사 조회 API", description = "카테고리별 기사 리스트를 조회한다.")
+    @Operation(summary = "전체 기사 조회 API", description = "카테고리별 전체 기사를 조회한다.")
     @GetMapping()
     public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getArticlesByCategory(
             @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber,
