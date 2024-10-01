@@ -32,7 +32,7 @@ public class ArticleController {
         return ResponseUtil.ok(Result.of(articleService.getArticleDetail(userDetails, articleId)));
     }
 
-    @Operation(summary = "오늘의 뉴스 조회 API", description = "홈 화면 내 \"오늘의 뉴스\"를 조회한다.")
+    @Operation(summary = "오늘의 뉴스 조회 API", description = "\"오늘의 뉴스\"를 조회한다.")
     @GetMapping("/today")
     public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getTodaysArticles(
             @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber,
@@ -41,7 +41,7 @@ public class ArticleController {
         return ResponseUtil.ok(Result.of(articleService.getTodayArticleListByCategory(filter, pageNumber)));
     }
 
-    @Operation(summary = "전체 기사 조회 API", description = "카테고리별 전체 기사를 조회한다.")
+    @Operation(summary = "전체 기사 조회 API", description = "전체 기사 리스트를 조회한다.")
     @GetMapping()
     public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getArticlesByCategory(
             @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber,
