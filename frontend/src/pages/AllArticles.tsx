@@ -4,7 +4,7 @@ import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 import styled, { keyframes } from 'styled-components';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { fetchArticles } from 'apis/articleApi';
+import { getAPIFunctionBySectionType } from 'utils/getFetchContentsFunction';
 import {
   SectionTypeMatch,
   SectionState,
@@ -26,32 +26,32 @@ function AllArticles() {
   const [activeCategory, setActiveCategory] = useState<string>('전체');
 
   const { articleList, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useContentsFetch<PageType>(
-      sectionState.sectionType,
-      [
+    useContentsFetch<PageType>({
+      queryKey: [
         sectionState.queryKey[0],
         Category[activeCategory as keyof typeof Category],
       ],
-      fetchArticles,
-      activeCategory as Category,
-    );
+      fetchData: getAPIFunctionBySectionType(sectionState.sectionType),
+      sectionType: sectionState.sectionType,
+      category: Category[activeCategory as keyof typeof Category],
+    });
 
   return (
     <SubLayout>
       <div>{SectionTypeMatch[sectionState.sectionType]}</div>
       <FadeInWrapper>
-        <div>
+        <StickyWrapper>
           <CategoryFilter
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
           />
-          <ArticleListCardGroup
-            articleList={articleList || []}
-            fetchNextPage={fetchNextPage}
-            hasNextPage={hasNextPage}
-            isFetchingNextPage={isFetchingNextPage}
-          />
-        </div>
+        </StickyWrapper>
+        <ArticleListCardGroup
+          articleList={articleList || []}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+        />
       </FadeInWrapper>
     </SubLayout>
   );
@@ -70,4 +70,11 @@ const fadeIn = keyframes`
 
 const FadeInWrapper = styled.div`
   animation: ${fadeIn} 0.8s ease-in-out;
+`;
+
+const StickyWrapper = styled.div`
+  position: sticky;
+  top: 48px;
+  z-index: 10;
+  overflow-x: auto;
 `;

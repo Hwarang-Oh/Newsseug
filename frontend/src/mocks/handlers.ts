@@ -2,7 +2,6 @@ import press from 'mocks/pressdummy.json';
 import memberinfo from 'mocks/memberdummy.json';
 import memberfolder from 'mocks/memberfolderdummy.json';
 import folder from 'mocks/folderdummy.json';
-import article from 'mocks/article.json';
 import articlePagination from 'mocks/articlePagination.json';
 import folders from 'mocks/foldersdummy.json';
 import { http, HttpResponse } from 'msw';

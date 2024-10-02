@@ -3,21 +3,32 @@ import MainLayout from 'components/common/MainLayout';
 import useAutoLogin from 'hooks/useAutoLogin';
 import useContentsFetch from 'hooks/useContentsFetch';
 import styled, { keyframes } from 'styled-components';
-import { SectionType, SectionTypeMatch } from 'types/api/article';
+import { Category, SectionType, SectionTypeMatch } from 'types/api/article';
 import { useNavigate } from 'react-router-dom';
 import { fetchArticles, fetchArticlesByToday } from 'apis/articleApi';
-/**
- * IMP : useAutoLogin() : 외부 Login을 수행하는 Custom Hook
- * @returns
- */
 
 function Home() {
   const navigate = useNavigate();
   useAutoLogin();
   const sections = [
-    useContentsFetch('today', ['todayArticles', 'ALL'], fetchArticlesByToday),
-    useContentsFetch('age', ['ageArticles', 'ALL'], fetchArticlesByToday),
-    useContentsFetch('all', ['allArticles', 'ALL'], fetchArticles),
+    useContentsFetch({
+      queryKey: ['todayArticles', 'ALL'],
+      fetchData: fetchArticlesByToday,
+      sectionType: 'today',
+      category: 'ALL' as Category,
+    }),
+    useContentsFetch({
+      queryKey: ['ageArticles', 'ALL'],
+      fetchData: fetchArticlesByToday,
+      sectionType: 'age',
+      category: 'ALL' as Category,
+    }),
+    useContentsFetch({
+      queryKey: ['AllArticles', 'ALL'],
+      fetchData: fetchArticles,
+      sectionType: 'all',
+      category: 'ALL' as Category,
+    }),
   ];
 
   return (

@@ -1,8 +1,8 @@
 import LoginModal from 'components/login/LoginModal';
 import { useState, useEffect } from 'react';
+import { getAccessToken } from 'apis/loginApi';
 import { getCookie, setCookie } from 'utils/stateUtils';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
-import { getAccessToken } from 'apis/loginApi';
 
 function PrivateRoute() {
   const [showModal, setShowModal] = useState(false);
@@ -17,7 +17,7 @@ function PrivateRoute() {
       if (!accessToken && providerId) {
         try {
           accessToken = await getAccessToken(providerId);
-          setCookie('AccessToken', accessToken, { maxAge: 900 });
+          setCookie('AccessToken', accessToken, { maxAge: 900, secure: true });
           setIsAuthenticated(true);
         } catch (error: unknown) {
           console.error(error);

@@ -1,11 +1,6 @@
 import axios from 'axios';
 import { getAccessToken } from 'apis/loginApi';
-import {
-  getCookie,
-  setCookie,
-  removeCookie,
-  getTokenExpiration,
-} from 'utils/stateUtils';
+import { getCookie, setCookie, removeCookie } from 'utils/stateUtils';
 
 /**
  * IMP : Axios를 사용한 API 호출을 위한 기본 설정.
@@ -17,47 +12,6 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-});
-
-const refreshInstance = axios.create({
-  baseURL: `${process.env.REACT_APP_API_BASE_URL}/api/v1/auth/login`,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-/**
- * IMP : API Interceptor.request => 요청에, Authorization Header를 추가합니다.
- * IMP : AccessToken이 만료되었는지, 확인하고 만료되었다면 ProviderId를 통해 재발급
- */
-api.interceptors.request.use(async (config) => {
-  let accessToken = getCookie('AccessToken');
-  const tokenExpiration = getTokenExpiration(accessToken);
-  if (!accessToken || (tokenExpiration && Date.now() >= tokenExpiration)) {
-    if (!getCookie('ProviderId')) {
-      console.log('비로그인 사용자입니다.');
-      return config;
-    }
-    try {
-      const {
-        data: {
-          data: { accessToken: newAccessToken },
-        },
-      } = await refreshInstance.get(
-        `?providerId=${encodeURIComponent(getCookie('ProviderId'))}`,
-      );
-      setCookie('AccessTokenBeforeAPI', newAccessToken, {
-        maxAge: 900,
-        secure: true,
-      });
-      config.headers.Authorization = newAccessToken;
-    } catch (error: unknown) {
-      console.error('Error in getting AccessToken', error);
-      removeCookie('AccessToken');
-      removeCookie('ProviderId');
-    }
-  } else config.headers.Authorization = accessToken;
-  return config;
 });
 
 /**
@@ -72,10 +26,10 @@ api.interceptors.response.use(
       const providerId = getCookie('ProviderId');
       try {
         const token = await getAccessToken(providerId);
-        setCookie('AccessToken', token, { maxAge: 900 });
+        setCookie('AccessToken', token, { maxAge: 900, secure: true });
         originalRequest.headers.Authorization = token;
       } catch (RefreshError) {
-        console.error('Refresh token is expired, redirecting to login.');
+        console.error('ProviderId is expired, redirecting to login.');
         removeCookie('AccessToken');
         removeCookie('ProviderId');
         window.location.href = '/login';

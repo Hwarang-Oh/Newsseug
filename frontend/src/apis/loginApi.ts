@@ -41,9 +41,8 @@ export const getAccessToken = async (providerId: string): Promise<string> => {
     return accessToken;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        throw new Error('Not Found');
-      } else throw error;
+      if (error.response?.status === 404) throw new Error('Not Found');
+      else throw error;
     } else throw error;
   }
 };
@@ -54,54 +53,20 @@ export const getAccessToken = async (providerId: string): Promise<string> => {
  * TODO : AccessToken maxAge는 900으로 설정해야 함.
  */
 export async function scheduleTokenRefresh() {
-  let accessToken = getCookie('AccessToken');
   let providerId = getCookie('ProviderId');
-
-  // IMP : 1. AccessToken이 없는 경우 - ProviderId를 통해 AccessToken 재발급
-  if (!accessToken && providerId) {
-    try {
-      const newAccessToken = await getAccessToken(providerId);
-      setCookie('AccessToken', newAccessToken, {
-        maxAge: 900,
-        secure: true,
-      });
-      scheduleTokenRefresh();
-      return;
-    } catch (error: unknown) {
-      console.error('AccessToken 재발급 실패:', error);
-      removeCookie('AccessToken');
-      window.location.href = '/login'; // 필요 시 로그인 리다이렉트
-      return;
-    }
-  }
-
-  // IMP : 2. AccessToken이 있는 경우 - 만료 시간 확인
-  else {
-    const expirationTime = accessToken ? getTokenExpiration(accessToken) : null;
-    if (expirationTime) {
-      const currentTime = Date.now();
-      const timeUntilExpiration = expirationTime - currentTime - 60000;
-      if (timeUntilExpiration > 0) {
-        setTimeout(async () => {
-          const providerId = getCookie('ProviderId');
-          if (providerId) {
-            try {
-              const newAccessToken = await getAccessToken(providerId);
-              setCookie('AccessToken', newAccessToken, {
-                maxAge: 900,
-                secure: true,
-              });
-              scheduleTokenRefresh();
-            } catch (error) {
-              console.error('AccessToken 재발급 실패:', error);
-              removeCookie('AccessToken');
-              window.location.href = '/login';
-            }
-          } else {
-            console.log('비로그인 사용자, AccessToken 재발급 없이 상태 유지');
-          }
-        }, timeUntilExpiration);
-      }
-    }
+  try {
+    const accessToken = await getAccessToken(providerId);
+    setCookie('AccessToken', accessToken, { maxAge: 900, secure: true });
+  } catch (error: unknown) {
+    console.error('AccessToken 재발급 실패:', error);
+    removeCookie('AccessToken');
+    removeCookie('ProviderId');
+    window.location.href = '/login';
   }
 }
+
+export const getLogout = () => {
+  removeCookie('AccessToken');
+  removeCookie('ProviderId');
+  window.location.href = '/login';
+};
