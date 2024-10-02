@@ -29,7 +29,7 @@ function Folders() {
         dispatch(setMemberFolder(data));
       },
     },
-  });
+  );
 
   if (isLoading) {
     return <div>로딩 중</div>;

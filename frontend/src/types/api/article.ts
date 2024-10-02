@@ -1,6 +1,6 @@
 import { ArticleListCardProps } from 'types/common/common';
 
-interface SliceDetails {
+export interface SliceDetails {
   currentPage: number;
   hasFirst: boolean;
   hasNext: boolean;

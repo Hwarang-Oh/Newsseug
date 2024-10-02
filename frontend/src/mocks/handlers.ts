@@ -3,6 +3,7 @@ import memberinfo from 'mocks/memberdummy.json';
 import memberfolder from 'mocks/memberfolderdummy.json';
 import folder from 'mocks/folderdummy.json';
 import article from 'mocks/article.json';
+import articlePagination from 'mocks/articlePagination.json';
 import folders from 'mocks/foldersdummy.json';
 import { http, HttpResponse } from 'msw';
 const BASE_URL = 'https://j11a301.p.ssafy.io/api/v1';
