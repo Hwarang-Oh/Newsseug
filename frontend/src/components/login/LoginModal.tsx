@@ -3,8 +3,8 @@ import { LoginModalProps } from 'types/props/login';
 
 function LoginModal({ onCancel, onLogin }: Readonly<LoginModalProps>) {
   return (
-    <ModalOverlay>
-      <ModalContainer>
+    <ModalOverlay onClick={onCancel}>
+      <ModalContainer onClick={(e) => e.stopPropagation()}>
         <Content>
           <Message>로그인이 필요한 서비스 입니다</Message>
           <Message>로그인을 하시겠습니까?</Message>

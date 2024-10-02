@@ -38,6 +38,7 @@ export enum Category {
 export interface PageParamsType {
   category?: Category | string;
   page: number;
+  pressId?: string;
 }
 
 /**
