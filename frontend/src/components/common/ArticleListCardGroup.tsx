@@ -46,7 +46,6 @@ function ArticleListCardGroup({
           viewCount={article.viewCount}
           pressName={article.pressName}
           id={article.id}
-          createdAt={article.createdAt}
           width="100%"
         />
       ))}

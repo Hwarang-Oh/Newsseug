@@ -1,7 +1,7 @@
 import api from 'apis/commonApi';
-import { AxiosResponse, isAxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 import { UserInputProps } from 'types/props/register';
-import { MemberInfo } from 'types/api/member';
+import { MemberHistoryInfo, MemberInfo } from 'types/api/member';
 import { MemberFolderInfo } from 'types/api/folder';
 const MEMBER_URL = '/api/v1/members';
 
@@ -47,60 +47,6 @@ export const getMemberInfo = async (): Promise<MemberInfo> => {
 };
 
 /**
- * IMP : 언론사 구독을 위한 API
- */
-export const subscribePress = async (pressId: number): Promise<void> => {
-  try {
-    const response: AxiosResponse<boolean> = await api.post(
-      `${MEMBER_URL}/press/${pressId}`,
-    );
-    console.log(response.data);
-  } catch (error: unknown) {
-    if (isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        throw new Error('Not Found');
-      } else throw error;
-    } else throw error;
-  }
-};
-
-/**
- * IMP : 언론사 구독 취소를 위한 API
- */
-export const unsubscribePress = async (pressId: number): Promise<void> => {
-  try {
-    const response: AxiosResponse<boolean> = await api.put(
-      `${MEMBER_URL}/press/${pressId}`,
-    );
-    console.log(response.data);
-  } catch (error: unknown) {
-    if (isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        throw new Error('Not Found');
-      } else throw error;
-    } else throw error;
-  }
-};
-
-/**
- * IMP : 언론사 구독 목록 조회를 위한 API
- */
-export const getSubscribedPressList = async (): Promise<void> => {
-  try {
-    const response: AxiosResponse<boolean> = await api.post(
-      `${MEMBER_URL}/press`,
-    );
-    console.log(response.data);
-  } catch (error: unknown) {
-    if (isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        throw new Error('Not Found');
-      } else throw error;
-    } else throw error;
-  }
-};
-
-/**
  * IMP : 사용자 폴더 목록 조회를 위한 API
  */
 export const getMemberFolderList = async (): Promise<MemberFolderInfo[]> => {
@@ -113,6 +59,29 @@ export const getMemberFolderList = async (): Promise<MemberFolderInfo[]> => {
         throw new Error('Not Found');
       } else {
         console.error('마이페이지 폴더 목록 조회 실패:', error);
+        throw error;
+      }
+    } else throw error;
+  }
+};
+
+/**
+ * IMP : 사용자 시청 기록 조회를 위한 API
+ */
+export const getMemberHistoryList = async (
+  page: number,
+): Promise<MemberHistoryInfo> => {
+  try {
+    const response = await api.get(
+      `api/v1/interactions/histories?page=${page}`,
+    );
+    return response.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error('Not Found');
+      } else {
+        console.error('시청 기록 조회 실패:', error);
         throw error;
       }
     } else throw error;

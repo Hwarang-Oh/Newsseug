@@ -6,7 +6,6 @@ export interface ArticleListCardProps {
   viewCount: number;
   pressName: string;
   id: number;
-  createdAt: string;
   width?: string;
   height?: string;
 }

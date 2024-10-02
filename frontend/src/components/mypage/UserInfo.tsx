@@ -8,6 +8,10 @@ function UserInfo() {
   const handleUpdateUserInfo = (data: MemberInfo) => {
     setUserInfo(data);
   };
+
+  const handleLogOut = () => {
+    // 여기에 로그아웃 로직 추가
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,7 +35,7 @@ function UserInfo() {
       <InfoBox>
         <UserName>{userInfo.nickname}</UserName>
         <SubBox>
-          <LogoutBtn>로그아웃</LogoutBtn>
+          <LogoutBtn onClick={handleLogOut}>로그아웃</LogoutBtn>
         </SubBox>
       </InfoBox>
     </Wrapper>
