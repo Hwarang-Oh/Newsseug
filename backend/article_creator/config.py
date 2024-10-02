@@ -1,6 +1,6 @@
 import yaml
 
-config_file = 'application_properties.yml'
+config_file = 'application_properties-prod.yml'
 
 def load_config(file_path):
     with open(file_path, 'r') as file:
