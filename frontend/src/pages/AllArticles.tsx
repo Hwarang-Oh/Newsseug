@@ -3,7 +3,6 @@ import CategoryFilter from 'components/common/CategoryFilter';
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 import styled, { keyframes } from 'styled-components';
 import { useState } from 'react';
-import { useInfiniteQuery } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import { fetchArticles } from 'apis/articleApi';
 import {
@@ -12,6 +11,7 @@ import {
   PageType,
   Category,
 } from 'types/api/article';
+import useContentsFetch from 'hooks/useContentsFetch';
 
 /**
  * IMP : All Articles Page -> Home Page를 통해서 들어올 수 있는 Page
@@ -25,32 +25,17 @@ function AllArticles() {
   const sectionState: SectionState = location.state;
   const [activeCategory, setActiveCategory] = useState<string>('전체');
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery(
-      ['allArticles', Category[activeCategory as keyof typeof Category]],
-      ({ pageParam = sectionState.sliceDetails.currentPage }) =>
-        fetchArticles({
-          page: pageParam,
-          category: Category[activeCategory as keyof typeof Category],
-        }),
-      {
-        initialData: {
-          pages: [
-            {
-              content: sectionState.articleList,
-              sliceDetails: sectionState.sliceDetails,
-            },
-          ],
-          pageParams: [undefined],
-        },
-        getNextPageParam: (lastPage: PageType) => {
-          if (lastPage.sliceDetails?.hasNext) {
-            return lastPage.sliceDetails.currentPage + 1;
-          }
-          return undefined;
-        },
-      },
+  const { articleList, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useContentsFetch<PageType>(
+      sectionState.sectionType,
+      [
+        sectionState.queryKey[0],
+        Category[activeCategory as keyof typeof Category],
+      ],
+      fetchArticles,
+      activeCategory as Category,
     );
+
   return (
     <SubLayout>
       <div>{SectionTypeMatch[sectionState.sectionType]}</div>
@@ -61,7 +46,7 @@ function AllArticles() {
             setActiveCategory={setActiveCategory}
           />
           <ArticleListCardGroup
-            articleList={data?.pages.flatMap((page) => page.content) || []}
+            articleList={articleList || []}
             fetchNextPage={fetchNextPage}
             hasNextPage={hasNextPage}
             isFetchingNextPage={isFetchingNextPage}

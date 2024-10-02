@@ -15,9 +15,9 @@ function Home() {
   const navigate = useNavigate();
   useAutoLogin();
   const sections = [
-    useContentsFetch('today', fetchArticlesByToday, 'todayArticles'),
-    useContentsFetch('age', fetchArticlesByToday, 'ageArticles'),
-    useContentsFetch('all', fetchArticles, 'allArticles'),
+    useContentsFetch('today', ['todayArticles', 'ALL'], fetchArticlesByToday),
+    useContentsFetch('age', ['ageArticles', 'ALL'], fetchArticlesByToday),
+    useContentsFetch('all', ['allArticles', 'ALL'], fetchArticles),
   ];
 
   return (
@@ -30,9 +30,10 @@ function Home() {
             moreLink={() =>
               navigate(`/articles/section/${section.sectionType}`, {
                 state: {
+                  sectionType: section.sectionType,
+                  queryKey: section.queryKey,
                   articleList: section.articleList,
                   sliceDetails: section.sliceDetails,
-                  sectionType: section.sectionType,
                 },
               })
             }

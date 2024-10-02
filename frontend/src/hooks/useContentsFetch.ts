@@ -1,16 +1,17 @@
 import { useInfiniteQuery } from 'react-query';
-import { PageParamsType, PageType } from 'types/api/article';
+import { Category, PageParamsType, PageType } from 'types/api/article';
 
 function useContentsFetch<T extends PageType>(
-  sectionType: string = 'Specific Section Type',
+  sectionType: string,
+  queryKey: string[],
   fetchData: ({ category, page }: PageParamsType) => Promise<T>,
-  queryKey: string,
+  category: Category | string = 'ALL',
   initialPage = 1,
 ) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery(
       queryKey,
-      ({ pageParam = initialPage }) => fetchData({ page: pageParam }),
+      ({ pageParam = initialPage }) => fetchData({ page: pageParam, category }),
       {
         getNextPageParam: (lastPage) => {
           if (lastPage.sliceDetails?.hasNext) {
@@ -25,6 +26,7 @@ function useContentsFetch<T extends PageType>(
 
   return {
     sectionType,
+    queryKey,
     articleList,
     fetchNextPage,
     hasNextPage,
