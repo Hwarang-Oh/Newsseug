@@ -1,5 +1,7 @@
 package com.a301.newsseug.domain.interaction.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -8,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.interaction.model.dto.HistoryDto;
-import com.a301.newsseug.domain.interaction.model.dto.response.ListHistoryResponse;
 import com.a301.newsseug.domain.interaction.model.entity.History;
 import com.a301.newsseug.domain.interaction.repository.HistoryRepository;
 import com.a301.newsseug.domain.member.model.entity.Member;
@@ -26,7 +27,7 @@ public class HistoryServiceImpl implements HistoryService {
 	private static final int PAGE_SIZE = 10;
 
 	@Override
-	public SlicedResponse<ListHistoryResponse> getHistories(CustomUserDetails userDetails, int page) {
+	public SlicedResponse<List<HistoryDto>> getHistories(CustomUserDetails userDetails, int page) {
 
 		Member member = userDetails.getMember();
 
@@ -36,6 +37,6 @@ public class HistoryServiceImpl implements HistoryService {
 
 		SliceDetails sliceDetails = SliceDetails.of(historyPage.getNumber(), historyPage.isFirst(), historyPage.hasNext());
 
-		return SlicedResponse.of(sliceDetails, ListHistoryResponse.of(historyPage.map(HistoryDto::of).toList()));
+		return SlicedResponse.of(sliceDetails, historyPage.map(HistoryDto::of).toList());
 	}
 }

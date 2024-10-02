@@ -14,7 +14,7 @@ public record HistoryDto(
 	Long id,
 
 	@Schema(name = "시청한 숏폼 제목")
-	String name,
+	String title,
 
 	@Schema(name = "숏폼 썸네일 경로")
 	String thumbnailUrl,
@@ -30,7 +30,7 @@ public record HistoryDto(
 	public static HistoryDto of(History history) {
 		return HistoryDto.builder()
 			.id(history.getArticle().getArticleId())
-			.name(history.getArticle().getTitle())
+			.title(history.getArticle().getTitle())
 			.thumbnailUrl(history.getArticle().getThumbnailUrl())
 			.viewCount(history.getArticle().getViewCount())
 			.pressName(history.getArticle().getPress().getPressBranding().getName())
