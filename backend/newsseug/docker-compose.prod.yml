@@ -63,7 +63,7 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     depends_on:
-      - newsseug-backend
+      - api-server
     volumes:
       - /home/ubuntu/config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - /home/ubuntu/volume/prometheus-data:/var/lib/prometheus
@@ -78,7 +78,7 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     depends_on:
-      - newsseug-backend
+      - api-server
     ports:
       - 3030:3000
     volumes:
