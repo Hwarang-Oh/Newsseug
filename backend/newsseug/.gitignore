@@ -6,7 +6,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # YML
-application-*.yml
+application*.yml
 
 # Prometheus
 ./prometheus-data
