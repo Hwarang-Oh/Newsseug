@@ -1,5 +1,5 @@
 import SubLayout from 'components/common/SubLayout';
-import article from 'mocks/article.json';
+import article from 'mocks/articlecategorydummy.json';
 
 function History() {
   return (

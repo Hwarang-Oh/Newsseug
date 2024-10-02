@@ -20,6 +20,7 @@ import {
   articlehatehandler,
   articledishatehandler,
 } from './articlevideointeractionhandler';
+import { mypagehistoryhandler } from './historyhandler';
 
 export const worker = setupWorker(
   ...presshandlers,
@@ -37,4 +38,5 @@ export const worker = setupWorker(
   ...articledishatehandler,
   ...pressArticlePaginationhandlers,
   ...articlevideohandler,
+  ...mypagehistoryhandler,
 );

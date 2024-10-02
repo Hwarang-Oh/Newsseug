@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ArticleListCardProps } from 'types/common/common';
 import { formatNumber } from 'utils/formatNumber';
@@ -14,12 +15,15 @@ function ArticleListCard({
   viewCount,
   pressName,
   id,
-  createdAt,
   width = '180px',
   height = '250px',
 }: Readonly<ArticleListCardProps>) {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/articles/${id}`);
+  };
   return (
-    <Wrapper width={width} height={height}>
+    <Wrapper width={width} height={height} onClick={handleClick}>
       <Thumbnail src={thumbnailUrl} />
       <PressTag width={width}>{pressName}</PressTag>
       <ArticleInfo>

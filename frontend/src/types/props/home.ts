@@ -2,7 +2,7 @@ import { ArticleListCardProps } from 'types/common/common';
 
 export interface SectionProps {
   subTitle: string;
-  moreLink: string;
+  moreLink: () => void;
   articleList: ArticleListCardProps[];
   fetchNextPage?: () => void;
   hasNextPage?: boolean;
@@ -11,7 +11,7 @@ export interface SectionProps {
 
 export interface SubTitleProps {
   subTitle: string;
-  moreLink: string;
+  moreLink: () => void;
 }
 
 export interface AllArticlesProps {

@@ -1,11 +1,57 @@
 import styled from 'styled-components';
-import ArticleSlideBox from '../home/ArticleSlideBox';
-import article from 'mocks/article.json';
+import { useQuery } from 'react-query';
+import { getMemberHistoryList } from 'apis/memberApi';
+import { MemberHistoryDetail, MemberHistoryInfo } from 'types/api/member';
+import ArticleListCard from '../common/ArticleListCard';
 
 function Histories() {
   const width = '120px';
   const height = '160px';
-  return <ArticleSlideBox articleList={article.targetArticles} />;
+
+  const {
+    data: myPageHistory,
+    isLoading,
+    error,
+  } = useQuery<MemberHistoryInfo>(
+    ['myPageHistory'],
+    () => getMemberHistoryList(1),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    },
+  );
+
+  if (isLoading) {
+    return <div>로딩 중</div>;
+  }
+
+  if (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : '알 수 없는 오류';
+    return <div>마이페이지 시청 기록 정보 조회 실패: {errorMessage}</div>;
+  }
+
+  return (
+    <Wrapper>
+      {myPageHistory &&
+        Array.isArray(myPageHistory?.content.histories) &&
+        myPageHistory.content.histories.map((history: MemberHistoryDetail) => {
+          return (
+            <ArticleListCard
+              key={history.id}
+              thumbnailUrl={history.thumbnailUrl}
+              title={history.name}
+              viewCount={history.viewCount}
+              pressName={history.pressName}
+              id={history.id}
+              width={width}
+              height={height}
+            />
+          );
+        })}
+    </Wrapper>
+  );
 }
 
 export default Histories;

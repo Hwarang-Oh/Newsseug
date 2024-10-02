@@ -1,4 +1,4 @@
-import { Article } from './article';
+import { ArticleListCardProps } from 'types/common/common';
 
 export interface FolderBasic {
   id: number;

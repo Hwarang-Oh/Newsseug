@@ -1,10 +1,11 @@
+import { Category } from 'types/api/article';
+
 export interface ArticleListCardProps {
   thumbnailUrl: string;
   title: string;
   viewCount: number;
   pressName: string;
   id: number;
-  createdAt: string;
   width?: string;
   height?: string;
 }

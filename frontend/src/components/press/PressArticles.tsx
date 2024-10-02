@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import SubTitle from '../mypage/SubTitle';
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
-import article from 'mocks/article.json';
+import article from 'mocks/articlecategorydummy.json';
 
 function PressArticles() {
   return (

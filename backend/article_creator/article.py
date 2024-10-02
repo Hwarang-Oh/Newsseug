@@ -3,7 +3,6 @@ from openai import OpenAI
 import logging
 
 import moviepy.editor as mp
-import os
 from io import BytesIO
 import soundfile as sf
 import numpy as np
@@ -12,11 +11,9 @@ import base64
 from PIL import Image
 import cv2
 
-import dotenv
+from config import config
 
-dotenv.load_dotenv()
-
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = config['openai']['api_key']
 
 logger = logging.getLogger(__name__)
 
@@ -43,21 +40,21 @@ class Speech:
         self.data = data
         self.sample_rate = sample_rate
 
-def create_article(article_content: str) -> Optional[tuple[mp.VideoClip, Image.Image]]:
+def create_article(article_content: str) -> Optional[tuple[mp.VideoClip, Image.Image, Optional[str]]]:
     """뉴스 기사로 숏츠를 생성하는 함수
 
     Args:
         article_content (str): 원본 뉴스 기사 내용
     
     Returns:
-        Optional[tuple[mp.VideoClip, Image.Image]]: 비디오 숏폼 파일, 썸네일 이미지
+        Optional[tuple[mp.VideoClip, Image.Image, Optional[str]]]: 비디오 숏폼 파일, 썸네일 이미지, 종료 사유
     """
 
-    scenes = generate_scenes(article_content)
+    scenes, finish_reason = generate_scenes(article_content)
     
     # 장면을 제대로 생성하지 못했을 경우 예외 처리
-    if (scenes is None):
-        return None
+    if finish_reason != "stop" or finish_reason is None:
+        return None, None, None
 
     images = []
     speeches = []
@@ -67,12 +64,12 @@ def create_article(article_content: str) -> Optional[tuple[mp.VideoClip, Image.I
         speech = generate_text_to_speech(scene.ko_dialogue)
         
         if image is None or speech is None:
-            return None
+            return None, None, None
         
         images.append(base64_to_np(image))
         speeches.append(read_speech(speech))
         
-    thumnail = Image.fromarray(images[0], mode="RGB")
+    thumbnail = Image.fromarray(images[0], mode="RGB")
     
     audio_clip, durations = create_audio_clip_and_durations(speeches)
     
@@ -80,9 +77,9 @@ def create_article(article_content: str) -> Optional[tuple[mp.VideoClip, Image.I
     
     vdieo_clip = create_video_clip(image_clip, audio_clip)
     
-    return vdieo_clip, thumnail
+    return vdieo_clip, thumbnail, finish_reason
 
-def generate_scenes(article_content: str) -> Optional[List[Scene]]:
+def generate_scenes(article_content: str) -> tuple[Optional[List[Scene]], Optional[str]]:
     """기사 내용으로 8개의 그림 장면 묘사를 만드는 함수
 
     Args:
@@ -149,19 +146,19 @@ Sample answer:
         
         if (len(response.choices) == 0) :
             logger.error("generate_scenes choices: " + 0)
-            return None
+            return None, None
         
         if response.choices[0].finish_reason != "stop":
             logger.error("generate_scenes 종료 사유 에러: " + response.choices[0].finish_reason)
-            return None
+            return None, response.choices[0].finish_reason
         
         json_content = json.loads(response.choices[0].message.content)
         
-        return [Scene(number=scene["number"], description=scene["description(en)"], en_dialogue=scene["dialogue(en)"], ko_dialogue=scene["dialogue(ko)"]) for scene in json_content["script"]]
+        return [Scene(number=scene["number"], description=scene["description(en)"], en_dialogue=scene["dialogue(en)"], ko_dialogue=scene["dialogue(ko)"]) for scene in json_content["script"]], response.choices[0].finish_reason
     
     except Exception as e:
         logger.exception(e)
-        return None
+        return None, None
 
 def generate_image(scene: Scene) -> Optional[bytes]:
     """장면을 기반으로 이미지 생성 함수
