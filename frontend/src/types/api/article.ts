@@ -52,6 +52,7 @@ export interface PageType {
 
 export interface SectionState {
   articleList: ArticleListCardProps[];
+  queryKey: string[];
   sliceDetails: SliceDetails;
   sectionType: SectionType;
 }
