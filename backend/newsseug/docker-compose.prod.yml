@@ -86,9 +86,9 @@ services:
     networks:
       - newsseug-network
 
-  newsseug-backend:
-    image: newsseug-backend
-    container_name: newsseug-backend
+  api-server:
+    image: api-server
+    container_name: api-server
     depends_on:
       - mariadb
       - redis
