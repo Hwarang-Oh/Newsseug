@@ -18,7 +18,7 @@ from io import BytesIO
 class Category(Enum):
     POLITICS = 'politics'
     ECONOMY = 'economy'
-    WORLD = 'word'
+    WORLD = 'world'
     INCIDENTS = 'incidents'
     SCIENCE = 'science'
     SOCIETY = 'society'
@@ -26,7 +26,7 @@ class Category(Enum):
     
 class ConversionStatus(Enum):
     SUCCESS = 'success'
-    RUNING = 'running'
+    RUNNING = 'running'
     FILTERED = 'filtered'
     EXCEED_TOKEN = 'exceed_token'
     UNKNOWN_FAIL = 'unknown_fail'
@@ -86,27 +86,25 @@ class CreateArticleRequestDto(BaseModel):
 @app.post("/api/v1/articles")
 async def create_and_register_article(article_request_dto: CreateArticleRequestDto):
     
-    id = insert_article_to_mariadb(article_request_dto.title, article_request_dto.source_url, article_request_dto.category, article_request_dto.time)
+    id = await insert_article_to_mariadb(article_request_dto.title, article_request_dto.source_url, article_request_dto.category, article_request_dto.source_created_at)
     
     upload_to_s3(id, article_request_dto.content, ContentType.TEXT)
     
-    # video_clip, thumbnail, finish_reason = create_article(article_request_dto.content)
+    video_clip, thumbnail, finish_reason = create_article(article_request_dto.content)
     
-    
-    
-    # match finish_reason:
-    #     case 'stop':
-    #         conversion_status = ConversionStatus.SUCCESS
-    #         upload_to_s3(id, video_clip, ContentType.MP4)
-    #         upload_to_s3(id, thumbnail, ContentType.PNG)
-    #     case 'content_filter':
-    #         conversion_status = ConversionStatus.FILTERED
-    #     case 'length':
-    #         conversion_status = ConversionStatus.EXCEED_TOKEN
-    #     case _:
-    #         conversion_status = ConversionStatus.UNKNOWN_FAIL
+    match finish_reason:
+        case 'stop':
+            conversion_status = ConversionStatus.SUCCESS
+            upload_video_to_s3(id, video_clip)
+            upload_to_s3(id, thumbnail, ContentType.PNG)
+        case 'content_filter':
+            conversion_status = ConversionStatus.FILTERED
+        case 'length':
+            conversion_status = ConversionStatus.EXCEED_TOKEN
+        case _:
+            conversion_status = ConversionStatus.UNKNOWN_FAIL
 
-    # update_article(id, conversion_status)
+    await update_article(id, conversion_status)
 
     return Response(status_code=200)
 
@@ -119,7 +117,7 @@ async def insert_article_to_mariadb(title:str, source_url: str, category: Catego
                 VALUE (%s, %s, %s, %s, %s)
             """
 
-            await cursor.execute(insert_query, (title, source_url, category, ConversionStatus.RUNING, source_created_at))
+            await cursor.execute(insert_query, (title, source_url, category.name, ConversionStatus.RUNNING.name, source_created_at))
 
             await conn.commit()
             
@@ -127,7 +125,7 @@ async def insert_article_to_mariadb(title:str, source_url: str, category: Catego
             
     return inserted_id
 
-async def update_article(id: int, conversion_status: ConversionStatus):
+async def update_article(article_id: int, conversion_status: ConversionStatus):
     pool = app.state.pool
     async with pool.acquire() as conn:
         async with conn.cursor() as cursor:
@@ -135,26 +133,26 @@ async def update_article(id: int, conversion_status: ConversionStatus):
                 UPDATE articles SET content_url=%s, thumbnail_url=%s, video_url=%s, conversion_status=%s WHERE article_id=%s
             """
             
-            url_template = "https://newsseug-bucket.s3.{region}.amazonaws.com/{id}/{name}"
+            url_template = "https://newsseug-bucket.s3.{region}.amazonaws.com/article/{article_id}/{name}"
             
             await cursor.execute(update_query, (
                     url_template.format(
                         region=config['s3']['region_name'], 
-                        id=id,
+                        article_id=article_id,
                         name='content.txt'
                     ),
                     url_template.format(
                         region=config['s3']['region_name'], 
-                        id=id,
+                        article_id=article_id,
                         name='thumbnail.png'
                     ),
                     url_template.format(
                         region=config['s3']['region_name'], 
-                        id=id,
+                        article_id=article_id,
                         name='video.mp4'
                     ),
-                    conversion_status,
-                    id
+                    conversion_status.name,
+                    article_id
                 )
             )
             
@@ -164,15 +162,15 @@ def upload_to_s3(id: int, data, content_type: ContentType):
     buffer = BytesIO()
     
     if content_type == ContentType.TEXT:
-        file_path = f"{id}/{id}-content.txt"
+        file_path = f"article/{id}/content.txt"
         buffer.write(data.encode('utf-8'))
         
     elif content_type == ContentType.PNG:
-        file_path = f"{id}/{id}-thumbnail.png"
+        file_path = f"article/{id}/thumbnail.png"
         data.save(buffer, format=content_type.name)
         
     else:
-        file_path = f"{id}/{id}-video.mp4"
+        file_path = f"article/{id}/video.mp4"
         data.write_videofile(buffer, codec="libx264")
     
     buffer.seek(0)
@@ -184,4 +182,20 @@ def upload_to_s3(id: int, data, content_type: ContentType):
         Bucket=config['s3']['bucket_name'],
         Key=file_path,
         ExtraArgs={'ContentType': content_type.value}
+    )
+
+def upload_video_to_s3(id: int, video):
+    file_path = "output.mp4"
+    
+    video.write_videofile(file_path, codec="libx264")
+    
+    s3_key = f"article/{id}/vidoe.mp4"
+
+    s3_client = app.state.s3_client
+    
+    s3_client.upload_file(
+        file_path,
+        config['s3']['bucket_name'],
+        s3_key,
+        {'ContentType': ContentType.MP4.value}
     )
