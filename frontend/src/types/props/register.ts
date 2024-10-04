@@ -31,6 +31,9 @@ export interface GenderSelectBoxProps {
   onSelect: (index: number) => void;
 }
 
+/**
+ * IMP : UserInputProps => 사용자의 정보를 등록하는 API의 Request Body Type
+ */
 export interface UserInputProps {
   nickname: string;
   gender: string;

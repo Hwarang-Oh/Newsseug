@@ -1,23 +1,21 @@
 import api from 'apis/commonApi';
 import { isAxiosError } from 'axios';
 import { UserInputProps } from 'types/props/register';
-import { MemberHistoryInfo, MemberInfo } from 'types/api/member';
 import { MemberFolderInfo } from 'types/api/folder';
+import { MemberHistoryInfo, MemberInfo } from 'types/api/member';
 const MEMBER_URL = '/api/v1/members';
 
 /**
  * IMP : 회원 정보 등록을 위한 API
- * @param input
- * @returns
+ * @requestBody input
+ * @returns data : boolean
  */
 export const registerMember = async (
   input: UserInputProps,
 ): Promise<boolean> => {
   try {
-    const {
-      data: { data: registerResult },
-    } = await api.put(MEMBER_URL, input);
-    return registerResult;
+    const resonse = await api.put(MEMBER_URL, input);
+    return resonse.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -29,11 +27,13 @@ export const registerMember = async (
 
 /**
  * IMP : 회원 정보 조회를 위한 API
+ * @param null => AccessToken을 통해 조회
+ * @returns MemberInfo Type
  */
 export const getMemberInfo = async (): Promise<MemberInfo> => {
   try {
     const response = await api.get(MEMBER_URL);
-    return response.data;
+    return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

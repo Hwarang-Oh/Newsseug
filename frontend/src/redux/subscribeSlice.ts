@@ -46,7 +46,7 @@ const subscribeSlice = createSlice({
       .addCase(fetchSubscribedPress.rejected, (state, action) => {
         state.loading = false;
         state.error =
-          action.error.message || 'Failed to fetch subscribed press';
+          action.error.message ?? 'Failed to fetch subscribed press';
       });
   },
 });

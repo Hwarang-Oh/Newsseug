@@ -6,7 +6,7 @@ function SubscribeHeader({
   subscribeNumber,
   title,
   variant,
-}: SubscribeHeaderProps) {
+}: Readonly<SubscribeHeaderProps>) {
   const navigate = useNavigate();
 
   const handleViewAllClick = () => {
