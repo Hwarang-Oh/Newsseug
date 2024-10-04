@@ -6,7 +6,7 @@ interface ArticleState {
   articleIds: number[];
   sliceDetails: SliceDetails | {};
   articlesFrom: string;
-  activeFilter: string;
+  activeCategory: string;
   activePress: string | null;
   videoList: { [id: number]: ArticleVideo };
 }
@@ -15,7 +15,7 @@ const initialArticleState: ArticleState = {
   articleIds: [],
   sliceDetails: {},
   articlesFrom: '',
-  activeFilter: 'ALL',
+  activeCategory: 'ALL',
   activePress: null,
   videoList: {},
 };
@@ -33,8 +33,8 @@ const articleSlice = createSlice({
     setArticleFrom(state, action: PayloadAction<string>) {
       state.articlesFrom = action.payload;
     },
-    setActiveFilter(state, action: PayloadAction<string>) {
-      state.activeFilter = action.payload;
+    setActiveCategory(state, action: PayloadAction<string>) {
+      state.activeCategory = action.payload;
     },
     setActviePress(state, action: PayloadAction<string | null>) {
       state.activePress = action.payload;
@@ -52,7 +52,7 @@ export const {
   setArticleIds,
   setSliceDetail,
   setArticleFrom,
-  setActiveFilter,
+  setActiveCategory,
   setActviePress,
   setVideoList,
 } = articleSlice.actions;

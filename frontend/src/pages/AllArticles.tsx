@@ -2,7 +2,7 @@ import SubLayout from 'components/common/SubLayout';
 import CategoryFilter from 'components/common/CategoryFilter';
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 import styled, { keyframes } from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getAPIFunctionBySectionType } from 'utils/getFetchContentsFunction';
 import {
@@ -12,13 +12,7 @@ import {
   Category,
 } from 'types/api/article';
 import useContentsFetch from 'hooks/useContentsFetch';
-import { useDispatch } from 'react-redux';
-import {
-  setActiveFilter,
-  setArticleFrom,
-  setArticleIds,
-  setSliceDetail,
-} from '../redux/articleSlice';
+import useStoreArticleDispatch from 'hooks/useStoreArticleDispatch';
 
 /**
  * IMP : All Articles Page -> Home Page를 통해서 들어올 수 있는 Page
@@ -48,16 +42,12 @@ function AllArticles() {
     category: Category[activeCategory as keyof typeof Category],
   });
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setArticleIds(articleList.map((article) => article.id)));
-    dispatch(setSliceDetail(sliceDetails));
-    dispatch(setArticleFrom(sectionState.sectionType));
-    dispatch(
-      setActiveFilter(Category[activeCategory as keyof typeof Category]),
-    );
-  }, [articleList, sliceDetails, sectionState, activeCategory, dispatch]);
+  useStoreArticleDispatch(
+    articleList,
+    sliceDetails,
+    sectionState.sectionType,
+    activeCategory,
+  );
 
   return (
     <SubLayout>

@@ -10,7 +10,7 @@ const MEMBER_URL = '/api/v1/members';
 export const getPressArticleList = async (
   pressId?: number | null,
   pageNumber?: number,
-  filter?: string,
+  category?: string,
 ): Promise<PageType> => {
   try {
     const url = pressId
@@ -18,7 +18,7 @@ export const getPressArticleList = async (
       : '/api/v1/articles/press';
 
     const response = await api.get(url, {
-      params: { pageNumber, filter },
+      params: { pageNumber, filter: category },
     });
     return response.data.data;
   } catch (error: unknown) {

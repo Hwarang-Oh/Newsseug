@@ -8,8 +8,13 @@ import { getMemberHistoryList } from 'apis/memberApi';
 
 export const useLoadNextPage = () => {
   const dispatch = useDispatch();
-  const { articleIds, sliceDetails, activeFilter, articlesFrom, activePress } =
-    useSelector((state: RootState) => state.articles);
+  const {
+    articleIds,
+    sliceDetails,
+    activeCategory,
+    articlesFrom,
+    activePress,
+  } = useSelector((state: RootState) => state.articles);
 
   const loadNextPage = async () => {
     if (sliceDetails.hasNext) {
@@ -21,14 +26,14 @@ export const useLoadNextPage = () => {
       switch (articlesFrom) {
         case 'today':
           newArticles = await fetchArticlesByToday({
-            category: activeFilter,
+            category: activeCategory,
             page: nextPage,
           });
           break;
 
         case 'all':
           newArticles = await fetchArticles({
-            category: activeFilter,
+            category: activeCategory,
             page: nextPage,
           });
           break;
@@ -36,14 +41,14 @@ export const useLoadNextPage = () => {
         case 'subscribe':
           newArticles = await getPressArticleList(
             activePress,
-            activeFilter,
+            activeCategory,
             nextPage,
           );
           break;
 
         // case 'folder':
         //   newArticles = await getFolderInfo({
-        //     folderId: activeFilter,
+        //     folderId: activeCategory,
         //     page: nextPage,
         //   });
         //   break;
