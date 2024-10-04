@@ -2,10 +2,10 @@ package com.a301.newsseug.external.redis.service;
 
 import java.util.Optional;
 
-public interface RedisKeyValueService<T, KEY> {
+public interface RedisKeyValueService<K, T> {
 
-    void save(KEY key, T value);
-    Optional<T> findByKey(KEY key);
-    void deleteByKey(KEY key);
+    void save(K key, T value);
+    Optional<T> findByKey(K key);
+    void deleteByKey(K key);
 
 }
