@@ -47,7 +47,7 @@ function ScrapModal({
       controls.start({ y: 0 });
       document.body.style.overflow = 'hidden';
     } else {
-      controls.start({ y: '100%' });
+      controls.start({ y: window.innerHeight });
       document.body.style.overflow = 'auto';
     }
     return () => {
@@ -101,7 +101,9 @@ function ScrapModal({
   };
 
   const handleOverlayClick = () => {
-    controls.start({ y: '100%' }).then(onRequestClose);
+    controls.start({ y: '100vh' }).then(() => {
+      onRequestClose(); // 모달 상태 변경은 애니메이션 후에 실행
+    });
   };
 
   const handleCreateFolderClick = () => {
@@ -115,7 +117,7 @@ function ScrapModal({
         .map((item) => item.id);
 
       saveArticleToFolder(folderIds, Number(articleId));
-      onRequestClose();
+      controls.start({ y: '100vh' }).then(onRequestClose);
     } catch (err) {
       console.error('비디오 폴더에 저장 실패', err);
     }
@@ -139,10 +141,10 @@ function ScrapModal({
       onClick={handleOverlayClick}
     >
       <ModalContent
-        initial={{ y: '100%' }}
-        animate={controls}
-        exit={{ y: '100%' }}
-        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        initial={{ y: '100vh' }}
+        animate={{ y: '0' }}
+        exit={{ y: '100vh' }}
+        transition={{ type: 'spring', stiffness: 200, damping: 30 }}
         style={{ maxHeight }}
         drag="y"
         dragConstraints={{ top: 0, bottom: 0 }}

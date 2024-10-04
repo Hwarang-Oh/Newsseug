@@ -1,6 +1,6 @@
 import api from 'apis/commonApi';
 import { isAxiosError } from 'axios';
-import { PageParamsType, PageType } from '@/types/api/article';
+import { PageParamsType, PageType } from 'types/api/article';
 const ARTICLES_URL = `/api/v1/articles`;
 
 /**
@@ -37,6 +37,24 @@ export const fetchArticlesByToday = async ({
       params: { category, page },
     });
     return response.data.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 404) throw new Error('Not Found');
+      else throw error;
+    } else throw error;
+  }
+};
+
+export const fetchArticlesByPress = async ({
+  category = 'ALL',
+  page = 1,
+  pressId,
+}: PageParamsType): Promise<PageType> => {
+  try {
+    const response = await api.get(`${ARTICLES_URL}/press/${pressId}`, {
+      params: { filter: category, pageNumber: page },
+    });
+    return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) throw new Error('Not Found');

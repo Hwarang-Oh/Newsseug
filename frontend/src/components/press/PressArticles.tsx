@@ -1,18 +1,42 @@
 import styled from 'styled-components';
 import SubTitle from '../mypage/SubTitle';
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
-import article from 'mocks/articlecategorydummy.json';
+import useContentsFetch from 'hooks/useContentsFetch';
+import { Category, PageType } from 'types/api/article';
+import { fetchArticlesByPress } from 'apis/articleApi';
+import { PressArticleProps } from 'types/props/press';
+import React, { useEffect } from 'react';
 
-function PressArticles() {
+function PressArticles({
+  pressId,
+  activeCategory,
+}: Readonly<PressArticleProps>) {
+  const { articleList, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useContentsFetch<PageType>(
+      [
+        'pressArticles',
+        Category[activeCategory as keyof typeof Category],
+        String(pressId),
+      ],
+      fetchArticlesByPress,
+      activeCategory as Category,
+      String(pressId),
+    );
+
   return (
     <Wrapper>
       <SubTitle title="업로드한 영상" />
-      <ArticleListCardGroup articleList={article.targetArticles} />
+      <ArticleListCardGroup
+        articleList={articleList || []}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+      />
     </Wrapper>
   );
 }
 
-export default PressArticles;
+export default React.memo(PressArticles);
 
 const Wrapper = styled.div`
   display: flex;

@@ -76,7 +76,10 @@ function Press() {
           activeCategory={activeCategory}
           setActiveCategory={setActiveCategory}
         />
-        <PressArticles />
+        <PressArticles
+          pressId={Number(pressId)}
+          activeCategory={activeCategory}
+        />
       </>
     </SubLayout>
   );

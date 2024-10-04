@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
 import { getMemberHistoryList } from 'apis/memberApi';
-import { MemberHistoryDetail, MemberHistoryInfo } from 'types/api/member';
 import ArticleListCard from '../common/ArticleListCard';
+import { PageType } from '@/types/api/article';
+import { ArticleListCardProps } from 'types/common/common';
 
 function Histories() {
   const width = '120px';
@@ -12,9 +13,9 @@ function Histories() {
     data: myPageHistory,
     isLoading,
     error,
-  } = useQuery<MemberHistoryInfo>(
+  } = useQuery<PageType>(
     ['myPageHistory'],
-    () => getMemberHistoryList(1),
+    () => getMemberHistoryList({ page: 1 }),
     {
       onSuccess: (data) => {
         console.log(data);
@@ -35,13 +36,13 @@ function Histories() {
   return (
     <Wrapper>
       {myPageHistory &&
-        Array.isArray(myPageHistory?.content.histories) &&
-        myPageHistory.content.histories.map((history: MemberHistoryDetail) => {
+        Array.isArray(myPageHistory?.content) &&
+        myPageHistory.content.map((history: ArticleListCardProps) => {
           return (
             <ArticleListCard
               key={history.id}
               thumbnailUrl={history.thumbnailUrl}
-              title={history.name}
+              title={history.title}
               viewCount={history.viewCount}
               pressName={history.pressName}
               id={history.id}

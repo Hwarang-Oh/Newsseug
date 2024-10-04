@@ -1,4 +1,5 @@
 import { ArticleListCardProps } from 'types/common/common';
+import { SliceDetails } from './article';
 
 export interface FolderBasic {
   id: number;
@@ -10,8 +11,13 @@ export interface MemberFolderInfo extends FolderBasic {
   articleCount: number;
 }
 
+export interface FolderArticles {
+  sliceDetails: SliceDetails;
+  content: ArticleListCardProps[];
+}
+
 export interface FolderDetail {
-  articles: ArticleListCardProps[];
+  articles: FolderArticles;
   id: number;
   title: string;
 }

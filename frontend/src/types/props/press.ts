@@ -9,3 +9,8 @@ export interface PressInfoProps {
   subscribeCount: number;
   isSubscribed: boolean;
 }
+
+export interface PressArticleProps {
+  pressId: number;
+  activeCategory: string;
+}
