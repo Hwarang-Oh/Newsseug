@@ -39,8 +39,12 @@ function useContentsFetch<T extends PageType>({
     );
 
   const pages = data?.pages || [];
-  const sliceDetails = data?.pages[data.pages.length - 1].sliceDetails || {};
-  const articleList = data?.pages.flatMap((page) => page.content) || [];
+  // 마지막 페이지의 sliceDetails를 가져옴 (undefined 체크)
+  const sliceDetails =
+    pages.length > 0 ? pages[pages.length - 1].sliceDetails : {};
+
+  // 모든 페이지의 content를 합침
+  const articleList = pages.flatMap((page) => page.content) || [];
 
   return {
     sectionType,

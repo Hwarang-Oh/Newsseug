@@ -7,7 +7,6 @@ import {
 } from './handlers';
 import {
   subscribepresshandlers,
-  pressArticlePaginationhandlers,
   pressPressArticlePaginationhandlers,
 } from './subscribepresshandler';
 import { unsubscribepresshandlers } from './unsubscribepresshandler';
@@ -21,6 +20,7 @@ import {
   articledishatehandler,
 } from './articlevideointeractionhandler';
 import { mypagehistoryhandler } from './historyhandler';
+import { pressarticlehandler } from './pressarticlehandler';
 
 export const worker = setupWorker(
   ...presshandlers,
@@ -36,7 +36,7 @@ export const worker = setupWorker(
   ...articledislikehandler,
   ...articlehatehandler,
   ...articledishatehandler,
-  ...pressArticlePaginationhandlers,
-  ...articlevideohandler,
+  // ...articlevideohandler,
   ...mypagehistoryhandler,
+  ...pressarticlehandler,
 );

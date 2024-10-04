@@ -8,6 +8,7 @@ import CreateScrapModal from './CreateScrapModal';
 import ReportModal from './ReportModal';
 import { useEffect, useRef, useState } from 'react';
 import { ArticleVideoProp } from 'types/props/articleVideo';
+import { AnimatePresence } from 'framer-motion';
 
 function ArticleVideo({ articleInfo, setIsModalOpen }: ArticleVideoProp) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -82,16 +83,18 @@ function ArticleVideo({ articleInfo, setIsModalOpen }: ArticleVideoProp) {
           handleScrapClick={handleScrapClick}
           handleReportClick={handleReportClick}
         />
-        {isScrapModalOpen && (
-          <ScrapModal
-            isOpen={isScrapModalOpen}
-            onRequestClose={() => setIsScrapModalOpen(false)}
-            onCreateModalOpen={() => {
-              setIsScrapModalOpen(false);
-              setIsCreateModalOpen(true);
-            }}
-          />
-        )}
+        <AnimatePresence>
+          {isScrapModalOpen && (
+            <ScrapModal
+              isOpen={isScrapModalOpen}
+              onRequestClose={() => setIsScrapModalOpen(false)}
+              onCreateModalOpen={() => {
+                setIsScrapModalOpen(false);
+                setIsCreateModalOpen(true);
+              }}
+            />
+          )}
+        </AnimatePresence>
         {isCreateModalOpen && (
           <CreateScrapModal
             isOpen={isCreateModalOpen}

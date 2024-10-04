@@ -30,7 +30,6 @@ function Home() {
       category: 'ALL' as Category,
     }),
   ];
-
   return (
     <MainLayout>
       <FadeInWrapper>

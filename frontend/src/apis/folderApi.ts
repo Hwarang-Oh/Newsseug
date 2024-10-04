@@ -66,9 +66,12 @@ export const saveArticleToFolder = async (
  */
 export const getFolderInfo = async (
   folderId: number,
+  pageParam: number,
 ): Promise<FolderDetail> => {
   try {
-    const response = await api.get(`${FOLDERS_URL}/${folderId}`);
+    const response = await api.get(`${FOLDERS_URL}/${folderId}`, {
+      params: { pageNumber: pageParam },
+    });
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {

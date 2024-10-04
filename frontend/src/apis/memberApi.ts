@@ -2,6 +2,7 @@ import api from 'apis/commonApi';
 import { isAxiosError } from 'axios';
 import { UserInputProps } from 'types/props/register';
 import { MemberFolderInfo } from 'types/api/folder';
+import { PageType } from 'types/api/article';
 import { MemberHistoryInfo, MemberInfo } from 'types/api/member';
 const MEMBER_URL = '/api/v1/members';
 
@@ -68,12 +69,14 @@ export const getMemberFolderList = async (): Promise<MemberFolderInfo[]> => {
 /**
  * IMP : 사용자 시청 기록 조회를 위한 API
  */
-export const getMemberHistoryList = async (
-  page: number,
-): Promise<MemberHistoryInfo> => {
+export const getMemberHistoryList = async ({
+  page = 1,
+}: {
+  page: number;
+}): Promise<PageType> => {
   try {
     const response = await api.get(
-      `api/v1/interactions/histories?page=${page}`,
+      `/api/v1/interactions/histories?page=${page}`,
     );
     return response.data;
   } catch (error: unknown) {
