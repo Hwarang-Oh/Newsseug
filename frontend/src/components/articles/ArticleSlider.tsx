@@ -7,12 +7,14 @@ import 'swiper/css';
 import 'swiper/css/mousewheel';
 import ArticleVideo from 'components/articles/ArticleVideo';
 import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { ArticleVideo as ArticleVideoType } from 'types/api/articleVideo';
 
-const videos = [
-  { id: 1, src: '/shorts/output.mp4' },
-  { id: 2, src: '/shorts/short1.mp4' },
-  { id: 3, src: '/shorts/short2.mp4' },
-];
+import { RootState } from '../../redux/index';
+import { useLoadNextPage } from 'hooks/useLoadNextPage';
+import { useFetchVideos } from 'hooks/useFecthVideos';
+
 function ArticleSlider() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const swiperRef = useRef<SwiperCore | null>(null);
@@ -40,6 +42,18 @@ function ArticleSlider() {
     }
   }, [isModalOpen]);
 
+  const { articleIds, sliceDetails, videoList } = useSelector(
+    (state: RootState) => state.articles,
+  );
+  const { articleId } = useParams<{ articleId: string }>();
+
+  const slideIndex = articleIds.findIndex(
+    (id: number) => id === Number(articleId),
+  );
+
+  const loadNextPage = useLoadNextPage();
+  const fetchVideos = useFetchVideos();
+
   return (
     <Container id="container">
       <Swiper
@@ -53,19 +67,31 @@ function ArticleSlider() {
           key: 'articles',
           replaceState: true,
         }}
+        initialSlide={slideIndex}
         onSwiper={(swiper: SwiperType) => {
           swiperRef.current = swiper; // Swiper 인스턴스 저장
         }}
+        onSlideChange={(swiper: SwiperType) => {
+          fetchVideos(swiper.activeIndex);
+          if (
+            swiper.activeIndex === articleIds.length - 3 &&
+            sliceDetails.hasNext
+          ) {
+            loadNextPage(); // 다음 페이지 데이터를 가져옴
+          }
+        }}
       >
-        {videos.map((video) => (
-          <SwiperSlide key={video.id} data-history={video.id}>
-            <ArticleVideo
-              articleId={video.id}
-              src={video.src}
-              setIsModalOpen={setIsModalOpen}
-            />
-          </SwiperSlide>
-        ))}
+        {Object.values(videoList).map((videoInfo) => {
+          const video = videoInfo as ArticleVideoType; // 명시적으로 타입 캐스팅
+          return (
+            <SwiperSlide key={video.article.id} data-history={video.article.id}>
+              <ArticleVideo
+                articleInfo={video}
+                setIsModalOpen={setIsModalOpen}
+              />
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </Container>
   );

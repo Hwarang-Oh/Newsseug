@@ -3,7 +3,7 @@ import { PressBasic } from 'types/api/press';
 export interface ArticleInfo {
   id: number;
   title: string;
-  contentUrl: string;
+  sourceUrl: string;
   videoUrl: string;
   createdAt: string;
 }

@@ -15,7 +15,7 @@ export const store = configureStore({
   reducer: {
     member: memberReducer,
     memberFolder: memberFolderReducer,
-    article: articleReducer,
+    articles: articleReducer,
     subscribedPress: subscribeReducer,
   },
   preloadedState: persistedState,

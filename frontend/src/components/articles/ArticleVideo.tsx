@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ArticleInfo from 'components/articles/ArticleInfo';
+import ArticleDetailInfo from 'components/articles/ArticleDetailInfo';
 import ProgressBar from 'components/articles/ProgressBar';
 import ScrapModal from 'components/articles/ScrapModal';
 import ArticleButtons from 'components/articles/ArticleButtons';
@@ -9,21 +9,7 @@ import ReportModal from './ReportModal';
 import { useEffect, useRef, useState } from 'react';
 import { ArticleVideoProp } from 'types/props/articleVideo';
 
-const likeInfo = {
-  isLike: false,
-  likeCount: 10,
-};
-
-const HateInfo = {
-  isHate: false,
-  hateCount: 1000,
-};
-
-function ArticleVideo({
-  articleId,
-  src,
-  setIsModalOpen,
-}: Readonly<ArticleVideoProp>) {
+function ArticleVideo({ articleInfo, setIsModalOpen }: ArticleVideoProp) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -79,7 +65,7 @@ function ArticleVideo({
           autoPlay
           playsInline
           loop
-          src={src}
+          src={articleInfo.article.videoUrl}
           ref={videoRef}
           onClick={togglePlay}
           onTimeUpdate={updateProgress}
@@ -90,9 +76,9 @@ function ArticleVideo({
           </PlayButton>
         )}
         <ArticleButtons
-          articleId={articleId}
-          likeInfo={likeInfo}
-          hateInfo={HateInfo}
+          articleId={articleInfo.article.id}
+          likeInfo={articleInfo.likeInfo}
+          hateInfo={articleInfo.hateInfo}
           handleScrapClick={handleScrapClick}
           handleReportClick={handleReportClick}
         />
@@ -125,7 +111,7 @@ function ArticleVideo({
         )}
       </VideoWrapper>
       <ArticleContainer>
-        <ArticleInfo />
+        <ArticleDetailInfo articleInfo={articleInfo} />
         <ProgressBar
           progress={progress}
           isPlaying={isPlaying}
