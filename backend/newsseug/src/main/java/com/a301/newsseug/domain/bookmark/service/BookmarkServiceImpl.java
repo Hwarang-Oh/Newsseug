@@ -10,7 +10,7 @@ import com.a301.newsseug.domain.folder.exception.InaccessibleFolderException;
 import com.a301.newsseug.domain.folder.model.entity.Folder;
 import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.model.entity.Member;
-import com.a301.newsseug.global.model.entity.ActivateStatus;
+import com.a301.newsseug.global.model.entity.ActivationStatus;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +52,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
         for (Long id : folderIds) {
             Folder folder = folderRepository
-                    .findByFolderIdAndMemberAndStatus(id, loginMember, ActivateStatus.ACTIVE)
+                    .findByFolderIdAndMemberAndActivationStatus(id, loginMember, ActivationStatus.ACTIVE)
                     .orElseThrow(InaccessibleFolderException::new);
 
             folder.setThumbnailUrl(article.getThumbnailUrl());

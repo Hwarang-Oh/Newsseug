@@ -6,7 +6,7 @@ import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.article.model.entity.type.CategoryType;
 import com.a301.newsseug.domain.article.model.entity.type.ConversionStatus;
 import com.a301.newsseug.domain.press.model.entity.Press;
-import com.a301.newsseug.global.model.entity.ActivateStatus;
+import com.a301.newsseug.global.model.entity.ActivationStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -68,7 +68,7 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
         if (Objects.nonNull(category)) {
             addCategoryCondition(builder, category, article.category::eq);
         }
-        builder.and(article.status.eq(ActivateStatus.ACTIVE));
+        builder.and(article.activationStatus.eq(ActivationStatus.ACTIVE));
         builder.and(article.conversionStatus.eq(ConversionStatus.SUCCESS));
 
         return builder;

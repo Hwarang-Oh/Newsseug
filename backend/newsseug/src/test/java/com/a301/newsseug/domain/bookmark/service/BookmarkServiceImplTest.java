@@ -19,7 +19,7 @@ import com.a301.newsseug.domain.folder.model.entity.Folder;
 import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.factory.entity.MemberFactory;
 import com.a301.newsseug.domain.member.model.entity.Member;
-import com.a301.newsseug.global.model.entity.ActivateStatus;
+import com.a301.newsseug.global.model.entity.ActivationStatus;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,9 +71,9 @@ class BookmarkServiceImplTest {
                 .toList();
 
         given(articleRepository.getOrThrow(request.articleId())).willReturn(ArticleFactory.article(articleId));
-        given(folderRepository.findByFolderIdAndMemberAndStatus(1L, loginMember, ActivateStatus.ACTIVE))
+        given(folderRepository.findByFolderIdAndMemberAndActivationStatus(1L, loginMember, ActivationStatus.ACTIVE))
                 .willReturn(Optional.of(folders.get(0)));
-        given(folderRepository.findByFolderIdAndMemberAndStatus(2L, loginMember, ActivateStatus.ACTIVE))
+        given(folderRepository.findByFolderIdAndMemberAndActivationStatus(2L, loginMember, ActivationStatus.ACTIVE))
                 .willReturn(Optional.of(folders.get(1)));
 
         // When
@@ -94,7 +94,7 @@ class BookmarkServiceImplTest {
         CreateBookmarkRequest request = BookmarkRequestFactory.createBookmarkRequest(articleId, folderIds);
 
         given(articleRepository.getOrThrow(request.articleId())).willReturn(ArticleFactory.article(articleId));
-        given(folderRepository.findByFolderIdAndMemberAndStatus(1L, loginMember, ActivateStatus.ACTIVE))
+        given(folderRepository.findByFolderIdAndMemberAndActivationStatus(1L, loginMember, ActivationStatus.ACTIVE))
                 .willReturn(Optional.empty());
 
         // Then
@@ -113,7 +113,7 @@ class BookmarkServiceImplTest {
         Folder folder = FolderFactory.folder(1L);
 
         given(articleRepository.getOrThrow(article.getArticleId())).willReturn(article);
-        given(folderRepository.findByFolderIdAndMemberAndStatus(folder.getFolderId(), loginMember, ActivateStatus.ACTIVE))
+        given(folderRepository.findByFolderIdAndMemberAndActivationStatus(folder.getFolderId(), loginMember, ActivationStatus.ACTIVE))
                 .willReturn(Optional.of(folder));
 
         // When

@@ -20,7 +20,8 @@ import java.time.LocalDateTime;
 public class Article extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "articles_seq")
+    @SequenceGenerator(name = "articles_seq", sequenceName = "articles_seq", allocationSize = 1)
     private Long articleId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,13 +37,10 @@ public class Article extends BaseEntity {
     @Column(updatable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime sourceCreatedAt;
 
-    @Column(nullable = true)
     private String contentUrl;
 
-    @Column(nullable = true)
     private String videoUrl;
 
-    @Column(nullable = true)
     private String thumbnailUrl;
 
     @Column(nullable = false)

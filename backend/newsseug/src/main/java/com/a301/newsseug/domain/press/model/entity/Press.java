@@ -15,7 +15,8 @@ import lombok.NoArgsConstructor;
 public class Press extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "press_seq")
+    @SequenceGenerator(name = "press_seq", sequenceName = "press_seq", allocationSize = 1)
     private Long pressId;
 
     @Embedded

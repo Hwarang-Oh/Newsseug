@@ -25,19 +25,20 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public abstract class BaseEntity {
 
     @Enumerated(EnumType.STRING)
-    private ActivateStatus status;
+    @Column(nullable = false)
+    private ActivationStatus activationStatus;
 
     @CreatedDate
-    @Column(updatable = false, columnDefinition = "TIMESTAMP")
+    @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedAt;
 
     @PrePersist
     public void onPrePersist() {
-        this.status = ActivateStatus.ACTIVE;
+        this.activationStatus = ActivationStatus.ACTIVE;
         this.createdAt = ClockUtil.getLocalDateTime();
         this.updatedAt = this.createdAt;
     }
@@ -48,11 +49,11 @@ public abstract class BaseEntity {
     }
 
     public void active() {
-        this.status = ActivateStatus.ACTIVE;
+        this.activationStatus = ActivationStatus.ACTIVE;
     }
 
     public void inactive() {
-        this.status = ActivateStatus.INACTIVE;
+        this.activationStatus = ActivationStatus.INACTIVE;
     }
 
 }

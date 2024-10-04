@@ -17,7 +17,8 @@ import lombok.NoArgsConstructor;
 public class History extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "histories_seq")
+    @SequenceGenerator(name = "histories_seq", sequenceName = "histories_seq", allocationSize = 1)
     private Long historyId;
 
     @ManyToOne(fetch = FetchType.LAZY)

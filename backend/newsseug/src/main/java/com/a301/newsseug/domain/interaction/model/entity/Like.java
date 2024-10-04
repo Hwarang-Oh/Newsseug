@@ -19,7 +19,8 @@ import java.time.LocalDateTime;
 public class Like {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "likes_seq")
+    @SequenceGenerator(name = "likes_seq", sequenceName = "likes_seq", allocationSize = 1)
     private Long likeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,7 +32,7 @@ public class Like {
     private Article article;
 
     @CreatedDate
-    @Column(updatable = false, columnDefinition = "TIMESTAMP")
+    @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Builder

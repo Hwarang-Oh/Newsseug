@@ -19,7 +19,8 @@ import java.time.LocalDateTime;
 public class Hate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hates_seq")
+    @SequenceGenerator(name = "hates_seq", sequenceName = "hates_seq", allocationSize = 1)
     private Long hateId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,7 +32,7 @@ public class Hate {
     private Article article;
 
     @CreatedDate
-    @Column(updatable = false, columnDefinition = "TIMESTAMP")
+    @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Builder

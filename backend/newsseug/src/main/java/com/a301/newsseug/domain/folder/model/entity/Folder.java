@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,7 +25,8 @@ import lombok.Setter;
 public class Folder extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "folders_seq")
+    @SequenceGenerator(name = "folders_seq", sequenceName = "folders_seq", allocationSize = 1)
     private Long folderId;
 
     @ManyToOne(fetch = FetchType.LAZY)

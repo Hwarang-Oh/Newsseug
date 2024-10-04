@@ -23,7 +23,7 @@ import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.factory.entity.MemberFactory;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.global.enums.SortingCriteria;
-import com.a301.newsseug.global.model.entity.ActivateStatus;
+import com.a301.newsseug.global.model.entity.ActivationStatus;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -89,7 +89,7 @@ class FolderServiceTest {
                 false
         );
 
-        given(folderRepository.findByFolderIdAndMemberAndStatus(folder.getFolderId(), loginMember, ActivateStatus.ACTIVE))
+        given(folderRepository.findByFolderIdAndMemberAndActivationStatus(folder.getFolderId(), loginMember, ActivationStatus.ACTIVE))
                 .willReturn(Optional.of(folder));
 
         given(bookmarkRepository.findAllByFolderWithSlice(folder, pageable)).willReturn(bookmarks);
@@ -98,7 +98,7 @@ class FolderServiceTest {
         GetFolderDetailsResponse response = folderService.getFolder(userDetails, 0, folder.getFolderId());
 
         // Then
-        verify(folderRepository).findByFolderIdAndMemberAndStatus(folder.getFolderId(), loginMember, ActivateStatus.ACTIVE);
+        verify(folderRepository).findByFolderIdAndMemberAndActivationStatus(folder.getFolderId(), loginMember, ActivationStatus.ACTIVE);
         verify(bookmarkRepository).findAllByFolderWithSlice(folder, pageable);
 
         assertThat(folder.getFolderId()).isEqualTo(response.id());
@@ -112,7 +112,7 @@ class FolderServiceTest {
     void getFolderInaccessibleFolder() {
 
         // Given
-        when(folderRepository.findByFolderIdAndMemberAndStatus(folder.getFolderId(), loginMember, ActivateStatus.ACTIVE))
+        when(folderRepository.findByFolderIdAndMemberAndActivationStatus(folder.getFolderId(), loginMember, ActivationStatus.ACTIVE))
                 .thenReturn(Optional.empty());
 
         // Then

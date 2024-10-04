@@ -28,7 +28,7 @@ import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
-import com.a301.newsseug.global.model.entity.ActivateStatus;
+import com.a301.newsseug.global.model.entity.ActivationStatus;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -186,7 +186,7 @@ class MemberServiceImplTest {
 
         // Then
         verify(subscribeRepository, never()).save(any());
-        assertThat(subscribe.getStatus()).isEqualByComparingTo(ActivateStatus.ACTIVE);
+        assertThat(subscribe.getActivationStatus()).isEqualByComparingTo(ActivationStatus.ACTIVE);
 
     }
 
@@ -204,7 +204,7 @@ class MemberServiceImplTest {
         memberService.unsubscribe(userDetails, press.getPressId());
 
         // Then
-        assertThat(subscribe.getStatus()).isEqualTo(ActivateStatus.INACTIVE);
+        assertThat(subscribe.getActivationStatus()).isEqualTo(ActivationStatus.INACTIVE);
     }
 
     @Test

@@ -13,7 +13,7 @@ import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
-import com.a301.newsseug.global.model.entity.ActivateStatus;
+import com.a301.newsseug.global.model.entity.ActivationStatus;
 import com.a301.newsseug.global.model.entity.SliceDetails;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +41,7 @@ public class FolderServiceImpl implements FolderService {
     public GetFolderDetailsResponse getFolder(CustomUserDetails userDetails, int pageNumber, Long folderId) {
 
         Member loginMember = userDetails.getMember();
-        Folder folder = folderRepository.findByFolderIdAndMemberAndStatus(folderId, loginMember, ActivateStatus.ACTIVE)
+        Folder folder = folderRepository.findByFolderIdAndMemberAndActivationStatus(folderId, loginMember, ActivationStatus.ACTIVE)
                 .orElseThrow(InaccessibleFolderException::new);
 
         Pageable pageable = PageRequest.of(
