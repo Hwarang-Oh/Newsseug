@@ -6,7 +6,10 @@ import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 
 function History() {
   const { articleList, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useContentsFetch<PageType>(['myPageHistory'], getMemberHistoryList);
+    useContentsFetch<PageType>({
+      queryKey: ['myPageHistory'],
+      fetchData: getMemberHistoryList,
+    });
   return (
     <SubLayout>
       <span>내 시청 기록</span>

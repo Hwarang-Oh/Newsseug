@@ -5,23 +5,23 @@ import useContentsFetch from 'hooks/useContentsFetch';
 import { Category, PageType } from 'types/api/article';
 import { fetchArticlesByPress } from 'apis/articleApi';
 import { PressArticleProps } from 'types/props/press';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 function PressArticles({
   pressId,
   activeCategory,
 }: Readonly<PressArticleProps>) {
   const { articleList, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useContentsFetch<PageType>(
-      [
+    useContentsFetch<PageType>({
+      queryKey: [
         'pressArticles',
         Category[activeCategory as keyof typeof Category],
         String(pressId),
       ],
-      fetchArticlesByPress,
-      activeCategory as Category,
-      String(pressId),
-    );
+      fetchData: fetchArticlesByPress,
+      category: activeCategory as Category,
+      pressId: String(pressId),
+    });
 
   return (
     <Wrapper>
