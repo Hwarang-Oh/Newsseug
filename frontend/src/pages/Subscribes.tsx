@@ -45,28 +45,24 @@ function Subscribes() {
   if (error) return <p>Error: {error?.message}</p>;
 
   return (
-    <Container>
-      <MainLayout>
-        <SubscribeHeader
-          title="구독한 언론사"
-          subscribeNumber={subscribedPress.length}
-          variant="subscribed"
-        />
-        <SubscribePressFilter
-          subscribeData={subscribedPress}
-          activePress={activePress}
-          setActivePress={setActivePress}
-        />
-        <CategoryFilter
-          activeCategory={activeCategory}
-          setActiveCategory={setActiveCategory}
-        />
-        <ArticleListCardGroup articleList={articleList} />
-      </MainLayout>
-    </Container>
+    <MainLayout>
+      <SubscribeHeader
+        title="구독한 언론사"
+        subscribeNumber={subscribedPress.length}
+        variant="subscribed"
+      />
+      <SubscribePressFilter
+        subscribeData={subscribedPress}
+        activePress={activePress}
+        setActivePress={setActivePress}
+      />
+      <CategoryFilter
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+      />
+      <ArticleListCardGroup articleList={articleList} />
+    </MainLayout>
   );
 }
 
 export default Subscribes;
-
-const Container = styled.div``;

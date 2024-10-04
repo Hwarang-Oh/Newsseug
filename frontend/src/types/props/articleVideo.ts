@@ -1,4 +1,4 @@
-import { HateInfo, LikeInfo } from '../api/articleVideo';
+import { ArticleVideo, HateInfo, LikeInfo } from '../api/articleVideo';
 
 export interface ProgressBarProps {
   progress: number;
@@ -17,8 +17,7 @@ export interface ScrapModalProps extends ModalProps {
 }
 
 export interface ArticleVideoProp {
-  articleId: number;
-  src: string;
+  articleInfo: ArticleVideo;
   setIsModalOpen: (isOpen: boolean) => void;
 }
 
