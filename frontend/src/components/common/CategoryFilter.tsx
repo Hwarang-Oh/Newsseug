@@ -82,7 +82,7 @@ function CategoryFilter({
         $isSticky={isSticky}
       >
         {categories.map((category) => (
-          <FilterButton
+          <CategoryFilterButton
             key={category}
             $brightness={brightness}
             $isPressPage={isPressPage}
@@ -91,7 +91,7 @@ function CategoryFilter({
             onClick={() => handleCategoryClick(category)}
           >
             {category}
-          </FilterButton>
+          </CategoryFilterButton>
         ))}
       </Container>
     </>
@@ -184,7 +184,7 @@ const getBackgroundColor = (
   return $active ? theme.mainColor : theme.bgColor;
 };
 
-const FilterButton = styled.button<{
+const CategoryFilterButton = styled.button<{
   $brightness: number;
   $active?: boolean;
   $isPressPage?: boolean;
