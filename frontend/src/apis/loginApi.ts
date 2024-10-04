@@ -10,7 +10,7 @@ import { getCookie, removeCookie, setCookie } from 'utils/stateUtils';
 // Type : local
 // const LOGIN_URL = `${process.env.REACT_APP_API_BASE_URL}/oauth2/authorization`;
 // Type : remote
-const LOGIN_URL = `/oauth2/authorization`;
+const LOGIN_URL = `oauth2/authorization`;
 export const getLogin = (provider: string): void => {
   const loginUrl = `${LOGIN_URL}/${provider}`;
   window.location.href = loginUrl;
@@ -23,7 +23,7 @@ export const getLogin = (provider: string): void => {
 // Type : local
 // const LOGIN_API_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1/auth/login`;
 // Type : remote
-const LOGIN_API_URL = `/api/v1/auth/login`;
+const LOGIN_API_URL = `api/v1/auth/login`;
 export const getAccessToken = async (providerId: string): Promise<string> => {
   try {
     const {
