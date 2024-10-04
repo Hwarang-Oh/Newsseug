@@ -95,8 +95,8 @@ public class ArticleServiceTest {
         // Then
         assertThat(response.getSliceDetails().getCurrentPage()).isEqualTo(0);
         assertThat(response.getSliceDetails().isHasNext()).isFalse();
-        assertThat(response.getContents()).hasSize(1);
-        assertThat(response.getContents().get(0).title()).isEqualTo(article.getTitle());
+        assertThat(response.getContent()).hasSize(1);
+        assertThat(response.getContent().get(0).title()).isEqualTo(article.getTitle());
 
     }
 

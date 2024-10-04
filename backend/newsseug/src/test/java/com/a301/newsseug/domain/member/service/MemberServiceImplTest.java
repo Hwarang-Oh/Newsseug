@@ -142,7 +142,7 @@ class MemberServiceImplTest {
         );
 
         SlicedResponse<List<GetMemberFolderResponse>> slicedResponse = memberService.getFoldersByMember(userDetails, 0);
-        List<GetMemberFolderResponse> response = slicedResponse.getContents();
+        List<GetMemberFolderResponse> response = slicedResponse.getContent();
 
         assertThat(response)
                 .extracting(GetMemberFolderResponse::id, GetMemberFolderResponse::title, GetMemberFolderResponse::articleCount)

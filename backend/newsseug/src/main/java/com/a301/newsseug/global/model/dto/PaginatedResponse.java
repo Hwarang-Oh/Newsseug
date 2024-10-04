@@ -14,15 +14,15 @@ public class PaginatedResponse<T> {
     private PaginationDetails paginationDetails;
 
     @Schema(description = "결과")
-    private T data;
+    private T contents;
 
-    private PaginatedResponse(PaginationDetails paginationDetails, T data) {
+    private PaginatedResponse(PaginationDetails paginationDetails, T contents) {
         this.paginationDetails = paginationDetails;
-        this.data = data;
+        this.contents = contents;
     }
 
-    public static <T> PaginatedResponse<T> of(PaginationDetails paginationDetails, T data) {
-        return new PaginatedResponse<>(paginationDetails, data);
+    public static <T> PaginatedResponse<T> of(PaginationDetails paginationDetails, T contents) {
+        return new PaginatedResponse<>(paginationDetails, contents);
     }
 
 }

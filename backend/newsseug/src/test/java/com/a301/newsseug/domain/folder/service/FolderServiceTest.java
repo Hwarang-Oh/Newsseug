@@ -103,7 +103,7 @@ class FolderServiceTest {
 
         assertThat(folder.getFolderId()).isEqualTo(response.id());
         assertThat(folder.getTitle()).isEqualTo(response.title());
-        assertThat(response.articles().getContents().isEmpty()).isFalse();
+        assertThat(response.articles().getContent().isEmpty()).isFalse();
 
     }
 
