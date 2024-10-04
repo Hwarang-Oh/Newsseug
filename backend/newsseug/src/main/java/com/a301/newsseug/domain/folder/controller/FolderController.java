@@ -33,13 +33,12 @@ public class FolderController {
     @GetMapping("/{folderId}")
     public ResponseEntity<Result<GetFolderDetailsResponse>> getFolder(
             @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber,
             @PathVariable(name = "folderId") @NotBlank Long folderId
     ) {
-
         return ResponseEntity.ok(
-                Result.of(folderService.getFolder(userDetails, folderId))
+                Result.of(folderService.getFolder(userDetails, pageNumber, folderId))
         );
-
     }
 
     @Operation(summary = "기사를 저장할 폴더 목록 조회", description = "기사를 저장하기 위해 생성한 폴더 목록을 조회한다.")
@@ -47,11 +46,9 @@ public class FolderController {
     public ResponseEntity<Result<List<GetFolderResponse>>> getFoldersForBookmark(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-
         return ResponseEntity.ok(
                 Result.of(folderService.getFolders(userDetails))
         );
-
     }
 
     @Operation(summary = "폴더 생성", description = "사용자가 폴더를 생성한다.")

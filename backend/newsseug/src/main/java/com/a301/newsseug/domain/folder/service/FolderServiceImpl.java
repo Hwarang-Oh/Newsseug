@@ -11,12 +11,19 @@ import com.a301.newsseug.domain.folder.model.dto.response.GetFolderDetailsRespon
 import com.a301.newsseug.domain.folder.model.entity.Folder;
 import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.model.entity.Member;
+import com.a301.newsseug.global.enums.SortingCriteria;
+import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.model.entity.ActivateStatus;
+import com.a301.newsseug.global.model.entity.SliceDetails;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,18 +38,26 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     @Transactional(readOnly = true)
-    public GetFolderDetailsResponse getFolder(CustomUserDetails userDetails, Long folderId) {
+    public GetFolderDetailsResponse getFolder(CustomUserDetails userDetails, int pageNumber, Long folderId) {
 
         Member loginMember = userDetails.getMember();
         Folder folder = folderRepository.findByFolderIdAndMemberAndStatus(folderId, loginMember, ActivateStatus.ACTIVE)
                 .orElseThrow(InaccessibleFolderException::new);
 
-        List<Bookmark> bookmarks = bookmarkRepository.findAllByFolder(folder);
+        Pageable pageable = PageRequest.of(
+                pageNumber,
+                10,
+                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+        );
+        Slice<Bookmark> bookmarks = bookmarkRepository.findAllByFolderWithSlice(folder, pageable);
 
         return GetFolderDetailsResponse.of(
                 folder,
-                GetArticleResponse.fromBookmark(bookmarks)
-                );
+                SlicedResponse.of(
+                        SliceDetails.of(bookmarks.getNumber(), bookmarks.isFirst(), bookmarks.hasNext()),
+                        GetArticleResponse.fromBookmark(bookmarks.getContent())
+                )
+        );
 
     }
 
@@ -82,7 +97,7 @@ public class FolderServiceImpl implements FolderService {
                                 .member(loginMember)
                                 .title(title)
                                 .build()
-        ));
+                ));
 
     }
 

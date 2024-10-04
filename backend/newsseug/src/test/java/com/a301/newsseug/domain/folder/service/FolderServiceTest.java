@@ -9,6 +9,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+import com.a301.newsseug.domain.bookmark.factory.entity.BookmarkFactory;
+import com.a301.newsseug.domain.bookmark.model.entity.Bookmark;
 import com.a301.newsseug.domain.bookmark.repository.BookmarkRepository;
 import com.a301.newsseug.domain.folder.exception.InaccessibleFolderException;
 import com.a301.newsseug.domain.folder.factory.entity.FolderFactory;
@@ -20,8 +22,8 @@ import com.a301.newsseug.domain.folder.model.entity.Folder;
 import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.factory.entity.MemberFactory;
 import com.a301.newsseug.domain.member.model.entity.Member;
+import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.entity.ActivateStatus;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,10 +33,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.Sort;
 
 @DisplayName("폴더 관련 기능")
 @ExtendWith(MockitoExtension.class)
 class FolderServiceTest {
+
+    private static final int PAGE_NUMBER =  0;
 
     @Mock
     private FolderRepository folderRepository;
@@ -56,7 +65,6 @@ class FolderServiceTest {
 
         loginMember = MemberFactory.memberOfKakao(1L);
         folder = FolderFactory.folder(1L);
-
         given(userDetails.getMember()).willReturn(loginMember);
 
     }
@@ -66,21 +74,36 @@ class FolderServiceTest {
     void getFolder() {
 
         // Given
+        Pageable pageable = PageRequest.of(
+                PAGE_NUMBER,
+                10,
+                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+        );
+
+        Slice<Bookmark> bookmarks = new SliceImpl<>(
+                List.of(BookmarkFactory
+                        .bookmark(
+                                1L, 1L, 1L
+                        )),
+                pageable,
+                false
+        );
+
         given(folderRepository.findByFolderIdAndMemberAndStatus(folder.getFolderId(), loginMember, ActivateStatus.ACTIVE))
                 .willReturn(Optional.of(folder));
 
-        given(bookmarkRepository.findAllByFolder(folder)).willReturn(Collections.emptyList());
+        given(bookmarkRepository.findAllByFolderWithSlice(folder, pageable)).willReturn(bookmarks);
 
         // When
-        GetFolderDetailsResponse response = folderService.getFolder(userDetails, folder.getFolderId());
+        GetFolderDetailsResponse response = folderService.getFolder(userDetails, 0, folder.getFolderId());
 
         // Then
         verify(folderRepository).findByFolderIdAndMemberAndStatus(folder.getFolderId(), loginMember, ActivateStatus.ACTIVE);
-        verify(bookmarkRepository).findAllByFolder(folder);
+        verify(bookmarkRepository).findAllByFolderWithSlice(folder, pageable);
 
         assertThat(folder.getFolderId()).isEqualTo(response.id());
         assertThat(folder.getTitle()).isEqualTo(response.title());
-        assertThat(response.articles().isEmpty()).isTrue();
+        assertThat(response.articles().getContents().isEmpty()).isFalse();
 
     }
 
@@ -93,7 +116,7 @@ class FolderServiceTest {
                 .thenReturn(Optional.empty());
 
         // Then
-        assertThatThrownBy(() -> folderService.getFolder(userDetails, folder.getFolderId()))
+        assertThatThrownBy(() -> folderService.getFolder(userDetails, PAGE_NUMBER, folder.getFolderId()))
                 .isInstanceOf(InaccessibleFolderException.class);
 
     }

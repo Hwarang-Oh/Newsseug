@@ -6,9 +6,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
+public interface BookmarkRepository extends JpaRepository<Bookmark, Long>, BookmarkCustomRepository {
 
     @EntityGraph(attributePaths = "article")
     List<Bookmark> findAllByFolder(Folder folder);
-
 }

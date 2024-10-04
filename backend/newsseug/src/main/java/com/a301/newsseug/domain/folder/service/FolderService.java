@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface FolderService {
 
-    GetFolderDetailsResponse getFolder(CustomUserDetails userDetails, Long folderId);
+    GetFolderDetailsResponse getFolder(CustomUserDetails userDetails, int pageNumber, Long folderId);
 
     List<GetFolderResponse> getFolders(CustomUserDetails userDetails);
 
