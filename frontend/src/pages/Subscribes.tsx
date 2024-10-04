@@ -1,23 +1,21 @@
-import SubscribeHeader from 'components/subscribe/SubscribeHeader';
-import CategoryFilter from 'components/common/CategoryFilter';
-import MainLayout from 'components/common/MainLayout';
-import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 import { useEffect, useState } from 'react';
-import SubscribePressFilter from 'components/subscribe/SubscribePressFilter';
+import { styled } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/index';
 import { fetchSubscribedPress } from '../redux/subscribeSlice';
 import { getPressArticleList } from 'apis/subscribe';
-import useContentsFetch from 'hooks/useContentsFetch';
-import { styled } from 'styled-components';
-import { ArticleListCardProps } from '@/types/common/common';
+import { ArticleListCardProps } from 'types/common/common';
+import MainLayout from 'components/common/MainLayout';
+import CategoryFilter from 'components/common/CategoryFilter';
+import SubscribeHeader from 'components/subscribe/SubscribeHeader';
+import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
+import SubscribePressFilter from 'components/subscribe/SubscribePressFilter';
 
 function Subscribes() {
   const [activeCategory, setActiveCategory] = useState<string>('전체');
   const [activePress, setActivePress] = useState<number | null>(null);
   const [articleList, setArticleList] = useState<ArticleListCardProps[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(0);
-
   const dispatch = useDispatch();
   const { subscribedPress, loading, error } = useSelector(
     (state: RootState) => state.subscribedPress,
@@ -39,7 +37,6 @@ function Subscribes() {
       );
       setArticleList(articles.content);
     };
-
     fetchArticleList();
   }, [activePress, activeCategory]);
 

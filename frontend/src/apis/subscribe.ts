@@ -2,7 +2,6 @@ import api from 'apis/commonApi';
 import { isAxiosError } from 'axios';
 import { PressBasic } from 'types/api/press';
 import { PageType } from 'types/api/article';
-
 const MEMBER_URL = '/api/v1/members';
 
 /**
@@ -33,7 +32,7 @@ export const getPressArticleList = async (
 };
 
 /**
- * IMP : 언론사 구독 목록 조회를 위한 API
+ * IMP : 회원의 언론사 구독 목록 조회를 위한 API
  */
 export const getSubscribedPressList = async (): Promise<PressBasic[]> => {
   try {
@@ -49,12 +48,12 @@ export const getSubscribedPressList = async (): Promise<PressBasic[]> => {
 };
 
 /**
- * IMP : 전체 언론사 조회
+ * IMP : 언론사 구독을 위한 전체 언론사 조회
  */
 export const getAllPressList = async (): Promise<PressBasic[]> => {
   try {
     const response = await api.get(`api/v1/press`);
-    return response.data.data.press;
+    return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -65,7 +64,7 @@ export const getAllPressList = async (): Promise<PressBasic[]> => {
 };
 
 /**
- * IMP : 언론사 구독을 위한 API
+ * IMP : 회원의 언론사 구독을 위한 API
  */
 export const subscribePress = async (pressId: number) => {
   try {
@@ -80,7 +79,7 @@ export const subscribePress = async (pressId: number) => {
 };
 
 /**
- * IMP : 언론사 구독 취소를 위한 API
+ * IMP : 회원의 언론사 구독 취소를 위한 API
  */
 export const unsubscribePress = async (pressId: number) => {
   try {

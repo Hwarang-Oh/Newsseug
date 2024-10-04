@@ -1,11 +1,6 @@
 import api from 'apis/commonApi';
 import { isAxiosError } from 'axios';
-import {
-  getCookie,
-  removeCookie,
-  setCookie,
-  getTokenExpiration,
-} from 'utils/stateUtils';
+import { getCookie, removeCookie, setCookie } from 'utils/stateUtils';
 
 /**
  * IMP : 아래 함수는 API가 아님. Redirect를 통해 외부 URL로 이동하는 함수
@@ -65,6 +60,9 @@ export async function scheduleTokenRefresh() {
   }
 }
 
+/**
+ * IMP : 아래 함수는 API가 아님. Cookie를 제거하여 Logout을 수행하고 Redirect를 통해 Login Page로 이동함
+ */
 export const getLogout = () => {
   removeCookie('AccessToken');
   removeCookie('ProviderId');

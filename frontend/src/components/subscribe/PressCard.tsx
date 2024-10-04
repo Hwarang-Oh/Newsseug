@@ -9,11 +9,15 @@ import {
 import SubscribePlusIcon from 'assets/SubscribePlusIcon.svg';
 import SubscribeMinusIcon from 'assets/SubscribeMinusIcon.svg';
 
-function PressCard({ press, isSubscribed, toggleSubscribe }: PressCardProps) {
+function PressCard({
+  press,
+  isSubscribed,
+  toggleSubscribe,
+}: Readonly<PressCardProps>) {
   return (
     <Container onClick={() => toggleSubscribe(press)}>
       <CustomLogoContainer $isSubscribed={isSubscribed}>
-        {/* <PressLogo src={press.imgUrl} /> */}
+        <PressLogo src={press.imageUrl} />
         <SubscribeIcon>
           {isSubscribed ? (
             <img src={SubscribeMinusIcon} alt="plus icon" />

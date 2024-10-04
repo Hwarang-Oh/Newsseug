@@ -1,8 +1,8 @@
 import { http, HttpResponse } from 'msw';
 
 export const unsubscribepresshandlers = [
-  // POST 요청을 가로채는 핸들러
-  http.put(
+  // Delete 요청을 가로채는 핸들러
+  http.delete(
     'https://j11a301.p.ssafy.io/api/v1/members/press/:pressId',
     (req) => {
       const { pressId } = req.params; // URL에서 pressId를 추출

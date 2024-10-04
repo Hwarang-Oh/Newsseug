@@ -7,7 +7,7 @@ function PressCardList({
   subscriptionStatus,
   toggleSubscribe,
   isAll,
-}: PressCardListProp) {
+}: Readonly<PressCardListProp>) {
   return (
     <Container $isAll={isAll}>
       {pressList.map((press) => (

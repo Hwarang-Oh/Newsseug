@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { getAccessToken } from 'apis/loginApi';
-import { getCookie, setCookie, removeCookie } from 'utils/stateUtils';
+import {
+  getCookie,
+  setCookie,
+  removeCookie,
+  getTokenExpiration,
+} from 'utils/stateUtils';
 
 /**
  * IMP : Axios를 사용한 API 호출을 위한 기본 설정.
@@ -12,6 +17,17 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+});
+
+api.interceptors.request.use((config) => {
+  let accessToken = getCookie('AccessToken');
+  if (accessToken) {
+    const tokenExpiration = getTokenExpiration(accessToken);
+    if (tokenExpiration && tokenExpiration > Date.now()) {
+      config.headers.Authorization = accessToken;
+    }
+  }
+  return config;
 });
 
 /**

@@ -4,8 +4,9 @@ import { getCookie, getTokenExpiration } from 'utils/stateUtils';
 
 function useAutoRefresh() {
   useEffect(() => {
-    console.log('useAutoRefresh 실행 중');
     let timeoutId: NodeJS.Timeout;
+    let intervalId: NodeJS.Timeout;
+
     const scheduleNextTokenRefresh = async () => {
       let accessToken = getCookie('AccessToken');
       const providerId = getCookie('ProviderId');
@@ -36,15 +37,27 @@ function useAutoRefresh() {
           `Access Token이 만료되기까지 남은 시간: ${timeUntilExpiration}ms`,
         );
 
+        intervalId = setInterval(() => {
+          const currentTime = Date.now();
+          const updatedTimeUntilExpiration = tokenExpiration - currentTime;
+          console.log(
+            `Access Token이 만료되기까지 남은 시간 (60초마다 업데이트): ${updatedTimeUntilExpiration}ms`,
+          );
+        }, 60000); // 1분마다 실행
+
         timeoutId = setTimeout(async () => {
           console.log('재발급 시작');
+          clearInterval(intervalId); // 토큰 재발급 시 interval 해제
           await scheduleTokenRefresh();
           scheduleNextTokenRefresh();
         }, timeUntilRefresh);
       }
     };
     scheduleNextTokenRefresh();
-    return () => clearTimeout(timeoutId);
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+    };
   }, []);
 }
 

@@ -6,32 +6,38 @@
       {
         "id": 1,
         "name": "YTN",
-        "imgUrl": "https://s3-alpha-sig.figma.com/img/b4d5/3d0f/103a4efd4d2d73d5579df2ae68bfb62a?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=bCibBHL8VpVT6D0cQDK-s5mShPEQxJrmPYVEGYUwM0160nZDIHP5TDFvgPBFe1~c53SQh0vEuVS7~2-bub5kE1cANrBDF1oUWqU7SqhPzJ3dTu3e26sZHj0zTtYtBCQV~9qfFABBfqgN0bHR3o10MBEjhjlfB52hK-24hk0PnEmbj0CDL29TXV9gs-UWiozl8rUIsH2u-TelgPka98eARIsL9gfQ7p7e-jiNMV-dwSSH3arpOSaIPFQ5jBj8uSKUrbbiD1ODv7gg7ZhqZP6o~PvmkIaVNQLh4GtY5boTqU1rtyuv2ZWiO188Kwz-tThj77V8-X4GHx8kXPArB3oFPg__"
+        "imageUrl": "https://th.bing.com/th?id=OIP.cL28NDL7EsJZ_JdNcKHFxAHaLZ&w=201&h=310&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.1&pid=3.1&rm=2",
+        "isSubscribed": true
       },
       {
         "id": 2,
         "name": "KBS",
-        "imgUrl": "https://s3-alpha-sig.figma.com/img/040b/d313/600f3e479ead8ab6994454ceaafa2832?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=HaVzOepAPkm7y6tZ4PTkfn5IJUj1CRHZ3mU43Yhf2rbDKY15GVmEA4Cl2Kb-vXM1exvsPF2gG9V2uAW5KJqFHwTU8m2iPqBGACYHhk7nQkU2E3oOXzX~ikkdi97Cb20rZonE6XmkPVVtQJByQ2PVyhPDAuDhsnd5xNytR6GaT9pteBXnYNTJig5alxg6B0jxCxxu1KP6xXLGWlY1lw0UOFwTn7NOlC2Pcvhzo74lZevrJLfAofM0jBRzQQ0Cr4tiHKunOcCtI1JtCQnMbAjSAeRDVDCr2kfi0C0rYGTTlfJYFzYEcIwFZ9sUTiRrZ5I6-GTVanQNYMTBADHH8wQKJw__"
+        "imageUrl": "https://th.bing.com/th?id=OIP.gjGes7FoMLK0fMzT9fVQYwHaJh&w=220&h=283&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.1&pid=3.1&rm=2",
+        "isSubscribed": true
       },
       {
         "id": 5,
         "name": "JTBC",
-        "imgUrl": "data:image/jpeg;base64,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"
+        "imageUrl": "https://th.bing.com/th?id=OIP.ynDNPw1pq84ewHal4AMoCwHaJZ&w=221&h=281&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.1&pid=3.1&rm=2",
+        "isSubscribed": true
       },
       {
         "id": 6,
         "name": "연합뉴스",
-        "imgUrl": "https://s3-alpha-sig.figma.com/img/b2b3/b157/223ce4970ed0dc7746167ac18aab02aa?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=osUXFvY9uPriVzI0ZA3THKj5eWNR223k~Mrf4q~rhrajtuLCn6A4qyYf4rFgNJ0f1H0AJ9AMQ7DnSPRB3Adlj1V49Sy53KN8~a7MTdteNVAAqaMNLEx5TE9j4H5QgfJiks2f~ADiTJOKeNnPS1YyW3VEE8S23rQRhHBwFee7qRlcy~ITGMS3vYcuiVWKv5k0pB5EHEs0zHKCHbs9Ct3WyfJgBS4dQUgPW35zbOWqTaK6ccAGh2GG6NiJwiMuSOZ7Ac8iEg2yxxbGcuy4FeTxrNrON2p-FKvjB6Sf-6tg7u-iirefFQjRl~SpYYP-3EQBtVFdL1oUoGHKGJwqJVio-Q__"
+        "imageUrl": "https://th.bing.com/th?id=OIP.bTtawhZS2pckmUWD88-UNAHaHf&w=248&h=251&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.1&pid=3.1&rm=2",
+        "isSubscribed": true
       },
       {
         "id": 8,
         "name": "경향신문",
-        "imgUrl": "https://s3-alpha-sig.figma.com/img/84a5/017b/40ace5b75f1a2f623d239ecdca4b2146?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ejW2YuG5NgMEx0R-qSw8Ha~3Y7p~mhEyV2J8pOg03ZE1nOk4EW566jsH3N4VtZ2eFANfxsaMcsSQfr8IG-dqZk4uIZWtRrJvMKwnPCzdaYGfAMXTVCMOnnBDqgO3Udi4MjsjptlL2B-pGEjRS~uV9f72tkAz462MMmByoIeRTrvXaZAK8QPssiOkBqhNyNl2GHCzwoO-AlhJjRse5hHH-1Ix-0ODFioHpnH0Sb4DDhGP19fIvoYCMCgf0oDGwdSO3WQ1O6Ld3nnVE2m1C8qpyQhxEHT2dj6PB3VYrIMg6t5xxPRQIzTObqBoLijQT7Zo8~0HXC-g5ixYmhQ9PPebGQ__"
+        "imageUrl": "https://th.bing.com/th?id=OIP.jQm4lYtCE5nppSmH0dFVFAHaE8&w=306&h=204&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.1&pid=3.1&rm=2",
+        "isSubscribed": true
       },
       {
         "id": 19,
         "name": "한겨레",
-        "imgUrl": "https://s3-alpha-sig.figma.com/img/5429/92b8/ea563bff94050e6001d9b09458e0864f?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=HnnJ6d9u9kTNAy3WonXKX~v34bmNVzLtOPsl-TZ-Z0JUD3Ncr9d1-C9AaA~C7CoRFT7Z8rRaTD2tybut2i~G2lCWA7FnuzngYuLjE2ts2PH2VfODyNgy7rFgFIY7xeYVqMBE1T6nnDJRgYoYfZuTwP0k~gbVJ0nu2FvEzcA1K~IoojTNIuSFg7CfMwHp6dBHYEr~KKO96YoxsXK8d73N3xM6CtUxEMPFdvUks9iPp0Ba4WMt8gtHoLwiO0q7jwThbFrFFXIuf9I2ahnolMaeCnHRUrGxnHnlAF0E0Em43~26ocd0kwtNZSrid4FTU3XTrY7M2nGtTj8twLu5IS674w__"
+        "imageUrl": "https://th.bing.com/th/id/OIP.I9cpgpZW5ELJfyew6Vn9EQHaEr?w=248&h=180&c=7&r=0&o=5&dpr=2.2&pid=1.7",
+        "isSubscribed": true
       }
     ]
   }
