@@ -20,7 +20,6 @@ export const getPressArticleList = async (
     const response = await api.get(url, {
       params: { pageNumber, filter },
     });
-    console.log(response.data.data);
     return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {

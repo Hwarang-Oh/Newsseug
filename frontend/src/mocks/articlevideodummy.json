@@ -1,27 +1,812 @@
 {
-  "timestamp": "string",
-  "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "data": {
-    "article": {
-      "id": 0,
-      "title": "신촌에만 스터디카페 50개…된다하면 '불나방 창업' 골병",
-      "contentUrl": "https://n.news.naver.com/article/newspaper/025/0003388901?date=20240927",
-      "videoUrl": "https://videos.pexels.com/video-files/3046247/3046247-hd_1080_1920_30fps.mp4",
-      "createdAt": "2024-09-27T05:28:52.265Z"
-    },
-    "press": {
-      "id": 0,
-      "name": "중앙일보",
-      "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000025/logo/2021/08/20/A_163345038.png?type=u144_144",
-      "isSubscribed": false
-    },
-    "likeInfo": {
-      "isLike": false,
-      "likeCount": 100
-    },
-    "hateInfo": {
-      "isHate": false,
-      "hateCount": 1000
+  "1": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "data": {
+      "article": {
+        "id": 1,
+        "title": "신촌에만 스터디카페 50개…된다하면 '불나방 창업' 골병",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/025/0003388901?date=20240927",
+        "videoUrl": "https://videos.pexels.com/video-files/3046247/3046247-hd_1080_1920_30fps.mp4",
+        "createdAt": "2024-09-27T05:28:52.265Z"
+      },
+      "press": {
+        "id": 0,
+        "name": "중앙일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000025/logo/2021/08/20/A_163345038.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": false,
+        "likeCount": 100
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 1000
+      }
+    }
+  },
+  "2": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+    "data": {
+      "article": {
+        "id": 2,
+        "title": "강남역 카페가 포화상태, 왜 이러는 걸까?",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/026/0003388902?date=20240928",
+        "videoUrl": "https://videos.pexels.com/video-files/5968893/5968893-sd_360_640_30fps.mp4",
+        "createdAt": "2024-09-28T05:28:52.265Z"
+      },
+      "press": {
+        "id": 1,
+        "name": "서울신문",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000026/logo/2021/08/20/B_163345039.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 200
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 800
+      }
+    }
+  },
+  "3": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afa8",
+    "data": {
+      "article": {
+        "id": 3,
+        "title": "동대문 패션 시장의 변화",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/027/0003388903?date=20240929",
+        "videoUrl": "https://videos.pexels.com/video-files/4624594/4624594-sd_360_640_30fps.mp4",
+        "createdAt": "2024-09-29T05:28:52.265Z"
+      },
+      "press": {
+        "id": 2,
+        "name": "경향신문",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000027/logo/2021/08/20/C_163345040.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": false,
+        "likeCount": 150
+      },
+      "hateInfo": {
+        "isHate": true,
+        "hateCount": 1200
+      }
+    }
+  },
+  "4": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afa9",
+    "data": {
+      "article": {
+        "id": 4,
+        "title": "부산의 새로운 관광 명소",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/028/0003388904?date=20240930",
+        "videoUrl": "https://videos.pexels.com/video-files/5372761/5372761-sd_360_640_30fps.mp4",
+        "createdAt": "2024-09-30T05:28:52.265Z"
+      },
+      "press": {
+        "id": 3,
+        "name": "부산일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000028/logo/2021/08/20/D_163345041.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 300
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 600
+      }
+    }
+  },
+  "5": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afaa",
+    "data": {
+      "article": {
+        "id": 5,
+        "title": "제주도의 청정 자연을 지키기 위한 노력",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/029/0003388905?date=20241001",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-01T05:28:52.265Z"
+      },
+      "press": {
+        "id": 4,
+        "name": "제주일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000029/logo/2021/08/20/E_163345042.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": false,
+        "likeCount": 50
+      },
+      "hateInfo": {
+        "isHate": true,
+        "hateCount": 500
+      }
+    }
+  },
+  "6": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afab",
+    "data": {
+      "article": {
+        "id": 6,
+        "title": "강릉의 새로운 관광 트렌드",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/030/0003388906?date=20241002",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-02T05:28:52.265Z"
+      },
+      "press": {
+        "id": 5,
+        "name": "강원일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000030/logo/2021/08/20/F_163345043.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 400
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 400
+      }
+    }
+  },
+  "7": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afac",
+    "data": {
+      "article": {
+        "id": 7,
+        "title": "울산의 미래 산업 발전 방향",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/031/0003388907?date=20241003",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-03T05:28:52.265Z"
+      },
+      "press": {
+        "id": 6,
+        "name": "울산일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000031/logo/2021/08/20/G_163345044.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 500
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 300
+      }
+    }
+  },
+  "8": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afad",
+    "data": {
+      "article": {
+        "id": 8,
+        "title": "광주의 역사적 유산을 지키기 위한 노력",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/032/0003388908?date=20241004",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-04T05:28:52.265Z"
+      },
+      "press": {
+        "id": 7,
+        "name": "광주일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000032/logo/2021/08/20/H_163345045.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 600
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 200
+      }
+    }
+  },
+  "9": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afae",
+    "data": {
+      "article": {
+        "id": 9,
+        "title": "대구의 신흥 상권 분석",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/033/0003388909?date=20241005",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-05T05:28:52.265Z"
+      },
+      "press": {
+        "id": 8,
+        "name": "대구일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000033/logo/2021/08/20/I_163345046.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 50
+      },
+      "hateInfo": {
+        "isHate": true,
+        "hateCount": 100
+      }
+    }
+  },
+  "10": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afaf",
+    "data": {
+      "article": {
+        "id": 10,
+        "title": "제주도의 유명 맛집 탐방기",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/034/0003388910?date=20241006",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-06T05:28:52.265Z"
+      },
+      "press": {
+        "id": 9,
+        "name": "제주일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000034/logo/2021/08/20/J_163345047.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 80
+      },
+      "hateInfo": {
+        "isHate": true,
+        "hateCount": 200
+      }
+    }
+  },
+  "11": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afag",
+    "data": {
+      "article": {
+        "id": 11,
+        "title": "부산의 해양 관광 발전 가능성",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/035/0003388911?date=20241007",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-07T05:28:52.265Z"
+      },
+      "press": {
+        "id": 10,
+        "name": "부산일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000035/logo/2021/08/20/K_163345048.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 70
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 150
+      }
+    }
+  },
+  "12": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afah",
+    "data": {
+      "article": {
+        "id": 12,
+        "title": "대전의 첨단 기술 산업",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/036/0003388912?date=20241008",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-08T05:28:52.265Z"
+      },
+      "press": {
+        "id": 11,
+        "name": "대전일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000036/logo/2021/08/20/L_163345049.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 120
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 200
+      }
+    }
+  },
+  "13": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afai",
+    "data": {
+      "article": {
+        "id": 13,
+        "title": "충남의 농업 혁신 방향",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/037/0003388913?date=20241009",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-09T05:28:52.265Z"
+      },
+      "press": {
+        "id": 12,
+        "name": "충남일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000037/logo/2021/08/20/M_163345050.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 140
+      },
+      "hateInfo": {
+        "isHate": true,
+        "hateCount": 300
+      }
+    }
+  },
+  "14": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afaj",
+    "data": {
+      "article": {
+        "id": 14,
+        "title": "청주의 문화 콘텐츠 산업의 성장",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/038/0003388914?date=20241010",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-10T05:28:52.265Z"
+      },
+      "press": {
+        "id": 13,
+        "name": "충북일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000038/logo/2021/08/20/N_163345051.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 160
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 250
+      }
+    }
+  },
+  "15": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afak",
+    "data": {
+      "article": {
+        "id": 15,
+        "title": "포항의 해양 기술 발전 전망",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/039/0003388915?date=20241011",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-11T05:28:52.265Z"
+      },
+      "press": {
+        "id": 14,
+        "name": "포항일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000039/logo/2021/08/20/O_163345052.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 180
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 350
+      }
+    }
+  },
+  "16": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afal",
+    "data": {
+      "article": {
+        "id": 16,
+        "title": "인천의 국제 경제 발전 현황",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/040/0003388916?date=20241012",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-12T05:28:52.265Z"
+      },
+      "press": {
+        "id": 15,
+        "name": "인천일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000040/logo/2021/08/20/P_163345053.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 200
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 300
+      }
+    }
+  },
+  "17": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afam",
+    "data": {
+      "article": {
+        "id": 17,
+        "title": "서울의 경제 동향 분석",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/041/0003388917?date=20241013",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-13T05:28:52.265Z"
+      },
+      "press": {
+        "id": 16,
+        "name": "서울일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000041/logo/2021/08/20/Q_163345054.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 220
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 200
+      }
+    }
+  },
+  "18": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afan",
+    "data": {
+      "article": {
+        "id": 18,
+        "title": "경기도의 신도시 개발 계획",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/042/0003388918?date=20241014",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-14T05:28:52.265Z"
+      },
+      "press": {
+        "id": 17,
+        "name": "경기일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000042/logo/2021/08/20/R_163345055.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 240
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 100
+      }
+    }
+  },
+  "19": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afao",
+    "data": {
+      "article": {
+        "id": 19,
+        "title": "전주의 전통 문화 보존 전략",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/043/0003388919?date=20241015",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-15T05:28:52.265Z"
+      },
+      "press": {
+        "id": 18,
+        "name": "전주일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000043/logo/2021/08/20/S_163345056.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 260
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 200
+      }
+    }
+  },
+  "20": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afap",
+    "data": {
+      "article": {
+        "id": 20,
+        "title": "강원도의 자연 보전 전략",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/044/0003388920?date=20241016",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-16T05:28:52.265Z"
+      },
+      "press": {
+        "id": 19,
+        "name": "강원일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000044/logo/2021/08/20/T_163345057.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 280
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 50
+      }
+    }
+  },
+  "21": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afaq",
+    "data": {
+      "article": {
+        "id": 21,
+        "title": "서울의 디지털 경제 성장",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/045/0003388921?date=20241017",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-17T05:28:52.265Z"
+      },
+      "press": {
+        "id": 20,
+        "name": "서울일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000045/logo/2021/08/20/U_163345058.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 300
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 50
+      }
+    }
+  },
+  "22": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afar",
+    "data": {
+      "article": {
+        "id": 22,
+        "title": "대전의 미래 경제 성장 전망",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/046/0003388922?date=20241018",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-18T05:28:52.265Z"
+      },
+      "press": {
+        "id": 21,
+        "name": "대전일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000046/logo/2021/08/20/V_163345059.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 320
+      },
+      "hateInfo": {
+        "isHate": true,
+        "hateCount": 100
+      }
+    }
+  },
+  "23": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afas",
+    "data": {
+      "article": {
+        "id": 23,
+        "title": "충남의 환경 보호 전략",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/047/0003388923?date=20241019",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-19T05:28:52.265Z"
+      },
+      "press": {
+        "id": 22,
+        "name": "충남일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000047/logo/2021/08/20/W_163345060.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 350
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 200
+      }
+    }
+  },
+  "24": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afat",
+    "data": {
+      "article": {
+        "id": 24,
+        "title": "제주의 해양 산업과 환경 보호",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/048/0003388924?date=20241020",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-20T05:28:52.265Z"
+      },
+      "press": {
+        "id": 23,
+        "name": "제주일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000048/logo/2021/08/20/X_163345061.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 380
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 100
+      }
+    }
+  },
+  "25": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afau",
+    "data": {
+      "article": {
+        "id": 25,
+        "title": "서울의 교통 시스템 혁신",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/049/0003388925?date=20241021",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-21T05:28:52.265Z"
+      },
+      "press": {
+        "id": 24,
+        "name": "서울일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000049/logo/2021/08/20/Y_163345062.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 400
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 50
+      }
+    }
+  },
+  "26": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afav",
+    "data": {
+      "article": {
+        "id": 26,
+        "title": "부산의 스마트 시티 전략",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/050/0003388926?date=20241022",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-22T05:28:52.265Z"
+      },
+      "press": {
+        "id": 25,
+        "name": "부산일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000050/logo/2021/08/20/Z_163345063.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 420
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 30
+      }
+    }
+  },
+  "27": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afaw",
+    "data": {
+      "article": {
+        "id": 27,
+        "title": "인천의 산업 혁신과 지속 가능성",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/051/0003388927?date=20241023",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-23T05:28:52.265Z"
+      },
+      "press": {
+        "id": 26,
+        "name": "인천일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000051/logo/2021/08/20/AA_163345064.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 450
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 20
+      }
+    }
+  },
+  "28": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afax",
+    "data": {
+      "article": {
+        "id": 28,
+        "title": "대구의 산업 재편과 미래 전략",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/052/0003388928?date=20241024",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-24T05:28:52.265Z"
+      },
+      "press": {
+        "id": 27,
+        "name": "대구일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000052/logo/2021/08/20/AB_163345065.png?type=u144_144",
+        "isSubscribed": true
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 470
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 10
+      }
+    }
+  },
+  "29": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afay",
+    "data": {
+      "article": {
+        "id": 29,
+        "title": "광주의 스마트 기술 혁신 전략",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/053/0003388929?date=20241025",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-25T05:28:52.265Z"
+      },
+      "press": {
+        "id": 28,
+        "name": "광주일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000053/logo/2021/08/20/AC_163345066.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 490
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 0
+      }
+    }
+  },
+  "30": {
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afaz",
+    "data": {
+      "article": {
+        "id": 30,
+        "title": "청주의 경제 발전 방안",
+        "sourceUrl": "https://n.news.naver.com/article/newspaper/054/0003388930?date=20241026",
+        "videoUrl": "https://videos.pexels.com/video-files/6853904/6853904-sd_506_960_25fps.mp4",
+        "createdAt": "2024-10-26T05:28:52.265Z"
+      },
+      "press": {
+        "id": 29,
+        "name": "청주일보",
+        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000054/logo/2021/08/20/AD_163345067.png?type=u144_144",
+        "isSubscribed": false
+      },
+      "likeInfo": {
+        "isLike": true,
+        "likeCount": 510
+      },
+      "hateInfo": {
+        "isHate": false,
+        "hateCount": 100
+      }
     }
   }
 }

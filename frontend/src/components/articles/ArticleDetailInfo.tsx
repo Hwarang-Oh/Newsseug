@@ -1,18 +1,34 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { ArticleVideo } from 'types/api/articleVideo';
 
-function ArticleInfo() {
-  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+function ArticleDetailInfo({ articleInfo }: { articleInfo: ArticleVideo }) {
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(
+    articleInfo.press.isSubscribed,
+  );
   const handleClick = () => {
     setIsSubscribed((prev) => !prev);
+  };
+
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    return date
+      .toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })
+      .replace(/\./g, '')
+      .trim()
+      .replace(/(\d{4})\s(\d{2})\s(\d{2})/, '$1. $2. $3');
   };
 
   return (
     <Container>
       <ArticleCommonInfo>
-        <ArticleDate>2024.04.23</ArticleDate>
-        <ArticleTitle>부천 호텔 화재 당시 CCTV 공개</ArticleTitle>
-        <ArticleUrl>
+        <ArticleDate>{formatDate(articleInfo.article.createdAt)}</ArticleDate>
+        <ArticleTitle>{articleInfo.article.title}</ArticleTitle>
+        <ArticleUrl href={articleInfo.article.sourceUrl}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -31,7 +47,7 @@ function ArticleInfo() {
       <PressContainer>
         <PressInfo>
           <PressIcon />
-          <PressName>YTN</PressName>
+          <PressName>{articleInfo.press.name}</PressName>
         </PressInfo>
         <PressSubscribe $isSubscribed={isSubscribed} onClick={handleClick}>
           {isSubscribed ? (
@@ -69,7 +85,7 @@ function ArticleInfo() {
   );
 }
 
-export default ArticleInfo;
+export default ArticleDetailInfo;
 
 const Container = styled.div`
   display: flex;
@@ -101,7 +117,7 @@ const ArticleDate = styled.p`
   color: #fff;
 `;
 
-const ArticleUrl = styled.div`
+const ArticleUrl = styled.a`
   display: flex;
   align-items: center;
   gap: 8px;
