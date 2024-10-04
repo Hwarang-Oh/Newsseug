@@ -14,15 +14,15 @@ public class SlicedResponse<T> {
     private SliceDetails sliceDetails;
 
     @Schema(description = "결과")
-    private T content;
+    private T contents;
 
-    private SlicedResponse(SliceDetails sliceDetails, T content) {
+    private SlicedResponse(SliceDetails sliceDetails, T contents) {
         this.sliceDetails = sliceDetails;
-        this.content = content;
+        this.contents = contents;
     }
 
-    public static <T> SlicedResponse<T> of(SliceDetails sliceDetails, T data) {
-        return new SlicedResponse<>(sliceDetails, data);
+    public static <T> SlicedResponse<T> of(SliceDetails sliceDetails, T contents) {
+        return new SlicedResponse<>(sliceDetails, contents);
     }
 
 }

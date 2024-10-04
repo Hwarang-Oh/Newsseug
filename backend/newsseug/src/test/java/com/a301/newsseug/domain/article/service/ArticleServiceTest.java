@@ -24,14 +24,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -97,8 +95,8 @@ public class ArticleServiceTest {
         // Then
         assertThat(response.getSliceDetails().getCurrentPage()).isEqualTo(0);
         assertThat(response.getSliceDetails().isHasNext()).isFalse();
-        assertThat(response.getContent()).hasSize(1);
-        assertThat(response.getContent().get(0).title()).isEqualTo(article.getTitle());
+        assertThat(response.getContents()).hasSize(1);
+        assertThat(response.getContents().get(0).title()).isEqualTo(article.getTitle());
 
     }
 

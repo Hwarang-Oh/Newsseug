@@ -2,6 +2,7 @@ package com.a301.newsseug.domain.folder.model.dto.response;
 
 import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
 import com.a301.newsseug.domain.folder.model.entity.Folder;
+import com.a301.newsseug.global.model.dto.SlicedResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.AccessLevel;
@@ -18,11 +19,11 @@ public record GetFolderDetailsResponse(
         String title,
 
         @Schema(description = "스크랩한 기사 목록")
-        List<GetArticleResponse> articles
+        SlicedResponse<List<GetArticleResponse>> articles
 
 ) {
 
-    public static GetFolderDetailsResponse of(Folder folder, List<GetArticleResponse> articles) {
+    public static GetFolderDetailsResponse of(Folder folder, SlicedResponse<List<GetArticleResponse>> articles) {
         return GetFolderDetailsResponse.builder()
                 .id(folder.getFolderId())
                 .title(folder.getTitle())
