@@ -1,5 +1,6 @@
 from typing import List, Optional
 from openai import OpenAI
+
 import logging
 
 import moviepy.editor as mp
@@ -13,15 +14,27 @@ import cv2
 
 from config import config
 
-OPENAI_API_KEY = config['openai']['api_key']
+logger = logging.getLogger('article-logger')
+logger.setLevel(logging.INFO)  # 로그 레벨 설정
 
-logger = logging.getLogger(__name__)
+# 콘솔 핸들러 추가 (로그를 터미널에 출력)
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)  # 핸들러 레벨 설정
+
+# 로그 포맷 설정
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+console_handler.setFormatter(formatter)
+
+# 핸들러를 로거에 추가
+logger.addHandler(console_handler)
+
+OPENAI_API_KEY = config['openai']['api_key']
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 size = {"height": 1792, "width": 1024} # 숏폼의 크기
 
-fps = 30
+fps = 10
 
 scene_count: int = 6
 
@@ -55,7 +68,7 @@ def create_article(article_content: str) -> Optional[tuple[mp.VideoClip, Image.I
     # 장면을 제대로 생성하지 못했을 경우 예외 처리
     if finish_reason != "stop" or finish_reason is None:
         return None, None, None
-
+    
     images = []
     speeches = []
 
@@ -68,15 +81,15 @@ def create_article(article_content: str) -> Optional[tuple[mp.VideoClip, Image.I
         
         images.append(base64_to_np(image))
         speeches.append(read_speech(speech))
-        
-    thumbnail = Image.fromarray(images[0], mode="RGB")
     
+    thumbnail = Image.fromarray(images[0], mode="RGB")
+
     audio_clip, durations = create_audio_clip_and_durations(speeches)
     
     image_clip = create_image_clip(images, durations)
     
     vdieo_clip = create_video_clip(image_clip, audio_clip)
-    
+
     return vdieo_clip, thumbnail, finish_reason
 
 def generate_scenes(article_content: str) -> tuple[Optional[List[Scene]], Optional[str]]:

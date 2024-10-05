@@ -4,6 +4,11 @@ FROM python:3.11-slim
 # 작업 디렉토리 설정
 WORKDIR /app
 
+# 필요한 패키지 업데이트 및 libGL 설치
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0
+
 # 필요 라이브러리 설치를 위한 requirements.txt 복사
 COPY ./requirements.txt /app/requirements.txt
 
