@@ -19,8 +19,8 @@ function PressArticles({
         String(pressId),
       ],
       fetchData: fetchArticlesByPress,
-      category: activeCategory as Category,
-      pressId: String(pressId),
+      category: Category[activeCategory as keyof typeof Category],
+      pressId: pressId,
     });
 
   return (

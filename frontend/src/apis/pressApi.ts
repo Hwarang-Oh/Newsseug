@@ -1,6 +1,6 @@
 import api from 'apis/commonApi';
 import { PressDetail } from 'types/api/press';
-import { AxiosResponse, isAxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 const PRESS_URL = `/api/v1/press`;
 
 /**

@@ -24,7 +24,7 @@ function Home() {
       category: 'ALL' as Category,
     }),
     useContentsFetch({
-      queryKey: ['AllArticles', 'ALL'],
+      queryKey: ['allArticles', 'ALL'],
       fetchData: fetchArticles,
       sectionType: 'all',
       category: 'ALL' as Category,

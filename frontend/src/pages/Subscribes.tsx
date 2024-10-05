@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { styled } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/index';
 import { fetchSubscribedPress } from '../redux/subscribeSlice';
-import { getPressArticleList } from 'apis/subscribe';
-import { ArticleListCardProps } from 'types/common/common';
+import { fetchArticlesByPress } from 'apis/articleApi';
+import { Category, PageType } from 'types/api/article';
+import useContentsFetch from 'hooks/useContentsFetch';
 import MainLayout from 'components/common/MainLayout';
 import CategoryFilter from 'components/common/CategoryFilter';
 import SubscribeHeader from 'components/subscribe/SubscribeHeader';
@@ -12,11 +12,10 @@ import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 import SubscribePressFilter from 'components/subscribe/SubscribePressFilter';
 
 function Subscribes() {
+  const dispatch = useDispatch();
   const [activeCategory, setActiveCategory] = useState<string>('전체');
   const [activePress, setActivePress] = useState<number | null>(null);
-  const [articleList, setArticleList] = useState<ArticleListCardProps[]>([]);
-  const [pageNumber, setPageNumber] = useState<number>(0);
-  const dispatch = useDispatch();
+
   const { subscribedPress, loading, error } = useSelector(
     (state: RootState) => state.subscribedPress,
   );
@@ -28,17 +27,22 @@ function Subscribes() {
     }
   }, [dispatch, subscribedPress.length]);
 
-  useEffect(() => {
-    const fetchArticleList = async () => {
-      const articles = await getPressArticleList(
-        activePress,
-        pageNumber,
-        activeCategory,
-      );
-      setArticleList(articles.content);
-    };
-    fetchArticleList();
-  }, [activePress, activeCategory]);
+  const {
+    articleList,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    sliceDetails,
+  } = useContentsFetch<PageType>({
+    queryKey: [
+      'subscribedArticles',
+      String(activePress),
+      Category[activeCategory as keyof typeof Category],
+    ],
+    fetchData: fetchArticlesByPress,
+    category: Category[activeCategory as keyof typeof Category],
+    pressId: activePress,
+  });
 
   // 로딩 상태 처리
   if (loading) return <p>Loading...</p>;
@@ -60,7 +64,12 @@ function Subscribes() {
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
       />
-      <ArticleListCardGroup articleList={articleList} />
+      <ArticleListCardGroup
+        articleList={articleList || []}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+      />
     </MainLayout>
   );
 }

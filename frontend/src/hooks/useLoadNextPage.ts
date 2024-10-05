@@ -1,8 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setArticleIds, setSliceDetail } from '../redux/articleSlice';
 import { RootState } from '../redux/index';
-import { fetchArticles, fetchArticlesByToday } from 'apis/articleApi';
-import { getPressArticleList } from 'apis/subscribe';
+import {
+  fetchArticles,
+  fetchArticlesByToday,
+  fetchArticlesByPress,
+} from 'apis/articleApi';
 import { getFolderInfo } from 'apis/folderApi';
 import { getMemberHistoryList } from 'apis/memberApi';
 
@@ -39,11 +42,11 @@ export const useLoadNextPage = () => {
           break;
 
         case 'subscribe':
-          newArticles = await getPressArticleList(
-            activePress,
-            activeCategory,
-            nextPage,
-          );
+          newArticles = await fetchArticlesByPress({
+            category: activeCategory,
+            page: nextPage,
+            pressId: activePress,
+          });
           break;
 
         // case 'folder':

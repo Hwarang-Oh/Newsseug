@@ -15,25 +15,29 @@ export const subscribepresshandlers = [
 ];
 
 export const pressPressArticlePaginationhandlers = [
-  http.get(BASE_URL + '/articles/press', ({ request }) => {
-    const pageNumber =
-      Number(new URL(request.url).searchParams.get('page')) || 1;
-    const startIdx = (pageNumber - 1) * 5;
-    const endIdx = pageNumber * 5;
-    const paginatedArticles = articlePagination.articlesPagination.slice(
-      startIdx,
-      endIdx,
-    );
-    const hasNextPage = endIdx < articlePagination.articlesPagination.length;
-    return HttpResponse.json({
-      data: {
-        sliceDetails: {
-          currentPage: pageNumber,
-          hasFirst: pageNumber === 0,
-          hasNext: hasNextPage,
+  http.get(
+    BASE_URL + '/articles/press/:pressId?',
+
+    ({ request }) => {
+      const pageNumber =
+        Number(new URL(request.url).searchParams.get('pageNumber')) || 1;
+      const startIdx = (pageNumber - 1) * 6;
+      const endIdx = pageNumber * 6;
+      const paginatedArticles = articlePagination.articlesPagination.slice(
+        startIdx,
+        endIdx,
+      );
+      const hasNextPage = endIdx < articlePagination.articlesPagination.length;
+      return HttpResponse.json({
+        data: {
+          sliceDetails: {
+            currentPage: pageNumber,
+            hasFirst: pageNumber === 0,
+            hasNext: hasNextPage,
+          },
+          content: paginatedArticles,
         },
-        content: paginatedArticles,
-      },
-    });
-  }),
+      });
+    },
+  ),
 ];

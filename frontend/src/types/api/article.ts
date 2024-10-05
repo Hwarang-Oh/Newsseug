@@ -34,11 +34,12 @@ export enum Category {
  * IMP : 페이지별로 Article을 Fetch하는 Params
  * @param category : default = 'ALL'
  * @param page : default = 1
+ * @param pressId : default = null
  */
 export interface PageParamsType {
   category?: Category | string;
   page: number;
-  pressId?: string;
+  pressId?: number | null;
 }
 
 /**
@@ -51,9 +52,28 @@ export interface PageType {
   content: ArticleListCardProps[];
 }
 
+/**
+ * IMP : Allarticle에게 넘겨주는 Section State 상태 ( 동적 Page 구성을 위한 상태 )
+ * @param articleList : ArticleListCardProps[] : ArticleListCardProps의 배열
+ * @param queryKey : string[] : Query Key
+ * @param sliceDetails : SliceDetails : Slice된 정보
+ * @param sectionType : SectionType : Section Type
+ */
 export interface SectionState {
   articleList: ArticleListCardProps[];
   queryKey: string[];
   sliceDetails: SliceDetails;
   sectionType: SectionType;
+}
+
+/**
+ * IMP : Contents Fetch Type
+ */
+export interface ContentsFetchType<T extends PageType> {
+  queryKey: string[];
+  fetchData: ({ category, page, pressId }: PageParamsType) => Promise<T>;
+  category?: Category;
+  pressId?: number | null;
+  sectionType?: string;
+  initialPage?: number;
 }

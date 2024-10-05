@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from 'react-query';
-import { Category, PageParamsType, PageType } from 'types/api/article';
+import { ContentsFetchType, PageType } from 'types/api/article';
 
 function useContentsFetch<T extends PageType>({
   queryKey,
@@ -8,14 +8,7 @@ function useContentsFetch<T extends PageType>({
   pressId,
   sectionType,
   initialPage = 1,
-}: {
-  queryKey: string[];
-  fetchData: ({ category, page, pressId }: PageParamsType) => Promise<T>;
-  category?: Category;
-  pressId?: string;
-  sectionType?: string;
-  initialPage?: number;
-}) {
+}: ContentsFetchType<T>) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery(
       queryKey,

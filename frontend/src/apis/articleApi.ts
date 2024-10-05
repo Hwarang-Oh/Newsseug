@@ -16,7 +16,7 @@ export const fetchArticles = async ({
   try {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const response = await api.get(ARTICLES_URL, {
-      params: { category, page },
+      params: { pageNumber: page, filter: category },
     });
     return response.data.data;
   } catch (error: unknown) {
@@ -34,7 +34,7 @@ export const fetchArticlesByToday = async ({
   try {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const response = await api.get(`${ARTICLES_URL}/today`, {
-      params: { category, page },
+      params: { pageNumber: page, filter: category },
     });
     return response.data.data;
   } catch (error: unknown) {
@@ -45,16 +45,26 @@ export const fetchArticlesByToday = async ({
   }
 };
 
+/**
+ * IMP : 구독 페이지의 기사 조회를 위한 API
+ * IMP : 1.1 pressId가 없다면, 구독한 언론사의 전체 기사를 조회함.
+ * IMP : 1.2 pressId가 있다면, 해당 언론사의 전체 기사를 조회함.
+ * IMP : 2.1 category가 없다면, 전체 카테고리의 기사를 조회함.
+ * IMP : 2.2 category가 있다면, 해당 카테고리의 기사를 조회함.
+ * @param param0
+ * @returns
+ */
 export const fetchArticlesByPress = async ({
   category = 'ALL',
   page = 1,
   pressId,
 }: PageParamsType): Promise<PageType> => {
   try {
-    const response = await api.get(`${ARTICLES_URL}/press/${pressId}`, {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const response = await api.get(`${ARTICLES_URL}/press/${pressId ?? ''}`, {
       params: { filter: category, pageNumber: page },
     });
-    return response.data;
+    return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) throw new Error('Not Found');
