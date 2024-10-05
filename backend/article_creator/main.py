@@ -1,37 +1,38 @@
-from typing import Optional
-
 import boto3.session
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from datetime import datetime
 from contextlib import asynccontextmanager
 from starlette.responses import Response
 
-import aiomysql
-
 from config import config
 from article import create_article
-from enum import Enum
 import boto3
 from io import BytesIO
 
-class Category(Enum):
-    POLITICS = 'politics'
-    ECONOMY = 'economy'
-    WORLD = 'world'
-    INCIDENTS = 'incidents'
-    SCIENCE = 'science'
-    SOCIETY = 'society'
-    SPORTS = 'sports'
-    
-class ConversionStatus(Enum):
-    SUCCESS = 'success'
-    RUNNING = 'running'
-    FILTERED = 'filtered'
-    EXCEED_TOKEN = 'exceed_token'
-    UNKNOWN_FAIL = 'unknown_fail'
+import enum
 
-class ContentType(Enum):
+from db.connection import get_session
+from models.article import Article, ConversionStatus, Category
+from crud import insert_article, update_article
+
+import logging
+
+logger = logging.getLogger('main-logger')
+logger.setLevel(logging.INFO)  # 로그 레벨 설정
+
+# 콘솔 핸들러 추가 (로그를 터미널에 출력)
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)  # 핸들러 레벨 설정
+
+# 로그 포맷 설정
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+console_handler.setFormatter(formatter)
+
+# 핸들러를 로거에 추가
+logger.addHandler(console_handler)
+
+class ContentType(enum.Enum):
     PNG = "image/png"
     TEXT = "text/plain"
     MP4 = "video/mp4"
@@ -39,23 +40,7 @@ class ContentType(Enum):
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # 애플리케이션 시작 시 풀 생성
-    print("Starting up... Creating connection pool")
-    
-    # MariaDB Connection Pool 생성
-    pool = await aiomysql.create_pool(
-        
-        host = config['datasource']['host'],
-        port = config['datasource']['port'],
-        user = config['datasource']['user'],
-        password = config['datasource']['password'],
-        db = config['datasource']['database'],
-        minsize = config['datasource']['min_pool_size'],
-        maxsize=config['datasource']['max_pool_size'],
-        charset=config['datasource']['charset']
-        
-    )
-    
-    app.state.pool = pool  # 애플리케이션의 state에 저장
+    logger.info("Starting up... Creating connection pool")
     
     # S3 클라이언트 생성
     s3_client = boto3.client(
@@ -70,9 +55,7 @@ async def lifespan(app: FastAPI):
     yield  # 애플리케이션이 실행되는 동안
 
     # 애플리케이션 종료 시 풀 닫기
-    print("Shutting down... Closing connection pool")
-    pool.close()
-    await pool.wait_closed()
+    logger.info("Shutting down... Closing connection pool")
 
 app = FastAPI(lifespan=lifespan)
 
@@ -81,22 +64,28 @@ class CreateArticleRequestDto(BaseModel):
     source_url: str
     content: str
     category: Category
-    source_created_at: Optional[datetime] = None
-
+    source_created_at: datetime
+    press_id: int
+    
 @app.post("/api/v1/articles")
-async def create_and_register_article(article_request_dto: CreateArticleRequestDto):
+async def create_and_register_article(article_request_dto: CreateArticleRequestDto, session = Depends(get_session)):
+
+    # 새로운 기사 객체 생성
+    new_article = Article(title=article_request_dto.title, source_url=article_request_dto.source_url, category=article_request_dto.category, source_created_at=article_request_dto.source_created_at, press_id=article_request_dto.press_id, conversion_status = ConversionStatus.RUNNING)
     
-    id = await insert_article_to_mariadb(article_request_dto.title, article_request_dto.source_url, article_request_dto.category, article_request_dto.source_created_at)
-    
-    upload_to_s3(id, article_request_dto.content, ContentType.TEXT)
+    # DB에 저장
+    session.add(new_article)
+    session.commit()
+
+    upload_to_s3(new_article.article_id, article_request_dto.content, ContentType.TEXT)
     
     video_clip, thumbnail, finish_reason = create_article(article_request_dto.content)
     
     match finish_reason:
         case 'stop':
             conversion_status = ConversionStatus.SUCCESS
-            upload_video_to_s3(id, video_clip)
-            upload_to_s3(id, thumbnail, ContentType.PNG)
+            upload_video_to_s3(new_article.article_id, video_clip)
+            upload_to_s3(new_article.article_id, thumbnail, ContentType.PNG)
         case 'content_filter':
             conversion_status = ConversionStatus.FILTERED
         case 'length':
@@ -104,59 +93,32 @@ async def create_and_register_article(article_request_dto: CreateArticleRequestD
         case _:
             conversion_status = ConversionStatus.UNKNOWN_FAIL
 
-    await update_article(id, conversion_status)
+    update_article_s3_url_and_conversion_status(new_article, conversion_status, session = session)
 
     return Response(status_code=200)
 
-async def insert_article_to_mariadb(title:str, source_url: str, category: Category, source_created_at: datetime) -> int:
-    pool = app.state.pool
-    async with pool.acquire() as conn:
-        async with conn.cursor() as cursor:
-            insert_query = """
-                INSERT INTO articles (title, source_url, category, conversion_status, source_created_at)
-                VALUE (%s, %s, %s, %s, %s)
-            """
-
-            await cursor.execute(insert_query, (title, source_url, category.name, ConversionStatus.RUNNING.name, source_created_at))
-
-            await conn.commit()
-            
-            inserted_id = cursor.lastrowid
-            
-    return inserted_id
-
-async def update_article(article_id: int, conversion_status: ConversionStatus):
-    pool = app.state.pool
-    async with pool.acquire() as conn:
-        async with conn.cursor() as cursor:
-            update_query = """
-                UPDATE articles SET content_url=%s, thumbnail_url=%s, video_url=%s, conversion_status=%s WHERE article_id=%s
-            """
-            
-            url_template = "https://newsseug-bucket.s3.{region}.amazonaws.com/article/{article_id}/{name}"
-            
-            await cursor.execute(update_query, (
-                    url_template.format(
-                        region=config['s3']['region_name'], 
-                        article_id=article_id,
-                        name='content.txt'
-                    ),
-                    url_template.format(
-                        region=config['s3']['region_name'], 
-                        article_id=article_id,
-                        name='thumbnail.png'
-                    ),
-                    url_template.format(
-                        region=config['s3']['region_name'], 
-                        article_id=article_id,
-                        name='video.mp4'
-                    ),
-                    conversion_status.name,
-                    article_id
-                )
-            )
-            
-            await conn.commit()
+def update_article_s3_url_and_conversion_status(article: Article, conversion_status: ConversionStatus, session):
+    # URL 템플릿 생성
+    url_template = "https://newsseug-bucket.s3.{region}.amazonaws.com/article/{article_id}/{name}"
+    
+    # 속성 값 업데이트
+    content_url = url_template.format(
+        region=config['s3']['region_name'],
+        article_id=article.article_id,
+        name='content.txt'
+    )
+    thumbnail_url = url_template.format(
+        region=config['s3']['region_name'],
+        article_id=article.article_id,
+        name='thumbnail.png'
+    )
+    video_url = url_template.format(
+        region=config['s3']['region_name'],
+        article_id=article.article_id,
+        name='video.mp4'
+    )
+    
+    update_article(session, article, content_url, thumbnail_url, video_url, conversion_status)
 
 def upload_to_s3(id: int, data, content_type: ContentType):
     buffer = BytesIO()
@@ -189,7 +151,7 @@ def upload_video_to_s3(id: int, video):
     
     video.write_videofile(file_path, codec="libx264")
     
-    s3_key = f"article/{id}/vidoe.mp4"
+    s3_key = f"article/{id}/video.mp4"
 
     s3_client = app.state.s3_client
     
