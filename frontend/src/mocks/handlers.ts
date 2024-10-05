@@ -100,7 +100,7 @@ export const folderhandles = [
 export const articlePaginationhandlers = [
   http.get(BASE_URL + '/articles', ({ request }) => {
     const pageNumber =
-      Number(new URL(request.url).searchParams.get('page')) || 1;
+      Number(new URL(request.url).searchParams.get('pageNumber')) || 1;
     const startIdx = (pageNumber - 1) * 6;
     const endIdx = pageNumber * 6;
     const paginatedArticles = articlePagination.articlesPagination.slice(
@@ -121,7 +121,8 @@ export const articlePaginationhandlers = [
   }),
   http.get(BASE_URL + '/articles/today', ({ request }) => {
     const pageNumber =
-      Number(new URL(request.url).searchParams.get('page')) || 1;
+      Number(new URL(request.url).searchParams.get('pageNumber')) || 1;
+    console.log(pageNumber);
     const startIdx = (pageNumber - 1) * 6;
     const endIdx = pageNumber * 6;
     const paginatedArticles = articlePagination.articlesPagination.slice(
