@@ -13,12 +13,11 @@ public class MemberFactory {
     public static Member memberOfKakao(Long id) {
 
         Member member = Member.builder()
-                .nickName(MemberFixtures.nickname)
                 .gender(GenderType.MALE)
                 .birth(LocalDate.now())
                 .role(RoleType.ROLE_MEMBER)
                 .provider(ProviderType.KAKAO)
-                .providerId(MemberFixtures.providerId)
+                .providerId(MemberFixtures.PROVIDER_ID)
                 .build();
 
         ReflectionTestUtils.setField(member, "memberId", id);

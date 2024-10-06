@@ -1,5 +1,7 @@
 package com.a301.newsseug.external.jwt.service;
 
+import static org.apache.http.HttpHeaders.AUTHORIZATION;
+
 import com.a301.newsseug.external.jwt.config.JwtProperties;
 import com.a301.newsseug.external.jwt.exception.ExpiredTokenException;
 import com.a301.newsseug.external.jwt.exception.FailToIssueTokenException;
@@ -29,7 +31,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
 
-    private static final String AUTHORIZATION = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer ";
     private final JwtProperties jwtProperties;
 
@@ -47,11 +48,11 @@ public class JwtServiceImpl implements JwtService {
 
             switch (type) {
                 case ACCESS_TOKEN -> {
-                    return createToken(providerId, jwtProperties.getExpiration().getAccess(), type);
+                    return createToken(providerId, jwtProperties.expiration().access(), type);
                 }
 
                 case REFRESH_TOKEN -> {
-                    return createToken(providerId, jwtProperties.getExpiration().getRefresh(), type);
+                    return createToken(providerId, jwtProperties.expiration().refresh(), type);
                 }
 
             }
@@ -82,7 +83,7 @@ public class JwtServiceImpl implements JwtService {
                         .subject(providerId)
                         .issuedAt(ClockUtil.convertToDate(now))
                         .expiration(ClockUtil.getExpirationDate(now, expirationTime))
-                        .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
+                        .signWith(Keys.hmacShaKeyFor(jwtProperties.secret().getBytes(StandardCharsets.UTF_8)))
                         .compact()
         );
 
@@ -97,7 +98,7 @@ public class JwtServiceImpl implements JwtService {
     public Header parseHeader(String token) {
 
         return Jwts.parser()
-                .verifyWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
+                .verifyWith(Keys.hmacShaKeyFor(jwtProperties.secret().getBytes(StandardCharsets.UTF_8)))
                 .build()
                 .parseSignedClaims(removePrefix(token))
                 .getHeader();
@@ -112,7 +113,7 @@ public class JwtServiceImpl implements JwtService {
     public Claims parseClaims(String token) {
 
         return Jwts.parser()
-                .verifyWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8)))
+                .verifyWith(Keys.hmacShaKeyFor(jwtProperties.secret().getBytes(StandardCharsets.UTF_8)))
                 .build()
                 .parseSignedClaims(removePrefix(token))
                 .getPayload();
