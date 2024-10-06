@@ -18,4 +18,6 @@ public interface ArticleCustomRepository {
 
     Slice<Article> findByPress(List<Press> pressList, String category, Pageable pageable);
 
+    void updateCount(String fieldName, Long articleId, Long newValue);
+
 }
