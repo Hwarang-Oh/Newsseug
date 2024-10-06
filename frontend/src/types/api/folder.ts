@@ -11,6 +11,11 @@ export interface MemberFolderInfo extends FolderBasic {
   articleCount: number;
 }
 
+export interface MemberFolder {
+  content: MemberFolderInfo[];
+  sliceDetails: SliceDetails;
+}
+
 export interface FolderArticles {
   sliceDetails: SliceDetails;
   content: ArticleListCardProps[];

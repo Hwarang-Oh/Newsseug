@@ -1,8 +1,25 @@
 import { http, HttpResponse } from 'msw';
-
+import articlevideodummy from 'mocks/_articlevideodummy.json';
+const ARTICLE_URL = 'https://j11a301.p.ssafy.io/api/v1/articles';
 const BASE_URL = 'https://j11a301.p.ssafy.io/api/v1';
 
-export const articlelikehandler = [
+/**
+ * IMP : ArticleVideoAPI Handlers
+ * * 1. /articles/:articleId => 특정 기사의 비디오 정보 조회
+ * * 2. POST : /likes/articles/:articleId => 기사 좋아요
+ * * 3. DELETE : /likes/articles/:articleId => 기사 좋아요 취소
+ * * 4. POST : /hates/articles/:articleId => 기사 싫어요
+ * * 5. DELETE : /hates/articles/:articleId => 기사 싫어요 취소
+ * TODO 6. POST : /api/v1/reports/articles/:articleId => 기사 신고
+ */
+export const articleVideoHandlers = [
+  http.get(`${ARTICLE_URL}/:articleId`, (req) => {
+    const { articleId } = req.params;
+    const articleData =
+      articlevideodummy[articleId as keyof typeof articlevideodummy];
+    return HttpResponse.json(articleData);
+  }),
+
   http.post(`${BASE_URL}/likes/articles/:articleId`, (req) => {
     const { articleId } = req.params; // URL에서 pressId를 추출
 
@@ -11,9 +28,7 @@ export const articlelikehandler = [
       message: `article with ID ${articleId} like successfully.`,
     });
   }),
-];
 
-export const articledislikehandler = [
   http.delete(`${BASE_URL}/likes/articles/:articleId`, (req) => {
     const { articleId } = req.params; // URL에서 pressId를 추출
 
@@ -22,9 +37,7 @@ export const articledislikehandler = [
       message: `article with ID ${articleId} dislike successfully.`,
     });
   }),
-];
 
-export const articlehatehandler = [
   http.post(`${BASE_URL}/hates/articles/:articleId`, (req) => {
     const { articleId } = req.params; // URL에서 pressId를 추출
 
@@ -33,9 +46,7 @@ export const articlehatehandler = [
       message: `article with ID ${articleId} hate successfully.`,
     });
   }),
-];
 
-export const articledishatehandler = [
   http.delete(`${BASE_URL}/hates/articles/:articleId`, (req) => {
     const { articleId } = req.params; // URL에서 pressId를 추출
 
