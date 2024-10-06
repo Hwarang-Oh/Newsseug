@@ -1,4 +1,6 @@
+import { subscribePress, unsubscribePress } from 'apis/subscribe';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ArticleVideo } from 'types/api/articleVideo';
 
@@ -6,8 +8,19 @@ function ArticleDetailInfo({ articleInfo }: { articleInfo: ArticleVideo }) {
   const [isSubscribed, setIsSubscribed] = useState<boolean>(
     articleInfo.press.isSubscribed,
   );
+  const navigate = useNavigate();
+
   const handleClick = () => {
+    if (isSubscribed) {
+      unsubscribePress(articleInfo.press.id);
+    } else {
+      subscribePress(articleInfo.press.id);
+    }
     setIsSubscribed((prev) => !prev);
+  };
+
+  const handlePressClick = () => {
+    navigate(`/press/${articleInfo.press.id}`);
   };
 
   const formatDate = (dateString: string): string => {
@@ -45,7 +58,7 @@ function ArticleDetailInfo({ articleInfo }: { articleInfo: ArticleVideo }) {
         </ArticleUrl>
       </ArticleCommonInfo>
       <PressContainer>
-        <PressInfo>
+        <PressInfo onClick={handlePressClick}>
           <PressIcon />
           <PressName>{articleInfo.press.name}</PressName>
         </PressInfo>
