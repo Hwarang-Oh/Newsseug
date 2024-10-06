@@ -3,12 +3,14 @@ package com.a301.newsseug.domain.article.repository;
 import static com.a301.newsseug.domain.article.model.entity.QArticle.article;
 
 import com.a301.newsseug.domain.article.model.entity.Article;
+import com.a301.newsseug.domain.article.model.entity.QArticle;
 import com.a301.newsseug.domain.article.model.entity.type.CategoryType;
 import com.a301.newsseug.domain.article.model.entity.type.ConversionStatus;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import java.time.LocalDateTime;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -50,6 +53,18 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
     }
 
     @Override
+    @Modifying
+    public void updateCount(String fieldName, Long articleId, Long newValue) {
+        // PathBuilder를 사용해 동적으로 필드를 지정
+        PathBuilder<Long> fieldPath = new PathBuilder<>(Long.class, "article." + fieldName);
+
+        jpaQueryFactory.update(article)
+                .set(fieldPath, newValue)
+                .where(article.articleId.eq(articleId))
+                .execute();
+    }
+
+    @Override
     public Slice<Article> findAllByPressAndCategory(Press press, String category, Pageable pageable) {
         BooleanBuilder builder = createBaseCondition(category);
         builder.and(article.press.eq(press));
@@ -65,7 +80,7 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
 
         BooleanBuilder builder = new BooleanBuilder();
 
-        if (Objects.nonNull(category)) {
+        if (Objects.nonNull(category) && !category.equalsIgnoreCase("ALL")) {
             addCategoryCondition(builder, category, article.category::eq);
         }
         builder.and(article.activationStatus.eq(ActivationStatus.ACTIVE));

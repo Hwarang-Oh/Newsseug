@@ -31,10 +31,10 @@ public record GetArticleDetailsResponse(
 ) {
 
     public static GetArticleDetailsResponse of(
-            Article article, Boolean isSubscribed, SimpleLikeDto likeInfo, SimpleHateDto hateInfo) {
+            Article article, Long currentViewCount, Boolean isSubscribed, SimpleLikeDto likeInfo, SimpleHateDto hateInfo) {
 
         return GetArticleDetailsResponse.builder()
-                .article(ArticleDto.of(article))
+                .article(ArticleDto.of(article, currentViewCount))
                 .press(SimplePressDto.of(article.getPress()))
                 .isSubscribed(isSubscribed)
                 .likeInfo(likeInfo)
