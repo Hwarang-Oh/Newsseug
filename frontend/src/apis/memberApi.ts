@@ -1,7 +1,7 @@
 import api from 'apis/commonApi';
 import { isAxiosError } from 'axios';
 import { UserInputProps } from 'types/props/register';
-import { MemberFolderInfo } from 'types/api/folder';
+import { MemberFolder, MemberFolderInfo } from 'types/api/folder';
 import { PageType } from 'types/api/article';
 import { MemberHistoryInfo, MemberInfo } from 'types/api/member';
 const MEMBER_URL = '/api/v1/members';
@@ -50,9 +50,13 @@ export const getMemberInfo = async (): Promise<MemberInfo> => {
 /**
  * IMP : 사용자 폴더 목록 조회를 위한 API
  */
-export const getMemberFolderList = async (): Promise<MemberFolderInfo[]> => {
+export const getMemberFolderList = async (
+  page: number,
+): Promise<MemberFolder> => {
   try {
-    const response = await api.get(`${MEMBER_URL}/folders`);
+    const response = await api.get(`${MEMBER_URL}/folders`, {
+      params: { pageNumber: page },
+    });
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
@@ -75,9 +79,9 @@ export const getMemberHistoryList = async ({
   page: number;
 }): Promise<PageType> => {
   try {
-    const response = await api.get(
-      `/api/v1/interactions/histories?page=${page}`,
-    );
+    const response = await api.get(`/api/v1/histories`, {
+      params: { page },
+    });
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {

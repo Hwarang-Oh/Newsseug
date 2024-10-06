@@ -1,0 +1,40 @@
+{   
+    "timestamp": "string",
+    "trackingId" : "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "data": [
+      {
+        "id": 1,
+        "title": "2024 두산",
+        "articles": [
+            0, 1, 2, 3, 4
+        ],
+        "thumbnailUrl": "https://blog.kakaocdn.net/dn/cHFMSF/btrkK753Ndf/dUPksTlwuiSKOX7jvJ7DeK/img.jpg"
+      },
+      {
+        "id": 2,
+        "title": "2023 두산",
+        "articles": [
+            1
+        ],
+        "thumbnailUrl": "https://blog.kakaocdn.net/dn/cHFMSF/btrkK753Ndf/dUPksTlwuiSKOX7jvJ7DeK/img.jpg"
+
+      },
+      {
+        "id": 3,
+        "title": "2022 두산",
+        "articles": [
+            2
+        ],
+        "thumbnailUrl": "https://blog.kakaocdn.net/dn/cHFMSF/btrkK753Ndf/dUPksTlwuiSKOX7jvJ7DeK/img.jpg"
+
+      },
+      {
+        "id": 4,
+        "title": "KBO",
+        "articles": [
+            3
+        ],
+        "thumbnailUrl": "https://blog.kakaocdn.net/dn/cHFMSF/btrkK753Ndf/dUPksTlwuiSKOX7jvJ7DeK/img.jpg"
+      }
+    ]
+  }

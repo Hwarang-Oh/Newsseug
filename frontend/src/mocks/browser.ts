@@ -1,42 +1,15 @@
 import { setupWorker } from 'msw/browser';
-import {
-  memberhandlers,
-  presshandlers,
-  folderhandles,
-  articlePaginationhandlers,
-} from './handlers';
-import {
-  subscribepresshandlers,
-  pressPressArticlePaginationhandlers,
-} from './subscribepresshandler';
-import { unsubscribepresshandlers } from './unsubscribepresshandler';
-import { subscribepresslisthandler } from './subscribepresslisthandler';
-import { allpresshandlers } from './allpresshandler';
-import { articlevideohandler } from './articlevideohandler';
-import {
-  articlelikehandler,
-  articledislikehandler,
-  articlehatehandler,
-  articledishatehandler,
-} from './articlevideointeractionhandler';
-import { mypagehistoryhandler } from './historyhandler';
-import { pressarticlehandler } from './pressarticlehandler';
+
+import { articleHandlers } from 'mocks/articleHandlers';
+import { articleVideoHandlers } from 'mocks/articlevideoHandlers';
+import { folderHandlers } from 'mocks/folderHandlers';
+import { memberHandlers } from 'mocks/memberHandlers';
+import { subscribeHandlers } from 'mocks/subscribeHandlers';
 
 export const worker = setupWorker(
-  ...presshandlers,
-  ...memberhandlers,
-  ...folderhandles,
-  ...subscribepresshandlers,
-  ...unsubscribepresshandlers,
-  ...subscribepresslisthandler,
-  ...allpresshandlers,
-  ...pressPressArticlePaginationhandlers,
-  ...articlePaginationhandlers,
-  ...articlelikehandler,
-  ...articledislikehandler,
-  ...articlehatehandler,
-  ...articledishatehandler,
-  // ...articlevideohandler,
-  ...mypagehistoryhandler,
-  ...pressarticlehandler,
+  ...articleHandlers,
+  ...articleVideoHandlers,
+  ...folderHandlers,
+  ...memberHandlers,
+  ...subscribeHandlers,
 );

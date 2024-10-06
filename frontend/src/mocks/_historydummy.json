@@ -1,0 +1,44 @@
+{
+    "content": [
+            {
+                "id": 1,
+                "title": "두산베어스 2024 우승",
+                "thumbnailUrl": "https://blog.kakaocdn.net/dn/cHFMSF/btrkK753Ndf/dUPksTlwuiSKOX7jvJ7DeK/img.jpg",
+                "viewCount": 2349234,
+                "pressName": "연합뉴스"
+            },
+            {
+                "id": 2,
+                "title": "두산베어스 2019 우승",
+                "thumbnailUrl": "https://blog.kakaocdn.net/dn/cHFMSF/btrkK753Ndf/dUPksTlwuiSKOX7jvJ7DeK/img.jpg",
+                "viewCount": 2349234,
+                "pressName": "연합뉴스"
+            },
+            {
+                "id": 3,
+                "title": "두산베어스 2016 우승",
+                "thumbnailUrl": "https://blog.kakaocdn.net/dn/cHFMSF/btrkK753Ndf/dUPksTlwuiSKOX7jvJ7DeK/img.jpg",
+                "viewCount": 2349234,
+                "pressName": "연합뉴스"
+            },
+            {
+                "id": 3,
+                "title": "두산베어스 2015 우승",
+                "thumbnailUrl": "https://blog.kakaocdn.net/dn/cHFMSF/btrkK753Ndf/dUPksTlwuiSKOX7jvJ7DeK/img.jpg",
+                "viewCount": 2349234,
+                "pressName": "연합뉴스"
+            },
+            {
+                "id": 3,
+                "title": "두산베어스 2001 우승",
+                "thumbnailUrl": "https://blog.kakaocdn.net/dn/cHFMSF/btrkK753Ndf/dUPksTlwuiSKOX7jvJ7DeK/img.jpg",
+                "viewCount": 2349234,
+                "pressName": "연합뉴스"
+            }
+        ],
+    "sliceDetails": {
+        "currentPage": 1,
+        "hasFirst": true,
+        "hasNext": true
+    }
+}

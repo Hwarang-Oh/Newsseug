@@ -13,14 +13,8 @@ function Histories() {
     data: myPageHistory,
     isLoading,
     error,
-  } = useQuery<PageType>(
-    ['myPageHistory'],
-    () => getMemberHistoryList({ page: 1 }),
-    {
-      onSuccess: (data) => {
-        console.log(data);
-      },
-    },
+  } = useQuery<PageType>(['myPageHistory'], () =>
+    getMemberHistoryList({ page: 1 }),
   );
 
   if (isLoading) {
