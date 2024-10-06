@@ -7,6 +7,7 @@ public class RegEx {
             "^(/api/v1/auth(/.*)?)$",
             "^(/api/v1/articles(/.*)?)$",
             "^(/api/v1/press(/.*)?)$",
+            "^(/api/v1/s3(/.*)?)$",
             "^(/newsseug(/.*)?)$"
     };
 

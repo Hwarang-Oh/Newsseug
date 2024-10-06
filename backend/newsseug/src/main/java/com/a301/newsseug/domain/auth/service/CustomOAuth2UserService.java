@@ -48,7 +48,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 member.orElseGet(() ->
                         memberRepository.save(
                                 Member.builder()
-                                        .nickName("Test")
                                         .provider(ProviderType.convertToEnum(provider))
                                         .providerId(providerId)
                                         .role(RoleType.ROLE_MEMBER)

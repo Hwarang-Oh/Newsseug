@@ -1,6 +1,6 @@
 package com.a301.newsseug.external.jwt.service;
 
-import static com.a301.newsseug.domain.member.factory.fixtures.MemberFixtures.providerId;
+import static com.a301.newsseug.domain.member.factory.fixtures.MemberFixtures.PROVIDER_ID;
 import static com.a301.newsseug.external.jwt.factory.fixtures.JwtFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -25,7 +25,6 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.Clock;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -61,15 +60,15 @@ public class JwtServiceTest {
     private Clock clock;
     private LocalDateTime fixedLocalDateTime;
     private Date fixedDate;
-    private java.lang.String accessToken;
+    private String accessToken;
 
     @BeforeEach
     void beforeEach() {
 
-        lenient().when(jwtProperties.getSecret()).thenReturn(JWT_SECRET);
-        lenient().when(jwtProperties.getExpiration()).thenReturn(expiration);
-        lenient().when(expiration.getAccess()).thenReturn(ACCESS_TOKEN_EXPIRATION);
-        lenient().when(expiration.getRefresh()).thenReturn(REFRESH_TOKEN_EXPIRATION);
+        lenient().when(jwtProperties.secret()).thenReturn(JWT_SECRET);
+        lenient().when(jwtProperties.expiration()).thenReturn(expiration);
+        lenient().when(expiration.access()).thenReturn(ACCESS_TOKEN_EXPIRATION);
+        lenient().when(expiration.refresh()).thenReturn(REFRESH_TOKEN_EXPIRATION);
 
         member = MemberFactory.memberOfKakao(1L);
         clock = Clock.systemDefaultZone();
@@ -247,7 +246,7 @@ public class JwtServiceTest {
                         .header()
                         .add("type", TokenType.ACCESS_TOKEN.getValue())
                         .and()
-                        .subject(providerId)
+                        .subject(PROVIDER_ID)
                         .issuedAt(ClockUtil.convertToDate(fixedLocalDateTime))
                         .expiration(ClockUtil.getExpirationDate(fixedLocalDateTime, ACCESS_TOKEN_EXPIRATION))
                         .signWith(Keys.hmacShaKeyFor(INVALID_JWT_SECRET.getBytes(StandardCharsets.UTF_8)))

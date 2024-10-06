@@ -21,6 +21,7 @@ import com.a301.newsseug.global.model.entity.SliceDetails;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
@@ -45,22 +46,30 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional(readOnly = true)
     public GetMemberResponse getMember(CustomUserDetails userDetails) {
-
         Member loginMember = userDetails.getMember();
         return GetMemberResponse.of(loginMember.getNickname(), loginMember.getProfileImageUrl());
-
     }
 
     @Override
-    public void updateMember(CustomUserDetails UserDetails, UpdateMemberRequest request) {
-
+    public void updateMember(CustomUserDetails userDetails, UpdateMemberRequest request) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        Member loginMember = userDetails.getMember();
 
-        Member loginMember = UserDetails.getMember();
+        if (Objects.nonNull(request.birth())) {
+            loginMember.setBirth(LocalDate.parse(request.birth(), formatter));
+        }
 
-        loginMember.setNickname(request.nickname());
-        loginMember.setGender(GenderType.convertToEnum(request.gender()));
-        loginMember.setBirth(LocalDate.parse(request.birth(), formatter));
+        if (Objects.nonNull(request.gender())) {
+            loginMember.setGender(GenderType.convertToEnum(request.gender()));
+        }
+
+        if (Objects.nonNull(request.nickname())) {
+            loginMember.setNickname(request.nickname());
+        }
+
+        if (Objects.nonNull(request.profileImageUrl())) {
+            loginMember.setProfileImageUrl(request.profileImageUrl());
+        }
 
     }
 

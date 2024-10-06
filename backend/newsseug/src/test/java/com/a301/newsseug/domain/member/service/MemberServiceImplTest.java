@@ -76,15 +76,11 @@ class MemberServiceImplTest {
     @DisplayName("정보 조회[성공]")
     void getMember() {
 
-        // Given
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        UpdateMemberRequest request = MemberRequestFactory.updateMemberRequest();
-
         // When
         GetMemberResponse response = memberService.getMember(userDetails);
 
         // Then
-        assertThat(loginMember.getNickname()).isEqualTo(request.nickname());
+        assertThat(loginMember.getNickname()).isEqualTo(response.nickname());
         assertThat(loginMember.getProfileImageUrl()).isEqualTo(response.profileImageUrl());
 
     }

@@ -126,6 +126,16 @@ public class SwaggerConfig {
 
     }
 
+    @Bean
+    public GroupedOpenApi S3Api() {
+
+        return GroupedOpenApi.builder()
+                .group("S3")
+                .pathsToMatch("/api/v1/s3/**")
+                .build();
+
+    }
+
 
 
 }

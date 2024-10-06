@@ -22,7 +22,7 @@ public class RedisTokenServiceImpl implements RedisTokenService {
         redisTemplate.opsForValue().set(
                 String.format(REFRESH_TOKEN_KEY_PREFIX, key),
                 value,
-                jwtProperties.getExpiration().getRefresh(),
+                jwtProperties.expiration().refresh(),
                 TimeUnit.SECONDS
         );
     }

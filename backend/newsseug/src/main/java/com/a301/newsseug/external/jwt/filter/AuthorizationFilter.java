@@ -64,6 +64,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
         for (String regex : EXCEPTION_URI_REGEX) {
             if (request.getRequestURI().matches(regex)) {
+                log.info(request.getRequestURI());
                 return true;
             }
         }

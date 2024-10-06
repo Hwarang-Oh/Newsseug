@@ -121,7 +121,7 @@ public class PressServiceTest {
 		assertThat(response.name()).isEqualTo(press.getPressBranding().getName());
 		assertThat(response.imageUrl()).isEqualTo(press.getPressBranding().getImageUrl());
 		assertThat(response.description()).isEqualTo(press.getDescription());
-		assertThat(response.isSubscribed()).isNull();
+		assertThat(response.isSubscribed()).isFalse();
 		assertThat(response.subscribeCount()).isEqualTo(0L);
 	}
 

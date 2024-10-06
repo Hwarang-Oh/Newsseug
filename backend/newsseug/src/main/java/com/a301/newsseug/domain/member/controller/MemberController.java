@@ -42,16 +42,14 @@ public class MemberController {
         return ResponseUtil.ok(Result.of(memberService.getMember(userDetails)));
     }
 
-    @Operation(summary = "사용자 정보 등록", description = "사용자 정보를 등록한다.")
+    @Operation(summary = "사용자 정보 등록", description = "사용자 정보(닉네임, 성별, 생년월일, 프로필 사진 등)를 등록한다.")
     @PutMapping()
     public ResponseEntity<Result<Boolean>> updateMember(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestBody @Valid UpdateMemberRequest request
     ) {
-
         memberService.updateMember(userDetails, request);
         return ResponseUtil.ok(Result.of(Boolean.TRUE));
-
     }
 
     @Operation(summary = "사용자 폴더 목록 조회", description = "사용자 폴더 목록을 조회한다.")
