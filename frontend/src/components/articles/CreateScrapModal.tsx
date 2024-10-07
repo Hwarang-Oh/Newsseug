@@ -1,4 +1,4 @@
-import { ModalProps } from 'types/props/articleVideo';
+import { ModalBasicProps } from 'types/props/articleVideo';
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
@@ -6,7 +6,10 @@ import { createFolder } from 'apis/folderApi';
 import { useDispatch } from 'react-redux';
 import { setMemberFolder } from '../../redux/memberFolderSlice';
 
-function CreateScrapModal({ isOpen, onRequestClose }: Readonly<ModalProps>) {
+function CreateScrapModal({
+  isOpen,
+  onRequestClose,
+}: Readonly<ModalBasicProps>) {
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
   const [folderName, setFolderName] = useState<string>('');

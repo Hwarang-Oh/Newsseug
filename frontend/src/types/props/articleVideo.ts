@@ -6,10 +6,13 @@ export interface ProgressBarProps {
   onSeek: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export interface ModalProps {
-  // articleId: number;
+export interface ModalBasicProps {
   isOpen: boolean;
   onRequestClose: () => void;
+}
+
+export interface ModalProps extends ModalBasicProps {
+  articleId: number;
 }
 
 export interface ScrapModalProps extends ModalProps {

@@ -86,6 +86,7 @@ function ArticleVideo({ articleInfo, setIsModalOpen }: ArticleVideoProp) {
         <AnimatePresence>
           {isScrapModalOpen && (
             <ScrapModal
+              articleId={articleInfo.article.id}
               isOpen={isScrapModalOpen}
               onRequestClose={() => setIsScrapModalOpen(false)}
               onCreateModalOpen={() => {
@@ -106,6 +107,7 @@ function ArticleVideo({ articleInfo, setIsModalOpen }: ArticleVideoProp) {
         )}
         {isReportModalOpen && (
           <ReportModal
+            articleId={articleInfo.article.id}
             isOpen={isReportModalOpen}
             onRequestClose={() => {
               setIsReportModalOpen(false);
