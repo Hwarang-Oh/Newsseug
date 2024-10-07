@@ -2,8 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MemberState, MemberStore, ProviderType } from 'types/api/member';
 
 const initialState: MemberStore = {
-  member: { nickname: '', gender: 'MALE', age: 27 },
-  AccessToken: '',
+  member: { nickname: '', gender: 'MALE', age: 27, profileImageUrl: '' },
+  accessToken: '',
+  refreshToken: '',
   providerType: 'none',
   providerId: '',
 };
@@ -16,12 +17,18 @@ const memberSlice = createSlice({
       state.member.nickname = action.payload.nickname;
       state.member.gender = action.payload.gender;
       state.member.age = action.payload.age;
+      state.member.profileImageUrl = action.payload.profileImageUrl;
     },
     setProviderInfo: (
       state,
-      action: PayloadAction<{ AccessToken: string; providerId: string }>,
+      action: PayloadAction<{
+        AccessToken: string;
+        RefreshToken: string;
+        providerId: string;
+      }>,
     ) => {
-      state.AccessToken = action.payload.AccessToken;
+      state.accessToken = action.payload.AccessToken;
+      state.refreshToken = action.payload.RefreshToken;
       state.providerId = action.payload.providerId;
     },
     setProviderType: (state, action: PayloadAction<ProviderType>) => {

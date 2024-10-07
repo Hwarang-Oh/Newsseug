@@ -1,6 +1,6 @@
-import { ArticleVideo } from 'types/api/articleVideo';
 import api from 'apis/commonApi';
 import { isAxiosError } from 'axios';
+import { ArticleVideo } from 'types/api/articleVideo';
 
 const ARTICLES_URL = `/api/v1/articles`;
 

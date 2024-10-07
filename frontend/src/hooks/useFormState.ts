@@ -22,6 +22,7 @@ function useFormState() {
     nickname: GetOrSetRandomNickname(),
     birth: '',
     gender: '',
+    profileImageUrl: '',
   };
 
   const { control, formState, setValue, trigger, getValues, handleSubmit } =

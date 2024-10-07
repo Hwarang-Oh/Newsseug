@@ -1,6 +1,6 @@
 import LoginModal from 'components/login/LoginModal';
 import { useState, useEffect } from 'react';
-import { getAccessToken } from 'apis/loginApi';
+import { reissueToken } from 'apis/commonApi';
 import { getCookie, setCookie } from 'utils/stateUtils';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 
@@ -13,11 +13,10 @@ function PrivateRoute() {
   useEffect(() => {
     const checkAuthentication = async () => {
       let accessToken = getCookie('AccessToken');
-      const providerId = getCookie('ProviderId');
-      if (!accessToken && providerId) {
+      const refreshToken = getCookie('RefreshToken');
+      if (!accessToken && refreshToken) {
         try {
-          accessToken = await getAccessToken(providerId);
-          setCookie('AccessToken', accessToken, { maxAge: 900, secure: true });
+          await reissueToken();
           setIsAuthenticated(true);
         } catch (error: unknown) {
           console.error(error);
@@ -30,7 +29,7 @@ function PrivateRoute() {
       }
     };
     checkAuthentication();
-  }, []);
+  }, [location]);
 
   const handleLogin = () => {
     setShowModal(false);

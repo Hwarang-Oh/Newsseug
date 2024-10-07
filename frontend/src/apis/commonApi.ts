@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { getAccessToken } from 'apis/loginApi';
+import axios, { isAxiosError } from 'axios';
 import {
   getCookie,
   setCookie,
@@ -8,10 +7,43 @@ import {
 } from 'utils/stateUtils';
 
 /**
- * IMP : Axios를 사용한 API 호출을 위한 기본 설정.
- * IMP : Content-Type은 JSON으로 설정되어 있습니다. => 다른 형식을 사용하고 싶다면, 직접 사용하는 쪽에서 수정해야 합니다.
- * IMP : Authorization Header를 설정하기 위한 Interceptor가 설정되어 있습니다. ( 고려할 것이 없음 )
+ * IMP : AccessToken 재발급을 위한 API
  */
+const REFRESH_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1/auth/reissue`;
+export const reissueToken = async (): Promise<string> => {
+  try {
+    const refreshToken = getCookie('RefreshToken');
+    const providerId = getCookie('ProviderId');
+    const response = await axios.get(
+      `${REFRESH_URL}?providerId=${encodeURIComponent(providerId)}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'refresh-token': refreshToken,
+        },
+      },
+    );
+    let accessToken = response.data.data.accessToken;
+    let accessTokenTime = getTokenExpiration(response.data.data.accessToken);
+    setCookie('AccessToken', accessToken, {
+      maxAge: accessTokenTime,
+      secure: true,
+    });
+    return accessToken;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 404) throw new Error('Not Found');
+      else {
+        removeCookie('AccessToken');
+        removeCookie('RefreshToken');
+        removeCookie('ProviderId');
+        throw new Error('refreshToken is expired, redirecting to login.');
+        // window.location.href = '/login';
+      }
+    } else throw error;
+  }
+};
+
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
   headers: {
@@ -19,41 +51,54 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use((config) => {
+api.interceptors.request.use(async (config) => {
   let accessToken = getCookie('AccessToken');
+  const refreshToken = getCookie('RefreshToken');
+
+  if (!accessToken && refreshToken) {
+    console.log('AccessToken이 없음, RefreshToken으로 토큰 재발급 시도');
+    try {
+      const newAccessToken = await reissueToken();
+      accessToken = newAccessToken;
+    } catch (error) {
+      console.error(
+        '토큰 재발급 실패, 로그아웃 !처리! => 비로그인 상태 요청 필요',
+        error,
+      );
+      removeCookie('AccessToken');
+      removeCookie('RefreshToken');
+      removeCookie('ProviderId');
+      return Promise.reject(error);
+    }
+  }
   if (accessToken) {
-    const tokenExpiration = getTokenExpiration(accessToken);
-    if (tokenExpiration && tokenExpiration > Date.now()) {
+    const accessTokenTime = getTokenExpiration(accessToken);
+    if (accessTokenTime && accessTokenTime > Date.now()) {
       config.headers.Authorization = accessToken;
     }
   }
   return config;
 });
 
-/**
- * IMP : API Interceptor.response => 응답이 401일 경우, AccessToken, ProviderID 재발급을 통해, Login 상태를 유지함.
- */
 api.interceptors.response.use(
   (response) => response,
   async (AuthorizationError) => {
     const originalRequest = AuthorizationError.config;
-    if (AuthorizationError.response.status === 401 && !originalRequest._retry) {
+    if (
+      AuthorizationError.response &&
+      AuthorizationError.response.status === 401 &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
-      const providerId = getCookie('ProviderId');
       try {
-        const token = await getAccessToken(providerId);
-        setCookie('AccessToken', token, { maxAge: 900, secure: true });
-        originalRequest.headers.Authorization = token;
+        const accessToken = await reissueToken();
+        originalRequest.headers.Authorization = accessToken;
+        return api(originalRequest);
       } catch (RefreshError) {
-        console.error('ProviderId is expired, redirecting to login.');
-        removeCookie('AccessToken');
-        removeCookie('ProviderId');
-        window.location.href = '/login';
+        console.error('토큰 갱신 실패:', RefreshError);
+        return Promise.reject(RefreshError);
       }
-    } else
-      console.log(
-        '비로그인 401에러를 제외한 나머지의 에러가 발생하고 있습니다.',
-      );
+    }
     return Promise.reject(AuthorizationError);
   },
 );

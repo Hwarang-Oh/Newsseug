@@ -5,6 +5,7 @@ import InputSection from 'components/register/InputSection';
 import GenderSelectBox from 'components/register/GenderSelectBox';
 import SubmitButton from 'components/register/SubmitButton';
 import ConfirmModal from 'components/register/ConfirmModal';
+import ProfileIcon from 'components/icon/ProfileIcon';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 function UserInput() {
@@ -30,8 +31,14 @@ function UserInput() {
 
   return (
     <Layout>
+      <RegisterHeader>
+        <RegisterTitle>정보 등록</RegisterTitle>
+      </RegisterHeader>
       <FormStyle onSubmit={handleSubmit(onSubmit)}>
         <InputSectionStyle>
+          <ProfileWrapper>
+            <ProfileIcon />
+          </ProfileWrapper>
           <InputSection
             title="생성된 닉네임"
             input={validationRules.nickname.fixedValue}
@@ -71,7 +78,6 @@ function UserInput() {
           disabled={!isValid}
           onClick={() => setIsModalOpen(true)}
         />
-
         {isModalOpen && (
           <ConfirmModal
             userData={getValues()}
@@ -84,16 +90,40 @@ function UserInput() {
 }
 
 export default UserInput;
+const RegisterHeader = styled.div`
+  display: flex;
+  padding: 13px 0px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const RegisterTitle = styled.p`
+  color: #202020;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%; /* 22.4px */
+  letter-spacing: -0.4px;
+`;
 
 const FormStyle = styled.form`
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding-top: calc(3vh);
+  padding-bottom: calc(5vh);
+`;
+
+const ProfileWrapper = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const InputSectionStyle = styled.div`
   display: flex;
   flex-direction: column;
-  gap: calc(5vh);
+  gap: calc(3vh);
 `;
