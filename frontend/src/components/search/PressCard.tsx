@@ -1,21 +1,55 @@
+import { PressDetail } from 'types/api/press';
+import { formatNumber } from 'utils/formatNumber';
 import { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { subscribePress, unsubscribePress } from 'apis/subscribe';
 
-function PressCard() {
-  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
-  const handleClick = () => {
-    setIsSubscribed((prev) => !prev);
+function PressCard({
+  id,
+  name,
+  imageUrl,
+  isSubscribed,
+  description,
+  subscribeCount,
+}: Readonly<PressDetail>) {
+  const navigate = useNavigate();
+  const [isSub, setIsSub] = useState<boolean>(isSubscribed);
+
+  const handleSubscribeClick = async (e: { stopPropagation: () => void }) => {
+    e.stopPropagation();
+    if (isSub) {
+      try {
+        await unsubscribePress(Number(id));
+
+        setIsSub(false);
+      } catch (err) {
+        console.log(`${id}번 언론사 구독 취소 실패`, err);
+      }
+    } else {
+      try {
+        await subscribePress(Number(id));
+
+        setIsSub(true);
+      } catch (err) {
+        console.log(`${id}번 언론사 구독 실패`, err);
+      }
+    }
+  };
+
+  const handlePressClick = () => {
+    navigate(`/press/${id}`);
   };
 
   return (
-    <Wrapper>
-      <PressLogo src="#" />
+    <Wrapper onClick={handlePressClick}>
+      <PressLogo src={imageUrl} />
       <PressInfo>
-        <PressName>Channel Name</PressName>
+        <PressName>{name}</PressName>
         <PressSubInfo>
-          <PressSubCount>구독자 1120명</PressSubCount>
-          <PressSubBtn $isSubscribed={isSubscribed} onClick={handleClick}>
-            {isSubscribed ? (
+          <PressSubCount>구독자 {formatNumber(subscribeCount)}명</PressSubCount>
+          <PressSubBtn $isSubscribed={isSub} onClick={handleSubscribeClick}>
+            {isSub ? (
               <svg
                 width="10"
                 height="10"
@@ -43,7 +77,7 @@ function PressCard() {
                 />
               </svg>
             )}
-            {isSubscribed ? ' 구독중' : ' 구독'}
+            {isSub ? ' 구독 중' : ' 구독'}
           </PressSubBtn>
         </PressSubInfo>
       </PressInfo>

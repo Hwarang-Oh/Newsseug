@@ -1,0 +1,81 @@
+{
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "data": {
+      "press": [
+        {
+          "id": 0,
+          "name": "string",
+          "imageUrl": "string",
+          "description": "string",
+          "subscribeCount": 0,
+          "isSubscribed": true
+        }
+      ],
+      "articles": {
+        "sliceDetails": {
+          "currentPage": 0,
+          "hasFirst": true,
+          "hasNext": true
+        },
+        "content": [
+          {
+            "id": 0,
+            "pressName": "string",
+            "thumbnailUrl": "string",
+            "title": "string",
+            "viewCount": 0,
+            "createdAt": "2024-10-07T02:17:54.195Z"
+          },
+          {
+            "id": 0,
+            "pressName": "string",
+            "thumbnailUrl": "string",
+            "title": "string",
+            "viewCount": 0,
+            "createdAt": "2024-10-07T02:17:54.195Z"
+          },
+          {
+            "id": 0,
+            "pressName": "string",
+            "thumbnailUrl": "string",
+            "title": "string",
+            "viewCount": 0,
+            "createdAt": "2024-10-07T02:17:54.195Z"
+          },
+          {
+            "id": 0,
+            "pressName": "string",
+            "thumbnailUrl": "string",
+            "title": "string",
+            "viewCount": 0,
+            "createdAt": "2024-10-07T02:17:54.195Z"
+          },
+          {
+            "id": 0,
+            "pressName": "string",
+            "thumbnailUrl": "string",
+            "title": "string",
+            "viewCount": 0,
+            "createdAt": "2024-10-07T02:17:54.195Z"
+          },
+          {
+            "id": 0,
+            "pressName": "string",
+            "thumbnailUrl": "string",
+            "title": "string",
+            "viewCount": 0,
+            "createdAt": "2024-10-07T02:17:54.195Z"
+          },
+          {
+            "id": 0,
+            "pressName": "string",
+            "thumbnailUrl": "string",
+            "title": "string",
+            "viewCount": 0,
+            "createdAt": "2024-10-07T02:17:54.195Z"
+          }
+        ]
+      }
+    }
+  }
