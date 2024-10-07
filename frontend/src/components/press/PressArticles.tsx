@@ -6,23 +6,36 @@ import { Category, PageType } from 'types/api/article';
 import { fetchArticlesByPress } from 'apis/articleApi';
 import { PressArticleProps } from 'types/props/press';
 import React from 'react';
+import useStoreArticleDispatch from 'hooks/useStoreArticleDispatch';
 
 function PressArticles({
   pressId,
   activeCategory,
 }: Readonly<PressArticleProps>) {
-  const { articleList, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useContentsFetch<PageType>({
-      queryKey: [
-        'pressArticles',
-        Category[activeCategory as keyof typeof Category],
-        String(pressId),
-      ],
-      fetchData: fetchArticlesByPress,
-      category: Category[activeCategory as keyof typeof Category],
-      pressId: pressId,
-    });
+  const {
+    articleList,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    sliceDetails,
+  } = useContentsFetch<PageType>({
+    queryKey: [
+      'pressArticles',
+      Category[activeCategory as keyof typeof Category],
+      String(pressId),
+    ],
+    fetchData: fetchArticlesByPress,
+    category: Category[activeCategory as keyof typeof Category],
+    pressId: pressId,
+  });
 
+  useStoreArticleDispatch(
+    articleList,
+    sliceDetails,
+    'press',
+    activeCategory,
+    pressId,
+  );
   return (
     <Wrapper>
       <SubTitle title="업로드한 영상" />

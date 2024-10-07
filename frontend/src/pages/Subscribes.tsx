@@ -48,7 +48,7 @@ function Subscribes() {
   useStoreArticleDispatch(
     articleList,
     sliceDetails,
-    'subscribe',
+    'press',
     Category[activeCategory as keyof typeof Category],
     activePress,
   );

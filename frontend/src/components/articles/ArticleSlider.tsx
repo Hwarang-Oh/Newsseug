@@ -63,7 +63,6 @@ function ArticleSlider() {
     const hasUnloadedVideos = articleIds.some(
       (id: number) => !videoList.hasOwnProperty(id),
     );
-    console.log(hasUnloadedVideos);
     setIsLoading(hasUnloadedVideos);
   }, [videoList, articleIds]);
 
