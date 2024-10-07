@@ -1,3 +1,7 @@
+import { RootState } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
+import { useTheme } from 'styled-components';
+
 /**
  * IMP : Navigation Button의 Item Icon
  * ! 주의 : SVG 파일이 너무 길어서 Convention을 깨고 export를 앞에 두었음.
@@ -50,6 +54,7 @@ function SubScribeNavItem() {
 }
 
 function ShortFormNavItem() {
+  const theme = useTheme();
   return (
     <svg
       width="79"
@@ -72,7 +77,7 @@ function ShortFormNavItem() {
         width="72"
         height="72"
         rx="36"
-        stroke="white"
+        stroke={theme.bgColor}
         strokeWidth="7"
       />
       <path

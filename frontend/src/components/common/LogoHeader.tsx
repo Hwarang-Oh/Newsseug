@@ -30,7 +30,7 @@ const LogoContainer = styled.div<{ $size: number }>`
   height: 6.7%;
   padding: 0px 16px;
   align-items: center;
-  background-color: white;
+  background-color: ${({ theme }) => theme.bgColor};
   position: fixed;
   z-index: 5;
   top: 0;

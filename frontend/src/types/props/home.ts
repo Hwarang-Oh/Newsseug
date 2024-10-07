@@ -8,6 +8,7 @@ export interface SectionProps {
   fetchNextPage?: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
+  isLoading?: boolean;
   sectionType?: string;
   sliceDetails?: SliceDetails | {};
 }

@@ -20,12 +20,14 @@ export default Layout;
 const LayoutBox = styled.div<{ $backgroundColor?: string }>`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
-  background-color: ${({ $backgroundColor }) => $backgroundColor ?? '#ffffff'};
+  background-color: ${({ $backgroundColor, theme }) =>
+    $backgroundColor ?? theme.bgColor};
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
   box-sizing: border-box;
+  border: none;
 `;

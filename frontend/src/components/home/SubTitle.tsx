@@ -27,7 +27,7 @@ const SubTitleBoxStyle = styled.div`
 `;
 
 const SubTitleStyle = styled.p`
-  color: #202020;
+  color: ${({ theme }) => theme.textColor};
   font-family: Pretendard;
   font-size: 16px;
   font-style: normal;

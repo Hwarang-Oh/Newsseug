@@ -356,6 +356,7 @@ const ScrapName = styled.span`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: ${({ theme }) => theme.textColor};
 `;
 
 const ModalFooter = styled.div`

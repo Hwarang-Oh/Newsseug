@@ -7,8 +7,8 @@ import { getMemberFolderList } from 'apis/memberApi';
 
 function Folders() {
   const navigate = useNavigate();
-  const width = '120px';
-  const height = '160px';
+  const width = '144px';
+  const height = '192px';
   const handleClick = (folderId: number, title: string) => {
     navigate(`folders/${folderId}`, { state: { title } });
   };

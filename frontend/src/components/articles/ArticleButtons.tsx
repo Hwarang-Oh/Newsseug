@@ -109,7 +109,7 @@ const Button = styled.button`
   align-items: center;
   background-color: transparent;
   border: none;
-  color: ${({ theme }) => theme.bgColor};
+  color: #fff;
   gap: 4px;
 
   .span {

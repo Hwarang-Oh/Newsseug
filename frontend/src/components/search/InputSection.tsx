@@ -71,11 +71,6 @@ function InputSection({ keywordText = '' }: Readonly<InputSectionProps>) {
 
 export default InputSection;
 
-const SearchIcon = styled.img`
-  width: 20px;
-  height: 20px;
-`;
-
 const TextInput = styled.input`
   color: ${({ theme }) => theme.relaxColor.dark};
   font-size: 16px;
@@ -90,4 +85,5 @@ const TextInput = styled.input`
     border: none;
     outline: none;
   }
+  background-color: ${({ theme }) => theme.bgColor};
 `;

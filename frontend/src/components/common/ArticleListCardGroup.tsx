@@ -2,6 +2,7 @@ import styled, { keyframes } from 'styled-components';
 import ArticleListCard from 'components/common/ArticleListCard';
 import { useRef, useEffect } from 'react';
 import { ArticleListCardGroupProps } from 'types/common/common';
+import Spinner from './Spinner';
 
 /**
  * IMP : ArticleListCardGroup ( News Card Group ) Component
@@ -60,6 +61,7 @@ function ArticleListCardGroup({
 export default ArticleListCardGroup;
 
 const Container = styled.div`
+  background-color: ${({ theme }) => theme.bgColor};
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -81,7 +83,7 @@ const LoadingContainer = styled.div`
   justify-content: center;
 `;
 
-const Spinner = keyframes`
+const SpinnerAnimation = keyframes`
   0% {
     transform: rotate(0deg);
   }
@@ -97,6 +99,6 @@ const LoadingIndicator = styled.div`
   border: 3px solid rgba(195, 195, 195, 0.6);
   border-radius: 50%;
   border-top-color: #636767;
-  animation: ${Spinner} 0.6s linear infinite;
+  animation: ${SpinnerAnimation} 0.6s linear infinite;
   margin: 0 auto;
 `;

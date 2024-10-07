@@ -3,14 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { createFolder } from 'apis/folderApi';
-import { useDispatch } from 'react-redux';
-import { setMemberFolder } from '../../redux/memberFolderSlice';
 
 function CreateScrapModal({
   isOpen,
   onRequestClose,
 }: Readonly<ModalBasicProps>) {
-  const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
   const [folderName, setFolderName] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -31,9 +28,8 @@ function CreateScrapModal({
 
   const handleSubmitClick = async () => {
     try {
-      const data = await createFolder(folderName);
+      await createFolder(folderName);
 
-      dispatch(setMemberFolder(data));
       onRequestClose();
     } catch (error) {
       console.error('폴더 생성 실패', error);
@@ -79,6 +75,8 @@ function CreateScrapModal({
 export default CreateScrapModal;
 
 const TextInput = styled.input`
+  background-color: ${({ theme }) => theme.bgColor};
+
   color: ${({ theme }) => theme.relaxColor.littlelight};
   font-size: 16px;
   font-style: normal;

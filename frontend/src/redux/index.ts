@@ -2,21 +2,21 @@ import throttle from 'lodash.throttle';
 import memberReducer from './memberSlice';
 import articleReducer from './articleSlice';
 import subscribeReducer from './subscribeSlice';
-import memberFolderReducer from './memberFolderSlice';
 import { configureStore } from '@reduxjs/toolkit';
 import {
   saveStateToSessionStorage,
   loadStateFromSessionStorage,
 } from 'utils/stateUtils';
+import darkModeSlice from './darkModeSlice';
 
 const persistedState = loadStateFromSessionStorage();
 
 export const store = configureStore({
   reducer: {
     member: memberReducer,
-    memberFolder: memberFolderReducer,
     articles: articleReducer,
     subscribedPress: subscribeReducer,
+    darkMode: darkModeSlice,
   },
   preloadedState: persistedState,
 });
