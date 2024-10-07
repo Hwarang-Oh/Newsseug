@@ -2,15 +2,27 @@ import { getMemberInfo } from 'apis/memberApi';
 import { MemberInfo } from 'types/api/member';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@reduxjs/toolkit';
+import { toggleDarkMode } from '../../redux/darkModeSlice';
 
 function UserInfo() {
+  const dispatch = useDispatch();
+  const isDarkMode = useSelector(
+    (state: RootState) => state.darkMode.isDarkMode,
+  );
   const [userInfo, setUserInfo] = useState<MemberInfo>();
+
   const handleUpdateUserInfo = (data: MemberInfo) => {
     setUserInfo(data);
   };
 
   const handleLogOut = () => {
     // 여기에 로그아웃 로직 추가
+  };
+
+  const handleDarkMode = () => {
+    dispatch(toggleDarkMode());
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +48,11 @@ function UserInfo() {
         <UserName>{userInfo.nickname}</UserName>
         <SubBox>
           <LogoutBtn onClick={handleLogOut}>로그아웃</LogoutBtn>
+          <DarkModeBtn onClick={handleDarkMode}>
+            <DarkModeText>
+              {!isDarkMode ? '다크모드 ON' : '다크모드 OFF'}
+            </DarkModeText>
+          </DarkModeBtn>
         </SubBox>
       </InfoBox>
     </Wrapper>
@@ -45,6 +62,8 @@ function UserInfo() {
 export default UserInfo;
 
 const Wrapper = styled.div`
+  background-color: ${({ theme }) => theme.bgColor};
+  border: none;
   display: flex;
   width: 100%;
   height: fit-content;
@@ -84,19 +103,11 @@ const UserName = styled.h1`
 const SubBox = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: ${({ theme }) => theme.relaxColor.littlelight};
-`;
-
-const UserId = styled.span`
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 140%;
-  letter-spacing: -0.3px;
+  gap: 10px;
 `;
 
 const LogoutBtn = styled.a`
+  color: ${({ theme }) => theme.relaxColor.littlelight};
   font-family: Pretendard;
   font-size: 10px;
   font-style: normal;
@@ -106,4 +117,21 @@ const LogoutBtn = styled.a`
   &:active {
     text-decoration: underline;
   }
+`;
+
+const DarkModeBtn = styled.button`
+  border-radius: 5px;
+  background: ${({ theme }) => theme.textColor};
+  display: flex;
+  padding: 3px;
+  align-items: center;
+`;
+
+const DarkModeText = styled.p`
+  color: ${({ theme }) => theme.bgColor};
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: -0.25px;
 `;

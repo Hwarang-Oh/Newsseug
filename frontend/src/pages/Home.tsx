@@ -6,6 +6,7 @@ import styled, { keyframes } from 'styled-components';
 import { Category, SectionType, SectionTypeMatch } from 'types/api/article';
 import { useNavigate } from 'react-router-dom';
 import { fetchArticles, fetchArticlesByToday } from 'apis/articleApi';
+import Spinner from 'components/common/Spinner';
 
 function Home() {
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ function Home() {
             fetchNextPage={section.fetchNextPage}
             hasNextPage={section.hasNextPage}
             isFetchingNextPage={section.isFetchingNextPage}
+            isLoading={section.isLoading}
             sectionType={section.sectionType}
             sliceDetails={section.sliceDetails}
           />

@@ -11,7 +11,6 @@ const BASE_URL = 'https://j11a301.p.ssafy.io/api/v1';
  * * 2. Get /members/folders : Member의 폴더 정보를 조회한다.
  * * 3. Get /interactions/histories?page=1 : Member의 히스토리 정보를 조회한다.
  * ! 2번과 3번 API는 약간 중복과 분류 문제가 존재한다.
- * TODO : 2번과 3번 API의 문제를 해결해야 한다.
  */
 export const memberHandlers = [
   http.get(MEMBER_URL, () => {

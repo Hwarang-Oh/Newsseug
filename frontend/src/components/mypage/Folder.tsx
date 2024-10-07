@@ -34,7 +34,7 @@ const Wrapper = styled.div<{ width?: string; height?: string; url: string }>`
   align-items: center;
   justify-content: center;
   gap: 2px;
-  border-radius: 5px;
+  border-radius: 8px;
   background-image: ${({ url }) => `url(${url})`};
   background-size: cover; /* 이미지가 Wrapper에 맞게 꽉 채우되, 비율을 유지 */
   background-position: center; /* 이미지를 중앙에 맞춤 */
@@ -47,7 +47,7 @@ const Wrapper = styled.div<{ width?: string; height?: string; url: string }>`
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
+    border-radius: 8px;
     z-index: 1;
   }
 
@@ -90,7 +90,7 @@ const FolderTagIcon = styled.img<{ width: string }>`
   width: ${({ width }) =>
     width === '180px' || width === '100%' ? '25px' : '20px'};
   height: ${({ width }) =>
-    width === '180px' || width === '100%' ? '25px' : '20px'};
+    width === '180px' || width === '100%' ? '22px' : '20px'};
 `;
 
 const FolderTagCnt = styled.p<{ width: string }>`
@@ -102,5 +102,7 @@ const FolderTagCnt = styled.p<{ width: string }>`
   height: ${({ width }) =>
     width === '180px' || width === '100%' ? '25px' : '20px'};
   font-size: ${({ width }) =>
-    width === '180px' || width === '100%' ? '18px' : '14px'};
+    width === '180px' || width === '100%' ? '16px' : '14px'};
+  font-family: 'Pretendard-Light' !important;
+  color: ${({ theme }) => theme.textColor};
 `;

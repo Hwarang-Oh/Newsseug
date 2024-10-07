@@ -48,6 +48,7 @@ const CustomLogoContainer = styled(LogoContainer)<{
   position: relative;
   border: ${({ $isSubscribed, theme }) =>
     `${$isSubscribed ? '2px' : '1px'} solid ${$isSubscribed ? theme.mainColor : theme.relaxColor.superlight}`};
+  background-color: ${({ theme }) => theme.bgColor};
 `;
 
 const SubscribeIcon = styled.div`

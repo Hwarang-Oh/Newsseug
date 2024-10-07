@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { SubscribeHeaderProps } from 'types/props/subscribe';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ function SubscribeHeader({
   variant,
 }: Readonly<SubscribeHeaderProps>) {
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const handleViewAllClick = () => {
     navigate('/subscribes/all');
@@ -35,7 +36,7 @@ function SubscribeHeader({
               fillRule="evenodd"
               clipRule="evenodd"
               d="M3.64645 1.14645C3.84171 0.951184 4.15829 0.951184 4.35355 1.14645L8.85355 5.64645C9.04882 5.84171 9.04882 6.15829 8.85355 6.35355L4.35355 10.8536C4.15829 11.0488 3.84171 11.0488 3.64645 10.8536C3.45118 10.6583 3.45118 10.3417 3.64645 10.1464L7.79289 6L3.64645 1.85355C3.45118 1.65829 3.45118 1.34171 3.64645 1.14645Z"
-              fill="#626262"
+              fill={theme.relaxColor.dark}
             />
           </svg>
         </ViewAll>
@@ -60,6 +61,7 @@ const Title = styled.h1`
   font-weight: 600;
   line-height: 140%;
   padding: 0;
+  color: ${({ theme }) => theme.textColor};
 `;
 
 const SubscribeCount = styled.span`
@@ -81,7 +83,7 @@ const ViewAll = styled.div`
 `;
 
 const ViewAllText = styled.p`
-  color: #626262;
+  color: ${({ theme }) => theme.relaxColor.dark};
   font-size: 11px;
   font-weight: 500;
   line-height: 140%;

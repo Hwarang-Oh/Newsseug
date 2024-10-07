@@ -1,9 +1,9 @@
 import api from 'apis/commonApi';
 import { isAxiosError } from 'axios';
 import { UserInputProps } from 'types/props/register';
-import { MemberFolder, MemberFolderInfo } from 'types/api/folder';
+import { MemberFolder } from 'types/api/folder';
 import { PageType } from 'types/api/article';
-import { MemberHistoryInfo, MemberInfo } from 'types/api/member';
+import { MemberInfo } from 'types/api/member';
 const MEMBER_URL = '/api/v1/members';
 
 /**
@@ -34,7 +34,7 @@ export const registerMember = async (
 export const getMemberInfo = async (): Promise<MemberInfo> => {
   try {
     const response = await api.get(MEMBER_URL);
-    return response.data.data;
+    return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
