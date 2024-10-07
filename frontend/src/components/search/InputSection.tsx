@@ -1,12 +1,36 @@
 import styled, { useTheme } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { InputSectionProps } from 'types/props/search';
+import { useEffect, useState } from 'react';
+import { InputSectionProps, KeywordItem } from 'types/props/search';
+
+const STORAGE_KEY = 'searchHistory';
 
 function InputSection({ keywordText = '' }: Readonly<InputSectionProps>) {
   const navigate = useNavigate();
   const theme = useTheme();
   const [keyword, setKeyword] = useState<string>(keywordText);
+  const [keywordHistoryList, setKeywordHistoryList] = useState<KeywordItem[]>(
+    [],
+  );
+
+  useEffect(() => {
+    const savedKeywords = localStorage.getItem(STORAGE_KEY);
+    if (savedKeywords) {
+      setKeywordHistoryList(JSON.parse(savedKeywords));
+    }
+  }, []);
+
+  const addKeyword = (newKeyword: string) => {
+    if (!newKeyword) return;
+
+    const updatedKeywords = [
+      { keywordText: newKeyword, isHistory: true },
+      ...keywordHistoryList.filter((item) => item.keywordText !== newKeyword),
+    ].slice(0, 10); // 최신 10개의 검색어만 저장
+
+    setKeywordHistoryList(updatedKeywords);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedKeywords));
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.currentTarget.value);
@@ -14,6 +38,7 @@ function InputSection({ keywordText = '' }: Readonly<InputSectionProps>) {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && keyword.trim()) {
+      addKeyword(keyword);
       navigate(`/search/result?keyword=${keyword}`);
     }
   };

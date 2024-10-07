@@ -35,6 +35,7 @@ function SearchResult() {
     }
   }, [keyword, activeCategory]);
 
+  // 무한 스크롤 설정
   const { data, isLoading, isError, fetchNextPage, hasNextPage } =
     useInfiniteQuery<SearchResultInfo>(
       ['searchArticles', keyword, activeCategory],
