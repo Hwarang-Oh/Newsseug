@@ -20,4 +20,4 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY . /app
 
 # FastAPI 서버 실행 (Uvicorn 사용)
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8886"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0"]
