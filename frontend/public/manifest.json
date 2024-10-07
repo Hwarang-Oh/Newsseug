@@ -1,23 +1,54 @@
 {
-  "short_name": "뉴쓱",
-  "name": "뉴쓱",
+  "id": "j11a301.p.ssafy.io",
+  "name": "newsseug",
+  "short_name": "newsseug",
+  "description": "뉴쓱은 AI를 기반으로 사용자가 원하는 뉴스를 숏폼으로 생성해주는 서비스입니다",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "src": "newsseug_favicon.ico",
+      "sizes": "48X48",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "newsseug_logo192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "newsseug_logo512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
+  "screenshots":[
+    {
+      "src": "./screenshots/newsseug_home.png",
+      "sizes": "1080X2400",
+      "type": "image/png"
+    },
+    {
+      "src": "./screenshots/newsseug_subscribe.png",
+      "sizes": "1104X2424",
+      "type": "image/png"
+    },
+    {
+      "src": "./screenshots/newsseug_press.png",
+      "sizes": "1080X2400",
+      "type": "image/png"
+    },
+    {
+      "src": "./screenshots/newsseug_mypage.png",
+      "sizes": "1080X2400",
+      "type": "image/png"
+    },
+    {
+      "src": "./screenshots/newsseug_shortform.png",
+      "sizes": "1440X3200",
+      "type": "image/png"
+    }
+  ],
+  "lang": "ko",
+  "orientation": "portrait",
   "start_url": "/splash",
   "display": "standalone",
   "theme_color": "#000000",
