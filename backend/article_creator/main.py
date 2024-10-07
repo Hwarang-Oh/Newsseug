@@ -69,6 +69,8 @@ class CreateArticleRequestDto(BaseModel):
     
 @app.post("/video")
 async def create_and_register_article(article_request_dto: CreateArticleRequestDto, session = Depends(get_session)):
+    
+    logger.info(article_request_dto)
 
     # 새로운 기사 객체 생성
     new_article = Article(title=article_request_dto.title, source_url=article_request_dto.source_url, category=article_request_dto.category, source_created_at=article_request_dto.source_created_at, press_id=article_request_dto.press_id, conversion_status = ConversionStatus.RUNNING)
