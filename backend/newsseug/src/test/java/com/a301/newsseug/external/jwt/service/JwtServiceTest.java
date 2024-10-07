@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,30 +52,32 @@ public class JwtServiceTest {
     @Mock
     private JwtProperties.Expiration expiration;
 
+    @Mock
+    private RedisTokenService redisTokenService;
+
     @InjectMocks
     private JwtServiceImpl jwtService;
 
     private MockedStatic<ClockUtil> mockedClockUtil;
 
     private Member member;
+    private String providerId;
     private Clock clock;
     private LocalDateTime fixedLocalDateTime;
     private Date fixedDate;
-    private String accessToken;
 
     @BeforeEach
     void beforeEach() {
-
         lenient().when(jwtProperties.secret()).thenReturn(JWT_SECRET);
         lenient().when(jwtProperties.expiration()).thenReturn(expiration);
         lenient().when(expiration.access()).thenReturn(ACCESS_TOKEN_EXPIRATION);
         lenient().when(expiration.refresh()).thenReturn(REFRESH_TOKEN_EXPIRATION);
 
         member = MemberFactory.memberOfKakao(1L);
+        providerId = member.getOAuth2Details().getProviderId();
         clock = Clock.systemDefaultZone();
         fixedLocalDateTime = LocalDateTime.now(clock);
         fixedDate = Date.from(fixedLocalDateTime.atZone(ZoneId.systemDefault()).toInstant());
-        accessToken = jwtService.issueToken(member.getOAuth2Details().getProviderId(), TokenType.ACCESS_TOKEN);
 
         mockedClockUtil = mockStatic(ClockUtil.class);
 
@@ -85,163 +88,252 @@ public class JwtServiceTest {
         mockedClockUtil
                 .when(() -> ClockUtil.convertToDate(fixedLocalDateTime))
                 .thenReturn(fixedDate);
-
     }
 
     @Test
     @DisplayName("토큰 발행[성공 - Access]")
     public void issueAccessToken() {
-
         // Given
         mockedClockUtil
                 .when(() -> ClockUtil.getExpirationDate(fixedLocalDateTime, ACCESS_TOKEN_EXPIRATION))
                 .thenReturn(
-                        Date.from(fixedLocalDateTime.plusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
+                        Date.from(fixedLocalDateTime.plusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault())
+                                .toInstant())
                 );
 
-        Header header = jwtService.parseHeader(accessToken);
-        Claims claims = jwtService.parseClaims(accessToken);
-
         // When
+        String issuedToken = jwtService.issueToken(providerId, TokenType.ACCESS_TOKEN);
+        Header header = jwtService.parseHeader(issuedToken);
+        Claims claims = jwtService.parseClaims(issuedToken);
         Date issuedAt = claims.getIssuedAt();
         Date expiration = claims.getExpiration();
 
         // Then
+        assertThat(issuedToken).startsWith("Bearer ");
         assertThat(header.get("type")).isEqualTo(TokenType.ACCESS_TOKEN.getValue());
-        assertThat(claims.getSubject()).isEqualTo(member.getOAuth2Details().getProviderId());
+        assertThat(claims.getSubject()).isEqualTo(providerId);
         assertThat(issuedAt).isNotNull();
         assertThat(expiration).isNotNull();
-        assertThat(expiration.getTime() - issuedAt.getTime()).isEqualTo(TimeUnit.SECONDS.toMillis(ACCESS_TOKEN_EXPIRATION));
-
+        assertThat(expiration.getTime() - issuedAt.getTime()).isEqualTo(
+                TimeUnit.SECONDS.toMillis(ACCESS_TOKEN_EXPIRATION));
     }
 
     @Test
     @DisplayName("토큰 발행[성공 - Refresh]")
     public void issueRefreshToken() {
-
-
         // Given
         mockedClockUtil
                 .when(() -> ClockUtil.getExpirationDate(fixedLocalDateTime, REFRESH_TOKEN_EXPIRATION))
                 .thenReturn(
-                        Date.from(fixedLocalDateTime.plusSeconds(REFRESH_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
+                        Date.from(
+                                fixedLocalDateTime.plusSeconds(REFRESH_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault())
+                                        .toInstant())
                 );
 
-        String refreshToken = jwtService.issueToken(member.getOAuth2Details().getProviderId(), TokenType.REFRESH_TOKEN);
-        Header header = jwtService.parseHeader(refreshToken);
-        Claims claims = jwtService.parseClaims(refreshToken);
-
         // When
+        String issuedToken = jwtService.issueToken(providerId, TokenType.REFRESH_TOKEN);
+        Header header = jwtService.parseHeader(issuedToken);
+        Claims claims = jwtService.parseClaims(issuedToken);
         Date issuedAt = claims.getIssuedAt();
         Date expiration = claims.getExpiration();
 
         // Then
+        assertThat(issuedToken).startsWith("Bearer ");
         assertThat(header.get("type")).isEqualTo(TokenType.REFRESH_TOKEN.getValue());
-        assertThat(claims.getSubject()).isEqualTo(member.getOAuth2Details().getProviderId());
+        assertThat(claims.getSubject()).isEqualTo(providerId);
         assertThat(issuedAt).isNotNull();
         assertThat(expiration).isNotNull();
-        assertThat(expiration.getTime() - issuedAt.getTime()).isEqualTo(TimeUnit.SECONDS.toMillis(REFRESH_TOKEN_EXPIRATION));
-
+        assertThat(expiration.getTime() - issuedAt.getTime()).isEqualTo(
+                TimeUnit.SECONDS.toMillis(REFRESH_TOKEN_EXPIRATION));
     }
 
     @Test
     @DisplayName("토큰 발행[실패]")
     public void failIssueToken() {
-        assertThatThrownBy(() -> jwtService.issueToken(member.getOAuth2Details().getProviderId(), null))
+        assertThatThrownBy(() -> jwtService.issueToken(providerId, null))
                 .isInstanceOf(FailToIssueTokenException.class);
     }
 
     @Test
-    @DisplayName("토큰 추출[성공]")
-    public void resolveToken() {
+    @DisplayName("토큰 재발행[성공]")
+    void reissueAccessTokenSuccess() {
+        // Given
+        String refreshToken = "Bearer refreshToken";
+        given(redisTokenService.findByKey(providerId)).willReturn(Optional.of(refreshToken));
 
+        // When
+        String reissuedAccessToken = jwtService.reissueAccessToken(refreshToken, providerId);
+
+        // Then
+        verify(redisTokenService).findByKey(providerId);
+        assertThat(reissuedAccessToken).startsWith("Bearer ");
+    }
+
+    @Test
+    @DisplayName("토큰 재발행[실패 - 만료된 리프레쉬 토큰]")
+    void reissueAccessTokenFailByInvalidToken() {
+        // Given
+        String refreshToken = "Bearer refreshToken";
+        given(redisTokenService.findByKey(providerId)).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> jwtService.reissueAccessToken(refreshToken, providerId))
+                .isInstanceOf(ExpiredTokenException.class);
+
+        verify(redisTokenService).findByKey(providerId);
+    }
+
+    @Test
+    @DisplayName("토큰 재발행[실패 - 신뢰할 수 없는 리프레시 토큰]")
+    void reissueAccessTokenFailByUntrustworthyToken() {
+        // Given
+        String refreshToken = "Bearer refreshToken";
+        String savedRefreshToken = "Bearer differentToken";
+        given(redisTokenService.findByKey(providerId)).willReturn(Optional.of(savedRefreshToken));
+
+        // When & Then
+        assertThatThrownBy(() -> jwtService.reissueAccessToken(refreshToken, providerId))
+                .isInstanceOf(UntrustworthyTokenException.class);
+
+        verify(redisTokenService).findByKey(providerId);
+    }
+
+
+    @Test
+    @DisplayName("토큰 재발행[실패 - 만료된 리프레쉬 토큰]")
+    void reissueAccessTokenFailByExpiredToken() {
+        // Given
+        String refreshToken = "Bearer refreshToken";
+        given(redisTokenService.findByKey(providerId)).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> jwtService.reissueAccessToken(refreshToken, providerId))
+                .isInstanceOf(ExpiredTokenException.class);
+
+        verify(redisTokenService).findByKey(providerId);
+    }
+
+    @Test
+    @DisplayName("리프레시 토큰 삭제[성공]")
+    void discardRefreshTokenSuccess() {
+        // Given
+        given(redisTokenService.deleteByKey(providerId)).willReturn(true);
+
+        // When
+        Boolean result = jwtService.discardRefreshToken(providerId);
+
+        // Then
+        assertThat(result).isTrue();
+        verify(redisTokenService).deleteByKey(providerId);
+    }
+
+    @Test
+    @DisplayName("리프레시 토큰 삭제[실패]")
+    void discardRefreshTokenFail() {
+        // Given
+        given(redisTokenService.deleteByKey(providerId)).willReturn(false);
+
+        // When
+        Boolean result = jwtService.discardRefreshToken(providerId);
+
+        // Then
+        assertThat(result).isFalse();
+        verify(redisTokenService).deleteByKey(providerId);
+    }
+
+    @Test
+    @DisplayName("토큰 추출[성공]")
+    public void resolveTokenSuccess() {
         // Given
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        String validToken = "Bearer validAccessToken";
-
-        given(request.getHeader(AUTHORIZATION)).willReturn(validToken);
+        String accessToken = jwtService.issueToken(providerId, TokenType.ACCESS_TOKEN);
+        given(request.getHeader(AUTHORIZATION)).willReturn(accessToken);
 
         // When
         String token = jwtService.resolveToken(request);
 
         // Then
-        assertThat(token).isEqualTo(validToken);
-
+        assertThat(token).isEqualTo(accessToken);
     }
 
     @Test
     @DisplayName("토큰 파싱[성공]")
     public void parseClaimsSuccess() {
-
+        // Given
         mockedClockUtil
                 .when(() -> ClockUtil.getExpirationDate(fixedLocalDateTime, ACCESS_TOKEN_EXPIRATION))
                 .thenReturn(
-                        Date.from(fixedLocalDateTime.plusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
+                        Date.from(fixedLocalDateTime.plusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault())
+                                .toInstant())
                 );
 
-        Claims claims = jwtService.parseClaims(accessToken);
-        assertThat(claims).isNotNull();
+        String accessToken = jwtService.issueToken(providerId, TokenType.ACCESS_TOKEN);
 
+        // When
+        Claims claims = jwtService.parseClaims(accessToken);
+
+        // Then
+        assertThat(claims).isNotNull();
     }
 
     @Test
     @DisplayName("토큰 파싱[실패 - 신뢰할 수 없는 토큰]")
     public void parseClaimsFail() {
-
         mockedClockUtil
                 .when(() -> ClockUtil.getExpirationDate(fixedLocalDateTime, ACCESS_TOKEN_EXPIRATION))
                 .thenReturn(
-                        Date.from(fixedLocalDateTime.plusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
+                        Date.from(fixedLocalDateTime.plusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault())
+                                .toInstant())
                 );
 
         assertThatThrownBy(() -> jwtService.parseClaims("fail"))
                 .isInstanceOf(UntrustworthyTokenException.class);
-
     }
 
     @Test
     @DisplayName("토큰 검증[성공 - 정상]")
     public void invalidateTokenByTrue() {
-
+        // Given
         mockedClockUtil
                 .when(() -> ClockUtil.getExpirationDate(fixedLocalDateTime, ACCESS_TOKEN_EXPIRATION))
                 .thenReturn(
-                        Date.from(fixedLocalDateTime.plusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
+                        Date.from(fixedLocalDateTime.plusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault())
+                                .toInstant())
                 );
 
-        boolean isValid = jwtService.isValid(accessToken);
-        assertThat(isValid).isTrue();
+        String accessToken = jwtService.issueToken(providerId, TokenType.ACCESS_TOKEN);
 
+        // When
+        boolean isValid = jwtService.isValid(accessToken);
+
+        // Then
+        assertThat(isValid).isTrue();
     }
 
     @Test
     @DisplayName("토큰 검증[성공 - NULL]")
     public void invalidateTokenByNull() {
-
         // Given
         String token = null;
 
         // When
-        Boolean isValid = jwtService.isValid(token);
+        boolean isValid = jwtService.isValid(token);
 
         // Then
         assertThat(isValid).isFalse();
-
-
     }
 
     @Test
     @DisplayName("토큰 검증[실패 - 서명 불일치]")
     public void invalidateSignatureToken() {
-
         mockedClockUtil
                 .when(() -> ClockUtil.getExpirationDate(fixedLocalDateTime, ACCESS_TOKEN_EXPIRATION))
                 .thenReturn(
-                        Date.from(fixedLocalDateTime.minusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
+                        Date.from(
+                                fixedLocalDateTime.minusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault())
+                                        .toInstant())
                 );
 
         // Given
-        String token =TOKEN_PREFIX.concat(
+        String token = TOKEN_PREFIX.concat(
                 Jwts.builder()
                         .header()
                         .add("type", TokenType.ACCESS_TOKEN.getValue())
@@ -256,37 +348,34 @@ public class JwtServiceTest {
         // Then
         assertThatThrownBy(() -> jwtService.isValid(token))
                 .isInstanceOf(InvalidSignatureException.class);
-
-
     }
 
     @Test
     @DisplayName("토큰 검증[실패 - 유효하지 않은 형식]")
     public void invalidateFormatToken() {
-
         String invalidToken = TOKEN_PREFIX.concat("invalidTokenString");
+
         assertThatThrownBy(() -> jwtService.isValid(invalidToken))
                 .isInstanceOf(InvalidFormatException.class);
-
     }
 
     @Test
     @DisplayName("토큰 검증[실패 - 기간 만료]")
     public void invalidateExpiredToken() {
-
         mockedClockUtil
                 .when(() -> ClockUtil.getExpirationDate(fixedLocalDateTime, ACCESS_TOKEN_EXPIRATION))
                 .thenReturn(
-                        Date.from(fixedLocalDateTime.minusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault()).toInstant())
+                        Date.from(
+                                fixedLocalDateTime.minusSeconds(ACCESS_TOKEN_EXPIRATION).atZone(ZoneId.systemDefault())
+                                        .toInstant())
                 );
 
         // Given
-        String expiredToken = jwtService.issueToken(member.getOAuth2Details().getProviderId(), TokenType.ACCESS_TOKEN);
+        String expiredToken = jwtService.issueToken(providerId, TokenType.ACCESS_TOKEN);
 
         // Then
         assertThatThrownBy(() -> jwtService.isValid(expiredToken))
                 .isInstanceOf(ExpiredTokenException.class);
-
     }
 
     @AfterEach

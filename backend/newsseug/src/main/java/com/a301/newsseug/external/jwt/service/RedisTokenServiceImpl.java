@@ -35,8 +35,8 @@ public class RedisTokenServiceImpl implements RedisTokenService {
     }
 
     @Override
-    public void deleteByKey(String key) {
-        redisTemplate.delete(String.format(REFRESH_TOKEN_KEY_PREFIX, key));
+    public Boolean deleteByKey(String key) {
+        return redisTemplate.delete(String.format(REFRESH_TOKEN_KEY_PREFIX, key));
     }
 
 }

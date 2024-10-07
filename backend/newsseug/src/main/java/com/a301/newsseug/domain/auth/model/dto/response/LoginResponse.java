@@ -8,13 +8,17 @@ import lombok.Builder;
 public record LoginResponse(
         
         @Schema(description = "어세스 토큰")
-        String accessToken
+        String accessToken,
+
+        @Schema(description = "리프레쉬 토큰")
+        String refreshToken
         
 ) {
 
-    public static LoginResponse of(String accessToken) {
+    public static LoginResponse of(String accessToken, String refreshToken) {
         return LoginResponse.builder()
                 .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
