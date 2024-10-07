@@ -3,6 +3,9 @@ package com.a301.newsseug.domain.press.model.dto.response;
 import com.a301.newsseug.domain.press.model.entity.Press;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
 
@@ -41,6 +44,12 @@ public record GetPressResponse(
 			.build();
 	}
 
+	public static List<GetPressResponse> of(List<Press> press) {
+		return press.stream()
+				.map(GetPressResponse::of)
+				.toList();
+	}
+
 	public static GetPressResponse of(Press press, Boolean isSubscribed) {
 		return GetPressResponse.builder()
 			.id(press.getPressId())
@@ -50,6 +59,12 @@ public record GetPressResponse(
 			.subscribeCount(press.getSubscribeCount())
 			.isSubscribed(isSubscribed)
 			.build();
+	}
+
+	public static List<GetPressResponse> of(List<Press> press, Set<Press> subscribePress) {
+		return press.stream()
+				.map(p -> GetPressResponse.of(p, subscribePress.contains(p)))
+				.toList();
 	}
 
 }

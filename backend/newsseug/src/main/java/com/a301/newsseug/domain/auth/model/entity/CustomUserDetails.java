@@ -3,6 +3,7 @@ package com.a301.newsseug.domain.auth.model.entity;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,7 +56,13 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+
+        if (Objects.nonNull(member)) {
+            return true;
+        }
+
+        return false;
+
     }
 
 }
