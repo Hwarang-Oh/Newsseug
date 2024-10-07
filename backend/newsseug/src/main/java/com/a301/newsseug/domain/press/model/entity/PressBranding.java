@@ -24,4 +24,5 @@ public class PressBranding {
 			.imageUrl(imageUrl)
 			.build();
 	}
+
 }
