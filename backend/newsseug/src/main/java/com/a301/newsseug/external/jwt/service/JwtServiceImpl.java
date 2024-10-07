@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,17 +33,12 @@ import org.springframework.stereotype.Service;
 public class JwtServiceImpl implements JwtService {
 
     private static final String TOKEN_PREFIX = "Bearer ";
-    private final JwtProperties jwtProperties;
 
-    /**
-     * 사용자 정보를 바탕으로 JWT 토큰을 발행하는 메서드
-     *
-     * @param providerId 사용자 정보
-     * @param type   토큰 타입 (ACCESS_TOKEN, REFRESH_TOKEN)
-     * @return 발행된 JWT 토큰
-     * @throws FailToIssueTokenException 토큰 발행 실패 시 예외 발생
-     */
-    public String issueToken(String providerId, TokenType type) throws FailToIssueTokenException {
+    private final JwtProperties jwtProperties;
+    private final RedisTokenService redisTokenService;
+
+    @Override
+    public String issueToken(String providerId, TokenType type) {
 
         if (Objects.nonNull(type)) {
 
@@ -63,14 +59,23 @@ public class JwtServiceImpl implements JwtService {
 
     }
 
-    /**
-     * JWT 토큰을 생성하는 메서드
-     *
-     * @param providerId         사용자 정보
-     * @param expirationTime 토큰 만료 시간
-     * @param type           토큰 타입 (ACCESS_TOKEN, REFRESH_TOKEN)
-     * @return 생성된 JWT 토큰
-     */
+    @Override
+    public String reissueAccessToken(String refreshToken, String providerId) {
+
+        Optional<String> savedRefreshToken = redisTokenService.findByKey(providerId);
+
+        if (savedRefreshToken.isEmpty()) {
+            throw new ExpiredTokenException();
+        }
+
+        if (!savedRefreshToken.get().equals(refreshToken))  {
+            throw new UntrustworthyTokenException();
+        }
+
+        return createToken(providerId, jwtProperties.expiration().access(), TokenType.ACCESS_TOKEN);
+
+    }
+
     private String createToken(String providerId, long expirationTime, TokenType type) {
 
         LocalDateTime now = ClockUtil.getLocalDateTime();
@@ -89,12 +94,12 @@ public class JwtServiceImpl implements JwtService {
 
     }
 
-    /**
-     * JWT 토큰의 헤더를 파싱하는 메서드
-     *
-     * @param token JWT 토큰
-     * @return 파싱된 헤더
-     */
+    @Override
+    public Boolean discardRefreshToken(String providerId) {
+        return redisTokenService.deleteByKey(providerId);
+    }
+
+    @Override
     public Header parseHeader(String token) {
 
         return Jwts.parser()
@@ -104,12 +109,7 @@ public class JwtServiceImpl implements JwtService {
                 .getHeader();
     }
 
-    /**
-     * JWT 토큰의 클레임을 파싱하는 메서드
-     *
-     * @param token JWT 토큰
-     * @return 파싱된 클레임
-     */
+    @Override
     public Claims parseClaims(String token) {
 
         return Jwts.parser()
@@ -120,12 +120,7 @@ public class JwtServiceImpl implements JwtService {
 
     }
 
-    /**
-     * Authorization 헤더에서 Bearer 토큰을 추출하는 메서드
-     *
-     * @param request HttpServletRequest 객체
-     * @return 추출된 JWT 토큰
-     */
+    @Override
     public String resolveToken(HttpServletRequest request) throws InvalidFormatException {
         return request.getHeader(AUTHORIZATION);
     }
@@ -140,12 +135,7 @@ public class JwtServiceImpl implements JwtService {
 
     }
 
-    /**
-     * JWT 토큰이 유효한지 검사하는 메서드
-     *
-     * @param token JWT 토큰
-     * @return 토큰이 유효한지 여부
-     */
+    @Override
     public boolean isValid(String token) throws JwtException {
 
         if (Objects.isNull(token)) {
