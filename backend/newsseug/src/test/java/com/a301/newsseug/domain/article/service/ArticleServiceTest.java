@@ -14,7 +14,7 @@ import com.a301.newsseug.domain.member.factory.entity.MemberFactory;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.model.entity.Press;
-import com.a301.newsseug.external.redis.config.CountProperties;
+import com.a301.newsseug.external.redis.config.RedisProperties;
 import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.util.ClockUtil;
@@ -51,7 +51,7 @@ public class ArticleServiceTest {
     private RedisCountService redisCountService;
 
     @Mock
-    private CountProperties countProperties;
+    private RedisProperties redisProperties;
 
     @Mock
     private SubscribeRepository subscribeRepository;
