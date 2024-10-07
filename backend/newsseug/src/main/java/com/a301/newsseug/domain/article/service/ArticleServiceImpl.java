@@ -12,7 +12,7 @@ import com.a301.newsseug.domain.interaction.repository.LikeRepository;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.repository.PressRepository;
-import com.a301.newsseug.external.redis.config.CountProperties;
+import com.a301.newsseug.external.redis.config.RedisProperties;
 import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.model.entity.SliceDetails;
@@ -38,7 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final HateRepository hateRepository;
     private final SubscribeRepository subscribeRepository;
     private final RedisCountService redisCountService;
-    private final CountProperties countProperties;
+    private final RedisProperties redisProperties;
 
     @Override
     public GetArticleDetailsResponse getArticleDetail(CustomUserDetails userDetails, Long articleId) {
@@ -52,7 +52,7 @@ public class ArticleServiceImpl implements ArticleService {
         Long currentViewCount = redisCountService.increment(viewCountHashKey, articleId, incrementValue);
 
         // 현재 조회수가 임계치에 도달했을 경우 DB에 업데이트 후 Redis에서 초기화
-        if (currentViewCount >= countProperties.getThreshold()) {
+        if (currentViewCount >= redisProperties.viewCounter().threshold()) {
             articleRepository.updateCount("viewCount", articleId, currentViewCount);
             redisCountService.deleteByKey(viewCountHashKey, articleId);
         }
