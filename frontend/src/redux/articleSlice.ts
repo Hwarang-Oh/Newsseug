@@ -7,7 +7,8 @@ interface ArticleState {
   sliceDetails: SliceDetails | {};
   articlesFrom: string;
   activeCategory: string;
-  activePress: string | null;
+  activePress: number | null;
+  folderId: number | null;
   videoList: { [id: number]: ArticleVideo };
 }
 
@@ -17,6 +18,7 @@ const initialArticleState: ArticleState = {
   articlesFrom: '',
   activeCategory: 'ALL',
   activePress: null,
+  folderId: null,
   videoList: {},
 };
 
@@ -36,8 +38,11 @@ const articleSlice = createSlice({
     setActiveCategory(state, action: PayloadAction<string>) {
       state.activeCategory = action.payload;
     },
-    setActviePress(state, action: PayloadAction<string | null>) {
+    setActviePress(state, action: PayloadAction<number | null>) {
       state.activePress = action.payload;
+    },
+    setFolderId(state, action: PayloadAction<number | null>) {
+      state.folderId = action.payload;
     },
     setVideoList(state, action: PayloadAction<{ [id: number]: ArticleVideo }>) {
       state.videoList = {
@@ -54,6 +59,7 @@ export const {
   setArticleFrom,
   setActiveCategory,
   setActviePress,
+  setFolderId,
   setVideoList,
 } = articleSlice.actions;
 export default articleSlice.reducer;

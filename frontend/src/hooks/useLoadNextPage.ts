@@ -17,6 +17,7 @@ export const useLoadNextPage = () => {
     activeCategory,
     articlesFrom,
     activePress,
+    folderId,
   } = useSelector((state: RootState) => state.articles);
 
   const loadNextPage = async () => {
@@ -49,23 +50,25 @@ export const useLoadNextPage = () => {
           });
           break;
 
-        // case 'folder':
-        //   newArticles = await getFolderInfo({
-        //     folderId: activeCategory,
-        //     page: nextPage,
-        //   });
-        //   break;
+        case 'folder': {
+          const articles = await getFolderInfo(folderId, nextPage);
+          newArticles = articles.articles;
+          break;
+        }
 
-        // case 'history':
-        //   newArticles = await getMemberHistoryList(nextPage);
-        //   break;
+        case 'history':
+          newArticles = await getMemberHistoryList(nextPage);
+          break;
 
         default:
           throw new Error('Unknown articlesFrom value');
       }
 
-      const newArticleIds =
-        newArticles && newArticles.content.map((article: any) => article.id);
+      let newArticleIds = [];
+
+      if (newArticles) {
+        newArticleIds = newArticles.content.map((article: any) => article.id);
+      }
       dispatch(setSliceDetail(newArticles.sliceDetails));
       dispatch(setArticleIds([...articleIds, ...newArticleIds]));
     }
