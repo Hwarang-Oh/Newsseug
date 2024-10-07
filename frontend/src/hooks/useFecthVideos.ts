@@ -10,20 +10,18 @@ export const useFetchVideos = () => {
     (state: RootState) => state.articles,
   );
 
-  const fetchVideos = async (activeIndex: number) => {
-    const start = Math.max(activeIndex - 3, 0);
-    const end = Math.min(articleIds.length - 1, activeIndex + 3);
-    const idList = articleIds.slice(start, end + 1);
-
+  const fetchVideos = async () => {
     const fetchedVideos: { [id: number]: ArticleVideoType } = {};
+    const idsToFetch = articleIds.filter(
+      (id: number) => !videoList.hasOwnProperty(id),
+    );
 
-    for (const id of idList) {
-      if (!videoList.hasOwnProperty(id)) {
-        const videoData = await fetchEachArticle(id);
-        console.log(`${id} 비디오 호출`);
-        fetchedVideos[id] = videoData; // 각 id를 키로 저장
-      }
-    }
+    const fetchPromises = idsToFetch.map(async (id: number) => {
+      const videoData = await fetchEachArticle(id);
+      fetchedVideos[id] = videoData;
+    });
+
+    await Promise.all(fetchPromises);
 
     if (Object.keys(fetchedVideos).length > 0) {
       dispatch(setVideoList(fetchedVideos));

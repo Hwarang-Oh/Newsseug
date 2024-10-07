@@ -9,7 +9,6 @@ import ArticleVideo from 'components/articles/ArticleVideo';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { ArticleVideo as ArticleVideoType } from 'types/api/articleVideo';
 
 import { RootState } from '../../redux/index';
 import { useLoadNextPage } from 'hooks/useLoadNextPage';
@@ -54,6 +53,22 @@ function ArticleSlider() {
   const loadNextPage = useLoadNextPage();
   const fetchVideos = useFetchVideos();
 
+  useEffect(() => {
+    fetchVideos();
+  }, [articleIds]);
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const hasUnloadedVideos = articleIds.some(
+      (id: number) => !videoList.hasOwnProperty(id),
+    );
+    console.log(hasUnloadedVideos);
+    setIsLoading(hasUnloadedVideos);
+  }, [videoList, articleIds]);
+
+  if (isLoading) return <div>loading...</div>;
+
   return (
     <Container id="container">
       <Swiper
@@ -72,17 +87,24 @@ function ArticleSlider() {
           swiperRef.current = swiper; // Swiper 인스턴스 저장
         }}
         onSlideChange={(swiper: SwiperType) => {
-          fetchVideos(swiper.activeIndex);
           if (
-            swiper.activeIndex === articleIds.length - 3 &&
+            swiper.activeIndex >= articleIds.length - 3 &&
             sliceDetails.hasNext
           ) {
             loadNextPage(); // 다음 페이지 데이터를 가져옴
+            fetchVideos(); // 해당 페이지 데이터들 정보 가져옴
           }
         }}
       >
-        {Object.values(videoList).map((videoInfo) => {
-          const video = videoInfo as ArticleVideoType; // 명시적으로 타입 캐스팅
+        {articleIds.map((articleId: number) => {
+          const video = videoList[articleId];
+          if (!video) {
+            return (
+              <SwiperSlide key={articleId} data-history={articleId}>
+                <div>Loading video...</div> {/* 로딩 중 메시지 */}
+              </SwiperSlide>
+            );
+          }
           return (
             <SwiperSlide key={video.article.id} data-history={video.article.id}>
               <ArticleVideo
