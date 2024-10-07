@@ -2,8 +2,6 @@ import { SliceDetails } from './article';
 
 export type GenderType = 'MALE' | 'FEMALE';
 export type ProviderType = 'kakao' | 'google' | 'none';
-type Role = 'ROLE_MEMBER' | 'ROLE_ADMIN';
-
 /**
  * IMP : API와 관련된 Member의 정보를 정의한 Type
  */
@@ -11,16 +9,24 @@ export interface MemberState {
   nickname: string;
   gender: string;
   age: number;
+  profileImageUrl: string;
 }
+
 export interface MemberStore {
   member: MemberState;
-  AccessToken: string;
+  accessToken: string;
+  refreshToken: string;
   providerType: ProviderType;
   providerId: string;
 }
 
 export interface DecodedToken {
   exp: number;
+}
+
+export interface TokenResponse {
+  accessToken: string;
+  refreshToken: string;
 }
 
 // IMP : 회원 정보 조회에 대한 Response Type

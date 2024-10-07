@@ -38,6 +38,7 @@ export interface UserInputProps {
   nickname: string;
   gender: string;
   birth: string;
+  profileImageUrl: string;
 }
 
 export interface SubmitButtonProps {
