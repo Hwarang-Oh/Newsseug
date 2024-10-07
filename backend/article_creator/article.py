@@ -36,7 +36,7 @@ size = {"height": 1792, "width": 1024} # 숏폼의 크기
 
 fps = 10
 
-scene_count: int = 6
+scene_count: int = 4
 
 class Scene:
     def __init__(self, number: int, description: str, en_dialogue: str, ko_dialogue):
@@ -196,7 +196,7 @@ def generate_image(scene: Scene) -> Optional[bytes]:
         Based on the description, conceptualize the visual representation for scene. Ensure that the concept aligns with the overall theme and narrative of the news article. 
 
         Step 3: Generate Images:
-        Generate a realistic image that looks like a real photograph.
+        Generate a realistic image that looks like a real photograph. If a person is in the image, represent them only as White, Black, or Asian.
 
         Step 4: Review and Adjust:
         Review image to ensure it accurately represents the scene description. Make any necessary adjustments to ensure quality. 
