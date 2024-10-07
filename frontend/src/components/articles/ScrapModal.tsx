@@ -6,10 +6,9 @@ import { ScrapModalProps } from 'types/props/articleVideo';
 import { FolderInfo } from 'types/api/folder';
 import { useQuery } from 'react-query';
 import { getFolderList, saveArticleToFolder } from 'apis/folderApi';
-import { useParams } from 'react-router-dom';
 
 function ScrapModal({
-  // articleId
+  articleId,
   isOpen,
   onRequestClose,
   onCreateModalOpen,
@@ -22,8 +21,6 @@ function ScrapModal({
 
   const windowHeight = window.screen.height;
   const maxHeight = windowHeight * 0.6;
-
-  const { articleId } = useParams();
 
   // 수정 필요
   const {

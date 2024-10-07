@@ -1,19 +1,34 @@
+import { fetchReportArticle } from 'apis/articleVideoApi';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { ModalProps } from 'types/props/articleVideo';
 
-function ReportModal({ isOpen, onRequestClose }: Readonly<ModalProps>) {
+function ReportModal({
+  articleId,
+  isOpen,
+  onRequestClose,
+}: Readonly<ModalProps>) {
   const [reportValue, setReportValue] = useState<string>('');
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setReportValue(e.target.name);
   };
 
+  // console.log(reportValue);
+
   const handleCloseClick = () => {
     onRequestClose();
   };
 
-  const handleSubmitClick = () => {};
+  const handleSubmitClick = async () => {
+    try {
+      await fetchReportArticle(articleId, reportValue);
+
+      onRequestClose();
+    } catch (err) {
+      console.error(`${articleId}번 기사 신고(${reportValue}) 실패`, err);
+    }
+  };
   return (
     <ModalOverlay onClick={handleCloseClick}>
       <ModalContent
@@ -114,7 +129,7 @@ const ModalContent = styled(motion.div)`
   flex-direction: column;
   align-items: flex-start;
   position: absolute;
-  top: 25vh;
+  top: 20vh;
 `;
 
 const ModalHeader = styled.div`
@@ -177,17 +192,17 @@ const Btn = styled.button<{ $isSubmit: boolean }>`
 
 const OptionLabel = styled.label`
   display: flex;
-  padding: 14px 20px;
+  padding: 14px 0px;
   align-items: center;
   gap: 12px;
   align-self: stretch;
   color: ${({ theme }) => theme.textColor};
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
 `;
 
 const OptionInput = styled.input`
-  margin-right: 10px;
+  margin-right: 5px;
   width: 24px;
   height: 24px;
   -webkit-appearance: none; // 웹킷 브라우저에서 기본 스타일 제거
@@ -202,5 +217,6 @@ const OptionInput = styled.input`
       theme.mainColor}; // 체크 시 내부 원으로 표시될 색상
     border: 3px solid white; // 테두리가 아닌, 테두리와 원 사이의 색상
     box-shadow: 0 0 0 1.6px ${({ theme }) => theme.mainColor};
+    transition: 0.2s;
   }
 `;
