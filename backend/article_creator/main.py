@@ -67,7 +67,7 @@ class CreateArticleRequestDto(BaseModel):
     source_created_at: datetime
     press_id: int
     
-@app.post("/api/v1/articles")
+@app.post("/video")
 async def create_and_register_article(article_request_dto: CreateArticleRequestDto, session = Depends(get_session)):
 
     # 새로운 기사 객체 생성
