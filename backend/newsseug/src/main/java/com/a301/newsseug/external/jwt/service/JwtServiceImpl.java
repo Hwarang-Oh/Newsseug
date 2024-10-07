@@ -48,7 +48,9 @@ public class JwtServiceImpl implements JwtService {
                 }
 
                 case REFRESH_TOKEN -> {
-                    return createToken(providerId, jwtProperties.expiration().refresh(), type);
+                    String refreshToken = createToken(providerId, jwtProperties.expiration().refresh(), type);
+                    redisTokenService.save(providerId, refreshToken);
+                    return refreshToken;
                 }
 
             }
