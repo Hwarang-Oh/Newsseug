@@ -34,11 +34,10 @@ public class SecurityConfig {
             "/swagger-resources/**"
     };
 
-    private final CorsConfigurationSource corsConfigurationSource;
-    private final CustomOAuth2UserService oAuth2UserService;
     private final JwtService jwtService;
+    private final CustomOAuth2UserService oAuth2UserService;
     private final CustomUserDetailsService userDetailsService;
-
+    private final CorsConfigurationSource corsConfigurationSource;
     private final JwtAccessDeniedHandler accessDeniedHandler;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
@@ -74,6 +73,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/press/**").permitAll()
                                 .requestMatchers("/api/v1/articles/**").permitAll()
                                 .requestMatchers("/api/v1/s3/**").permitAll()
+                                .requestMatchers("/api/v1/search/**").permitAll()
                                 .requestMatchers("/api/v1/members/**").hasRole(ROLE_MEMBER.getRole())
                                 .anyRequest().authenticated()
 

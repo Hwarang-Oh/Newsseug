@@ -57,8 +57,8 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder()
                 .group(Member.class.getSimpleName())
                 .pathsToMatch("/api/v1/auth/**", "/api/v1/members/**")
-                .addOpenApiCustomizer(openApi
-                                -> openApi.addSecurityItem(
+                .addOpenApiCustomizer(openApi ->
+                        openApi.addSecurityItem(
                                 new SecurityRequirement().addList("Bearer")
                         )
                 )
@@ -72,8 +72,8 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder()
                 .group(Press.class.getSimpleName())
                 .pathsToMatch("/api/v1/press/**")
-                .addOpenApiCustomizer(openApi
-                                -> openApi.addSecurityItem(
+                .addOpenApiCustomizer(openApi ->
+                        openApi.addSecurityItem(
                                 new SecurityRequirement().addList("Bearer")
                         )
                 )
@@ -87,8 +87,8 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder()
                 .group(Folder.class.getSimpleName())
                 .pathsToMatch("/api/v1/folders/**", "/api/v1/bookmarks/**")
-                .addOpenApiCustomizer(openApi
-                                -> openApi.addSecurityItem(
+                .addOpenApiCustomizer(openApi ->
+                        openApi.addSecurityItem(
                                 new SecurityRequirement().addList("Bearer")
                         )
                 )
@@ -102,8 +102,8 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder()
                 .group(Article.class.getSimpleName())
                 .pathsToMatch("/api/v1/articles/**")
-                .addOpenApiCustomizer(openApi
-                                -> openApi.addSecurityItem(
+                .addOpenApiCustomizer(openApi ->
+                        openApi.addSecurityItem(
                                 new SecurityRequirement().addList("Bearer")
                         )
                 )
@@ -116,9 +116,9 @@ public class SwaggerConfig {
 
         return GroupedOpenApi.builder()
                 .group("Interaction")
-                .pathsToMatch("/api/v1/likes/**", "/api/v1/hates/**", "/api/v1/reports/**", "/api/v1/histories/**")
-                .addOpenApiCustomizer(openApi
-                                -> openApi.addSecurityItem(
+                .pathsToMatch("/api/v1/likes/**", "/api/v1/hates/**", "/api/v1/reports/**", "/api/v1/histories/**", "/api/v1/search/**")
+                .addOpenApiCustomizer(openApi ->
+                        openApi.addSecurityItem(
                                 new SecurityRequirement().addList("Bearer")
                         )
                 )
