@@ -30,10 +30,11 @@ public class SearchController {
     public ResponseEntity<Result<SearchResponse>> search(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam @NotBlank String keyword,
+            @RequestParam(required = false, defaultValue = "ALL", value = "filter") String filter,
             @RequestParam(required = false, defaultValue = "0") int pageNumber
     ) {
         return ResponseUtil.ok(
-                Result.of(searchService.search(userDetails, keyword, pageNumber))
+                Result.of(searchService.search(userDetails, keyword, filter, pageNumber))
         );
     }
 

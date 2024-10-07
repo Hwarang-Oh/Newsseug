@@ -32,43 +32,48 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
 
     @Override
     public Slice<Article> findAllByCategoryAndCreatedAtBetween(
-            String category, LocalDateTime startOfDay, LocalDateTime endOfDay, Pageable pageable
+            String filter, LocalDateTime startOfDay, LocalDateTime endOfDay, Pageable pageable
     ) {
-        BooleanBuilder builder = createBaseCondition(category);
+        BooleanBuilder builder = createBaseCondition(filter);
         builder.and(article.createdAt.between(startOfDay, endOfDay));
         return executeQuery(builder, pageable);
     }
 
     @Override
-    public Slice<Article> findAllByCategory(String category, Pageable pageable) {
-        BooleanBuilder builder = createBaseCondition(category);
+    public Slice<Article> findAllByCategory(String filter, Pageable pageable) {
+        BooleanBuilder builder = createBaseCondition(filter);
         return executeQuery(builder, pageable);
     }
 
     @Override
-    public Slice<Article> findByPress(List<Press> press, String category, Pageable pageable) {
-        BooleanBuilder builder = createBaseCondition(category);
+    public Slice<Article> findAllByPressAndCategory(Press press, String filter, Pageable pageable) {
+        BooleanBuilder builder = createBaseCondition(filter);
+        builder.and(article.press.eq(press));
+        return executeQuery(builder, pageable);
+    }
+
+    @Override
+    public Slice<Article> findByPress(List<Press> press, String filter, Pageable pageable) {
+        BooleanBuilder builder = createBaseCondition(filter);
         builder.and(article.press.in(press));
+        return executeQuery(builder, pageable);
+    }
+
+    @Override
+    public Slice<Article> findAllByTitleIsContainingIgnoreCase(String keyword, String filter, Pageable pageable) {
+        BooleanBuilder builder = createBaseCondition(filter);
+        builder.and(article.title.containsIgnoreCase(keyword));
         return executeQuery(builder, pageable);
     }
 
     @Override
     @Modifying
     public void updateCount(String fieldName, Long articleId, Long newValue) {
-        // PathBuilder를 사용해 동적으로 필드를 지정
         PathBuilder<Long> fieldPath = new PathBuilder<>(Long.class, "article." + fieldName);
-
         jpaQueryFactory.update(article)
                 .set(fieldPath, newValue)
                 .where(article.articleId.eq(articleId))
                 .execute();
-    }
-
-    @Override
-    public Slice<Article> findAllByPressAndCategory(Press press, String category, Pageable pageable) {
-        BooleanBuilder builder = createBaseCondition(category);
-        builder.and(article.press.eq(press));
-        return executeQuery(builder, pageable);
     }
 
     /**

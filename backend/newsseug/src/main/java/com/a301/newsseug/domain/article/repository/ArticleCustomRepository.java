@@ -10,13 +10,15 @@ import java.util.List;
 
 public interface ArticleCustomRepository {
 
-    Slice<Article> findAllByCategoryAndCreatedAtBetween(String category, LocalDateTime startOfDay, LocalDateTime endOfDay, Pageable pageable);
+    Slice<Article> findAllByCategoryAndCreatedAtBetween(String filter, LocalDateTime startOfDay, LocalDateTime endOfDay, Pageable pageable);
 
-    Slice<Article> findAllByCategory(String category, Pageable pageable);
+    Slice<Article> findAllByCategory(String filter, Pageable pageable);
 
-    Slice<Article> findAllByPressAndCategory(Press press, String category, Pageable pageable);
+    Slice<Article> findAllByPressAndCategory(Press press, String filter, Pageable pageable);
 
-    Slice<Article> findByPress(List<Press> pressList, String category, Pageable pageable);
+    Slice<Article> findByPress(List<Press> pressList, String filter, Pageable pageable);
+
+    Slice<Article> findAllByTitleIsContainingIgnoreCase(String keyword, String filter, Pageable pageable);
 
     void updateCount(String fieldName, Long articleId, Long newValue);
 

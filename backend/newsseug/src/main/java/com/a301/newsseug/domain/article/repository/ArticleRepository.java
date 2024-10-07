@@ -23,7 +23,4 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
 
     Optional<Article> findByArticleIdAndConversionStatus(Long id, ConversionStatus conversionStatus);
 
-    @EntityGraph(attributePaths = {"press"})
-    Slice<Article> findAllByTitleIsContainingIgnoreCase(String keyword, Pageable pageable);
-
 }

@@ -34,7 +34,7 @@ public class SearchServiceImpl implements SearchService {
     private final SubscribeRepository subscribeRepository;
 
     @Override
-    public SearchResponse search(CustomUserDetails userDetails, String keyword, int pageNumber) {
+    public SearchResponse search(CustomUserDetails userDetails, String keyword, String filter, int pageNumber) {
 
         Pageable pageable = PageRequest.of(
                 pageNumber,
@@ -42,7 +42,7 @@ public class SearchServiceImpl implements SearchService {
                 Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
         );
 
-        Slice<Article> articles = articleRepository.findAllByTitleIsContainingIgnoreCase(keyword, pageable);
+        Slice<Article> articles = articleRepository.findAllByTitleIsContainingIgnoreCase(keyword, filter, pageable);
         List<Press> press = pressRepository.findAllByPressBranding_NameIsContainingIgnoreCase(keyword);
 
         if (userDetails.isEnabled()) {
