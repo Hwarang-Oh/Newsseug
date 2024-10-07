@@ -2,6 +2,13 @@ import ArticleListCard from 'components/common/ArticleListCard';
 import styled, { keyframes } from 'styled-components';
 import { useRef, useEffect } from 'react';
 import { ArticleListCardGroupProps } from 'types/common/common';
+import { useDispatch } from 'react-redux';
+import {
+  setActiveCategory,
+  setArticleFrom,
+  setArticleIds,
+  setSliceDetail,
+} from '../../redux/articleSlice';
 
 /**
  * IMP : ArticleSlideBox Component ( Article Slide Box ) => 가로 슬라이드로 넘어가는 뉴스 기사
@@ -13,6 +20,8 @@ function ArticleSlideBox({
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
+  sectionType,
+  sliceDetails,
 }: Readonly<ArticleListCardGroupProps>) {
   const slideBoxRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<HTMLDivElement>(null);
@@ -35,10 +44,19 @@ function ArticleSlideBox({
     };
   }, [hasNextPage, fetchNextPage]);
 
+  const dispatch = useDispatch();
+
+  const articleDispatch = () => {
+    dispatch(setArticleIds(articleList.map((article) => article.id)));
+    dispatch(setArticleFrom(sectionType ?? 'all'));
+    dispatch(setActiveCategory('ALL'));
+    dispatch(setSliceDetail(sliceDetails ?? {}));
+  };
+
   return (
-    <ArticleSlideBoxStyle ref={slideBoxRef}>
-      {articleList.map((article, index) => (
-        <ArticleListCard key={index} {...article} />
+    <ArticleSlideBoxStyle ref={slideBoxRef} onClick={() => articleDispatch()}>
+      {articleList.map((article) => (
+        <ArticleListCard key={article.id} {...article} />
       ))}
       <LoadingContainer ref={observerRef}>
         {isFetchingNextPage && <LoadingIndicator></LoadingIndicator>}

@@ -42,7 +42,7 @@ export const useLoadNextPage = () => {
           });
           break;
 
-        case 'subscribe':
+        case 'press':
           newArticles = await fetchArticlesByPress({
             category: activeCategory,
             page: nextPage,

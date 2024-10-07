@@ -16,6 +16,8 @@ function Section({
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
+  sectionType,
+  sliceDetails,
 }: Readonly<SectionProps>) {
   return (
     <SectionStyle>
@@ -25,6 +27,8 @@ function Section({
         fetchNextPage={fetchNextPage}
         hasNextPage={hasNextPage}
         isFetchingNextPage={isFetchingNextPage}
+        sectionType={sectionType}
+        sliceDetails={sliceDetails}
       />
     </SectionStyle>
   );

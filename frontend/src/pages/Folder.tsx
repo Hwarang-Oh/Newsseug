@@ -6,8 +6,6 @@ import { getFolderInfo } from 'apis/folderApi';
 import { useParams } from 'react-router-dom';
 import { FolderDetail } from 'types/api/folder';
 import useStoreArticleDispatch from 'hooks/useStoreArticleDispatch';
-import { useEffect, useState } from 'react';
-import { SliceDetails } from 'types/api/article';
 
 function Folder() {
   const { folderId } = useParams();

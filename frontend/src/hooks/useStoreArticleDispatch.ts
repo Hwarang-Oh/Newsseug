@@ -17,7 +17,7 @@ function useStoreArticleDispatch(
   articleFrom: string,
   activeCategory?: string,
   activePress?: number | null,
-  folerId?: number,
+  folerId?: number | null,
 ) {
   const dispatch = useDispatch();
 
