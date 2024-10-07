@@ -6,3 +6,8 @@ export interface KeywordProps {
 export interface InputSectionProps {
   keywordText?: string;
 }
+
+export interface KeywordItem {
+  keywordText: string;
+  isHistory: boolean;
+}
