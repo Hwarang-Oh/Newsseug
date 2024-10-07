@@ -4,6 +4,7 @@ import { getMemberHistoryList } from 'apis/memberApi';
 import ArticleListCard from '../common/ArticleListCard';
 import { PageType } from '@/types/api/article';
 import { ArticleListCardProps } from 'types/common/common';
+import useStoreArticleDispatch from 'hooks/useStoreArticleDispatch';
 
 function Histories() {
   const width = '120px';
@@ -16,6 +17,10 @@ function Histories() {
   } = useQuery<PageType>(['myPageHistory'], () =>
     getMemberHistoryList({ page: 1 }),
   );
+
+  const articles = myPageHistory?.content || [];
+  const sliceDetails = myPageHistory?.sliceDetails || {};
+  useStoreArticleDispatch(articles, sliceDetails, 'history');
 
   if (isLoading) {
     return <div>로딩 중</div>;

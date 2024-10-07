@@ -51,6 +51,8 @@ function Home() {
             fetchNextPage={section.fetchNextPage}
             hasNextPage={section.hasNextPage}
             isFetchingNextPage={section.isFetchingNextPage}
+            sectionType={section.sectionType}
+            sliceDetails={section.sliceDetails}
           />
         ))}
       </FadeInWrapper>

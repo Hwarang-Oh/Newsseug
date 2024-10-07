@@ -1,4 +1,4 @@
-import { Category } from 'types/api/article';
+import { Category, SliceDetails } from 'types/api/article';
 
 export interface ArticleListCardProps {
   thumbnailUrl: string;
@@ -23,4 +23,6 @@ export interface ArticleListCardGroupProps {
   fetchNextPage?: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
+  sectionType?: string;
+  sliceDetails?: SliceDetails | {};
 }

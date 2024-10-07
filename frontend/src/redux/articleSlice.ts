@@ -5,6 +5,7 @@ import { ArticleVideo } from 'types/api/articleVideo';
 interface ArticleState {
   articleIds: number[];
   sliceDetails: SliceDetails | {};
+  // articleInfos: [];
   articlesFrom: string;
   activeCategory: string;
   activePress: number | null;
@@ -50,6 +51,9 @@ const articleSlice = createSlice({
         ...action.payload, // 새로운 데이터를 추가
       };
     },
+    removeVideo(state, action: PayloadAction<number>) {
+      delete state.videoList[action.payload]; // videoList에서 해당 비디오 삭제
+    },
   },
 });
 
@@ -61,5 +65,6 @@ export const {
   setActviePress,
   setFolderId,
   setVideoList,
+  removeVideo,
 } = articleSlice.actions;
 export default articleSlice.reducer;
