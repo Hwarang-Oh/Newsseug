@@ -8,6 +8,16 @@ import {
   SearchNavItem,
   MyPageNavItem,
 } from 'components/icon/NavItemIcon';
+import { fetchArticles } from 'apis/articleApi';
+import { useDispatch } from 'react-redux';
+import {
+  setActiveCategory,
+  setArticleFrom,
+  setArticleIds,
+  setSliceDetail,
+} from '../../redux/articleSlice';
+import { ArticleListCardProps } from 'types/common/common';
+import { SliceDetails } from 'types/api/article';
 
 /**
  * IMP : NavBar Component ( Navigation Bar )
@@ -17,7 +27,30 @@ import {
 function NavBar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const handleItemClick = (index: number, to: string) => {
+
+  const dispatch = useDispatch();
+
+  const articleDispatch = (
+    articleList: ArticleListCardProps[],
+    sliceDetails: SliceDetails,
+  ) => {
+    dispatch(setArticleIds(articleList.map((article) => article.id)));
+    dispatch(setArticleFrom('all'));
+    dispatch(setActiveCategory('ALL'));
+    dispatch(setSliceDetail(sliceDetails ?? {}));
+  };
+
+  const handleItemClick = async (index: number, to: string) => {
+    if (index === 2) {
+      try {
+        const article = await fetchArticles({ category: 'ALL', page: 0 });
+        articleDispatch(article.content, article.sliceDetails);
+        console.log(article.content[0].id);
+        navigate(`/articles/${article.content[0].id}`);
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      }
+    }
     navigate(to);
   };
 
