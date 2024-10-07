@@ -10,11 +10,12 @@ const BASE_URL = 'https://j11a301.p.ssafy.io/api/v1';
  * * 3. DELETE : /likes/articles/:articleId => 기사 좋아요 취소
  * * 4. POST : /hates/articles/:articleId => 기사 싫어요
  * * 5. DELETE : /hates/articles/:articleId => 기사 싫어요 취소
- * TODO 6. POST : /api/v1/reports/articles/:articleId => 기사 신고
+ * * 6. POST : /api/v1/reports/articles/:articleId => 기사 신고
  */
 export const articleVideoHandlers = [
-  http.get(`${ARTICLE_URL}/:articleId`, (req) => {
+  http.get('https://j11a301.p.ssafy.io/api/v1/articles/:articleId', (req) => {
     const { articleId } = req.params;
+
     const articleData =
       articlevideodummy[articleId as keyof typeof articlevideodummy];
     return HttpResponse.json(articleData);
@@ -53,6 +54,12 @@ export const articleVideoHandlers = [
     // 응답 생성
     return HttpResponse.json({
       message: `article with ID ${articleId} dishate successfully.`,
+    });
+  }),
+
+  http.post(`${BASE_URL}/reports/articles/:articleId`, (req) => {
+    return HttpResponse.json({
+      data: true,
     });
   }),
 ];
