@@ -51,6 +51,6 @@
   "orientation": "portrait",
   "start_url": "/splash",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#58D7A2",
   "background_color": "#ffffff"
 }
