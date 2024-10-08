@@ -134,7 +134,7 @@ const Container = styled.div`
   height: 100%;
   z-index: 1;
   position: relative;
-  background-color: ${({ theme }) => theme.textColor};
+  background-color: #202020;
 `;
 
 const ShrotForm = styled.video`

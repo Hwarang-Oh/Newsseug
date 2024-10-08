@@ -104,5 +104,5 @@ const FolderTagCnt = styled.p<{ width: string }>`
   font-size: ${({ width }) =>
     width === '180px' || width === '100%' ? '16px' : '14px'};
   font-family: 'Pretendard-Light' !important;
-  color: ${({ theme }) => theme.textColor};
+  color: #fff;
 `;

@@ -31,6 +31,20 @@ export interface GenderSelectBoxProps {
   onSelect: (index: number) => void;
 }
 
+export interface ProfileImageProps {
+  profileImageUrl: string | null;
+  selectImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  saveImage: (newImageFile: File) => void;
+  removeImage: () => void;
+}
+
+export interface ProfileImageModalProps {
+  profileImage: string;
+  onClose: () => void;
+  onSave: (newImageUrl: string) => void;
+  onRemove: () => void;
+}
+
 /**
  * IMP : UserInputProps => 사용자의 정보를 등록하는 API의 Request Body Type
  */
