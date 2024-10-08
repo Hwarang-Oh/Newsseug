@@ -165,7 +165,7 @@ const getColor = (
 ) => {
   if ($isPressPage && $isSticky) {
     if ($active) {
-      return theme.textColor;
+      return '#202020';
     }
     return $brightness > 128 ? '#202020' : '#ffffff';
   }

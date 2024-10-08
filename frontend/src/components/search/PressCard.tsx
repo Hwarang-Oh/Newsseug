@@ -140,7 +140,7 @@ const PressSubBtn = styled.button<{ $isSubscribed: boolean }>`
     ${({ $isSubscribed, theme }) =>
       $isSubscribed ? theme.bgColor : theme.mainColor};
   color: ${({ $isSubscribed, theme }) =>
-    $isSubscribed ? theme.bgColor : theme.mainColor};
+    $isSubscribed ? '#fff' : theme.mainColor};
 
   font-size: 14px;
   line-height: 14px;
