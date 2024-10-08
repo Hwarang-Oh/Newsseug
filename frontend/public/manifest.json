@@ -5,17 +5,17 @@
   "description": "뉴쓱은 AI를 기반으로 사용자가 원하는 뉴스를 숏폼으로 생성해주는 서비스입니다",
   "icons": [
     {
-      "src": "/newsseug_favicon.ico",
+      "src": "favicon.ico",
       "sizes": "48X48",
       "type": "image/x-icon"
     },
     {
-      "src": "/newsseug_logo192.png",
+      "src": "logo192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/newsseug_logo512.png",
+      "src": "logo512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
