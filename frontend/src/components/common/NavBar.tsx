@@ -50,8 +50,9 @@ function NavBar() {
       } catch (error) {
         console.error('Error fetching articles:', error);
       }
+    } else {
+      navigate(to);
     }
-    navigate(to);
   };
 
   return (
