@@ -4,6 +4,7 @@ import { AppDispatch } from 'redux/index';
 import { getLogin } from 'apis/loginApi';
 import { setProviderInfo } from '../redux/memberSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Snowflake from 'utils/snowflake';
 import {
   setCookie,
   getCookie,
@@ -17,6 +18,7 @@ import {
  */
 function useAutoLogin() {
   const dispatch = useDispatch<AppDispatch>();
+  const snowflake = new Snowflake(1, 1);
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
