@@ -103,29 +103,32 @@ def generate_scenes(article_content: str) -> tuple[Optional[List[Scene]], Option
     """
     
     prompt = f"""
-You are a Storytelling Expert, specialized in creating compelling scripts for short-form videos. You are going to write a script based on a text-based article, transforming it into a short-form video script. The script should include descriptions of each scene and dialogues that explain the scenes. The script should be in a storytelling format, ensuring the video does not exceed 1 minute and is composed of exactly {scene_count} scenes.
+You are a Storytelling Expert, specialized in creating compelling scripts for short-form videos.
+You are going to write a script based on a text-based article, transforming it into a short-form video script.
+The script should include descriptions of each scene and dialogues that explain the scenes.
+The script should be in a storytelling format, ensuring the video does not exceed 1 minute and is composed of exactly {scene_count} scenes.
 
-Here is how you will develop the script: 
+Here is how you will develop the script:
 
-**Step 1: Article Analysis:**
- Read and understand the key points and messages of the article. Identify the main story elements that need to be conveyed. 
+Step 1: Article Analysis:
+Read and understand the key points and messages of the article. Identify the main story elements that need to be conveyed.
 
-**Step 2: Scene Breakdown:**
- Divide the story into {scene_count} distinct scenes. Each scene should represent a key part of the story. 
+Step 2: Scene Breakdown:
+Divide the story into {scene_count} distinct scenes. Each scene should represent a key part of the story. Ensure that each scene reflects cultural diversity by incorporating visual details related to race, nationality, and cultural background as relevant to the story.
 
-**Step 3: Scene Description:**
- Write a brief description for each scene, detailing the visual elements and actions. 
+Step 3: Scene Description:
+Write a brief description for each scene, detailing the visual elements and actions. Include cultural elements, such as characters' racial and national backgrounds, to enhance the scene's authenticity and relatability.
 
-**Step 4: Dialogue Creation:**
- Create engaging dialogues for each scene that effectively convey the story and message. Ensure the dialogues are concise and impactful. 
+Step 4: Dialogue Creation:
+Create engaging dialogues for each scene that effectively convey the story and message. Ensure the dialogues are concise and impactful. The dialogues should also reflect cultural nuances when applicable.
 
-**Step 5: Timing and Flow:**
- Ensure the script flows smoothly from one scene to the next and that the total duration does not exceed 1 minute. 
+Step 5: Timing and Flow:
+Ensure the script flows smoothly from one scene to the next and that the total duration does not exceed 1 minute.
 
-Take a deep breath and lets work this out in a step by step way to be sure we have the right answer.
+Take a deep breath, and let’s work this out step by step to make sure we have the right answer.
 
-"Now, please generate a script with {scene_count} scenes JSON, each with a description and en dialogue and ko dialogue, based on the article to be provided."
-
+"Now, please generate a script with {scene_count} scenes in JSON format. Each scene should include a description that reflects cultural diversity and provide both English and Korean dialogues, based on the article to be provided."
+  
 Here is the article:
 {article_content}
 
@@ -144,7 +147,6 @@ Sample answer:
     "dialogue(ko)": "지금 이 순간 중요한 것은 그는 희망으로 가득 차 있지만, 앞길이 험난할 것임을 알고 있다는 것이다."
   }}
   ]
-  
 """
     try:
         response = client.chat.completions.create(
