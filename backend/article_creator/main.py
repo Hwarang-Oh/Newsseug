@@ -16,6 +16,8 @@ from db.connection import get_session
 from models.article import Article, ConversionStatus, Category
 from crud import insert_article, update_article
 
+from es import save_article_into_es
+
 import logging
 
 logger = logging.getLogger('main-logger')
@@ -66,6 +68,7 @@ class CreateArticleRequestDto(BaseModel):
     category: Category
     source_created_at: datetime
     press_id: int
+    press_name: int
     
 @app.post("/video")
 async def create_and_register_article(article_request_dto: CreateArticleRequestDto, session = Depends(get_session)):
@@ -88,6 +91,7 @@ async def create_and_register_article(article_request_dto: CreateArticleRequestD
             conversion_status = ConversionStatus.SUCCESS
             upload_video_to_s3(new_article.article_id, video_clip)
             upload_to_s3(new_article.article_id, thumbnail, ContentType.PNG)
+            save_article_into_es(new_article.article_id, article_request_dto.press_name, new_article.title, article_request_dto.source_created_at)
         case 'content_filter':
             conversion_status = ConversionStatus.FILTERED
         case 'length':

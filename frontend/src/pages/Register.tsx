@@ -1,22 +1,25 @@
 import styled from 'styled-components';
 import useFormState from 'hooks/useFormState';
+import useImageChange from 'hooks/useImageChange';
 import Layout from 'components/common/Layout';
 import InputSection from 'components/register/InputSection';
 import GenderSelectBox from 'components/register/GenderSelectBox';
 import SubmitButton from 'components/register/SubmitButton';
 import ConfirmModal from 'components/register/ConfirmModal';
 import ProfileIcon from 'components/icon/ProfileIcon';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 function UserInput() {
   /**
-   * IMP : useFormState에서 정의한 Custom Hook을 사용하여 Form을 구성
+   * IMP : useFormState에서 정의한 Custom Hook을 사용
+   * 하여 Form을 구성
    */
   const {
     control,
     genderList,
     validationRules,
     formState: { isValid },
+    handleImageChange,
     handleGenderSelect,
     handleDateChange,
     handleSubmit,
@@ -24,11 +27,22 @@ function UserInput() {
     getValues,
   } = useFormState();
 
+  const {
+    profileImage,
+    profileImageUrl,
+    handleSelectImage,
+    handleSaveImage,
+    handleRemoveImage,
+  } = useImageChange();
+
+  useEffect(() => {
+    if (profileImage) handleImageChange(profileImage);
+  }, [profileImage]);
+
   /**
    * IMP : Modal Open 상태를 관리하는 State
    */
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
     <Layout>
       <RegisterHeader>
@@ -37,7 +51,12 @@ function UserInput() {
       <FormStyle onSubmit={handleSubmit(onSubmit)}>
         <InputSectionStyle>
           <ProfileWrapper>
-            <ProfileIcon />
+            <ProfileIcon
+              profileImageUrl={profileImageUrl}
+              selectImage={handleSelectImage}
+              saveImage={handleSaveImage}
+              removeImage={handleRemoveImage}
+            />
           </ProfileWrapper>
           <InputSection
             title="생성된 닉네임"
@@ -73,11 +92,11 @@ function UserInput() {
             )}
           />
         </InputSectionStyle>
-
         <SubmitButton
           disabled={!isValid}
           onClick={() => setIsModalOpen(true)}
         />
+
         {isModalOpen && (
           <ConfirmModal
             userData={getValues()}
@@ -112,9 +131,9 @@ const FormStyle = styled.form`
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: space-between;
   padding-top: calc(3vh);
   padding-bottom: calc(5vh);
+  justify-content: space-between;
 `;
 
 const ProfileWrapper = styled.div`
@@ -126,4 +145,5 @@ const InputSectionStyle = styled.div`
   display: flex;
   flex-direction: column;
   gap: calc(3vh);
+  padding-bottom: calc(7.5vh);
 `;

@@ -4,10 +4,11 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { Provider, useSelector } from 'react-redux';
 import { store, RootState } from './redux/index';
-import styled, { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './styles/theme';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { HelmetProvider } from 'react-helmet-async';
+import * as serviceWorker from './serviceWorkerRegistration';
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
@@ -46,3 +47,20 @@ enableMocking().then(() => {
     </HelmetProvider>,
   );
 });
+
+// const root = ReactDOM.createRoot(
+//   document.getElementById('root') as HTMLElement,
+// );
+// root.render(
+//   <HelmetProvider>
+//     <Provider store={store}>
+//       <QueryClientProvider client={queryClient}>
+//         <ThemeWrapper>
+//           <App />
+//         </ThemeWrapper>
+//       </QueryClientProvider>
+//     </Provider>
+//   </HelmetProvider>,
+// );
+
+serviceWorker.register();

@@ -58,6 +58,7 @@ export default Histories;
 
 const Wrapper = styled.div`
   display: flex;
+  margin-bottom: 5px;
   width: 100%; /* 부모 요소의 너비에 맞춤 */
   max-width: 100%; /* 최대 부모 요소의 너비만큼 차지 */
   align-items: flex-start;

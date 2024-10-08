@@ -5,7 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { AppDispatch } from 'redux/index';
 import { useDispatch } from 'react-redux';
 import { setMemberInfo } from '../redux/memberSlice';
-import { registerMember } from 'apis/memberApi';
+import {
+  getPresignedUrl,
+  registerMember,
+  uploadProfileImage,
+} from 'apis/memberApi';
 import { MaleIcon, FemaleIcon } from 'components/icon/GenderIcon';
 import { getCookie, removeCookie } from 'utils/stateUtils';
 import {
@@ -18,6 +22,7 @@ import {
 function useFormState() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const defaultValues: UserInputProps = {
     nickname: GetOrSetRandomNickname(),
     birth: '',
@@ -41,6 +46,11 @@ function useFormState() {
     { icon: MaleIcon(), selected: false, value: 'MALE' },
     { icon: FemaleIcon(), selected: false, value: 'FEMALE' },
   ]);
+
+  const handleImageChange = async (profileImageFile: File) => {
+    setProfileImageFile(profileImageFile);
+    console.log(profileImageFile);
+  };
 
   const handleGenderSelect = async (index: number) => {
     setGenderList((prev) =>
@@ -69,6 +79,15 @@ function useFormState() {
   const onSubmit = async (data: UserInputProps) => {
     data.birth = FormatDateToCompact(data.birth);
     const age = CalculateAge(data.birth);
+    const providerId = getCookie('ProviderId');
+    if (profileImageFile) {
+      let presignedUrl = await getPresignedUrl(
+        providerId,
+        profileImageFile.name,
+      );
+      setValue('profileImageUrl', presignedUrl);
+      await uploadProfileImage(presignedUrl, profileImageFile);
+    }
     dispatch(setMemberInfo({ ...data, age }));
     if (await registerMember(data)) {
       navigate(getCookie('redirect') || '/');
@@ -83,6 +102,7 @@ function useFormState() {
     genderList,
     validationRules,
     formState,
+    handleImageChange,
     handleGenderSelect,
     handleDateChange,
     handleSubmit,
