@@ -27,7 +27,7 @@ const ModalOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${({ theme }) => theme.textColor + '1A'};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,7 +37,7 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 80%;
-  background: white;
+  background: ${({ theme }) => theme.bgColor};
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -61,7 +61,7 @@ const Content = styled.div`
 `;
 
 const Message = styled.h2`
-  color: #202020;
+  color: ${({ theme }) => theme.textColor};
   text-align: center;
   font-family: Pretendard;
   font-size: 16px;
@@ -79,13 +79,14 @@ const ButtonGroup = styled.div`
 
 const CancelButton = styled.button`
   display: flex;
-  background: #fff;
+  background: ${({ theme }) => theme.bgColor};
   border: 1px solid #eee;
   justify-content: center;
   align-items: center;
   padding: 13px 0px;
   border-radius: 4px;
   flex: 1 0 0;
+  color: ${({ theme }) => theme.textColor};
 `;
 
 const ConfirmButton = styled.button`

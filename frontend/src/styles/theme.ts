@@ -2,7 +2,7 @@ import { DefaultTheme } from 'styled-components/dist/types';
 
 export const darkTheme: DefaultTheme = {
   bgColor: '#202020',
-  textColor: 'white',
+  textColor: '#ffffff',
   mainColor: '#58D7A2',
   relaxColor: {
     // 회색 종류
@@ -22,7 +22,7 @@ export const darkTheme: DefaultTheme = {
 };
 
 export const lightTheme: DefaultTheme = {
-  bgColor: 'white',
+  bgColor: '#ffffff',
   textColor: '#202020',
   mainColor: '#58D7A2',
   relaxColor: {
