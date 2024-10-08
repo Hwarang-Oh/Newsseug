@@ -3,11 +3,14 @@ package com.a301.newsseug.domain.interaction.controller;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.interaction.model.dto.response.SearchResponse;
 import com.a301.newsseug.domain.interaction.service.SearchService;
+import com.a301.newsseug.external.elasticsearch.model.dto.response.SearchResponseForElastic;
 import com.a301.newsseug.global.model.dto.Result;
+import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.util.ResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SearchController {
 
-
     private final SearchService searchService;
 
     @Operation(summary = "검색", description = "키워드를 포함하는 언론사, 기사를 조회한다.")
@@ -35,6 +37,18 @@ public class SearchController {
     ) {
         return ResponseUtil.ok(
                 Result.of(searchService.search(userDetails, keyword, filter, pageNumber))
+        );
+    }
+
+    @Operation(summary = "검색(ES)", description = "키워드를 포함하는 언론사, 기사를 조회한다.")
+    @GetMapping("/es")
+    public ResponseEntity<Result<SlicedResponse<List<SearchResponseForElastic>>>> searchByES(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestParam @NotBlank String keyword,
+            @RequestParam(required = false, defaultValue = "0") int pageNumber
+    ) {
+        return ResponseUtil.ok(
+                Result.of(searchService.searchByElastic(userDetails, keyword, pageNumber))
         );
     }
 

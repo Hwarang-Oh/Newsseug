@@ -10,6 +10,10 @@ import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
+import com.a301.newsseug.external.elasticsearch.model.document.PressAndArticleDocument;
+import com.a301.newsseug.external.elasticsearch.model.dto.response.SearchResponseForElastic;
+import com.a301.newsseug.external.elasticsearch.repository.PressAndArticleRepository;
+import com.a301.newsseug.external.openfeign.client.EmbeddingServiceClient;
 import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.model.entity.SliceDetails;
@@ -29,9 +33,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService {
 
+    private final EmbeddingServiceClient embeddingServiceClient;
     private final ArticleRepository articleRepository;
     private final PressRepository pressRepository;
     private final SubscribeRepository subscribeRepository;
+    private final PressAndArticleRepository pressAndArticleRepository;
 
     @Override
     public SearchResponse search(CustomUserDetails userDetails, String keyword, String filter, int pageNumber) {
@@ -69,6 +75,39 @@ public class SearchServiceImpl implements SearchService {
                         SliceDetails.of(articles.getNumber(), articles.isFirst(), articles.hasNext()),
                         GetArticleResponse.of(articles.getContent())
                 )
+        );
+
+    }
+
+    @Override
+    public SlicedResponse<List<SearchResponseForElastic>> searchByElastic(CustomUserDetails userDetails, String keyword, int pageNumber) {
+
+        Pageable pageable = PageRequest.of(
+                pageNumber,
+                10,
+                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+        );
+
+        float[] vector = embeddingServiceClient.getEmbeddingVector(keyword);
+        Slice<PressAndArticleDocument> sliced = pressAndArticleRepository.searchByKeywordAndVector(keyword, vector, pageable);
+
+        if (userDetails.isEnabled()) {
+            Set<Long> pressIds = new HashSet<>(
+                    subscribeRepository.findAllByMember(userDetails.getMember()).stream()
+                            .map(subscribe -> subscribe.getPress().getPressId())
+                            .toList()
+            );
+
+            return SlicedResponse.of(
+                    SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
+                    SearchResponseForElastic.of(sliced.getContent(), pressIds)
+            );
+
+        }
+
+        return SlicedResponse.of(
+                SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
+                SearchResponseForElastic.of(sliced.getContent())
         );
 
     }

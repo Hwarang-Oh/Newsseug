@@ -38,7 +38,7 @@ public record ArticleDto(
                 .viewCount(currentViewCount)
                 .sourceUrl(article.getSourceUrl())
                 .videoUrl(article.getVideoUrl())
-                .createdAt(article.getCreatedAt())
+                .createdAt(article.getSourceCreatedAt())
                 .build();
     }
 

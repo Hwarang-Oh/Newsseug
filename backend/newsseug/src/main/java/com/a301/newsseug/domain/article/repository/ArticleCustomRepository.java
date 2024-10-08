@@ -20,6 +20,6 @@ public interface ArticleCustomRepository {
 
     Slice<Article> findAllByTitleIsContainingIgnoreCase(String keyword, String filter, Pageable pageable);
 
-    void updateCount(String fieldName, Long articleId, Long newValue);
+    void updateCount(String field, Long id, Long count);
 
 }

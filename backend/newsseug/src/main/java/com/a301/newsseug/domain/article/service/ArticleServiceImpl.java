@@ -37,7 +37,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final LikeRepository likeRepository;
     private final HateRepository hateRepository;
     private final SubscribeRepository subscribeRepository;
-    private final RedisCountService redisCountService;
+    private final RedisCounterService redisCounterService;
     private final RedisProperties redisProperties;
 
     @Override
@@ -45,46 +45,36 @@ public class ArticleServiceImpl implements ArticleService {
 
         Member loginMember = userDetails.getMember();
         Article article = articleRepository.getOrThrow(articleId);
-
-        String viewCountHashKey = "article:viewcount";
-        Long incrementValue = 1L;
-
-        Long currentViewCount = redisCountService.increment(viewCountHashKey, articleId, incrementValue);
+        Long incrementedViewCount = redisCounterService.increment("article:viewCount", articleId, 1L);
 
         // 현재 조회수가 임계치에 도달했을 경우 DB에 업데이트 후 Redis에서 초기화
-        if (currentViewCount >= redisProperties.viewCounter().threshold()) {
-            articleRepository.updateCount("viewCount", articleId, currentViewCount);
-            redisCountService.deleteByKey(viewCountHashKey, articleId);
+        if (incrementedViewCount >= redisProperties.viewCounter().threshold()) {
+            articleRepository.updateCount("viewCount", articleId, incrementedViewCount);
+            redisCounterService.deleteByKey("article:viewCount", articleId);
         }
-
-        String likeCountHashKey = "article:likecount";
-        Long likeCount = redisCountService.findByKey(likeCountHashKey, articleId)
-                .orElse(article.getLikeCount());
-
-        String hateCountHashKey = "article:hatecount";
-        Long hateCount = redisCountService.findByKey(hateCountHashKey, articleId)
-                .orElse(article.getHateCount());
+        Long likeCount = redisCounterService.findByKey("article:likeCount", articleId).orElse(0L);
+        Long hateCount = redisCounterService.findByKey("article:hateCount", articleId).orElse(0L);
 
         if (Objects.isNull(loginMember)) {
             return GetArticleDetailsResponse.of(
                     article,
-                    currentViewCount,
+                    article.getViewCount() + incrementedViewCount,
                     false,
-                    SimpleLikeDto.of(false, likeCount),
-                    SimpleHateDto.of(false, hateCount)
+                    SimpleLikeDto.of(false, article.getLikeCount() + likeCount),
+                    SimpleHateDto.of(false, article.getHateCount() + hateCount)
             );
         }
 
         return GetArticleDetailsResponse.of(article,
-                currentViewCount,
+                article.getViewCount() + incrementedViewCount,
                 subscribeRepository.existsByMemberAndPress(loginMember, article.getPress()),
                 SimpleLikeDto.of(
                         likeRepository.existsByMemberAndArticle(loginMember, article),
-                        likeCount
+                        article.getLikeCount() + likeCount
                 ),
                 SimpleHateDto.of(
                         hateRepository.existsByMemberAndArticle(loginMember, article),
-                        hateCount
+                        article.getHateCount() + hateCount
                 )
         );
 
@@ -100,7 +90,6 @@ public class ArticleServiceImpl implements ArticleService {
         );
         LocalDateTime startOfDay = ClockUtil.getLocalDateTime().toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1);
-
         Slice<Article> sliced = articleRepository.findAllByCategoryAndCreatedAtBetween(category, startOfDay, endOfDay, pageable);
 
         return SlicedResponse.of(
@@ -120,15 +109,10 @@ public class ArticleServiceImpl implements ArticleService {
         );
         Slice<Article> sliced = articleRepository.findAllByCategory(category, pageable);
 
-        List<GetArticleResponse> articles = GetArticleResponse.of(sliced.getContent());
-
-        SliceDetails sliceDetails = SliceDetails.of(
-                sliced.getNumber(),
-                sliced.isFirst(),
-                sliced.hasNext()
+        return SlicedResponse.of(
+                SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
+                GetArticleResponse.of(sliced.getContent())
         );
-
-        return SlicedResponse.of(sliceDetails, articles);
 
     }
 

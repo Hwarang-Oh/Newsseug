@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class RedisCountServiceImpl implements RedisCountService {
+public class RedisCounterServiceImpl implements RedisCounterService {
 
     private final RedisTemplate<String, Object> redisTemplate;
 

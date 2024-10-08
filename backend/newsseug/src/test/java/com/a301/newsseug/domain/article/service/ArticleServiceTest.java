@@ -48,7 +48,7 @@ public class ArticleServiceTest {
     private ArticleRepository articleRepository;
 
     @Mock
-    private RedisCountService redisCountService;
+    private RedisCounterService redisCounterService;
 
     @Mock
     private RedisProperties redisProperties;

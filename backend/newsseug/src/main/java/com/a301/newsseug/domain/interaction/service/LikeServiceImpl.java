@@ -2,7 +2,7 @@ package com.a301.newsseug.domain.interaction.service;
 
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.article.repository.ArticleRepository;
-import com.a301.newsseug.domain.article.service.RedisCountService;
+import com.a301.newsseug.domain.article.service.RedisCounterService;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.interaction.model.entity.Hate;
 import com.a301.newsseug.domain.interaction.model.entity.Like;
@@ -28,7 +28,7 @@ public class LikeServiceImpl implements LikeService {
     private final ArticleRepository articleRepository;
     private final LikeRepository likeRepository;
     private final HateRepository hateRepository;
-    private final RedisCountService redisCountService;
+    private final RedisCounterService redisCounterService;
 
     @Override
     public void postLikeToArticle(CustomUserDetails userDetails, Long articleId) {
@@ -49,7 +49,7 @@ public class LikeServiceImpl implements LikeService {
         // Redis에서 likeCount 증가
         String likeHashKey = "article:likecount";
         Long incrementValue = 1L;
-        redisCountService.increment(likeHashKey, articleId, incrementValue);
+        redisCounterService.increment(likeHashKey, articleId, incrementValue);
 
     }
 
@@ -71,7 +71,7 @@ public class LikeServiceImpl implements LikeService {
 
         String likeHashKey = "article:likecount";
 
-        Map<Object, Object> likeCountLogs = redisCountService.findByHash(likeHashKey);
+        Map<Object, Object> likeCountLogs = redisCounterService.findByHash(likeHashKey);
 
         if (Objects.nonNull(likeCountLogs)) {
             for (Map.Entry<Object, Object> entry : likeCountLogs.entrySet()) {
@@ -81,7 +81,7 @@ public class LikeServiceImpl implements LikeService {
                 if (Objects.nonNull(likeCount)) {
                     log.info("Updating articleId: {}, New likeCount: {}", articleId, likeCount);
                     articleRepository.updateCount("likeCount", articleId, Long.parseLong(likeCount));
-                    redisCountService.deleteByKey("article:likecount", articleId);
+                    redisCounterService.deleteByKey("article:likecount", articleId);
                 }
             }
         }

@@ -68,11 +68,11 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
 
     @Override
     @Modifying
-    public void updateCount(String fieldName, Long articleId, Long newValue) {
-        PathBuilder<Long> fieldPath = new PathBuilder<>(Long.class, "article." + fieldName);
+    public void updateCount(String field, Long id, Long count) {
+        PathBuilder<Long> fieldPath = new PathBuilder<>(Long.class, "article." + field);
         jpaQueryFactory.update(article)
-                .set(fieldPath, newValue)
-                .where(article.articleId.eq(articleId))
+                .set(fieldPath, count)
+                .where(article.articleId.eq(id))
                 .execute();
     }
 
