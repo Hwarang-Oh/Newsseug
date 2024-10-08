@@ -3,6 +3,7 @@ package com.a301.newsseug.external.swagger.config;
 import static org.springframework.security.config.Elements.JWT;
 
 import com.a301.newsseug.domain.article.model.entity.Article;
+import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.folder.model.entity.Folder;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.press.model.entity.Press;
@@ -14,11 +15,16 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springdoc.core.utils.SpringDocUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
+
+    static {
+        SpringDocUtils.getConfig().addRequestWrapperToIgnore(CustomUserDetails.class);
+    }
 
     @Bean
     public OpenAPI customOpenAPI() {
