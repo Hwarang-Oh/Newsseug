@@ -43,7 +43,6 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public GetArticleDetailsResponse getArticleDetail(CustomUserDetails userDetails, Long articleId) {
 
-        Member loginMember = userDetails.getMember();
         Article article = articleRepository.getOrThrow(articleId);
         Long incrementedViewCount = redisCounterService.increment("article:viewCount", articleId, 1L);
 
@@ -55,27 +54,27 @@ public class ArticleServiceImpl implements ArticleService {
         Long likeCount = redisCounterService.findByKey("article:likeCount", articleId).orElse(0L);
         Long hateCount = redisCounterService.findByKey("article:hateCount", articleId).orElse(0L);
 
-        if (Objects.isNull(loginMember)) {
-            return GetArticleDetailsResponse.of(
-                    article,
+        if (Objects.nonNull(userDetails)) {
+            return GetArticleDetailsResponse.of(article,
                     article.getViewCount() + incrementedViewCount,
-                    false,
-                    SimpleLikeDto.of(false, article.getLikeCount() + likeCount),
-                    SimpleHateDto.of(false, article.getHateCount() + hateCount)
+                    subscribeRepository.existsByMemberAndPress(userDetails.getMember(), article.getPress()),
+                    SimpleLikeDto.of(
+                            likeRepository.existsByMemberAndArticle(userDetails.getMember(), article),
+                            article.getLikeCount() + likeCount
+                    ),
+                    SimpleHateDto.of(
+                            hateRepository.existsByMemberAndArticle(userDetails.getMember(), article),
+                            article.getHateCount() + hateCount
+                    )
             );
         }
 
-        return GetArticleDetailsResponse.of(article,
+        return GetArticleDetailsResponse.of(
+                article,
                 article.getViewCount() + incrementedViewCount,
-                subscribeRepository.existsByMemberAndPress(loginMember, article.getPress()),
-                SimpleLikeDto.of(
-                        likeRepository.existsByMemberAndArticle(loginMember, article),
-                        article.getLikeCount() + likeCount
-                ),
-                SimpleHateDto.of(
-                        hateRepository.existsByMemberAndArticle(loginMember, article),
-                        article.getHateCount() + hateCount
-                )
+                false,
+                SimpleLikeDto.of(false, article.getLikeCount() + likeCount),
+                SimpleHateDto.of(false, article.getHateCount() + hateCount)
         );
 
     }
