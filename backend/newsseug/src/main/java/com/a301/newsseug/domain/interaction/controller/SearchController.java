@@ -4,6 +4,7 @@ import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.interaction.model.dto.response.SearchResponse;
 import com.a301.newsseug.domain.interaction.service.SearchService;
 import com.a301.newsseug.external.elasticsearch.model.dto.response.SearchResponseForElastic;
+import com.a301.newsseug.global.annotation.NullableUserDetails;
 import com.a301.newsseug.global.model.dto.Result;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.util.ResponseUtil;
@@ -30,7 +31,7 @@ public class SearchController {
     @Operation(summary = "검색", description = "키워드를 포함하는 언론사, 기사를 조회한다.")
     @GetMapping
     public ResponseEntity<Result<SearchResponse>> search(
-            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @NullableUserDetails CustomUserDetails userDetails,
             @RequestParam @NotBlank String keyword,
             @RequestParam(required = false, defaultValue = "ALL", value = "filter") String filter,
             @RequestParam(required = false, defaultValue = "0") int pageNumber
@@ -43,7 +44,7 @@ public class SearchController {
     @Operation(summary = "검색(ES)", description = "키워드를 포함하는 언론사, 기사를 조회한다.")
     @GetMapping("/es")
     public ResponseEntity<Result<SlicedResponse<List<SearchResponseForElastic>>>> searchByES(
-            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @NullableUserDetails CustomUserDetails userDetails,
             @RequestParam @NotBlank String keyword,
             @RequestParam(required = false, defaultValue = "0") int pageNumber
     ) {

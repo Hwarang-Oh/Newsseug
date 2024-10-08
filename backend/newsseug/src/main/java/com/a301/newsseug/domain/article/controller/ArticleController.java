@@ -3,6 +3,7 @@ package com.a301.newsseug.domain.article.controller;
 import com.a301.newsseug.domain.article.model.dto.response.*;
 import com.a301.newsseug.domain.article.service.ArticleService;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+import com.a301.newsseug.global.annotation.NullableUserDetails;
 import com.a301.newsseug.global.model.dto.Result;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.util.ResponseUtil;
@@ -26,7 +27,7 @@ public class ArticleController {
    @Operation(summary = "단일 기사 상세 정보 조회 API", description = "단일 기사 상세 정보를 조회한다.")
     @GetMapping("/{articleId}")
     public ResponseEntity<Result<GetArticleDetailsResponse>> getArticle(
-            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @NullableUserDetails CustomUserDetails userDetails,
             @PathVariable(name = "articleId") Long articleId
    ) {
         return ResponseUtil.ok(Result.of(articleService.getArticleDetail(userDetails, articleId)));
@@ -54,7 +55,7 @@ public class ArticleController {
     @Operation(summary = "언론사별 기사 조회 API", description = "언론사별 기사 리스트를 조회한다.")
     @GetMapping(value = {"/press", "/press/{pressId}"})
     public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getArticlesByPress(
-            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @NullableUserDetails CustomUserDetails userDetails,
             @PathVariable(required = false, name = "pressId") Long pressId,
             @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber,
             @RequestParam(required = false, defaultValue = "ALL", value = "filter") String filter
