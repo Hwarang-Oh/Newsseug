@@ -8,3 +8,5 @@ def load_config(file_path):
     return config
 
 config = load_config(config_file)
+
+log_format = '%(levelname)s: %(asctime)s - %(name)s - %(message)s'
