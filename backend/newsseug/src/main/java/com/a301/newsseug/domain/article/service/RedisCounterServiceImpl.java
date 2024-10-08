@@ -16,7 +16,7 @@ public class RedisCounterServiceImpl implements RedisCounterService {
 
     @Override
     public void save(String hash, Long key, Long value) {
-        redisTemplate.opsForHash().put(hash, key, value);
+        redisTemplate.opsForHash().put(hash, key.toString(), value);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class RedisCounterServiceImpl implements RedisCounterService {
 
     @Override
     public Optional<Long> findByKey(String hash, Long key) {
-        Object value = redisTemplate.opsForHash().get(hash, key);
+        Object value = redisTemplate.opsForHash().get(hash, key.toString());
         if (Objects.isNull(value)) {
             return Optional.empty();
         }
@@ -41,11 +41,11 @@ public class RedisCounterServiceImpl implements RedisCounterService {
 
     @Override
     public void deleteByKey(String hash, Long key) {
-        redisTemplate.opsForHash().delete(hash, key);
+        redisTemplate.opsForHash().delete(hash, key.toString());
     }
 
     @Override
     public Long increment(String hash, Long key, Long value) {
-        return redisTemplate.opsForHash().increment(hash, key, value);
+        return redisTemplate.opsForHash().increment(hash, key.toString(), value);
     }
 }

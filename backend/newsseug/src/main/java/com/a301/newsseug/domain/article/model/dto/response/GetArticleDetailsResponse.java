@@ -31,7 +31,8 @@ public record GetArticleDetailsResponse(
 ) {
 
     public static GetArticleDetailsResponse of(
-            Article article, Long currentViewCount, Boolean isSubscribed, SimpleLikeDto likeInfo, SimpleHateDto hateInfo) {
+            Article article, Long currentViewCount, Boolean isSubscribed, SimpleLikeDto likeInfo, SimpleHateDto hateInfo
+    ) {
 
         return GetArticleDetailsResponse.builder()
                 .article(ArticleDto.of(article, currentViewCount))

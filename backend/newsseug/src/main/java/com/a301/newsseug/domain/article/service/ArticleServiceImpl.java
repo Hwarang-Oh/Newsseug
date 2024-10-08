@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@Transactional
 @Service
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
@@ -44,15 +43,15 @@ public class ArticleServiceImpl implements ArticleService {
     public GetArticleDetailsResponse getArticleDetail(CustomUserDetails userDetails, Long articleId) {
 
         Article article = articleRepository.getOrThrow(articleId);
-        Long incrementedViewCount = redisCounterService.increment("article:viewCount", articleId, 1L);
+        Long incrementedViewCount = redisCounterService.increment("article:viewCount:", articleId, 1L);
 
         // 현재 조회수가 임계치에 도달했을 경우 DB에 업데이트 후 Redis에서 초기화
         if (incrementedViewCount >= redisProperties.viewCounter().threshold()) {
             articleRepository.updateCount("viewCount", articleId, incrementedViewCount);
-            redisCounterService.deleteByKey("article:viewCount", articleId);
+            redisCounterService.deleteByKey("article:viewCount:", articleId);
         }
-        Long likeCount = redisCounterService.findByKey("article:likeCount", articleId).orElse(0L);
-        Long hateCount = redisCounterService.findByKey("article:hateCount", articleId).orElse(0L);
+        Long likeCount = redisCounterService.findByKey("article:likeCount:", articleId).orElse(0L);
+        Long hateCount = redisCounterService.findByKey("article:hateCount:", articleId).orElse(0L);
 
         if (Objects.nonNull(userDetails)) {
             return GetArticleDetailsResponse.of(article,
