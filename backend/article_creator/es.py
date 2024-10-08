@@ -1,6 +1,6 @@
 from embedd import embedd
 from elasticsearch import Elasticsearch
-from config import config
+from config import config, log_format
 import time
 
 import logging
@@ -13,7 +13,7 @@ console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)  # 핸들러 레벨 설정
 
 # 로그 포맷 설정
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter(log_format)
 console_handler.setFormatter(formatter)
 
 # 핸들러를 로거에 추가

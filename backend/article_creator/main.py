@@ -5,7 +5,7 @@ from datetime import datetime
 from contextlib import asynccontextmanager
 from starlette.responses import Response
 
-from config import config
+from config import config, log_format
 from article import create_article
 import boto3
 from io import BytesIO
@@ -17,6 +17,7 @@ from models.article import Article, ConversionStatus, Category
 from crud import insert_article, update_article
 
 from es import save_article_into_es
+from embedd import embedd
 
 import logging
 
@@ -28,7 +29,7 @@ console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)  # 핸들러 레벨 설정
 
 # 로그 포맷 설정
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter(log_format)
 console_handler.setFormatter(formatter)
 
 # 핸들러를 로거에 추가
@@ -69,8 +70,8 @@ class CreateArticleRequestDto(BaseModel):
     source_created_at: datetime
     press_id: int
     press_name: int
-    
-@app.post("/video")
+
+@app.post("/ai/video")
 async def create_and_register_article(article_request_dto: CreateArticleRequestDto, session = Depends(get_session)):
     
     logger.info(article_request_dto)
@@ -167,3 +168,7 @@ def upload_video_to_s3(id: int, video):
         s3_key,
         {'ContentType': ContentType.MP4.value}
     )
+    
+@app.get("/ai/embedd/")
+async def embedd_keyword(keyword: str):
+    return embedd(keyword).tolist()
