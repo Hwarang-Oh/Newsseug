@@ -10,6 +10,7 @@ interface ArticleState {
   activeCategory: string;
   activePress: number | null;
   folderId: number | null;
+  keyword: string | null;
   videoList: { [id: number]: ArticleVideo };
 }
 
@@ -20,6 +21,7 @@ const initialArticleState: ArticleState = {
   activeCategory: 'ALL',
   activePress: null,
   folderId: null,
+  keyword: null,
   videoList: {},
 };
 
@@ -45,6 +47,10 @@ const articleSlice = createSlice({
     setFolderId(state, action: PayloadAction<number | null>) {
       state.folderId = action.payload;
     },
+    setKeyword(state, action: PayloadAction<string | null>) {
+      state.keyword = action.payload;
+    },
+
     setVideoList(state, action: PayloadAction<{ [id: number]: ArticleVideo }>) {
       state.videoList = {
         ...state.videoList, // 기존 데이터를 유지
@@ -65,6 +71,7 @@ export const {
   setActviePress,
   setFolderId,
   setVideoList,
+  setKeyword,
   removeVideo,
 } = articleSlice.actions;
 export default articleSlice.reducer;
