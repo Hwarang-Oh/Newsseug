@@ -6,6 +6,7 @@ import {
   setArticleFrom,
   setArticleIds,
   setFolderId,
+  setKeyword,
   setSliceDetail,
 } from '../redux/articleSlice';
 import { Category, SliceDetails } from 'types/api/article';
@@ -18,6 +19,7 @@ function useStoreArticleDispatch(
   activeCategory?: string,
   activePress?: number | null,
   folerId?: number | null,
+  keyword?: string,
 ) {
   const dispatch = useDispatch();
 
@@ -30,6 +32,7 @@ function useStoreArticleDispatch(
     );
     dispatch(setActviePress(activePress ?? null));
     dispatch(setFolderId(folerId ?? null));
+    dispatch(setKeyword(keyword ?? null));
   }, [
     articleList,
     sliceDetails,
@@ -37,6 +40,7 @@ function useStoreArticleDispatch(
     activeCategory,
     activePress,
     folerId,
+    keyword,
     dispatch,
   ]);
 }

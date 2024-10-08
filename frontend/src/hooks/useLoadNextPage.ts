@@ -8,6 +8,7 @@ import {
 } from 'apis/articleApi';
 import { getFolderInfo } from 'apis/folderApi';
 import { getMemberHistoryList } from 'apis/memberApi';
+import { getSearchResult } from 'apis/searchApi';
 
 export const useLoadNextPage = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ export const useLoadNextPage = () => {
     articlesFrom,
     activePress,
     folderId,
+    keyword,
   } = useSelector((state: RootState) => state.articles);
 
   const loadNextPage = async () => {
@@ -59,6 +61,16 @@ export const useLoadNextPage = () => {
         case 'history':
           newArticles = await getMemberHistoryList(nextPage);
           break;
+
+        case 'search': {
+          const articles = await getSearchResult({
+            keywordText: keyword,
+            pageNumber: nextPage,
+            category: activeCategory,
+          });
+          newArticles = articles.articles;
+          break;
+        }
 
         default:
           throw new Error('Unknown articlesFrom value');

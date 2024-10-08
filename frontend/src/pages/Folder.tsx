@@ -28,14 +28,13 @@ function Folder() {
     );
 
   const pages = data?.pages || [];
-  console.log(pages);
-  const SliceDetails =
+  const sliceDetails =
     pages.length > 0 ? pages[pages.length - 1].articles.sliceDetails : {};
 
   const articleList = pages.flatMap((page) => page.articles.content) || [];
   useStoreArticleDispatch(
     articleList,
-    SliceDetails,
+    sliceDetails,
     'folder',
     'ALL',
     null,
