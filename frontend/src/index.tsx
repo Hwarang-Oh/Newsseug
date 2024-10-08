@@ -31,36 +31,36 @@ const ThemeWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// enableMocking().then(() => {
-//   const root = ReactDOM.createRoot(
-//     document.getElementById('root') as HTMLElement,
-//   );
-//   root.render(
-//     <HelmetProvider>
-//       <Provider store={store}>
-//         <QueryClientProvider client={queryClient}>
-//           <ThemeWrapper>
-//             <App />
-//           </ThemeWrapper>
-//         </QueryClientProvider>
-//       </Provider>
-//     </HelmetProvider>,
-//   );
-// });
+enableMocking().then(() => {
+  const root = ReactDOM.createRoot(
+    document.getElementById('root') as HTMLElement,
+  );
+  root.render(
+    <HelmetProvider>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeWrapper>
+            <App />
+          </ThemeWrapper>
+        </QueryClientProvider>
+      </Provider>
+    </HelmetProvider>,
+  );
+});
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement,
-);
-root.render(
-  <HelmetProvider>
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeWrapper>
-          <App />
-        </ThemeWrapper>
-      </QueryClientProvider>
-    </Provider>
-  </HelmetProvider>,
-);
+// const root = ReactDOM.createRoot(
+//   document.getElementById('root') as HTMLElement,
+// );
+// root.render(
+//   <HelmetProvider>
+//     <Provider store={store}>
+//       <QueryClientProvider client={queryClient}>
+//         <ThemeWrapper>
+//           <App />
+//         </ThemeWrapper>
+//       </QueryClientProvider>
+//     </Provider>
+//   </HelmetProvider>,
+// );
 
 serviceWorker.register();
