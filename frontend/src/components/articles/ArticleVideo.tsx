@@ -62,7 +62,6 @@ function ArticleVideo({ articleInfo, setIsModalOpen }: ArticleVideoProp) {
     <Container>
       <VideoWrapper>
         <ShrotForm
-          muted
           autoPlay
           playsInline
           loop
