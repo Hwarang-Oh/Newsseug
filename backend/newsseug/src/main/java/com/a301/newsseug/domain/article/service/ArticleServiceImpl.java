@@ -137,7 +137,6 @@ public class ArticleServiceImpl implements ArticleService {
             CustomUserDetails userDetails, Long pressId, int pageNumber, String category
     ) {
 
-        Member loginMember = userDetails.getMember();
         Pageable pageable = PageRequest.of(
                 pageNumber,
                 20,
@@ -151,7 +150,7 @@ public class ArticleServiceImpl implements ArticleService {
             );
         } else {
             sliced = articleRepository.findByPress(
-                    subscribeRepository.findPressByMember(loginMember), category, pageable
+                    subscribeRepository.findPressByMember(userDetails.getMember()), category, pageable
             );
         }
 
