@@ -5,9 +5,9 @@ import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
 import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
 
 public interface PressService {
-	ListSimplePressResponse getSimplePress(CustomUserDetails userDetails);
 
-	GetPressResponse getPress(Long pressId);
+	ListSimplePressResponse getPress(CustomUserDetails userDetails);
 
-	GetPressResponse getPress(Long pressId, CustomUserDetails userDetailsOptional);
+	GetPressResponse getPressDetails(CustomUserDetails userDetails, Long pressId);
+
 }

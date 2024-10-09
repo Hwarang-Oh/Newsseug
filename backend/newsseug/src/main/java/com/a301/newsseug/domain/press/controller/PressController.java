@@ -17,10 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,16 +31,16 @@ public class PressController {
 
     private final PressService pressService;
 
-    @GetMapping
     @Operation(summary = "모든 언론사 조회 API", description = "모든 언론사의 식별자, 이름 그리고 로고를 조회하는 API",
     responses = {
         @ApiResponse(description = "조회 성공", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ListSimplePressResponse.class))),
         @ApiResponse(description = "조회 실패", responseCode = "400")
     })
-    public ResponseEntity<Result<ListSimplePressResponse>> getSimplePress(
+    @GetMapping
+    public ResponseEntity<Result<ListSimplePressResponse>> getPress(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        return ResponseUtil.ok(Result.of(pressService.getSimplePress(userDetails)));
+        return ResponseUtil.ok(Result.of(pressService.getPress(userDetails)));
     }
 
     @Operation(summary = "언론사 상세 조회 API", description = "단일 언론사에 대한 상제 정보를 조회하는 API",
@@ -52,17 +49,11 @@ public class PressController {
         @ApiResponse(description = "조회 실패", responseCode = "400")
     })
     @GetMapping("/{pressId}")
-    public ResponseEntity<Result<GetPressResponse>> getPress(
+    public ResponseEntity<Result<GetPressResponse>> getPressDetail(
+            @NullableUserDetails CustomUserDetails userDetails,
             @Parameter(name = "pressId") @PathVariable("pressId") Long pressId
     ) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()) {
-            CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            return ResponseUtil.ok(Result.of(pressService.getPress(pressId, userDetails)));
-        }
-
-        return ResponseUtil.ok(Result.of(pressService.getPress(pressId)));
+        return ResponseUtil.ok(Result.of(pressService.getPressDetails(userDetails, pressId)));
 	}
+
 }

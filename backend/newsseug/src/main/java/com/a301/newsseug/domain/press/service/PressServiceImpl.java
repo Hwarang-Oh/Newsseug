@@ -11,6 +11,7 @@ import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class PressServiceImpl implements PressService {
     private final SubscribeRepository subscribeRepository;
 
     @Override
-    public ListSimplePressResponse getSimplePress(CustomUserDetails userDetails) {
+    public ListSimplePressResponse getPress(CustomUserDetails userDetails) {
 
         List<Press> press = pressRepository.findAll();
 
@@ -37,19 +38,16 @@ public class PressServiceImpl implements PressService {
     }
 
     @Override
-    public GetPressResponse getPress(Long pressId) {
+    public GetPressResponse getPressDetails(CustomUserDetails userDetails, Long pressId) {
 
         Press press = pressRepository.getOrThrow(pressId);
+
+        if (Objects.nonNull(userDetails)) {
+            return  GetPressResponse.of(press, subscribeRepository.existsByMemberAndPress(userDetails.getMember(), press));
+        }
 
         return GetPressResponse.of(press);
+
     }
 
-    @Override
-    public GetPressResponse getPress(Long pressId, CustomUserDetails userDetailsOptional) {
-        Press press = pressRepository.getOrThrow(pressId);
-
-        Member member = userDetailsOptional.getMember();
-
-        return GetPressResponse.of(press, subscribeRepository.existsByMemberAndPress(member, press));
-    }
 }

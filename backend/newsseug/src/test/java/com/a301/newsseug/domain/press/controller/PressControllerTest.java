@@ -17,7 +17,6 @@ import com.a301.newsseug.domain.member.factory.entity.MemberFactory;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.press.factory.PressFactory;
 import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
-import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
 import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.service.PressService;
@@ -38,7 +37,7 @@ class PressControllerTest {
 	PressService pressService;
 
 	@Test
-	void getSimplePressSubscribed() throws Exception {
+	void getPressSubscribed() throws Exception {
 
 		// Given
 		Member member = MemberFactory.memberOfKakao(0L);
@@ -50,7 +49,7 @@ class PressControllerTest {
 		List<SimplePressDto> simplePressDtoList = Stream.of(press1, press2).map(p -> SimplePressDto.of(p, true)).toList();
 		ListSimplePressResponse responseBody = ListSimplePressResponse.of(simplePressDtoList);
 
-		given(pressService.getSimplePress(customUserDetails)).willReturn(responseBody);
+		given(pressService.getPress(customUserDetails)).willReturn(responseBody);
 
 		// When&Then
 		mockMvc.perform(get("/api/v1/press")
@@ -68,7 +67,7 @@ class PressControllerTest {
 	}
 
 	@Test
-	void getSimplePressNotSubscribed() throws Exception {
+	void getPressNotSubscribed() throws Exception {
 
 		// Given
 		Member member = MemberFactory.memberOfKakao(0L);
@@ -80,7 +79,7 @@ class PressControllerTest {
 		List<SimplePressDto> simplePressDtoList = Stream.of(press1, press2).map(p -> SimplePressDto.of(p, false)).toList();
 		ListSimplePressResponse responseBody = ListSimplePressResponse.of(simplePressDtoList);
 
-		given(pressService.getSimplePress(customUserDetails)).willReturn(responseBody);
+		given(pressService.getPress(customUserDetails)).willReturn(responseBody);
 
 		// When&Then
 		mockMvc.perform(get("/api/v1/press")
@@ -98,7 +97,7 @@ class PressControllerTest {
 	}
 
 	@Test
-	void getSimplePressComplexSubscribed() throws Exception {
+	void getPressComplexSubscribed() throws Exception {
 
 		// Given
 		Member member = MemberFactory.memberOfKakao(0L);
@@ -110,7 +109,7 @@ class PressControllerTest {
 		List<SimplePressDto> simplePressDtoList = List.of(SimplePressDto.of(press1, true), SimplePressDto.of(press2, false));
 		ListSimplePressResponse responseBody = ListSimplePressResponse.of(simplePressDtoList);
 
-		given(pressService.getSimplePress(customUserDetails)).willReturn(responseBody);
+		given(pressService.getPress(customUserDetails)).willReturn(responseBody);
 
 		// When&Then
 		mockMvc.perform(get("/api/v1/press")
@@ -128,7 +127,7 @@ class PressControllerTest {
 	}
 
 	@Test
-	void getPressNotLogin() throws Exception {
+	void getPressDetailNotLogin() throws Exception {
 
 		// // Given
 		// Press press = PressFactory.press(0L);
