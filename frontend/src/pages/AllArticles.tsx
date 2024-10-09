@@ -12,7 +12,6 @@ import {
   Category,
 } from 'types/api/article';
 import useContentsFetch from 'hooks/useContentsFetch';
-import useStoreArticleDispatch from 'hooks/useStoreArticleDispatch';
 
 /**
  * IMP : All Articles Page -> Home Page를 통해서 들어올 수 있는 Page
@@ -41,13 +40,6 @@ function AllArticles() {
     category: Category[activeCategory as keyof typeof Category],
   });
 
-  useStoreArticleDispatch(
-    articleList,
-    sliceDetails,
-    sectionState.sectionType,
-    activeCategory,
-  );
-
   return (
     <SubLayout>
       <div>{SectionTypeMatch[sectionState.sectionType]}</div>
@@ -63,6 +55,9 @@ function AllArticles() {
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          sliceDetails={sliceDetails}
+          articleFrom={sectionState.sectionType}
+          activeCategory={activeCategory}
         />
       </FadeInWrapper>
     </SubLayout>

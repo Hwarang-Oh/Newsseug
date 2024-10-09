@@ -4,13 +4,13 @@
       "id": 1,
       "name": "YTN",
       "imageUrl": "https://th.bing.com/th?id=OIP.cL28NDL7EsJZ_JdNcKHFxAHaLZ&w=201&h=310&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.1&pid=3.1&rm=2",
-      "isSubscribed": false
+      "isSubscribed": true
     },
     {
       "id": 2,
       "name": "KBS",
       "imageUrl": "https://th.bing.com/th?id=OIP.gjGes7FoMLK0fMzT9fVQYwHaJh&w=220&h=283&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.1&pid=3.1&rm=2",
-      "isSubscribed": false
+      "isSubscribed": true
     },
     {
       "id": 3,
@@ -28,7 +28,7 @@
       "id": 5,
       "name": "JTBC",
       "imageUrl": "https://th.bing.com/th?id=OIP.ynDNPw1pq84ewHal4AMoCwHaJZ&w=221&h=281&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.1&pid=3.1&rm=2",
-      "isSubscribed": false
+      "isSubscribed": true
     },
     {
       "id": 6,
@@ -46,7 +46,7 @@
       "id": 8,
       "name": "경향신문",
       "imageUrl": "https://th.bing.com/th?id=OIP.jQm4lYtCE5nppSmH0dFVFAHaE8&w=306&h=204&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.1&pid=3.1&rm=2",
-      "isSubscribed": false
+      "isSubscribed": true
     },
     {
       "id": 9,
@@ -112,7 +112,7 @@
       "id": 19,
       "name": "한겨레",
       "imageUrl": "https://th.bing.com/th/id/OIP.I9cpgpZW5ELJfyew6Vn9EQHaEr?w=248&h=180&c=7&r=0&o=5&dpr=2.2&pid=1.7",
-      "isSubscribed": false
+      "isSubscribed": true
     },
     {
       "id": 20,

@@ -9,7 +9,6 @@ import { PressDetail } from 'types/api/press';
 import { getSearchResult } from 'apis/searchApi';
 import { SearchResultInfo } from 'types/api/search';
 import { useInfiniteQuery } from 'react-query';
-import useStoreArticleDispatch from 'hooks/useStoreArticleDispatch';
 
 function SearchResult() {
   const [searchParams] = useSearchParams();
@@ -59,16 +58,6 @@ function SearchResult() {
   const pages = data?.pages || [];
   const sliceDetails =
     pages.length > 0 ? pages[pages.length - 1].articles.sliceDetails : {};
-  const articleList = pages.flatMap((page) => page.articles.content) || [];
-  useStoreArticleDispatch(
-    articleList,
-    sliceDetails,
-    'search',
-    activeCategory,
-    null,
-    null,
-    keyword,
-  );
 
   if (isLoading) return <div>로딩 중</div>;
   if (isError) return <div>검색 결과 조회 실패</div>;
@@ -100,6 +89,10 @@ function SearchResult() {
           articleList={allArticles || []}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
+          sliceDetails={sliceDetails}
+          articleFrom="search"
+          activeCategory={activeCategory}
+          keyword={keyword}
         />
       </>
     </SubLayout>

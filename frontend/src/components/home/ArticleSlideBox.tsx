@@ -3,12 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { useRef, useEffect } from 'react';
 import { ArticleListCardGroupProps } from 'types/common/common';
 import { useDispatch } from 'react-redux';
-import {
-  setActiveCategory,
-  setArticleFrom,
-  setArticleIds,
-  setSliceDetail,
-} from '../../redux/articleSlice';
+import StoreArticleDispatch from 'hooks/useStoreArticleDispatch';
 
 /**
  * IMP : ArticleSlideBox Component ( Article Slide Box ) => 가로 슬라이드로 넘어가는 뉴스 기사
@@ -48,14 +43,13 @@ function ArticleSlideBox({
   const dispatch = useDispatch();
 
   const articleDispatch = () => {
-    dispatch(
-      setArticleIds(
-        articleList ? articleList.map((article) => article.id) : [],
-      ),
+    StoreArticleDispatch(
+      dispatch,
+      articleList,
+      sliceDetails ?? {},
+      sectionType ?? 'all',
+      'ALL',
     );
-    dispatch(setArticleFrom(sectionType ?? 'all'));
-    dispatch(setActiveCategory('ALL'));
-    dispatch(setSliceDetail(sliceDetails ?? {}));
   };
 
   return (

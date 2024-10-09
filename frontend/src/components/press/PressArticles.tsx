@@ -6,7 +6,6 @@ import { Category, PageType } from 'types/api/article';
 import { fetchArticlesByPress } from 'apis/articleApi';
 import { PressArticleProps } from 'types/props/press';
 import React from 'react';
-import useStoreArticleDispatch from 'hooks/useStoreArticleDispatch';
 
 function PressArticles({
   pressId,
@@ -28,14 +27,6 @@ function PressArticles({
     category: Category[activeCategory as keyof typeof Category],
     pressId: pressId,
   });
-
-  useStoreArticleDispatch(
-    articleList,
-    sliceDetails,
-    'press',
-    activeCategory,
-    pressId,
-  );
   return (
     <Wrapper>
       <SubTitle title="업로드한 영상" />
@@ -44,6 +35,10 @@ function PressArticles({
         fetchNextPage={fetchNextPage}
         hasNextPage={hasNextPage}
         isFetchingNextPage={isFetchingNextPage}
+        sliceDetails={sliceDetails}
+        articleFrom="press"
+        activeCategory={activeCategory}
+        activePress={pressId}
       />
     </Wrapper>
   );

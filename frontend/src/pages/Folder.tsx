@@ -5,8 +5,6 @@ import { useInfiniteQuery } from 'react-query';
 import { getFolderInfo } from 'apis/folderApi';
 import { useParams } from 'react-router-dom';
 import { FolderDetail } from 'types/api/folder';
-import useStoreArticleDispatch from 'hooks/useStoreArticleDispatch';
-
 function Folder() {
   const { folderId } = useParams();
 
@@ -31,16 +29,6 @@ function Folder() {
   const sliceDetails =
     pages.length > 0 ? pages[pages.length - 1].articles.sliceDetails : {};
 
-  const articleList = pages.flatMap((page) => page.articles.content) || [];
-  useStoreArticleDispatch(
-    articleList,
-    sliceDetails,
-    'folder',
-    'ALL',
-    null,
-    Number(folderId),
-  );
-
   if (isLoading) {
     return <div>로딩 중</div>;
   }
@@ -60,6 +48,10 @@ function Folder() {
         articleList={allArticles || []}
         fetchNextPage={fetchNextPage}
         hasNextPage={hasNextPage}
+        sliceDetails={sliceDetails}
+        articleFrom="folder"
+        activeCategory="전체"
+        folderId={Number(folderId)}
       />
     </SubLayout>
   );
