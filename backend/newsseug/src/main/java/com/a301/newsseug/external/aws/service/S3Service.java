@@ -4,6 +4,6 @@ import com.a301.newsseug.external.aws.model.dto.response.GetPreSignedURLResponse
 
 public interface S3Service {
 
-    GetPreSignedURLResponse generateUploadPreSignedUrl(String fileType, String entity, Long id, String fileName);
+    GetPreSignedURLResponse generateUploadPreSignedUrl(String fileType, String entity, String id, String fileName);
 
 }

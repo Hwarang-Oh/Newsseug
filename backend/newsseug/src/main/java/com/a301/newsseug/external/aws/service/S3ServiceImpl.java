@@ -20,7 +20,7 @@ public class S3ServiceImpl implements S3Service {
     private final S3Presigner s3Presigner;
 
     @Override
-    public GetPreSignedURLResponse generateUploadPreSignedUrl(String fileType, String entity, Long id, String fileName) {
+    public GetPreSignedURLResponse generateUploadPreSignedUrl(String fileType, String entity, String id, String fileName) {
 
         String key = S3KeyUtil.generateKey(fileType, entity, id, fileName);
         log.info("Generate Object Key -> {}", key);

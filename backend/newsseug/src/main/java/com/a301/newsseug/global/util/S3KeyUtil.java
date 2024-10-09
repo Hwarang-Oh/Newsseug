@@ -11,7 +11,7 @@ public class S3KeyUtil {
      * @param fileName  파일의 이름 (확장자를 포함)
      * @return S3 객체키
      */
-    public static String generateKey(String fileType, String entity, Long id, String fileName) {
+    public static String generateKey(String fileType, String entity, String id, String fileName) {
         return S3_FILE_PATH.formatted(fileType, entity, id, fileName);
     }
 

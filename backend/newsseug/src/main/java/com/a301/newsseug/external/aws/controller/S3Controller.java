@@ -35,7 +35,7 @@ public class S3Controller {
     public ResponseEntity<Result<GetPreSignedURLResponse>> generateUploadUrl(
             @RequestParam(name = "fileType", defaultValue = "profile") String fileType,
             @RequestParam(name = "entity", defaultValue = "member") String entity,
-            @RequestParam(name = "id") Long id,
+            @RequestParam(name = "id") String id,
             @RequestParam(name = "fileName") String fileName
     ) {
         return ResponseUtil.ok(
