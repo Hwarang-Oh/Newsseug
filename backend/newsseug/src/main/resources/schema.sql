@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS subscribes (
 );
 
 CREATE TABLE IF NOT EXISTS birth_year_view_counts (
-    birth_view_count_id BIGINT PRIMARY KEY DEFAULT nextval('birth_year_view_counts_seq'),
+    birth_view_count_id BIGINT PRIMARY KEY DEFAULT nextval(birth_year_view_counts_seq),
     birth_year          INT,
     view_count          BIGINT NOT NULL DEFAULT 0,
     article_id          BIGINT NOT NULL,
