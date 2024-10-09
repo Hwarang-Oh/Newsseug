@@ -1,5 +1,5 @@
-create database if not exists newsseug;
-use newsseug;
+CREATE DATABASE IF NOT EXISTS newsseug;
+USE newsseug;
 
 -- Create the sequences
 CREATE SEQUENCE IF NOT EXISTS members_seq START WITH 1 INCREMENT BY 1;
@@ -12,167 +12,139 @@ CREATE SEQUENCE IF NOT EXISTS likes_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE IF NOT EXISTS hates_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE IF NOT EXISTS reports_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE IF NOT EXISTS subscribes_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE birth_year_view_counts_seq START WITH 1 INCREMENT BY 1 MINVALUE 1;
 
 -- Create tables
-create table if not exists members
-(
-    member_id         bigint                             not null DEFAULT nextval(members_seq),
-    birth             date                               null,
-    nickname          varchar(255)                       null,
-    profile_image_url varchar(255)                       null,
-    provider_id       varchar(255)                       not null,
-    gender            enum ('FEMALE', 'MALE')            null,
-    provider          enum ('GOOGLE', 'KAKAO')           not null,
-    role              enum ('ROLE_ADMIN', 'ROLE_MEMBER') null,
-    activation_status enum ('ACTIVE', 'INACTIVE')        not null default 'ACTIVE',
-    created_at        timestamp                          not null default CURRENT_TIMESTAMP,
-    updated_at        timestamp                          not null default CURRENT_TIMESTAMP,
-    primary key (member_id),
-    constraint UKilvrhdmws4av314ebhvn26im5 unique (provider_id)
+CREATE TABLE IF NOT EXISTS members (
+    member_id         BIGINT PRIMARY KEY DEFAULT nextval(members_seq),
+    birth             DATE NULL,
+    nickname          VARCHAR(255) NULL,
+    profile_image_url VARCHAR(255) NULL,
+    provider_id       VARCHAR(255) NOT NULL,
+    gender            ENUM ('FEMALE', 'MALE') NULL,
+    provider          ENUM ('GOOGLE', 'KAKAO') NOT NULL,
+    role              ENUM ('ROLE_ADMIN', 'ROLE_MEMBER') NULL,
+    activation_status ENUM ('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT UKilvrhdmws4av314ebhvn26im5 UNIQUE (provider_id)
 );
 
-create table if not exists folders
-(
-    folder_id         bigint                      not null DEFAULT nextval(folders_seq),
-    member_id         bigint                      not null,
-    article_count     bigint                      null,
-    thumbnail_url     varchar(255)                null,
-    title             varchar(10)                 not null,
-    activation_status enum ('ACTIVE', 'INACTIVE') not null default 'ACTIVE',
-    created_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    updated_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    primary key (folder_id),
-    constraint FKco4xraxvdqyci1h0bfgnvq1yf
-        foreign key (member_id) references members (member_id) on delete cascade
+CREATE TABLE IF NOT EXISTS folders (
+    folder_id         BIGINT PRIMARY KEY DEFAULT nextval(folders_seq),
+    member_id         BIGINT NOT NULL,
+    article_count     BIGINT NULL,
+    thumbnail_url     VARCHAR(255) NULL,
+    title             VARCHAR(10) NOT NULL,
+    activation_status ENUM ('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FKco4xraxvdqyci1h0bfgnvq1yf FOREIGN KEY (member_id) REFERENCES members (member_id) ON DELETE CASCADE
 );
 
-
-create table if not exists press
-(
-    press_id          bigint                      not null DEFAULT nextval(press_seq),
-    subscribe_count   bigint                      null    default 0,
-    description       varchar(255)                null,
-    image_url         varchar(255)                null,
-    name              varchar(255)                null,
-    activation_status enum ('ACTIVE', 'INACTIVE') not null default 'ACTIVE',
-    created_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    updated_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    primary key (press_id)
+CREATE TABLE IF NOT EXISTS press (
+    press_id          BIGINT PRIMARY KEY DEFAULT nextval(press_seq),
+    subscribe_count   BIGINT NULL DEFAULT 0,
+    description       VARCHAR(255) NULL,
+    image_url         VARCHAR(255) NULL,
+    name              VARCHAR(255) NULL,
+    activation_status ENUM ('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-create table if not exists articles
-(
-    article_id        bigint                                                                            not null DEFAULT nextval(articles_seq),
-    press_id          bigint                                                                            not null,
-    hate_count        bigint                                                                            not null        default 0,
-    like_count        bigint                                                                            not null        default 0,
-    source_created_at timestamp                                                                         null,
-    view_count        bigint                                                                            not null,
-    content_url       varchar(255)                                                                      null,
-    source_url        varchar(255)                                                                      not null,
-    thumbnail_url     varchar(255)                                                                      null,
-    title             varchar(255)                                                                      not null,
-    video_url         varchar(255)                                                                      null,
-    category          enum ('ACCIDENT', 'ECONOMY', 'POLITICS', 'SCIENCE', 'SOCIETY', 'SPORTS', 'WORLD') not null,
-    conversion_status enum ('EXCEED_TOKEN', 'FILTERED', 'RUNNING', 'SUCCESS', 'UNKNOWN_FAIL')           not null,
-    activation_status enum ('ACTIVE', 'INACTIVE')                                                       not null        default 'ACTIVE',
-    created_at        timestamp                                                                         not null        default CURRENT_TIMESTAMP,
-    updated_at        timestamp                                                                         not null        default CURRENT_TIMESTAMP,
-    primary key (article_id),
-    constraint FKd04v02rcdg3lmlu45mw9vfomc
-        foreign key (press_id) references press (press_id) on delete cascade
+CREATE TABLE IF NOT EXISTS articles (
+    article_id        BIGINT PRIMARY KEY DEFAULT nextval(articles_seq),
+    press_id          BIGINT NOT NULL,
+    hate_count        BIGINT NOT NULL DEFAULT 0,
+    like_count        BIGINT NOT NULL DEFAULT 0,
+    source_created_at TIMESTAMP NULL,
+    view_count        BIGINT NOT NULL,
+    content_url       VARCHAR(255) NULL,
+    source_url        VARCHAR(255) NOT NULL,
+    thumbnail_url     VARCHAR(255) NULL,
+    title             VARCHAR(255) NOT NULL,
+    video_url         VARCHAR(255) NULL,
+    category          ENUM ('ACCIDENT', 'ECONOMY', 'POLITICS', 'SCIENCE', 'SOCIETY', 'SPORTS', 'WORLD') NOT NULL,
+    conversion_status ENUM ('EXCEED_TOKEN', 'FILTERED', 'RUNNING', 'SUCCESS', 'UNKNOWN_FAIL') NOT NULL,
+    activation_status ENUM ('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FKd04v02rcdg3lmlu45mw9vfomc FOREIGN KEY (press_id) REFERENCES press (press_id) ON DELETE CASCADE
 );
 
-create table if not exists bookmarks
-(
-    bookmark_id       bigint                      not null DEFAULT nextval(bookmarks_seq),
-    article_id        bigint                      not null,
-    folder_id         bigint                      not null,
-    activation_status enum ('ACTIVE', 'INACTIVE') not null default 'ACTIVE',
-    created_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    updated_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    primary key (bookmark_id),
-    constraint uniqueBookmark
-        unique (article_id, folder_id),
-    constraint FKgw1od0yvy1n3r2p0r4cb7x57a
-        foreign key (folder_id) references folders (folder_id) on delete cascade,
-    constraint FKrgc71ng0qy59rn9y741gi2mjr
-        foreign key (article_id) references articles (article_id) on delete cascade
+CREATE TABLE IF NOT EXISTS bookmarks (
+    bookmark_id       BIGINT PRIMARY KEY DEFAULT nextval(bookmarks_seq),
+    article_id        BIGINT NOT NULL,
+    folder_id         BIGINT NOT NULL,
+    activation_status ENUM ('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uniqueBookmark UNIQUE (article_id, folder_id),
+    CONSTRAINT FKgw1od0yvy1n3r2p0r4cb7x57a FOREIGN KEY (folder_id) REFERENCES folders (folder_id) ON DELETE CASCADE,
+    CONSTRAINT FKrgc71ng0qy59rn9y741gi2mjr FOREIGN KEY (article_id) REFERENCES articles (article_id) ON DELETE CASCADE
 );
 
-create table if not exists histories
-(
-    history_id        bigint                      not null DEFAULT nextval(histories_seq),
-    article_id        bigint                      not null,
-    member_id         bigint                      not null,
-    play_time         int                         not null,
-    activation_status enum ('ACTIVE', 'INACTIVE') not null default 'ACTIVE',
-    created_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    updated_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    primary key (history_id),
-    constraint FK6dwu9pkt9gecpbk3r8u4oqk7n
-        foreign key (article_id) references articles (article_id) on delete cascade,
-    constraint FKr5eq32k17h6xd5u1ridpahnlg
-        foreign key (member_id) references members (member_id) on delete cascade
+CREATE TABLE IF NOT EXISTS histories (
+    history_id        BIGINT PRIMARY KEY DEFAULT nextval(histories_seq),
+    article_id        BIGINT NOT NULL,
+    member_id         BIGINT NOT NULL,
+    play_time         INT NOT NULL,
+    activation_status ENUM ('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK6dwu9pkt9gecpbk3r8u4oqk7n FOREIGN KEY (article_id) REFERENCES articles (article_id) ON DELETE CASCADE,
+    CONSTRAINT FKr5eq32k17h6xd5u1ridpahnlg FOREIGN KEY (member_id) REFERENCES members (member_id) ON DELETE CASCADE
 );
 
-create table if not exists likes
-(
-    like_id           bigint                      not null DEFAULT nextval(likes_seq),
-    article_id        bigint                      not null,
-    member_id         bigint                      not null,
-    activation_status enum ('ACTIVE', 'INACTIVE') not null default 'ACTIVE',
-    created_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    updated_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    primary key (like_id),
-    constraint FK166rh7nhmtcajf0xo1f1i3s8p
-        foreign key (member_id) references members (member_id) on delete cascade,
-    constraint FKic6sfk54mitq78b48367cfiet
-        foreign key (article_id) references articles (article_id) on delete cascade
+CREATE TABLE IF NOT EXISTS likes (
+    like_id           BIGINT PRIMARY KEY DEFAULT nextval(likes_seq),
+    article_id        BIGINT NOT NULL,
+    member_id         BIGINT NOT NULL,
+    activation_status ENUM ('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK166rh7nhmtcajf0xo1f1i3s8p FOREIGN KEY (member_id) REFERENCES members (member_id) ON DELETE CASCADE,
+    CONSTRAINT FKic6sfk54mitq78b48367cfiet FOREIGN KEY (article_id) REFERENCES articles (article_id) ON DELETE CASCADE
 );
 
-create table if not exists hates
-(
-    hate_id           bigint                      not null DEFAULT nextval(hates_seq),
-    article_id        bigint                      not null,
-    member_id         bigint                      not null,
-    activation_status enum ('ACTIVE', 'INACTIVE') not null default 'ACTIVE',
-    created_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    updated_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    primary key (hate_id),
-    constraint FKeu114uu249552fnxpjoesei59
-        foreign key (member_id) references members (member_id) on delete cascade,
-    constraint FKp1hq7yrqfyhean2q5gj53i4em
-        foreign key (article_id) references articles (article_id) on delete cascade
+CREATE TABLE IF NOT EXISTS hates (
+    hate_id           BIGINT PRIMARY KEY DEFAULT nextval(hates_seq),
+    article_id        BIGINT NOT NULL,
+    member_id         BIGINT NOT NULL,
+    activation_status ENUM ('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FKeu114uu249552fnxpjoesei59 FOREIGN KEY (member_id) REFERENCES members (member_id) ON DELETE CASCADE,
+    CONSTRAINT FKp1hq7yrqfyhean2q5gj53i4em FOREIGN KEY (article_id) REFERENCES articles (article_id) ON DELETE CASCADE
 );
 
-create table if not exists reports
-(
-    report_id         bigint                      not null DEFAULT nextval(reports_seq),
-    article_id        bigint                      not null,
-    type              enum ('DISLIKE', 'EXPLICIT_CONTENT', 'HATE_SPEECH_OR_SYMBOLS', 'MISINFORMATION', 'SPAM') not null,
-    activation_status enum ('ACTIVE', 'INACTIVE') not null default 'ACTIVE',
-    created_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    updated_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    primary key (report_id),
-    constraint FKvd08qavn9nwy8fa6n5349tb7
-        foreign key (article_id) references articles (article_id) on delete cascade
+CREATE TABLE IF NOT EXISTS reports (
+    report_id         BIGINT PRIMARY KEY DEFAULT nextval(reports_seq),
+    article_id        BIGINT NOT NULL,
+    type              ENUM ('DISLIKE', 'EXPLICIT_CONTENT', 'HATE_SPEECH_OR_SYMBOLS', 'MISINFORMATION', 'SPAM') NOT NULL,
+    activation_status ENUM ('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FKvd08qavn9nwy8fa6n5349tb7 FOREIGN KEY (article_id) REFERENCES articles (article_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS subscribes (
+    subscribe_id      BIGINT PRIMARY KEY DEFAULT nextval(subscribes_seq),
+    member_id         BIGINT NULL,
+    press_id          BIGINT NULL,
+    activation_status ENUM ('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uniqueSubscribe UNIQUE (member_id, press_id),
+    CONSTRAINT FK1ll7f1tjs7lt3xiqfcbrfmdum FOREIGN KEY (member_id) REFERENCES members (member_id) ON DELETE CASCADE,
+    CONSTRAINT FKj3n9k136ixactnmfdhflm2i4n FOREIGN KEY (press_id) REFERENCES press (press_id) ON DELETE CASCADE
+);
 
-create table if not exists subscribes
-(
-    subscribe_id      bigint                      not null DEFAULT nextval(subscribes_seq),
-    member_id         bigint                      null,
-    press_id          bigint                      null,
-    activation_status enum ('ACTIVE', 'INACTIVE') not null default 'ACTIVE',
-    created_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    updated_at        timestamp                   not null default CURRENT_TIMESTAMP,
-    primary key (subscribe_id),
-    constraint uniqueSubscribe
-        unique (member_id, press_id),
-    constraint FK1ll7f1tjs7lt3xiqfcbrfmdum
-        foreign key (member_id) references members (member_id) on delete cascade,
-    constraint FKj3n9k136ixactnmfdhflm2i4n
-        foreign key (press_id) references press (press_id) on delete cascade
+CREATE TABLE IF NOT EXISTS birth_year_view_counts (
+    birth_view_count_id BIGINT PRIMARY KEY DEFAULT nextval('birth_year_view_counts_seq'),
+    birth_year          INT,
+    view_count          BIGINT NOT NULL DEFAULT 0,
+    article_id          BIGINT NOT NULL,
+    CONSTRAINT fk_article FOREIGN KEY (article_id) REFERENCES articles (article_id) ON DELETE CASCADE
 );
