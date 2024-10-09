@@ -128,4 +128,6 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
   }
+
+  box-shadow: 0 0 100px ${({ theme }) => theme.textColor + '25'};
 `;

@@ -77,12 +77,13 @@ export default SubHeader;
 
 const Wrapper = styled.div<{ $headerColor?: string }>`
   z-index: 1000;
-  padding: 12px 16px;
+  padding: 12px 16px 16px 16px;
   position: fixed;
   box-sizing: border-box;
   display: flex;
   width: 100%;
-  height: 48px;
+  max-width: 500px;
+  height: 52px;
   justify-content: space-between;
   align-items: center;
   gap: 8px;

@@ -37,6 +37,7 @@ export default ProgressBar;
 
 const ProgressSection = styled.div<{ $isPlaying: boolean }>`
   padding: ${({ $isPlaying }) => ($isPlaying ? '0' : '0 10px 16px')};
+  transition: 0.3s;
 `;
 
 const ProgressBarWrap = styled.div`

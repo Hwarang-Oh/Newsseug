@@ -1,16 +1,19 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import ArticleListCard from 'components/common/ArticleListCard';
 import { useRef, useEffect } from 'react';
 import { ArticleListCardGroupProps } from 'types/common/common';
 import Spinner from './Spinner';
+import PressCard from 'components/search/PressCard';
 
 /**
  * IMP : ArticleListCardGroup ( News Card Group ) Component
  * @param param0
  * @returns
- */
+ **/
+
 function ArticleListCardGroup({
   articleList,
+  resultList,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
@@ -40,19 +43,42 @@ function ArticleListCardGroup({
 
   return (
     <Container ref={slideBoxRef}>
-      {articleList.map((article) => (
-        <ArticleListCard
+      {articleList?.map((article) => (
+        <StyledArticleListCard
           key={article.id}
           thumbnailUrl={article.thumbnailUrl}
           title={article.title}
           viewCount={article.viewCount}
           pressName={article.pressName}
           id={article.id}
-          width="100%"
+          width="calc(50% - 4px)"
         />
       ))}
+      {resultList?.map((result) =>
+        result.type === 'press' ? (
+          <FullWidthPressCard
+            key={`press-${result.id}`}
+            id={result.id}
+            name={result.name}
+            imageUrl={result.imageUrl}
+            isSubscribed={result.isSubscribed}
+            description={result.description}
+            subscribeCount={result.subscribeCount}
+          />
+        ) : (
+          <StyledArticleListCard
+            key={`article-${result.id}`}
+            thumbnailUrl={result.thumbnailUrl}
+            title={result.title}
+            viewCount={result.viewCount}
+            pressName={result.pressName}
+            id={result.id}
+            width="calc(50% - 4px)"
+          />
+        ),
+      )}
       <LoadingContainer ref={observerRef}>
-        {isFetchingNextPage && <LoadingIndicator></LoadingIndicator>}
+        {isFetchingNextPage && <Spinner height={'24px'} />}
       </LoadingContainer>
     </Container>
   );
@@ -66,39 +92,25 @@ const Container = styled.div`
   flex-wrap: wrap;
   gap: 8px;
   overflow-y: auto;
-  & > * {
-    flex: 1 1 calc(50% - 8px);
-    flex-shrink: 0;
-  }
   &::-webkit-scrollbar {
     display: none;
   }
 `;
 
+const FullWidthPressCard = styled(PressCard)`
+  flex: 1 1 100%;
+`;
+
+const StyledArticleListCard = styled(ArticleListCard)`
+  flex: 1 1 calc(50%);
+  flex-shrink: 0;
+`;
+
 const LoadingContainer = styled.div`
   display: flex;
+  padding: 10px 0;
   width: 100%;
   height: 70px;
   align-self: center;
   justify-content: center;
-`;
-
-const SpinnerAnimation = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-`;
-
-const LoadingIndicator = styled.div`
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  border: 3px solid rgba(195, 195, 195, 0.6);
-  border-radius: 50%;
-  border-top-color: #636767;
-  animation: ${SpinnerAnimation} 0.6s linear infinite;
-  margin: 0 auto;
 `;

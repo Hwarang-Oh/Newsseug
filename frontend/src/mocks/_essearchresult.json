@@ -1,0 +1,83 @@
+{
+    "timestamp": "string",
+    "trackingId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "data": {
+      "sliceDetails": {
+        "currentPage": 0,
+        "hasFirst": true,
+        "hasNext": true
+      },
+      "content": [
+        {
+          "type": "press",
+          "id": 1,
+          "name": "YTN",
+          "imageUrl": "https://th.bing.com/th?id=OIP.cL28NDL7EsJZ_JdNcKHFxAHaLZ&w=201&h=310&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.1&pid=3.1&rm=2",
+          "description": "string",
+          "subscribeCount": 0,
+          "isSubscribed": false,
+          "pressName": "string",
+          "thumbnailUrl": "string",
+          "title": "string",
+          "viewCount": 0,
+          "createdAt": "2024-10-09T05:58:01.809Z"
+        },
+        {
+          "type": "article",
+          "id": 1,
+          "name": "null",
+          "imageUrl": "null",
+          "description": "string",
+          "subscribeCount": 0,
+          "isSubscribed": false,
+          "pressName": "KBS",
+          "thumbnailUrl": "https://i.ytimg.com/vi/CEpKaDzwlNU/maxresdefault.jpg",
+          "title": "전국 민속놀이 대회 개최 소식",
+          "viewCount": 1515653,
+          "createdAt": "2024-10-09T05:58:01.809Z"
+        },
+        {
+          "type": "article",
+          "id": 1,
+          "name": "null",
+          "imageUrl": "null",
+          "description": "string",
+          "subscribeCount": 0,
+          "isSubscribed": false,
+          "pressName": "KBS",
+          "thumbnailUrl": "https://i.ytimg.com/vi/CEpKaDzwlNU/maxresdefault.jpg",
+          "title": "전국 민속놀이 대회 개최 소식",
+          "viewCount": 1515653,
+          "createdAt": "2024-10-09T05:58:01.809Z"
+        },
+        {
+          "type": "article",
+          "id": 1,
+          "name": "null",
+          "imageUrl": "null",
+          "description": "string",
+          "subscribeCount": 0,
+          "isSubscribed": false,
+          "pressName": "KBS",
+          "thumbnailUrl": "https://i.ytimg.com/vi/CEpKaDzwlNU/maxresdefault.jpg",
+          "title": "전국 민속놀이 대회 개최 소식",
+          "viewCount": 1515653,
+          "createdAt": "2024-10-09T05:58:01.809Z"
+        },
+        {
+          "type": "press",
+          "id": 2,
+          "name": "KBS",
+          "imageUrl": "https://th.bing.com/th?id=OIP.gjGes7FoMLK0fMzT9fVQYwHaJh&w=220&h=283&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.1&pid=3.1&rm=2",
+          "description": "string",
+          "subscribeCount": 0,
+          "isSubscribed": true,
+          "pressName": "string",
+          "thumbnailUrl": "string",
+          "title": "string",
+          "viewCount": 0,
+          "createdAt": "2024-10-09T05:58:01.809Z"
+        }
+      ]
+    }
+  }

@@ -17,6 +17,7 @@ import {
  */
 function ArticleSlideBox({
   articleList,
+  resultList,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
@@ -47,7 +48,11 @@ function ArticleSlideBox({
   const dispatch = useDispatch();
 
   const articleDispatch = () => {
-    dispatch(setArticleIds(articleList.map((article) => article.id)));
+    dispatch(
+      setArticleIds(
+        articleList ? articleList.map((article) => article.id) : [],
+      ),
+    );
     dispatch(setArticleFrom(sectionType ?? 'all'));
     dispatch(setActiveCategory('ALL'));
     dispatch(setSliceDetail(sliceDetails ?? {}));
@@ -55,7 +60,7 @@ function ArticleSlideBox({
 
   return (
     <ArticleSlideBoxStyle ref={slideBoxRef} onClick={() => articleDispatch()}>
-      {articleList.map((article) => (
+      {articleList?.map((article) => (
         <ArticleListCard key={article.id} {...article} />
       ))}
       <LoadingContainer ref={observerRef}>
