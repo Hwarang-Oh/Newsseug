@@ -64,6 +64,11 @@ public class LikeServiceImpl implements LikeService {
 
         likeRepository.delete(like);
 
+        // Redis에서 likeCount 감소
+        String likeHashKey = "article:likecount";
+        Long incrementValue = -1L;
+        redisCounterService.increment(likeHashKey, articleId, incrementValue);
+
     }
 
     @Scheduled(cron = "0 0/5 * * * ?")

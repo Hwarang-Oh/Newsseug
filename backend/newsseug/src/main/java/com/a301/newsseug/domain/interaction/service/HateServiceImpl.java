@@ -47,7 +47,7 @@ public class HateServiceImpl implements HateService {
                         .build()
         );
 
-        // Redis에서 hate 증가
+        // Redis에서 hateCount 증가
         String hateHashKey = "article:hatecount";
         Long incrementValue = 1L;
         redisCounterService.increment(hateHashKey, articleId, incrementValue);
@@ -62,6 +62,10 @@ public class HateServiceImpl implements HateService {
         Hate hate = hateRepository.getOrThrow(loginMember, article);
         hateRepository.delete(hate);
 
+        // Redis에서 hateCount 감소
+        String hateHashKey = "article:hatecount";
+        Long incrementValue = -1L;
+        redisCounterService.increment(hateHashKey, articleId, incrementValue);
     }
 
     @Scheduled(cron = "0 0/5 * * * ?")
