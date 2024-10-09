@@ -57,10 +57,10 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleRepository.getOrThrow(articleId);
         Long incrementedViewCount = redisCounterService.increment("article:viewCount:", articleId, 1L);
 
-        if (incrementedViewCount >= redisProperties.viewCounter().threshold()) {
-            articleRepository.updateCount("viewCount", articleId, incrementedViewCount);
-            redisCounterService.deleteByKey("article:viewCount:", articleId);
-        }
+//        if (incrementedViewCount >= redisProperties.viewCounter().threshold()) {
+//            articleRepository.updateCount("viewCount", articleId, incrementedViewCount);
+//            redisCounterService.deleteByKey("article:viewCount:", articleId);
+//        }
 
         Long likeCount = redisCounterService.findByKey("article:likeCount:", articleId).orElse(0L);
         Long hateCount = redisCounterService.findByKey("article:hateCount:", articleId).orElse(0L);
