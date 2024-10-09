@@ -1,14 +1,16 @@
 import styled from 'styled-components';
+import { getLogout } from 'apis/loginApi';
 import { useEffect, useState } from 'react';
 import { RootState } from '@reduxjs/toolkit';
 import { MemberInfo } from 'types/api/member';
 import { getMemberInfo } from 'apis/memberApi';
-import { getLogout } from 'apis/loginApi';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDarkMode } from '../../redux/darkModeSlice';
 
 function UserInfo() {
   const [userInfo, setUserInfo] = useState<MemberInfo>();
+  const naivagate = useNavigate();
   const dispatch = useDispatch();
   const providerId = useSelector((state: RootState) => state.member.providerId);
   const isDarkMode = useSelector(
@@ -17,7 +19,7 @@ function UserInfo() {
 
   const handleLogOut = async () => {
     if (await getLogout(providerId)) {
-      window.location.href = '/login';
+      naivagate('/login');
     }
   };
 
