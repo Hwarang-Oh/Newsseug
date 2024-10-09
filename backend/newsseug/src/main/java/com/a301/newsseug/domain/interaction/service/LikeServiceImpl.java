@@ -20,7 +20,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
-@Transactional
 @Service
 @RequiredArgsConstructor
 public class LikeServiceImpl implements LikeService {
@@ -46,10 +45,7 @@ public class LikeServiceImpl implements LikeService {
                 .build()
         );
 
-        // Redis에서 likeCount 증가
-        String likeHashKey = "article:likecount";
-        Long incrementValue = 1L;
-        redisCounterService.increment(likeHashKey, articleId, incrementValue);
+        redisCounterService.increment("article:likeCount", articleId, 1L);
 
     }
 
@@ -57,17 +53,10 @@ public class LikeServiceImpl implements LikeService {
     public void deleteLikeFromArticle(CustomUserDetails userDetails, Long articleId) {
 
         Member loginMember = userDetails.getMember();
-
         Article article = articleRepository.getOrThrow(articleId);
-
         Like like = likeRepository.getOrThrow(loginMember, article);
-
         likeRepository.delete(like);
-
-        // Redis에서 likeCount 감소
-        String likeHashKey = "article:likecount";
-        Long incrementValue = -1L;
-        redisCounterService.increment(likeHashKey, articleId, incrementValue);
+        redisCounterService.increment("article:likeCount", articleId,  -1L);
 
     }
 
@@ -86,7 +75,7 @@ public class LikeServiceImpl implements LikeService {
                 if (Objects.nonNull(likeCount)) {
                     log.info("Updating articleId: {}, New likeCount: {}", articleId, likeCount);
                     articleRepository.updateCount("likeCount", articleId, Long.parseLong(likeCount));
-                    redisCounterService.deleteByKey("article:likecount", articleId);
+                    redisCounterService.deleteByKey("article:likeCount", articleId);
                 }
             }
         }

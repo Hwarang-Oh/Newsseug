@@ -1,5 +1,7 @@
 package com.a301.newsseug.domain.article.service;
 
+import com.a301.newsseug.domain.article.repository.ArticleRepository;
+import com.a301.newsseug.external.redis.config.RedisProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ import java.util.Optional;
 public class RedisCounterServiceImpl implements RedisCounterService {
 
     private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisProperties redisProperties;
+    private final ArticleRepository articleRepository;
 
     @Override
     public void save(String hash, Long key, Long value) {
@@ -46,6 +50,17 @@ public class RedisCounterServiceImpl implements RedisCounterService {
 
     @Override
     public Long increment(String hash, Long key, Long value) {
-        return redisTemplate.opsForHash().increment(hash, key.toString(), value);
+
+        long incrementedViewCount = redisTemplate.opsForHash().increment(hash, key.toString(), value);
+
+        if (incrementedViewCount >= redisProperties.viewCounter().threshold()) {
+            String[] filedName = hash.split(":");
+            articleRepository.updateCount(filedName[1], key, incrementedViewCount);
+            deleteByKey(hash, key);
+        }
+
+        return incrementedViewCount;
+
     }
+
 }
