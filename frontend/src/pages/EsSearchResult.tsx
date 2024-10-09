@@ -41,7 +41,7 @@ function EsSearchResult() {
       {isError && (
         <ErrorSection
           height="300px"
-          text="검색 결과를 불러오는 데 실패했어요.😥"
+          text="검색 결과를 불러오는 데 실패했어요...😥"
         />
       )}
       {resultList && (

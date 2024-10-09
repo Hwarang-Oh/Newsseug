@@ -155,7 +155,7 @@ function ScrapModal({
             {error ? (
               <ErrorSection
                 height="200px"
-                text="폴더 목록을 불러오는 데 실패했어요.😥"
+                text="폴더 목록을 불러오는 데 실패했어요...😥"
               />
             ) : null}
             {Array.isArray(folderList) &&
