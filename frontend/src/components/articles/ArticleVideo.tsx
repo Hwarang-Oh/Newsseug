@@ -161,6 +161,7 @@ function ArticleVideo({
         )}
         {isLoginModalOpen && (
           <LoginModal
+            isVideo={true}
             onCancel={handleButtonClickWithoutLogin}
             onLogin={handleLogin}
           />

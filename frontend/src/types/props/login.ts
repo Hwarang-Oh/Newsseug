@@ -10,6 +10,7 @@ export interface LoginListProps {
 }
 
 export interface LoginModalProps {
+  isVideo?: boolean;
   onCancel: () => void;
   onLogin: () => void;
 }
