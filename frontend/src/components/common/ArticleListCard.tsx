@@ -42,6 +42,7 @@ const Wrapper = styled.div<{ width?: string; height?: string }>`
   height: ${({ height }) => height};
   overflow: hidden;
   border-radius: 5px;
+  cursor: pointer;
 `;
 
 const Thumbnail = styled.img`

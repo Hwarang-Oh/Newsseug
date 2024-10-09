@@ -8,6 +8,7 @@ import {
   fetchHateArticle,
   fetchLikeArticle,
 } from 'apis/articleVideoApi';
+import { getCookie } from 'utils/stateUtils';
 
 function ArticleButtons({
   articleId,
@@ -15,6 +16,7 @@ function ArticleButtons({
   hateInfo,
   handleScrapClick,
   handleReportClick,
+  handleButtonClickWithoutLogin,
 }: Readonly<ArticleButtonsProp>) {
   const theme = useTheme();
 
@@ -24,7 +26,16 @@ function ArticleButtons({
   const [isHate, setIsHate] = useState<boolean>(hateInfo.isHate);
   const [hateCount, setHateCount] = useState<number>(hateInfo.hateCount);
 
+  const isAuthenticated = () => {
+    const token = getCookie('AccessToken');
+    return !!token; // 토큰이 있으면 true, 없으면 false
+  };
+
   const handleLike = async () => {
+    if (!isAuthenticated()) {
+      handleButtonClickWithoutLogin();
+      return;
+    }
     // 싫어요가 눌러진 상태라면 싫어요 취소 후 좋아요 설정
     if (isHate) {
       setIsHate(!isHate);
@@ -44,6 +55,10 @@ function ArticleButtons({
   };
 
   const handleHate = async () => {
+    if (!isAuthenticated()) {
+      handleButtonClickWithoutLogin();
+      return;
+    }
     if (isLike) {
       setIslike(!isLike);
       setLikeCount(likeCount - 1);

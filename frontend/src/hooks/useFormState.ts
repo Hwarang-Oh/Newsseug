@@ -84,7 +84,7 @@ function useFormState() {
         providerId,
         profileImageFile.name,
       );
-      data.profileImageUrl = presignedUrl;
+      data.profileImageUrl = presignedUrl.split('?')[0];
       await uploadProfileImage(presignedUrl, profileImageFile);
     }
     dispatch(setMemberInfo({ ...data, age }));

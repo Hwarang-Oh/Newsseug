@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from 'styled-components';
+import styled from 'styled-components';
 import ArticleListCard from 'components/common/ArticleListCard';
 import { useRef, useEffect } from 'react';
 import { ArticleListCardGroupProps } from 'types/common/common';
@@ -54,7 +54,7 @@ function ArticleListCardGroup({
   const articleDispatch = () => {
     StoreArticleDispatch(
       dispatch,
-      articleList,
+      articleList || [],
       sliceDetails ?? {},
       articleFrom ?? 'all',
       activeCategory ?? '전체',
@@ -65,7 +65,6 @@ function ArticleListCardGroup({
   };
 
   return (
-
     <Container ref={slideBoxRef} onClick={articleDispatch}>
       {articleList?.map((article) => (
         <StyledArticleListCard

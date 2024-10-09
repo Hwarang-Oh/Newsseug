@@ -12,7 +12,6 @@ import StoreArticleDispatch from 'hooks/useStoreArticleDispatch';
  */
 function ArticleSlideBox({
   articleList,
-  resultList,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
@@ -45,7 +44,7 @@ function ArticleSlideBox({
   const articleDispatch = () => {
     StoreArticleDispatch(
       dispatch,
-      articleList,
+      articleList || [],
       sliceDetails ?? {},
       sectionType ?? 'all',
       'ALL',

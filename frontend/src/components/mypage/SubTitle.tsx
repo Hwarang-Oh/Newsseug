@@ -50,6 +50,7 @@ const AllBtn = styled.a`
   font-weight: 600;
   line-height: 140%;
   letter-spacing: -0.25px;
+  cursor: pointer;
   &:active {
     background: none;
     text-decoration: underline;

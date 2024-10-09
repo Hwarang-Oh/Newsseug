@@ -59,4 +59,5 @@ const BackBtn = styled.button`
   outline: none;
   background: none;
   padding: 0;
+  cursor: pointer;
 `;
