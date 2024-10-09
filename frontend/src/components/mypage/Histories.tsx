@@ -4,7 +4,7 @@ import { getMemberHistoryList } from 'apis/memberApi';
 import ArticleListCard from '../common/ArticleListCard';
 import { PageType } from '@/types/api/article';
 import { ArticleListCardProps } from 'types/common/common';
-import useStoreArticleDispatch from 'hooks/useStoreArticleDispatch';
+import StoreArticleDispatch from 'hooks/useStoreArticleDispatch';
 import ErrorSection from '../common/ErrorSection';
 import Spinner from '../common/Spinner';
 import { useDispatch } from 'react-redux';
@@ -42,13 +42,8 @@ function Histories() {
   }
 
   return (
-<<<<<<< frontend/src/components/mypage/Histories.tsx
-    <Wrapper>
-      {myPageHistory?.content ? (
-=======
     <Wrapper onClick={() => articleDispatch()}>
-      {myPageHistory &&
->>>>>>> frontend/src/components/mypage/Histories.tsx
+      {myPageHistory?.content ? (
         Array.isArray(myPageHistory?.content) &&
         myPageHistory.content.map((history: ArticleListCardProps) => {
           return (
