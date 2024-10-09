@@ -29,7 +29,7 @@ function Section({
       {isError && (
         <ErrorSection
           height="250px"
-          text={`${subTitle}를 불러오는 데 실패했어요.😥`}
+          text={`${subTitle}를 불러오는 데 실패했어요...😥`}
         />
       )}
       {isLoading && <Spinner height="250px" />}
