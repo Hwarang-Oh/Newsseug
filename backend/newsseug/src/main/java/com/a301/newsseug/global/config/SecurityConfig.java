@@ -66,15 +66,21 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requestConfigurer ->
 
                         requestConfigurer
+
                                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                                 .requestMatchers("/newsseug/**").permitAll()
                                 .requestMatchers(SWAGGER_URI).permitAll()
+
+                                .requestMatchers("/api/v1/members/**").hasRole(ROLE_MEMBER.getRole())
+                                .requestMatchers("/api/v1/folders/**").hasRole(ROLE_MEMBER.getRole())
+                                .requestMatchers("/api/v1/press").hasRole(ROLE_MEMBER.getRole())
+
                                 .requestMatchers("/api/v1/auth/**").permitAll()
-                                .requestMatchers("/api/v1/press/**").permitAll()
+                                .requestMatchers("/api/v1/press/*").permitAll()
                                 .requestMatchers("/api/v1/articles/**").permitAll()
                                 .requestMatchers("/api/v1/s3/**").permitAll()
                                 .requestMatchers("/api/v1/search/**").permitAll()
-                                .requestMatchers("/api/v1/members/**").hasRole(ROLE_MEMBER.getRole())
+
                                 .anyRequest().authenticated()
 
                 )

@@ -6,7 +6,7 @@ public class RegEx {
             "^(/v3/api-docs(/.*)?|/swagger-ui(/.*)?|/swagger-ui.html|/webjars(/.*)?|/swagger-resources(/.*)?)&",
             "^(/api/v1/auth(/.*)?)$",
             "^(/api/v1/articles(/.*)?)$",
-            "^(/api/v1/press(/.*)?)$",
+            "^(/api/press/\\d+$)$",
             "^(/api/v1/s3(/.*)?)$",
             "^(/newsseug(/.*)?)$"
     };

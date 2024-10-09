@@ -34,7 +34,7 @@ public class FolderController {
     public ResponseEntity<Result<GetFolderDetailsResponse>> getFolder(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber,
-            @PathVariable(name = "folderId") @NotBlank Long folderId
+            @PathVariable(name = "folderId") Long folderId
     ) {
         return ResponseEntity.ok(
                 Result.of(folderService.getFolder(userDetails, pageNumber, folderId))
