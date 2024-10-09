@@ -19,7 +19,7 @@ import { ArticleDetailInfoProp } from 'types/props/articleVideo';
 function ArticleDetailInfo({
   articleInfo,
   handleButtonClickWithoutLogin,
-}: ArticleDetailInfoProp) {
+}: Readonly<ArticleDetailInfoProp>) {
   const [isSubscribed, setIsSubscribed] = useState<boolean>(
     articleInfo.press.isSubscribed,
   );
