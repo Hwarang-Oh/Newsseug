@@ -12,7 +12,9 @@ public enum SortingCriteria {
 
     CREATED_AT("createdAt"),
 
-    UPDATE_AT("updatedAt");
+    UPDATE_AT("updatedAt"),
+
+    BIRTH_YEAR_VIEW_COUNT("birthYearViewCount");
 
     private final String value;
 
