@@ -33,7 +33,7 @@ function Section({
         />
       )}
       {isLoading && <Spinner height="250px" />}
-      {articleList.length > 0 ? (
+      {!isError && !isLoading && articleList.length > 0 ? (
         <ArticleSlideBox
           articleList={articleList}
           fetchNextPage={fetchNextPage}
@@ -42,9 +42,9 @@ function Section({
           sectionType={sectionType}
           sliceDetails={sliceDetails}
         />
-      ) : (
+      ) : !isError && !isLoading && articleList.length === 0 ? (
         <ErrorSection height="250px" text={`${subTitle}가 없습니다.`} />
-      )}
+      ) : null}
     </SectionStyle>
   );
 }
