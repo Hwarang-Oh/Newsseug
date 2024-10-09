@@ -3,12 +3,19 @@ import { Helmet } from 'react-helmet-async';
 import styled, { useTheme } from 'styled-components';
 import { LoginModalProps } from 'types/props/login';
 
-function LoginModal({ onCancel, onLogin }: Readonly<LoginModalProps>) {
+function LoginModal({
+  isVideo = false,
+  onCancel,
+  onLogin,
+}: Readonly<LoginModalProps>) {
   const theme = useTheme();
   return (
     <>
       <Helmet>
-        <meta name="theme-color" content={darkenColor(theme.bgColor, -50)} />
+        <meta
+          name="theme-color"
+          content={isVideo ? '#000' : darkenColor(theme.bgColor, -50)}
+        />
       </Helmet>
       <ModalOverlay onClick={onCancel}>
         <ModalContainer onClick={(e) => e.stopPropagation()}>
