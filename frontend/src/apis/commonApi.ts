@@ -9,7 +9,7 @@ import {
 /**
  * IMP : AccessToken 재발급을 위한 API
  */
-const REFRESH_URL = '/api/v1/auth/reissue';
+const REFRESH_URL = 'https://j11a301.p.ssafy.io/api/v1/auth/reissue';
 export const reissueToken = async (): Promise<string> => {
   try {
     const refreshToken = getCookie('RefreshToken');

@@ -15,6 +15,7 @@ import Press from 'pages/Press';
 import ArticleVideo from 'pages/ArticleVideo';
 import History from 'pages/History';
 import Folder from 'pages/Folder';
+import EsSearchResult from 'pages/EsSearchResult';
 
 function Router() {
   return (
@@ -43,7 +44,7 @@ function Router() {
         </Route>
 
         <Route path="/search" element={<Search />} />
-        <Route path="/search/result" element={<SearchResult />} />
+        <Route path="/search/result" element={<EsSearchResult />} />
         <Route path="/press/:pressId" element={<Press />} />
       </Routes>
     </BrowserRouter>

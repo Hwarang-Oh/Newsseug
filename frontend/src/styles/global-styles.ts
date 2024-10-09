@@ -54,9 +54,12 @@ ${reset}
     transition: background-color 0.3s ease, color 0.3s ease;
   }
   
-  body {
-    background-color: ${({ theme }) => theme.bgColor}
-  }
+body {
+  background-color: ${({ theme }) => theme.bgColor};
+  display: flex;
+  justify-content: center;
+  overflow-y: scroll;
+}
 
 `;
 

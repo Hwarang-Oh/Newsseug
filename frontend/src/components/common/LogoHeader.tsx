@@ -27,6 +27,7 @@ export default LogoHeader;
 const LogoContainer = styled.div<{ $size: number }>`
   display: flex;
   width: 100%;
+  max-width: 500px;
   height: 6.7%;
   padding: 0px 16px;
   align-items: center;
@@ -34,4 +35,5 @@ const LogoContainer = styled.div<{ $size: number }>`
   position: fixed;
   z-index: 5;
   top: 0;
+  box-sizing: border-box;
 `;

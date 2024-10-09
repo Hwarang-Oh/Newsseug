@@ -43,6 +43,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   width: 100%;
+  max-width: 500px;
   height: 48px;
   justify-content: space-between;
   align-items: center;

@@ -1,36 +1,41 @@
-import styled from 'styled-components';
+import { Helmet } from 'react-helmet-async';
+import styled, { useTheme } from 'styled-components';
 import { LoginModalProps } from 'types/props/login';
 
 function LoginModal({ onCancel, onLogin }: Readonly<LoginModalProps>) {
+  const theme = useTheme();
   return (
-    <ModalOverlay onClick={onCancel}>
-      <ModalContainer onClick={(e) => e.stopPropagation()}>
-        <Content>
-          <Message>로그인이 필요한 서비스 입니다</Message>
-          <Message>로그인을 하시겠습니까?</Message>
-        </Content>
+    <>
+      <Helmet>
+        <meta name="theme-color" content={theme.relaxColor.light} />
+      </Helmet>
+      <ModalOverlay onClick={onCancel}>
+        <ModalContainer onClick={(e) => e.stopPropagation()}>
+          <Content>
+            <Message>로그인이 필요한 서비스 입니다</Message>
+            <Message>로그인을 하시겠습니까?</Message>
+          </Content>
 
-        <ButtonGroup>
-          <CancelButton onClick={onCancel}>돌아가기</CancelButton>
-          <ConfirmButton onClick={onLogin}>로그인</ConfirmButton>
-        </ButtonGroup>
-      </ModalContainer>
-    </ModalOverlay>
+          <ButtonGroup>
+            <CancelButton onClick={onCancel}>돌아가기</CancelButton>
+            <ConfirmButton onClick={onLogin}>로그인</ConfirmButton>
+          </ButtonGroup>
+        </ModalContainer>
+      </ModalOverlay>
+    </>
   );
 }
 
 export default LoginModal;
 
 const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: ${({ theme }) => theme.textColor + '1A'};
+  background-color: ${({ theme }) => theme.relaxColor.light};
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100vw;
+  max-width: 500px;
+  height: 100vh;
 `;
 
 const ModalContainer = styled.div`

@@ -80,12 +80,16 @@ const NavBarContainer = styled.div`
   display: flex;
   position: fixed;
   bottom: 0;
+  top: auto;
   width: 100%;
+  max-width: 500px;
   height: 8%;
   flex-shrink: 0;
   background-color: ${({ theme }) => theme.bgColor};
   box-shadow: 0px -4px 100px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  padding: 0;
+  padding-bottom: 15px;
 `;
 
 const navItems = [

@@ -10,7 +10,10 @@ import { useEffect, useRef, useState } from 'react';
 import { ArticleVideoProp } from 'types/props/articleVideo';
 import { AnimatePresence } from 'framer-motion';
 
-function ArticleVideo({ articleInfo, setIsModalOpen }: ArticleVideoProp) {
+function ArticleVideo({
+  articleInfo,
+  setIsModalOpen,
+}: Readonly<ArticleVideoProp>) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -61,7 +64,8 @@ function ArticleVideo({ articleInfo, setIsModalOpen }: ArticleVideoProp) {
   return (
     <Container>
       <VideoWrapper>
-        <ShrotForm
+        <ShortForm
+          muted
           autoPlay
           playsInline
           loop
@@ -131,18 +135,18 @@ export default ArticleVideo;
 const Container = styled.div`
   width: 100%;
   height: 100%;
+  max-width: 500px;
   z-index: 1;
   position: relative;
   background-color: #202020;
 `;
 
-const ShrotForm = styled.video`
+const ShortForm = styled.video`
   width: 100%;
   object-fit: cover;
 `;
 
 const VideoWrapper = styled.div`
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -158,6 +162,7 @@ const ArticleContainer = styled.div`
     rgba(0, 0, 0, 0.8) 68%,
     rgba(0, 0, 0, 0.9) 100%
   );
+  padding-bottom: 20px;
 `;
 
 const PlayButton = styled.button`

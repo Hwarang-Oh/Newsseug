@@ -22,6 +22,8 @@ const LayoutBox = styled.div<{ $backgroundColor?: string }>`
   flex-direction: column;
   min-height: 100vh;
   width: 100vw;
+  max-width: 500px;
+  margin: 0 auto;
   background-color: ${({ $backgroundColor, theme }) =>
     $backgroundColor ?? theme.bgColor};
   padding-top: env(safe-area-inset-top);
@@ -30,4 +32,5 @@ const LayoutBox = styled.div<{ $backgroundColor?: string }>`
   padding-right: env(safe-area-inset-right);
   box-sizing: border-box;
   border: none;
+  box-shadow: 0 0 100px ${({ theme }) => theme.textColor + '25'};
 `;

@@ -1,4 +1,8 @@
-import { SearchApiParams, SearchResultInfo } from 'types/api/search';
+import {
+  EsSearchResultInfo,
+  SearchApiParams,
+  SearchResultInfo,
+} from 'types/api/search';
 import api from 'apis/commonApi';
 import { isAxiosError } from 'axios';
 const SEARCH_URL = '/api/v1/search';
@@ -17,6 +21,27 @@ export const getSearchResult = async ({
         keyword: keywordText,
         pageNumber,
         filter: category,
+      },
+    });
+    return response.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error('Not Found');
+      } else throw error;
+    } else throw error;
+  }
+};
+
+export const getEsSearchResult = async (
+  keyword: string,
+  pageNumber: number,
+): Promise<EsSearchResultInfo> => {
+  try {
+    const response = await api.get(`${SEARCH_URL}/es`, {
+      params: {
+        keyword,
+        pageNumber,
       },
     });
     return response.data;
