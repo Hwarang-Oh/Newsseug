@@ -4,7 +4,9 @@ import { getMemberHistoryList } from 'apis/memberApi';
 import ArticleListCard from '../common/ArticleListCard';
 import { PageType } from '@/types/api/article';
 import { ArticleListCardProps } from 'types/common/common';
-import StoreArticleDispatch from 'hooks/useStoreArticleDispatch';
+import useStoreArticleDispatch from 'hooks/useStoreArticleDispatch';
+import ErrorSection from '../common/ErrorSection';
+import Spinner from '../common/Spinner';
 import { useDispatch } from 'react-redux';
 
 function Histories() {
@@ -27,18 +29,26 @@ function Histories() {
   };
 
   if (isLoading) {
-    return <div>로딩 중</div>;
+    return <Spinner height={height} />;
   }
 
   if (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : '알 수 없는 오류';
-    return <div>마이페이지 시청 기록 정보 조회 실패: {errorMessage}</div>;
+    return (
+      <ErrorSection
+        height={height}
+        text="시청 기록을 불러오는 데 실패했어요.😥"
+      />
+    );
   }
 
   return (
+<<<<<<< frontend/src/components/mypage/Histories.tsx
+    <Wrapper>
+      {myPageHistory?.content ? (
+=======
     <Wrapper onClick={() => articleDispatch()}>
       {myPageHistory &&
+>>>>>>> frontend/src/components/mypage/Histories.tsx
         Array.isArray(myPageHistory?.content) &&
         myPageHistory.content.map((history: ArticleListCardProps) => {
           return (
@@ -53,7 +63,10 @@ function Histories() {
               height={height}
             />
           );
-        })}
+        })
+      ) : (
+        <ErrorSection height={height} text="❌시청 기록이 없습니다." />
+      )}
     </Wrapper>
   );
 }

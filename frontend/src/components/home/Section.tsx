@@ -3,6 +3,7 @@ import SubTitle from 'components/home/SubTitle';
 import ArticleSlideBox from 'components/home/ArticleSlideBox';
 import { SectionProps } from 'types/props/home';
 import Spinner from '../common/Spinner';
+import ErrorSection from '../common/ErrorSection';
 
 /**
  * IMP : Section Component ( Section )
@@ -20,21 +21,29 @@ function Section({
   isLoading,
   sectionType,
   sliceDetails,
+  error,
 }: Readonly<SectionProps>) {
   return (
     <SectionStyle>
       <SubTitle subTitle={subTitle} moreLink={moreLink} />
-      {isLoading ? (
-        <Spinner height="250px" />
-      ) : (
+      {error && (
+        <ErrorSection
+          height="250px"
+          text={`${subTitle}를 불러오는 데 실패했어요.😥`}
+        />
+      )}
+      {isLoading && <Spinner height="250px" />}
+      {articleList ? (
         <ArticleSlideBox
-        articleList={articleList}
-        fetchNextPage={fetchNextPage}
-        hasNextPage={hasNextPage}
-        isFetchingNextPage={isFetchingNextPage}
-        sectionType={sectionType}
-        sliceDetails={sliceDetails}
-      />
+          articleList={articleList}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          sectionType={sectionType}
+          sliceDetails={sliceDetails}
+        />
+      ) : (
+        <ErrorSection height="250px" text={`❌ ${subTitle}가 없습니다.`} />
       )}
     </SectionStyle>
   );

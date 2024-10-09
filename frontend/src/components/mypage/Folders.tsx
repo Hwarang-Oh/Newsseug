@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { MemberFolder, MemberFolderInfo } from 'types/api/folder';
 import { getMemberFolderList } from 'apis/memberApi';
+import Spinner from '../common/Spinner';
+import ErrorSection from '../common/ErrorSection';
 
 function Folders() {
   const navigate = useNavigate();
@@ -22,13 +24,16 @@ function Folders() {
   );
 
   if (isLoading) {
-    return <div>로딩 중</div>;
+    return <Spinner height={height} />;
   }
 
   if (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : '알 수 없는 오류';
-    return <div>사용자 폴더 목록 조회 실패: {errorMessage}</div>;
+    return (
+      <ErrorSection
+        height={height}
+        text="폴더 목록을 불러오는 데 실패했어요.😥"
+      />
+    );
   }
 
   return (
