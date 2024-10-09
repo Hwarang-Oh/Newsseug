@@ -116,6 +116,7 @@ const ButtonContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 24px;
+  z-index: 100;
 `;
 
 const Button = styled.button`

@@ -8,7 +8,7 @@ import {
   SearchNavItem,
   MyPageNavItem,
 } from 'components/icon/NavItemIcon';
-import { fetchArticles } from 'apis/articleApi';
+import { fetchRandomArticles } from 'apis/articleApi';
 import { useDispatch } from 'react-redux';
 import {
   setActiveCategory,
@@ -35,15 +35,14 @@ function NavBar() {
     sliceDetails: SliceDetails,
   ) => {
     dispatch(setArticleIds(articleList.map((article) => article.id)));
-    dispatch(setArticleFrom('all'));
-    dispatch(setActiveCategory('ALL'));
+    dispatch(setArticleFrom('newsseug'));
     dispatch(setSliceDetail(sliceDetails ?? {}));
   };
 
   const handleItemClick = async (index: number, to: string) => {
     if (index === 2) {
       try {
-        const article = await fetchArticles({ category: 'ALL', page: 0 });
+        const article = await fetchRandomArticles();
         articleDispatch(article.content, article.sliceDetails);
         console.log(article.content[0].id);
         navigate(`/articles/${article.content[0].id}`);
