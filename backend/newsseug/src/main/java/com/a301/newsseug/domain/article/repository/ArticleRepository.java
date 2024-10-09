@@ -2,7 +2,9 @@ package com.a301.newsseug.domain.article.repository;
 
 import com.a301.newsseug.domain.article.exception.NotExistArticleException;
 import com.a301.newsseug.domain.article.model.entity.Article;
+import com.a301.newsseug.domain.article.model.entity.type.CategoryType;
 import com.a301.newsseug.domain.article.model.entity.type.ConversionStatus;
+import com.a301.newsseug.global.model.entity.ActivationStatus;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
         return findByArticleIdAndConversionStatus(id, ConversionStatus.SUCCESS)
                 .orElseThrow(NotExistArticleException::new);
     }
+
+    List<Article> findAllByCategoryAndActivationStatusAndConversionStatus(CategoryType categoryType, ActivationStatus activationStatus, ConversionStatus conversionStatus);
 
     Optional<Article> findByArticleIdAndConversionStatus(Long id, ConversionStatus conversionStatus);
 

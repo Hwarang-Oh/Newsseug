@@ -47,10 +47,7 @@ public class HateServiceImpl implements HateService {
                         .build()
         );
 
-        // Redis에서 hateCount 증가
-        String hateHashKey = "article:hatecount";
-        Long incrementValue = 1L;
-        redisCounterService.increment(hateHashKey, articleId, incrementValue);
+        redisCounterService.increment("article:hateCount:", articleId, 1L);
 
     }
 
@@ -61,17 +58,14 @@ public class HateServiceImpl implements HateService {
         Article article = articleRepository.getOrThrow(articleId);
         Hate hate = hateRepository.getOrThrow(loginMember, article);
         hateRepository.delete(hate);
+        redisCounterService.increment("article:hateCount:", articleId, -1L);
 
-        // Redis에서 hateCount 감소
-        String hateHashKey = "article:hatecount";
-        Long incrementValue = -1L;
-        redisCounterService.increment(hateHashKey, articleId, incrementValue);
     }
 
     @Scheduled(cron = "0 0/5 * * * ?")
     public void syncHateCounts() {
 
-        String hateHashKey = "article:hatecount";
+        String hateHashKey = "article:hateCount:";
 
         Map<Object, Object> hateCountLogs = redisCounterService.findByHash(hateHashKey);
 
@@ -83,7 +77,7 @@ public class HateServiceImpl implements HateService {
                 if (Objects.nonNull(hateCount)) {
                     log.info("Updating articleId: {}, New hateCount: {}", articleId, hateCount);
                     articleRepository.updateCount("hateCount", articleId, Long.parseLong(hateCount));
-                    redisCounterService.deleteByKey("article:hatecount", articleId);
+                    redisCounterService.deleteByKey("article:hateCount:", articleId);
                 }
             }
         }

@@ -4,12 +4,15 @@ import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
 import com.a301.newsseug.domain.article.model.dto.response.*;
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.article.model.entity.BirthYearViewCount;
+import com.a301.newsseug.domain.article.model.entity.type.ConversionStatus;
 import com.a301.newsseug.domain.article.repository.ArticleRepository;
 import com.a301.newsseug.domain.article.repository.BirthYearViewCountRepository;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.interaction.model.dto.SimpleHateDto;
 import com.a301.newsseug.domain.interaction.model.dto.SimpleLikeDto;
+import com.a301.newsseug.domain.interaction.model.entity.History;
 import com.a301.newsseug.domain.interaction.repository.HateRepository;
+import com.a301.newsseug.domain.interaction.repository.HistoryRepository;
 import com.a301.newsseug.domain.interaction.repository.LikeRepository;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
@@ -17,11 +20,13 @@ import com.a301.newsseug.domain.press.repository.PressRepository;
 import com.a301.newsseug.external.redis.config.RedisProperties;
 import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
+import com.a301.newsseug.global.model.entity.ActivationStatus;
 import com.a301.newsseug.global.model.entity.SliceDetails;
 import com.a301.newsseug.global.util.ClockUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
@@ -33,13 +38,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
 
+    private final RedisCounterService redisCounterService;
     private final ArticleRepository articleRepository;
     private final PressRepository pressRepository;
     private final LikeRepository likeRepository;
     private final HateRepository hateRepository;
     private final SubscribeRepository subscribeRepository;
-    private final RedisCounterService redisCounterService;
-    private final RedisProperties redisProperties;
+    private final HistoryRepository historyRepository;
     private final BirthYearViewCountRepository birthYearViewCountRepository;
 
     @Override
@@ -47,18 +52,19 @@ public class ArticleServiceImpl implements ArticleService {
 
         Article article = articleRepository.getOrThrow(articleId);
         Long incrementedViewCount = redisCounterService.increment("article:viewCount:", articleId, 1L);
-
-        // 현재 조회수가 임계치에 도달했을 경우 DB에 업데이트 후 Redis에서 초기화
-        if (incrementedViewCount >= redisProperties.viewCounter().threshold()) {
-            articleRepository.updateCount("viewCount", articleId, incrementedViewCount);
-            redisCounterService.deleteByKey("article:viewCount:", articleId);
-        }
         Long likeCount = redisCounterService.findByKey("article:likeCount:", articleId).orElse(0L);
         Long hateCount = redisCounterService.findByKey("article:hateCount:", articleId).orElse(0L);
 
         if (Objects.nonNull(userDetails)) {
 
             Member member = userDetails.getMember();
+
+            historyRepository.save(
+                    History.builder()
+                            .article(article)
+                            .member(member)
+                            .build()
+            );
 
             int birthYear = member.getBirth().getYear();
 
@@ -91,6 +97,56 @@ public class ArticleServiceImpl implements ArticleService {
                 false,
                 SimpleLikeDto.of(false, article.getLikeCount() + likeCount),
                 SimpleHateDto.of(false, article.getHateCount() + hateCount)
+        );
+
+    }
+
+    @Override
+    public GetArticleDetailsResponse getRandomArticle(CustomUserDetails userDetails) {
+
+        Member loginMember = userDetails.getMember();
+        Pageable pageable = PageRequest.of(
+                0,
+                1,
+                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+        );
+
+        Page<History> history = historyRepository.findByMember(loginMember, pageable);
+        List<Article> articles = articleRepository.findAllByCategoryAndActivationStatusAndConversionStatus(
+                history.getContent().get(0).getArticle().getCategory(),
+                ActivationStatus.ACTIVE,
+                ConversionStatus.SUCCESS
+        );
+
+        Random random = new Random();
+        Article randomArticle = articles.get(random.nextInt(articles.size()));
+        Long articleId = randomArticle.getArticleId();
+
+        Long incrementedViewCount = redisCounterService.increment("article:viewCount:", articleId, 1L);
+        Long likeCount = redisCounterService.findByKey("article:likeCount:", articleId).orElse(0L);
+        Long hateCount = redisCounterService.findByKey("article:hateCount:", articleId).orElse(0L);
+
+        int birthYear = loginMember.getBirth().getYear();
+        BirthYearViewCount birthYearViewCount = birthYearViewCountRepository.findByArticleAndBirthYear(randomArticle, birthYear);
+
+        if (Objects.isNull(birthYearViewCount)) {
+            birthYearViewCount = BirthYearViewCount.builder().article(randomArticle).birthYear(birthYear).build();
+            birthYearViewCountRepository.save(birthYearViewCount);
+        }
+
+        birthYearViewCount.view();
+
+        return GetArticleDetailsResponse.of(randomArticle,
+                randomArticle.getViewCount() + incrementedViewCount,
+                subscribeRepository.existsByMemberAndPress(userDetails.getMember(), randomArticle.getPress()),
+                SimpleLikeDto.of(
+                        likeRepository.existsByMemberAndArticle(userDetails.getMember(), randomArticle),
+                        randomArticle.getLikeCount() + likeCount
+                ),
+                SimpleHateDto.of(
+                        hateRepository.existsByMemberAndArticle(userDetails.getMember(), randomArticle),
+                        randomArticle.getHateCount() + hateCount
+                )
         );
 
     }

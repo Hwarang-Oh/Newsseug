@@ -35,5 +35,6 @@ public class BirthYearViewCount {
     public BirthYearViewCount(Integer birthYear, Article article) {
         this.birthYear = birthYear;
         this.article = article;
+        this.viewCount = 0L;
     }
 }
