@@ -13,7 +13,18 @@ function PrivateRoute() {
   useEffect(() => {
     const checkAuthentication = async () => {
       let accessToken = getCookie('AccessToken');
-      const refreshToken = getCookie('RefreshToken');
+      if (!accessToken) {
+        try {
+          await reissueToken();
+          setIsAuthenticated(true);
+        } catch (error: unknown) {
+          setIsAuthenticated(false);
+          setShowModal(true);
+        }
+      } else setIsAuthenticated(true);
+
+      /**
+       * const refreshToken = getCookie('RefreshToken');
       if (!accessToken && refreshToken) {
         try {
           await reissueToken();
@@ -27,6 +38,7 @@ function PrivateRoute() {
         setIsAuthenticated(false);
         setShowModal(true);
       }
+       */
     };
     checkAuthentication();
   }, [location]);
@@ -41,9 +53,7 @@ function PrivateRoute() {
     setShowModal(false);
     navigate(-1);
   };
-
   if (isAuthenticated) return <Outlet />;
-
   return (
     <>
       {showModal && (

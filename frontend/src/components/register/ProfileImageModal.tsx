@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { ProfileImageModalProps } from 'types/props/register';
 
 function ProfileImageModal({
-  profileImage,
+  profileImageUrl,
   onClose,
   onSave,
   onRemove,
@@ -23,7 +23,7 @@ function ProfileImageModal({
   };
 
   const handleSave = () => {
-    onSave(profileImage);
+    onSave(profileImageUrl);
   };
   return (
     <ModalOverlay>
@@ -35,7 +35,7 @@ function ProfileImageModal({
           onMouseDown={() => window.addEventListener('mousemove', handleDrag)}
           onMouseUp={() => window.removeEventListener('mousemove', handleDrag)}
         >
-          <img src={profileImage} alt="Profile adjustment" />
+          <img src={profileImageUrl} alt="Profile adjustment" />
         </ImageContainer>
         <Controls>
           <label>확대/축소:</label>

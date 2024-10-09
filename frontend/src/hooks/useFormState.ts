@@ -49,7 +49,6 @@ function useFormState() {
 
   const handleImageChange = async (profileImageFile: File) => {
     setProfileImageFile(profileImageFile);
-    console.log(profileImageFile);
   };
 
   const handleGenderSelect = async (index: number) => {
@@ -85,7 +84,7 @@ function useFormState() {
         providerId,
         profileImageFile.name,
       );
-      setValue('profileImageUrl', presignedUrl);
+      data.profileImageUrl = presignedUrl;
       await uploadProfileImage(presignedUrl, profileImageFile);
     }
     dispatch(setMemberInfo({ ...data, age }));

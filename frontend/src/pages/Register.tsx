@@ -36,7 +36,10 @@ function UserInput() {
   } = useImageChange();
 
   useEffect(() => {
-    if (profileImage) handleImageChange(profileImage);
+    if (profileImage) {
+      console.log(profileImage);
+      handleImageChange(profileImage);
+    }
   }, [profileImage]);
 
   /**

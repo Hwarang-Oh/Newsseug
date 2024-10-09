@@ -14,7 +14,7 @@ export const fetchArticles = async ({
   page = 1,
 }: PageParamsType): Promise<PageType> => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
     const response = await api.get(ARTICLES_URL, {
       params: { pageNumber: page, filter: category },
     });
@@ -32,7 +32,7 @@ export const fetchArticlesByToday = async ({
   page = 1,
 }: PageParamsType): Promise<PageType> => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
     const response = await api.get(`${ARTICLES_URL}/today`, {
       params: { pageNumber: page, filter: category },
     });
@@ -60,7 +60,7 @@ export const fetchArticlesByPress = async ({
   pressId,
 }: PageParamsType): Promise<PageType> => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
     const response = await api.get(`${ARTICLES_URL}/press/${pressId ?? ''}`, {
       params: { filter: category, pageNumber: page },
     });

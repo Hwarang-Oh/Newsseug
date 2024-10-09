@@ -18,7 +18,13 @@ async function enableMocking() {
   return worker.start();
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // 포커스가 돌아올 때 자동으로 refetch하지 않음
+    },
+  },
+});
 
 const ThemeWrapper = ({ children }: { children: React.ReactNode }) => {
   const isDarkMode = useSelector(
@@ -31,36 +37,36 @@ const ThemeWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-enableMocking().then(() => {
-  const root = ReactDOM.createRoot(
-    document.getElementById('root') as HTMLElement,
-  );
-  root.render(
-    <HelmetProvider>
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <ThemeWrapper>
-            <App />
-          </ThemeWrapper>
-        </QueryClientProvider>
-      </Provider>
-    </HelmetProvider>,
-  );
-});
+// enableMocking().then(() => {
+//   const root = ReactDOM.createRoot(
+//     document.getElementById('root') as HTMLElement,
+//   );
+//   root.render(
+//     <HelmetProvider>
+//       <Provider store={store}>
+//         <QueryClientProvider client={queryClient}>
+//           <ThemeWrapper>
+//             <App />
+//           </ThemeWrapper>
+//         </QueryClientProvider>
+//       </Provider>
+//     </HelmetProvider>,
+//   );
+// });
 
-// const root = ReactDOM.createRoot(
-//   document.getElementById('root') as HTMLElement,
-// );
-// root.render(
-//   <HelmetProvider>
-//     <Provider store={store}>
-//       <QueryClientProvider client={queryClient}>
-//         <ThemeWrapper>
-//           <App />
-//         </ThemeWrapper>
-//       </QueryClientProvider>
-//     </Provider>
-//   </HelmetProvider>,
-// );
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement,
+);
+root.render(
+  <HelmetProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeWrapper>
+          <App />
+        </ThemeWrapper>
+      </QueryClientProvider>
+    </Provider>
+  </HelmetProvider>,
+);
 
 serviceWorker.register();
