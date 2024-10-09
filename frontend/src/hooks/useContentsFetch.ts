@@ -43,8 +43,10 @@ function useContentsFetch<T extends PageType>({
   const sliceDetails =
     pages.length > 0 ? pages[pages.length - 1].sliceDetails : {};
 
-  // 모든 페이지의 content를 합침
-  const articleList = pages.flatMap((page) => page.content) || [];
+  // 모든 페이지의 content를 합치되, undefined는 제외함
+  const articleList = pages
+    .flatMap((page) => page.content || [])
+    .filter(Boolean);
 
   return {
     sectionType,

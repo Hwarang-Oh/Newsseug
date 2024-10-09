@@ -56,7 +56,7 @@ export const fetchArticlesByToday = async ({
  */
 export const fetchArticlesByPress = async ({
   category = 'ALL',
-  page = 1,
+  page = 0,
   pressId,
 }: PageParamsType): Promise<PageType> => {
   try {

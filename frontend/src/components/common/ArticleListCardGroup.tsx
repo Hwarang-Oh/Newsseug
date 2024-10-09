@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from 'styled-components';
+import styled from 'styled-components';
 import ArticleListCard from 'components/common/ArticleListCard';
 import { useRef, useEffect } from 'react';
 import { ArticleListCardGroupProps } from 'types/common/common';

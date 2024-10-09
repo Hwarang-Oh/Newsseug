@@ -5,6 +5,8 @@ import { getEsSearchResult } from 'apis/searchApi';
 import { EsSearchResultInfo } from 'types/api/search';
 import { useInfiniteQuery } from 'react-query';
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
+import Spinner from 'components/common/Spinner';
+import ErrorSection from 'components/common/ErrorSection';
 
 function EsSearchResult() {
   const [searchParams] = useSearchParams();
@@ -32,18 +34,24 @@ function EsSearchResult() {
   const pages = data?.pages || [];
   const resultList = pages.flatMap((page) => page.content) || [];
 
-  if (isLoading) return <div>로딩 중</div>;
-  if (isError) return <div>검색 결과 조회 실패</div>;
-
   return (
     <SubLayout isSearch={true}>
       <InputSection keywordText={keyword} />
-      <ArticleListCardGroup
-        resultList={resultList}
-        fetchNextPage={fetchNextPage}
-        hasNextPage={hasNextPage}
-        isFetchingNextPage={isFetchingNextPage}
-      />
+      {isLoading && <Spinner height="300px" />}
+      {isError && (
+        <ErrorSection
+          height="300px"
+          text="검색 결과를 불러오는 데 실패했어요.😥"
+        />
+      )}
+      {resultList && (
+        <ArticleListCardGroup
+          resultList={resultList}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+        />
+      )}
     </SubLayout>
   );
 }

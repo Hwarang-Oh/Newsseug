@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { SubTitleProps } from 'types/props/home';
 
 /**
@@ -43,6 +42,7 @@ const MoreLinkStyle = styled.div`
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
-  line-height: 140%; /* 14px */
+  line-height: 140%;
   letter-spacing: -0.25px;
+  cursor: pointer;
 `;
