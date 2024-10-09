@@ -35,7 +35,7 @@ export const getLogin = async (providerId: string): Promise<TokenResponse> => {
   }
 };
 
-export const getLogout = async (providerId: string): Promise<void> => {
+export const getLogout = async (providerId: string): Promise<boolean> => {
   try {
     const response = await api.get(
       `${AUTH_URL}/login?providerId=${encodeURIComponent(providerId)}`,
@@ -44,8 +44,8 @@ export const getLogout = async (providerId: string): Promise<void> => {
       removeCookie('AccessToken');
       removeCookie('RefreshToken');
       removeCookie('ProviderId');
-      window.location.href = '/login';
     }
+    return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) throw new Error('Not Found');
