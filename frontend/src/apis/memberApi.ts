@@ -61,7 +61,7 @@ export const registerMember = async (
 export const getMemberInfo = async (): Promise<MemberInfo> => {
   try {
     const response = await api.get(MEMBER_URL);
-    return response.data;
+    return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -84,7 +84,7 @@ export const getMemberFolderList = async (
     const response = await api.get(`${MEMBER_URL}/folders`, {
       params: { pageNumber: page },
     });
-    return response.data;
+    return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

@@ -6,21 +6,19 @@ function useImageChange() {
   const handleSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImageUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setProfileImageUrl(URL.createObjectURL(file));
       setProfileImage(file);
     }
   };
 
   const handleSaveImage = (newProfileImage: File) => {
+    setProfileImageUrl(URL.createObjectURL(newProfileImage));
     setProfileImage(newProfileImage);
   };
 
   const handleRemoveImage = () => {
     setProfileImage(null);
+    setProfileImageUrl(null);
   };
 
   return {

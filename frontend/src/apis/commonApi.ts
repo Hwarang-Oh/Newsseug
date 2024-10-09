@@ -9,7 +9,8 @@ import {
 /**
  * IMP : AccessToken 재발급을 위한 API
  */
-const REFRESH_URL = 'https://j11a301.p.ssafy.io/api/v1/auth/reissue';
+const REFRESH_URL = '/api/v1/auth/reissue';
+// const REFRESH_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1/auth/reissue`;
 export const reissueToken = async (): Promise<string> => {
   try {
     const refreshToken = getCookie('RefreshToken');
@@ -37,8 +38,8 @@ export const reissueToken = async (): Promise<string> => {
         removeCookie('AccessToken');
         removeCookie('RefreshToken');
         removeCookie('ProviderId');
-        throw new Error('refreshToken is expired, redirecting to login.');
         // window.location.href = '/login';
+        throw new Error('refreshToken is expired, redirecting to login.');
       }
     } else throw error;
   }
@@ -55,38 +56,38 @@ api.interceptors.request.use(async (config) => {
   let accessToken = getCookie('AccessToken');
   const refreshToken = getCookie('RefreshToken');
 
+  // IMP : 비로그인 상태의 요청 Intercept
+  if (!accessToken && !refreshToken) {
+    console.warn('비로그인 상태 => 비로그인 사용자로 처리합니다.');
+    return config;
+  }
+
+  // IMP : 로그인 상태, AccessToken이 만료된 상태의 요청 Intercept
+  // IMP : AccessToken reissue 가능 => AccessToken 재발급 후 요청
+  // IMP : AccessToken reissue 불가능 => 비로그인 사용자로 처리함.
   if (!accessToken && refreshToken) {
-    console.log('AccessToken이 없음, RefreshToken으로 토큰 재발급 시도');
     try {
-      const newAccessToken = await reissueToken();
-      accessToken = newAccessToken;
-    } catch (error) {
-      console.error(
-        '토큰 재발급 실패, 로그아웃 !처리! => 비로그인 상태 요청 필요',
-        error,
-      );
-      removeCookie('AccessToken');
-      removeCookie('RefreshToken');
-      removeCookie('ProviderId');
-      return Promise.reject(error);
+      accessToken = await reissueToken();
+    } catch (error: unknown) {
+      console.warn('AccessToken 재발급 실패 => 비로그인 사용자로 처리합니다.');
+      return config;
     }
   }
-  if (accessToken) {
-    const accessTokenTime = getTokenExpiration(accessToken);
-    if (accessTokenTime && accessTokenTime > Date.now()) {
-      config.headers.Authorization = accessToken;
-    }
-  }
+
+  // IMP : 로그인 상태, AccessToken이 유효한 상태의 요청 Intercept
+  // IMP : AccessToken이 유효하면, 요청에 AccessToken을 추가함.
+  // if (accessTokenTime && accessTokenTime > Date.now()) {}
+  if (accessToken) config.headers.Authorization = accessToken;
   return config;
 });
 
 api.interceptors.response.use(
   (response) => response,
-  async (AuthorizationError) => {
-    const originalRequest = AuthorizationError.config;
+  async (responseError) => {
+    const originalRequest = responseError.config;
     if (
-      AuthorizationError.response &&
-      AuthorizationError.response.status === 401 &&
+      responseError.response &&
+      responseError.response.status === 401 &&
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
@@ -95,11 +96,10 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = accessToken;
         return api(originalRequest);
       } catch (RefreshError) {
-        console.error('토큰 갱신 실패:', RefreshError);
         return Promise.reject(RefreshError);
       }
     }
-    return Promise.reject(AuthorizationError);
+    return Promise.reject(responseError);
   },
 );
 

@@ -1,24 +1,22 @@
-import { getMemberInfo } from 'apis/memberApi';
-import { MemberInfo } from 'types/api/member';
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { RootState } from '@reduxjs/toolkit';
+import { MemberInfo } from 'types/api/member';
+import { getMemberInfo } from 'apis/memberApi';
+import { getLogout } from 'apis/loginApi';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleDarkMode } from '../../redux/darkModeSlice';
 
 function UserInfo() {
+  const [userInfo, setUserInfo] = useState<MemberInfo>();
   const dispatch = useDispatch();
+  const providerId = useSelector((state: RootState) => state.member.providerId);
   const isDarkMode = useSelector(
     (state: RootState) => state.darkMode.isDarkMode,
   );
-  const [userInfo, setUserInfo] = useState<MemberInfo>();
-
-  const handleUpdateUserInfo = (data: MemberInfo) => {
-    setUserInfo(data);
-  };
 
   const handleLogOut = () => {
-    // 여기에 로그아웃 로직 추가
+    getLogout(providerId);
   };
 
   const handleDarkMode = () => {
@@ -26,14 +24,8 @@ function UserInfo() {
   };
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const data = await getMemberInfo();
-        handleUpdateUserInfo(data);
-      } catch (err) {
-        console.log('사용자 정보 조회 실패', err);
-      }
+      setUserInfo(await getMemberInfo());
     };
-
     fetchData();
   }, []);
 

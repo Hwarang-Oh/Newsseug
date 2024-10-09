@@ -39,7 +39,7 @@ export interface ProfileImageProps {
 }
 
 export interface ProfileImageModalProps {
-  profileImage: string;
+  profileImageUrl: string;
   onClose: () => void;
   onSave: (newImageUrl: string) => void;
   onRemove: () => void;
