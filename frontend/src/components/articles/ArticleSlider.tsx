@@ -10,7 +10,8 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState } from '../../redux/index';
 import { useLoadNextPage } from 'hooks/useLoadNextPage';
-import { useFetchVideos } from 'hooks/useFecthVideos';
+import { useFetchVideos } from 'hooks/useFetchVideos';
+import Spinner from 'components/common/Spinner';
 
 function ArticleSlider() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -43,7 +44,7 @@ function ArticleSlider() {
     }
   }, [isModalOpen]);
 
-  const { articleIds, sliceDetails, videoList } = useSelector(
+  const { articleIds, sliceDetails } = useSelector(
     (state: RootState) => state.articles,
   );
   const { articleId } = useParams<{ articleId: string }>();
@@ -53,22 +54,8 @@ function ArticleSlider() {
   );
 
   const loadNextPage = useLoadNextPage();
-  const fetchVideos = useFetchVideos();
 
-  useEffect(() => {
-    fetchVideos();
-  }, [articleIds]);
-
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const hasUnloadedVideos = articleIds.some(
-      (id: number) => !videoList.hasOwnProperty(id),
-    );
-    setIsLoading(hasUnloadedVideos);
-  }, [videoList, articleIds]);
-
-  if (isLoading) return <div>loading...</div>;
+  const { videoList, isLoading } = useFetchVideos(articleIds, activeIndex);
 
   return (
     <Container id="container">
@@ -94,18 +81,22 @@ function ArticleSlider() {
             sliceDetails.hasNext
           ) {
             loadNextPage();
-            fetchVideos();
           }
         }}
       >
         {articleIds.map((articleId: number, index: number) => {
           const video = videoList[articleId];
-          if (!video) {
+          if (isLoading) {
             return (
               <SwiperSlide key={articleId} data-history={articleId}>
-                <div>Loading video...</div>
+                <ModalOverlay>
+                  <Spinner height="100vh" />
+                </ModalOverlay>
               </SwiperSlide>
             );
+          }
+          if (!video) {
+            return <SwiperSlide key={articleId} data-history={articleId} />;
           }
           return (
             <SwiperSlide key={video.article.id} data-history={video.article.id}>
@@ -133,5 +124,17 @@ const Container = styled.div`
     height: 100%;
   }
 
+  box-shadow: 0 0 100px ${({ theme }) => theme.textColor + '25'};
+`;
+
+const ModalOverlay = styled.div`
+  width: 100vw;
+  height: 100vh;
+  max-width: 500px;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
   box-shadow: 0 0 100px ${({ theme }) => theme.textColor + '25'};
 `;

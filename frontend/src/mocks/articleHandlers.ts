@@ -75,4 +75,26 @@ export const articleHandlers = [
       },
     });
   }),
+  http.get(`${ARTICLE_URL}/random`, ({ request }) => {
+    const pageNumber =
+      Number(new URL(request.url).searchParams.get('pageNumber')) || 1;
+    // console.log(pageNumber);
+    const startIdx = (pageNumber - 1) * 6;
+    const endIdx = pageNumber * 6;
+    const paginatedArticles = articledummy.articlesPagination.slice(
+      startIdx,
+      endIdx,
+    );
+    const hasNextPage = endIdx < articledummy.articlesPagination.length;
+    return HttpResponse.json({
+      data: {
+        sliceDetails: {
+          currentPage: pageNumber,
+          hasFirst: pageNumber === 0,
+          hasNext: hasNextPage,
+        },
+        content: paginatedArticles,
+      },
+    });
+  }),
 ];

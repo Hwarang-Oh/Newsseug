@@ -93,7 +93,7 @@ function ArticleDetailInfo({
       </ArticleCommonInfo>
       <PressContainer>
         <PressInfo onClick={handlePressClick}>
-          <PressIcon />
+          <PressIcon src={articleInfo.press.imageUrl} />
           <PressName>{articleInfo.press.name}</PressName>
         </PressInfo>
         <PressSubscribe $isSubscribed={isSubscribed} onClick={handleClick}>
@@ -188,7 +188,7 @@ const PressInfo = styled.div`
   gap: 8px;
 `;
 
-const PressIcon = styled.div`
+const PressIcon = styled.img`
   width: 36px;
   height: 36px;
   background-color: #797979;

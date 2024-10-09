@@ -76,3 +76,15 @@ export const fetchArticlesByPress = async ({
     } else throw error;
   }
 };
+
+export const fetchRandomArticles = async () => {
+  try {
+    const response = await api.get(`${ARTICLES_URL}/random`);
+    return response.data.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 404) throw new Error('Not Found');
+      else throw error;
+    } else throw error;
+  }
+};

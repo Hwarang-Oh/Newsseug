@@ -9,7 +9,7 @@ const PRESS_URL = `/api/v1/press`;
 export const getPressDetail = async (pressId: number): Promise<PressDetail> => {
   try {
     const response = await api.get(`${PRESS_URL}/${pressId}`);
-    return response.data;
+    return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

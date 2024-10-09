@@ -5,6 +5,7 @@ import {
   fetchArticles,
   fetchArticlesByToday,
   fetchArticlesByPress,
+  fetchRandomArticles,
 } from 'apis/articleApi';
 import { getFolderInfo } from 'apis/folderApi';
 import { getMemberHistoryList } from 'apis/memberApi';
@@ -35,6 +36,10 @@ export const useLoadNextPage = () => {
             category: activeCategory,
             page: nextPage,
           });
+          break;
+
+        case 'newsseug':
+          newArticles = await fetchRandomArticles();
           break;
 
         case 'all':
