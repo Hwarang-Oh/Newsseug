@@ -75,6 +75,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/s3/**").permitAll()
                                 .requestMatchers("/api/v1/search/**").permitAll()
                                 .requestMatchers("/api/v1/members/**").hasRole(ROLE_MEMBER.getRole())
+                                .requestMatchers("/api/v1/folders/**").hasRole(ROLE_MEMBER.getRole())
                                 .anyRequest().authenticated()
 
                 )
