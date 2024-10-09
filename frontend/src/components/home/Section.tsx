@@ -21,19 +21,19 @@ function Section({
   isLoading,
   sectionType,
   sliceDetails,
-  error,
+  isError,
 }: Readonly<SectionProps>) {
   return (
     <SectionStyle>
       <SubTitle subTitle={subTitle} moreLink={moreLink} />
-      {error && (
+      {isError && (
         <ErrorSection
           height="250px"
           text={`${subTitle}를 불러오는 데 실패했어요.😥`}
         />
       )}
       {isLoading && <Spinner height="250px" />}
-      {articleList ? (
+      {articleList.length > 0 ? (
         <ArticleSlideBox
           articleList={articleList}
           fetchNextPage={fetchNextPage}

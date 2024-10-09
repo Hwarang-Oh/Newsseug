@@ -54,7 +54,7 @@ function Home() {
             isLoading={section.isLoading}
             sectionType={section.sectionType}
             sliceDetails={section.sliceDetails}
-            error={section.error || {}}
+            isError={section.isError}
           />
         ))}
       </FadeInWrapper>
