@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "embeddingServiceClient", url = "https://j11a301.p.ssafy.io/ai")
 public interface EmbeddingServiceClient {
 
-    @GetMapping("/embed")
+    @GetMapping("/embed/")
     float[] getEmbeddingVector(@RequestParam("keyword") String keyword);
 
 }

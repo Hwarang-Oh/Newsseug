@@ -164,21 +164,17 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public SlicedResponse<List<GetArticleResponse>> getArticlesByBirthYear(CustomUserDetails userDetails, int pageNumber) {
-        Member member = userDetails.getMember();
 
+        Member member = userDetails.getMember();
         Pageable pageable = PageRequest.of(
                 pageNumber,
                 10
         );
 
         int year = member.getBirth().getYear();
-
         int currentYear = LocalDateTime.now().getYear();
-
         int age = currentYear - year;
-
         int ageBegin = (int) Math.floor((double) age / 10) * 10;
-
         int ageEnd = (int) Math.ceil((double) age / 10) * 10 - 1;
 
         Slice<Article> sliced = articleRepository.findAllByBirthYearOrderByViewCount(ageBegin, ageEnd, pageable);
@@ -187,6 +183,7 @@ public class ArticleServiceImpl implements ArticleService {
                 SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
                 GetArticleResponse.of(sliced.getContent())
         );
+
     }
 
 }
