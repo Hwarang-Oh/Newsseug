@@ -69,7 +69,7 @@ const ProgressInput = styled.input`
     appearance: none;
     width: 15px;
     height: 15px;
-    background-color: ${({ theme }) => theme.bgColor};
+    background-color: #fff;
     border-radius: 50%;
     cursor: pointer;
   }
