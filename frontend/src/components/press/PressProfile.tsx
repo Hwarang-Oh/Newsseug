@@ -2,7 +2,21 @@ import { PressInfoProps } from 'types/props/press';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { formatNumber } from 'utils/formatNumber';
-import { subscribePress, unsubscribePress } from 'apis/subscribe';
+import {
+  getSubscribedPressList,
+  subscribePress,
+  unsubscribePress,
+} from 'apis/subscribe';
+import { getCookie, setCookie } from 'utils/stateUtils';
+import { useLocation, useNavigate } from 'react-router-dom';
+import LoginModal from 'components/login/LoginModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/index';
+import {
+  addPress,
+  removePress,
+  updateSubscribedPress,
+} from '../../redux/subscribeSlice';
 
 function PressProfile({
   id,
@@ -12,19 +26,59 @@ function PressProfile({
   isSubscribed,
 }: Readonly<PressInfoProps>) {
   const [isSub, setIsSub] = useState<boolean>(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsSub(isSubscribed);
   }, []);
 
+  const isAuthenticated = () => {
+    const token = getCookie('AccessToken');
+    return !!token; // 토큰이 있으면 true, 없으면 false
+  };
+
+  const handleLogin = () => {
+    setIsLoginModalOpen(false);
+    setCookie('redirect', location.pathname, { maxAge: 60 });
+    navigate('/login');
+  };
+
+  const handleButtonClickWithoutLogin = () => {
+    setIsLoginModalOpen((prev) => !prev);
+  };
+
+  const { subscribedPress } = useSelector(
+    (state: RootState) => state.subscribedPress,
+  );
+
   const handleSubscribe = async () => {
     try {
+      if (!isAuthenticated()) {
+        handleButtonClickWithoutLogin();
+        return;
+      }
+      if (subscribedPress.length === 0) {
+        const fetchedPressList = await getSubscribedPressList();
+        dispatch(updateSubscribedPress(fetchedPressList));
+      }
+
       if (isSub) {
         await unsubscribePress(id);
         setIsSub(false);
+        dispatch(removePress(id));
       } else {
         await subscribePress(id);
         setIsSub(true);
+        const pressInfo = {
+          id: id,
+          name: name,
+          imageUrl: imageUrl,
+          isSubscribed: true,
+        };
+        dispatch(addPress(pressInfo));
       }
     } catch (err) {
       console.error('구독/구독취소 실패', err);
@@ -32,6 +86,12 @@ function PressProfile({
   };
   return (
     <Wrapper>
+      {isLoginModalOpen && (
+        <LoginModal
+          onCancel={handleButtonClickWithoutLogin}
+          onLogin={handleLogin}
+        />
+      )}
       <Logo src={imageUrl} />
       <TextArea>
         <InfoArea>
