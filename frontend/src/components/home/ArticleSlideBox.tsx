@@ -45,7 +45,7 @@ function ArticleSlideBox({
   const articleDispatch = () => {
     StoreArticleDispatch(
       dispatch,
-      articleList,
+      articleList || [],
       sliceDetails ?? {},
       sectionType ?? 'all',
       'ALL',

@@ -16,6 +16,7 @@ function useContentsFetch<T extends PageType>({
     isFetchingNextPage,
     isLoading,
     error,
+    isError,
   } = useInfiniteQuery(
     queryKey,
     ({ pageParam = initialPage }) => {
@@ -55,6 +56,7 @@ function useContentsFetch<T extends PageType>({
     isLoading,
     sliceDetails,
     error,
+    isError,
   };
 }
 export default useContentsFetch;
