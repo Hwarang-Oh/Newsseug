@@ -10,7 +10,6 @@ import CategoryFilter from 'components/common/CategoryFilter';
 import SubscribeHeader from 'components/subscribe/SubscribeHeader';
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 import SubscribePressFilter from 'components/subscribe/SubscribePressFilter';
-import useStoreArticleDispatch from 'hooks/useStoreArticleDispatch';
 import Spinner from 'components/common/Spinner';
 
 function Subscribes() {
@@ -18,12 +17,11 @@ function Subscribes() {
   const [activeCategory, setActiveCategory] = useState<string>('전체');
   const [activePress, setActivePress] = useState<number | null>(null);
 
-  const { subscribedPress, loading, error } = useSelector(
+  const { subscribedPress, error } = useSelector(
     (state: RootState) => state.subscribedPress,
   );
 
   useEffect(() => {
-    // subscribedPress에 값이 없을 때만 API 호출
     if (subscribedPress.length === 0) {
       dispatch(fetchSubscribedPress());
     }
@@ -46,14 +44,6 @@ function Subscribes() {
     category: Category[activeCategory as keyof typeof Category],
     pressId: activePress,
   });
-
-  useStoreArticleDispatch(
-    articleList,
-    sliceDetails,
-    'press',
-    Category[activeCategory as keyof typeof Category],
-    activePress,
-  );
 
   // 로딩 상태 처리
   if (error) return <p>Error: {error?.message}</p>;
@@ -82,6 +72,10 @@ function Subscribes() {
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          sliceDetails={sliceDetails}
+          articleFrom="press"
+          activeCategory={activeCategory}
+          activePress={activePress}
         />
       )}
     </MainLayout>

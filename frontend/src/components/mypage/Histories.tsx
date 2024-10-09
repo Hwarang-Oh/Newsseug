@@ -4,7 +4,8 @@ import { getMemberHistoryList } from 'apis/memberApi';
 import ArticleListCard from '../common/ArticleListCard';
 import { PageType } from '@/types/api/article';
 import { ArticleListCardProps } from 'types/common/common';
-import useStoreArticleDispatch from 'hooks/useStoreArticleDispatch';
+import StoreArticleDispatch from 'hooks/useStoreArticleDispatch';
+import { useDispatch } from 'react-redux';
 
 function Histories() {
   const width = '120px';
@@ -17,10 +18,13 @@ function Histories() {
   } = useQuery<PageType>(['myPageHistory'], () =>
     getMemberHistoryList({ page: 1 }),
   );
-
   const articles = myPageHistory?.content || [];
   const sliceDetails = myPageHistory?.sliceDetails || {};
-  useStoreArticleDispatch(articles, sliceDetails, 'history');
+
+  const dispatch = useDispatch();
+  const articleDispatch = () => {
+    StoreArticleDispatch(dispatch, articles, sliceDetails, 'history');
+  };
 
   if (isLoading) {
     return <div>로딩 중</div>;
@@ -33,7 +37,7 @@ function Histories() {
   }
 
   return (
-    <Wrapper>
+    <Wrapper onClick={() => articleDispatch()}>
       {myPageHistory &&
         Array.isArray(myPageHistory?.content) &&
         myPageHistory.content.map((history: ArticleListCardProps) => {

@@ -25,6 +25,11 @@ export interface ArticleListCardGroupProps {
   fetchNextPage?: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
-  sectionType?: string;
   sliceDetails?: SliceDetails | {};
+  articleFrom?: string;
+  activeCategory?: string | null;
+  sectionType?: string;
+  activePress?: number | null;
+  folderId?: number | null;
+  keyword?: string;
 }

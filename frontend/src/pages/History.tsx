@@ -3,7 +3,6 @@ import { PageType } from 'types/api/article';
 import useContentsFetch from 'hooks/useContentsFetch';
 import SubLayout from 'components/common/SubLayout';
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
-import useStoreArticleDispatch from 'hooks/useStoreArticleDispatch';
 
 function History() {
   const {
@@ -17,8 +16,6 @@ function History() {
     fetchData: getMemberHistoryList,
   });
 
-  useStoreArticleDispatch(articleList, sliceDetails, 'history');
-
   return (
     <SubLayout>
       <span>내 시청 기록</span>
@@ -27,6 +24,8 @@ function History() {
         fetchNextPage={fetchNextPage}
         hasNextPage={hasNextPage}
         isFetchingNextPage={isFetchingNextPage}
+        sliceDetails={sliceDetails}
+        articleFrom="history"
       />
     </SubLayout>
   );

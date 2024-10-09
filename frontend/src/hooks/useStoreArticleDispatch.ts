@@ -1,5 +1,4 @@
 import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
 import {
   setActiveCategory,
   setActviePress,
@@ -12,7 +11,8 @@ import {
 import { Category, SliceDetails } from 'types/api/article';
 import { ArticleListCardProps } from 'types/common/common';
 
-function useStoreArticleDispatch(
+function StoreArticleDispatch(
+  dispatch: ReturnType<typeof useDispatch>,
   articleList: ArticleListCardProps[],
   sliceDetails: SliceDetails | {},
   articleFrom: string,
@@ -21,28 +21,15 @@ function useStoreArticleDispatch(
   folerId?: number | null,
   keyword?: string,
 ) {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setArticleIds(articleList.map((article) => article.id)));
-    dispatch(setSliceDetail(sliceDetails));
-    dispatch(setArticleFrom(articleFrom));
-    dispatch(
-      setActiveCategory(Category[activeCategory as keyof typeof Category]),
-    );
-    dispatch(setActviePress(activePress ?? null));
-    dispatch(setFolderId(folerId ?? null));
-    dispatch(setKeyword(keyword ?? null));
-  }, [
-    articleList,
-    sliceDetails,
-    articleFrom,
-    activeCategory,
-    activePress,
-    folerId,
-    keyword,
-    dispatch,
-  ]);
+  dispatch(setArticleIds(articleList.map((article) => article.id)));
+  dispatch(setSliceDetail(sliceDetails));
+  dispatch(setArticleFrom(articleFrom));
+  dispatch(
+    setActiveCategory(Category[activeCategory as keyof typeof Category]),
+  );
+  dispatch(setActviePress(activePress ?? null));
+  dispatch(setFolderId(folerId ?? null));
+  dispatch(setKeyword(keyword ?? null));
 }
 
-export default useStoreArticleDispatch;
+export default StoreArticleDispatch;

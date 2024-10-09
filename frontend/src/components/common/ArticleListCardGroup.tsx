@@ -3,6 +3,8 @@ import ArticleListCard from 'components/common/ArticleListCard';
 import { useRef, useEffect } from 'react';
 import { ArticleListCardGroupProps } from 'types/common/common';
 import Spinner from './Spinner';
+import StoreArticleDispatch from 'hooks/useStoreArticleDispatch';
+import { useDispatch } from 'react-redux';
 import PressCard from 'components/search/PressCard';
 
 /**
@@ -17,6 +19,12 @@ function ArticleListCardGroup({
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
+  sliceDetails,
+  articleFrom,
+  activeCategory,
+  activePress,
+  folderId,
+  keyword,
 }: Readonly<ArticleListCardGroupProps>) {
   const slideBoxRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<HTMLDivElement>(null);
@@ -41,8 +49,24 @@ function ArticleListCardGroup({
     };
   }, [hasNextPage, fetchNextPage]);
 
+  const dispatch = useDispatch();
+
+  const articleDispatch = () => {
+    StoreArticleDispatch(
+      dispatch,
+      articleList,
+      sliceDetails ?? {},
+      articleFrom ?? 'all',
+      activeCategory ?? '전체',
+      activePress ?? null,
+      folderId ?? null,
+      keyword,
+    );
+  };
+
   return (
-    <Container ref={slideBoxRef}>
+
+    <Container ref={slideBoxRef} onClick={articleDispatch}>
       {articleList?.map((article) => (
         <StyledArticleListCard
           key={article.id}

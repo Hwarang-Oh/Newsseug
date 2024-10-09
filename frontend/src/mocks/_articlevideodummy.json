@@ -11,10 +11,10 @@
         "createdAt": "2024-09-27T05:28:52.265Z"
       },
       "press": {
-        "id": 0,
-        "name": "중앙일보",
-        "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000025/logo/2021/08/20/A_163345038.png?type=u144_144",
-        "isSubscribed": false
+        "id": 5,
+        "name": "JTBC",
+        "imageUrl": "https://th.bing.com/th?id=OIP.ynDNPw1pq84ewHal4AMoCwHaJZ&w=221&h=281&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.1&pid=3.1&rm=2",
+        "isSubscribed": true
       },
       "likeInfo": {
         "isLike": false,
@@ -38,10 +38,10 @@
         "createdAt": "2024-09-28T05:28:52.265Z"
       },
       "press": {
-        "id": 1,
-        "name": "서울신문",
+        "id": 3,
+        "name": "MBC",
         "imageUrl": "https://imgnews.pstatic.net/image/upload/spubs/K7G0000026/logo/2021/08/20/B_163345039.png?type=u144_144",
-        "isSubscribed": true
+        "isSubscribed": false
       },
       "likeInfo": {
         "isLike": true,

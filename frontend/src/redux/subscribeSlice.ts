@@ -32,6 +32,15 @@ const subscribeSlice = createSlice({
     updateSubscribedPress: (state, action: PayloadAction<PressBasic[]>) => {
       state.subscribedPress = action.payload; // 새로운 구독 리스트로 업데이트
     },
+    addPress: (state, action: PayloadAction<PressBasic>) => {
+      state.subscribedPress.push(action.payload); // 구독 리스트에 추가
+    },
+    removePress: (state, action: PayloadAction<number>) => {
+      // 해당 언론사 ID를 구독 리스트에서 제거
+      state.subscribedPress = state.subscribedPress.filter(
+        (press) => press.id !== action.payload,
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -52,5 +61,6 @@ const subscribeSlice = createSlice({
 });
 
 // 리듀서 내보내기
-export const { updateSubscribedPress } = subscribeSlice.actions;
+export const { updateSubscribedPress, addPress, removePress } =
+  subscribeSlice.actions;
 export default subscribeSlice.reducer;

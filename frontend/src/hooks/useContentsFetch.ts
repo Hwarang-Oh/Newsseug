@@ -7,7 +7,7 @@ function useContentsFetch<T extends PageType>({
   category,
   pressId,
   sectionType,
-  initialPage = 1,
+  initialPage = 0,
 }: ContentsFetchType<T>) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery(

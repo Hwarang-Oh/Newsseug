@@ -1,5 +1,17 @@
-import { subscribePress, unsubscribePress } from 'apis/subscribe';
+import { RootState } from '../../redux/index';
+import {
+  addPress,
+  fetchSubscribedPress,
+  removePress,
+  updateSubscribedPress,
+} from '../../redux/subscribeSlice';
+import {
+  getSubscribedPressList,
+  subscribePress,
+  unsubscribePress,
+} from 'apis/subscribe';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ArticleVideo } from 'types/api/articleVideo';
@@ -9,12 +21,23 @@ function ArticleDetailInfo({ articleInfo }: { articleInfo: ArticleVideo }) {
     articleInfo.press.isSubscribed,
   );
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleClick = () => {
+  const { subscribedPress } = useSelector(
+    (state: RootState) => state.subscribedPress,
+  );
+
+  const handleClick = async () => {
+    if (subscribedPress.length === 0) {
+      const fetchedPressList = await getSubscribedPressList();
+      dispatch(updateSubscribedPress(fetchedPressList));
+    }
     if (isSubscribed) {
       unsubscribePress(articleInfo.press.id);
+      dispatch(removePress(articleInfo.press.id));
     } else {
       subscribePress(articleInfo.press.id);
+      dispatch(addPress(articleInfo.press));
     }
     setIsSubscribed((prev) => !prev);
   };
