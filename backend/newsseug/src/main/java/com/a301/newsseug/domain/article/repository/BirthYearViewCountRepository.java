@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface BirthYearViewCountRepository extends JpaRepository<BirthYearViewCount, Long> {
 
     BirthYearViewCount findByArticleAndBirthYear(Article article, int birthYear);
+
 }

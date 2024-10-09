@@ -14,6 +14,7 @@ import com.a301.newsseug.domain.interaction.model.entity.History;
 import com.a301.newsseug.domain.interaction.repository.HateRepository;
 import com.a301.newsseug.domain.interaction.repository.HistoryRepository;
 import com.a301.newsseug.domain.interaction.repository.LikeRepository;
+import com.a301.newsseug.domain.interaction.service.HistoryService;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.repository.PressRepository;
@@ -39,13 +40,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleServiceImpl implements ArticleService {
 
     private final RedisCounterService redisCounterService;
+    private final BirthYearCountService birthYearCountService;
+    private final HistoryService historyService;
+    
     private final ArticleRepository articleRepository;
     private final PressRepository pressRepository;
     private final LikeRepository likeRepository;
     private final HateRepository hateRepository;
     private final SubscribeRepository subscribeRepository;
-    private final HistoryRepository historyRepository;
-    private final BirthYearViewCountRepository birthYearViewCountRepository;
 
     @Override
     public GetArticleDetailsResponse getArticleDetail(CustomUserDetails userDetails, Long articleId) {
@@ -59,23 +61,8 @@ public class ArticleServiceImpl implements ArticleService {
 
             Member member = userDetails.getMember();
 
-            historyRepository.save(
-                    History.builder()
-                            .article(article)
-                            .member(member)
-                            .build()
-            );
-
-            int birthYear = member.getBirth().getYear();
-
-            BirthYearViewCount birthYearViewCount = birthYearViewCountRepository.findByArticleAndBirthYear(article, birthYear);
-
-            if (Objects.isNull(birthYearViewCount)) {
-                birthYearViewCount = BirthYearViewCount.builder().article(article).birthYear(birthYear).build();
-                birthYearViewCountRepository.save(birthYearViewCount);
-            }
-
-            birthYearViewCount.view();
+            historyService.createHistory(member, article);
+            birthYearCountService.incrementBirthYearCount(member, article);
 
             return GetArticleDetailsResponse.of(article,
                     article.getViewCount() + incrementedViewCount,
@@ -105,36 +92,21 @@ public class ArticleServiceImpl implements ArticleService {
     public GetArticleDetailsResponse getRandomArticle(CustomUserDetails userDetails) {
 
         Member loginMember = userDetails.getMember();
-        Pageable pageable = PageRequest.of(
-                0,
-                1,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
-        );
-
-        Page<History> history = historyRepository.findByMember(loginMember, pageable);
+        History lastestHistory = historyService.getLatestHistoryByMember(loginMember);
         List<Article> articles = articleRepository.findAllByCategoryAndActivationStatusAndConversionStatus(
-                history.getContent().get(0).getArticle().getCategory(),
+                lastestHistory.getArticle().getCategory(),
                 ActivationStatus.ACTIVE,
                 ConversionStatus.SUCCESS
         );
 
         Random random = new Random();
         Article randomArticle = articles.get(random.nextInt(articles.size()));
-        Long articleId = randomArticle.getArticleId();
 
-        Long incrementedViewCount = redisCounterService.increment("article:viewCount:", articleId, 1L);
-        Long likeCount = redisCounterService.findByKey("article:likeCount:", articleId).orElse(0L);
-        Long hateCount = redisCounterService.findByKey("article:hateCount:", articleId).orElse(0L);
-
-        int birthYear = loginMember.getBirth().getYear();
-        BirthYearViewCount birthYearViewCount = birthYearViewCountRepository.findByArticleAndBirthYear(randomArticle, birthYear);
-
-        if (Objects.isNull(birthYearViewCount)) {
-            birthYearViewCount = BirthYearViewCount.builder().article(randomArticle).birthYear(birthYear).build();
-            birthYearViewCountRepository.save(birthYearViewCount);
-        }
-
-        birthYearViewCount.view();
+        birthYearCountService.incrementBirthYearCount(loginMember, randomArticle);
+        Long incrementedViewCount = redisCounterService.increment("article:viewCount:", randomArticle.getArticleId(), 1L);
+        Long likeCount = redisCounterService.findByKey("article:likeCount:", randomArticle.getArticleId()).orElse(0L);
+        Long hateCount = redisCounterService.findByKey("article:hateCount:", randomArticle.getArticleId()).orElse(0L);
+        
 
         return GetArticleDetailsResponse.of(randomArticle,
                 randomArticle.getViewCount() + incrementedViewCount,
