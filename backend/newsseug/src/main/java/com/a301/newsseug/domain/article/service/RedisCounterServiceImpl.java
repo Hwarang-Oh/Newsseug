@@ -51,15 +51,7 @@ public class RedisCounterServiceImpl implements RedisCounterService {
     @Override
     public Long increment(String hash, Long key, Long value) {
 
-        long incrementedViewCount = redisTemplate.opsForHash().increment(hash, key.toString(), value);
-
-        if (incrementedViewCount >= redisProperties.viewCounter().threshold()) {
-            String[] filedName = hash.split(":");
-            articleRepository.updateCount(filedName[1], key, incrementedViewCount);
-            deleteByKey(hash, key);
-        }
-
-        return incrementedViewCount;
+        return redisTemplate.opsForHash().increment(hash, key.toString(), value);
 
     }
 

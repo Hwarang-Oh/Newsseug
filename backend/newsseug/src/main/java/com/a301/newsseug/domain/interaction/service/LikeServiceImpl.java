@@ -30,12 +30,11 @@ public class LikeServiceImpl implements LikeService {
     private final RedisCounterService redisCounterService;
 
     @Override
+    @Transactional
     public void postLikeToArticle(CustomUserDetails userDetails, Long articleId) {
 
         Member loginMember = userDetails.getMember();
-
         Article article = articleRepository.getOrThrow(articleId);
-
         Optional<Hate> hate = hateRepository.findByMemberAndArticle(loginMember, article);
         hate.ifPresent(hateRepository::delete);
 
@@ -50,6 +49,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
+    @Transactional
     public void deleteLikeFromArticle(CustomUserDetails userDetails, Long articleId) {
 
         Member loginMember = userDetails.getMember();
@@ -63,9 +63,8 @@ public class LikeServiceImpl implements LikeService {
     @Scheduled(cron = "0 0/5 * * * ?")
     public void syncLikeCounts() {
 
-        String likeHashKey = "article:likecount";
 
-        Map<Object, Object> likeCountLogs = redisCounterService.findByHash(likeHashKey);
+        Map<Object, Object> likeCountLogs = redisCounterService.findByHash("article:likeCount");
 
         if (Objects.nonNull(likeCountLogs)) {
             for (Map.Entry<Object, Object> entry : likeCountLogs.entrySet()) {

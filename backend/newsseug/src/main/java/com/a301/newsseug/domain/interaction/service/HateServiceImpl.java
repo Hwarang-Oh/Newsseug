@@ -20,7 +20,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
-@Transactional
 @Service
 @RequiredArgsConstructor
 public class HateServiceImpl implements HateService {
@@ -31,6 +30,7 @@ public class HateServiceImpl implements HateService {
     private final RedisCounterService redisCounterService;
 
     @Override
+    @Transactional
     public void PostHateToArticle(CustomUserDetails userDetails, Long articleId) {
 
         Member loginMember = userDetails.getMember();
@@ -52,6 +52,7 @@ public class HateServiceImpl implements HateService {
     }
 
     @Override
+    @Transactional
     public void deleteHateFromArticle(CustomUserDetails userDetails, Long articleId) {
 
         Member loginMember = userDetails.getMember();

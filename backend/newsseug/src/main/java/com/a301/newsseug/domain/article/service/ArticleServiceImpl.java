@@ -42,18 +42,26 @@ public class ArticleServiceImpl implements ArticleService {
     private final RedisCounterService redisCounterService;
     private final BirthYearCountService birthYearCountService;
     private final HistoryService historyService;
-    
+
     private final ArticleRepository articleRepository;
     private final PressRepository pressRepository;
     private final LikeRepository likeRepository;
     private final HateRepository hateRepository;
     private final SubscribeRepository subscribeRepository;
 
+    private final RedisProperties redisProperties;
+
     @Override
     public GetArticleDetailsResponse getArticleDetail(CustomUserDetails userDetails, Long articleId) {
 
         Article article = articleRepository.getOrThrow(articleId);
         Long incrementedViewCount = redisCounterService.increment("article:viewCount:", articleId, 1L);
+
+        if (incrementedViewCount >= redisProperties.viewCounter().threshold()) {
+            articleRepository.updateCount("viewCount", articleId, incrementedViewCount);
+            redisCounterService.deleteByKey("article:viewCount:", articleId);
+        }
+
         Long likeCount = redisCounterService.findByKey("article:likeCount:", articleId).orElse(0L);
         Long hateCount = redisCounterService.findByKey("article:hateCount:", articleId).orElse(0L);
 
