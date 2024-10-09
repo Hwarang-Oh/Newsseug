@@ -20,6 +20,6 @@ const Wrapper = styled.div<{ $height: string }>`
 `;
 
 const ErrorText = styled.p`
-  color: ${({ theme }) => theme.textColor};
+  color: ${({ theme }) => theme.relaxColor.main};
   font-size: 16px;
 `;

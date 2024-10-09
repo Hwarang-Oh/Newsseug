@@ -43,7 +43,7 @@ function Section({
           sliceDetails={sliceDetails}
         />
       ) : (
-        <ErrorSection height="250px" text={`❌ ${subTitle}가 없습니다.`} />
+        <ErrorSection height="250px" text={`${subTitle}가 없습니다.`} />
       )}
     </SectionStyle>
   );

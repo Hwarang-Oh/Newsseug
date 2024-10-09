@@ -39,7 +39,7 @@ function History() {
           articleFrom="history"
         />
       ) : (
-        <ErrorSection text="❌시청 기록이 없습니다." height="300px" />
+        <ErrorSection text="시청 기록이 없습니다." height="300px" />
       )}
     </SubLayout>
   );

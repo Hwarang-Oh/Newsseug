@@ -60,7 +60,7 @@ function Histories() {
           );
         })
       ) : (
-        <ErrorSection height={height} text="❌시청 기록이 없습니다." />
+        <ErrorSection height={height} text="시청 기록이 없습니다." />
       )}
     </Wrapper>
   );
