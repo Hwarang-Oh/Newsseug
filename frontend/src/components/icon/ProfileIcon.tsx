@@ -51,14 +51,14 @@ function ProfileIcon({
         {profileImageUrl && <ProfileIconImage imgUrl={profileImageUrl} />}
         <ProfileIconSelect onClick={handleSelectImageClick} />
       </svg>
-      {isModalOpen && profileImageUrl && (
+      {/* {isModalOpen && profileImageUrl && (
         <ProfileImageModal
           profileImageUrl={profileImageUrl}
           onClose={() => setIsModalOpen(false)}
           onSave={handleSaveImage}
           onRemove={handleRemoveImage}
         />
-      )}
+      )} */}
       <input
         type="file"
         accept="image/*"
