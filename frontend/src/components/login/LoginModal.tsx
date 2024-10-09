@@ -45,7 +45,8 @@ export default LoginModal;
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100vw;
   height: 100vh;
   max-width: 500px;
@@ -112,6 +113,7 @@ const CancelButton = styled.button`
   border-radius: 4px;
   flex: 1 0 0;
   color: ${({ theme }) => theme.textColor};
+  cursor: pointer;
 `;
 
 const ConfirmButton = styled.button`
@@ -124,4 +126,5 @@ const ConfirmButton = styled.button`
   align-items: center;
   border-radius: 4px;
   flex: 1 0 0;
+  cursor: pointer;
 `;

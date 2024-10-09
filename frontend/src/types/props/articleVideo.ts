@@ -22,6 +22,7 @@ export interface ScrapModalProps extends ModalProps {
 export interface ArticleVideoProp {
   articleInfo: ArticleVideo;
   setIsModalOpen: (isOpen: boolean) => void;
+  isPlaying: boolean;
 }
 
 export interface ArticleButtonsProp {
