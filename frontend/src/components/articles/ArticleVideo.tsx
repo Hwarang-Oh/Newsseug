@@ -106,7 +106,6 @@ function ArticleVideo({
     <Container>
       <VideoWrapper>
         <ShortForm
-          muted
           autoPlay
           playsInline
           loop
@@ -191,6 +190,8 @@ const Container = styled.div`
   z-index: 1;
   position: relative;
   background-color: #202020;
+  display: flex;
+  align-items: center;
 `;
 
 const ShortForm = styled.video`
