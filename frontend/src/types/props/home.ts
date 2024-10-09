@@ -11,6 +11,7 @@ export interface SectionProps {
   isLoading?: boolean;
   sectionType?: string;
   sliceDetails?: SliceDetails | {};
+  error?: object;
 }
 
 export interface SubTitleProps {

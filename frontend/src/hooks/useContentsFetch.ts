@@ -9,27 +9,33 @@ function useContentsFetch<T extends PageType>({
   sectionType,
   initialPage = 0,
 }: ContentsFetchType<T>) {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteQuery(
-      queryKey,
-      ({ pageParam = initialPage }) => {
-        if (category && pressId) {
-          return fetchData({ page: pageParam, category, pressId });
-        } else if (category) {
-          return fetchData({ page: pageParam, category });
-        } else {
-          return fetchData({ page: pageParam });
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    error,
+  } = useInfiniteQuery(
+    queryKey,
+    ({ pageParam = initialPage }) => {
+      if (category && pressId) {
+        return fetchData({ page: pageParam, category, pressId });
+      } else if (category) {
+        return fetchData({ page: pageParam, category });
+      } else {
+        return fetchData({ page: pageParam });
+      }
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.sliceDetails?.hasNext) {
+          return lastPage.sliceDetails.currentPage + 1;
         }
+        return undefined;
       },
-      {
-        getNextPageParam: (lastPage) => {
-          if (lastPage.sliceDetails?.hasNext) {
-            return lastPage.sliceDetails.currentPage + 1;
-          }
-          return undefined;
-        },
-      },
-    );
+    },
+  );
 
   const pages = data?.pages || [];
   // 마지막 페이지의 sliceDetails를 가져옴 (undefined 체크)
@@ -48,6 +54,7 @@ function useContentsFetch<T extends PageType>({
     isFetchingNextPage,
     isLoading,
     sliceDetails,
+    error,
   };
 }
 export default useContentsFetch;

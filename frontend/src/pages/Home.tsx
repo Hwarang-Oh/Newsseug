@@ -6,7 +6,6 @@ import styled, { keyframes } from 'styled-components';
 import { Category, SectionType, SectionTypeMatch } from 'types/api/article';
 import { useNavigate } from 'react-router-dom';
 import { fetchArticles, fetchArticlesByToday } from 'apis/articleApi';
-import Spinner from 'components/common/Spinner';
 
 function Home() {
   const navigate = useNavigate();
@@ -55,6 +54,7 @@ function Home() {
             isLoading={section.isLoading}
             sectionType={section.sectionType}
             sliceDetails={section.sliceDetails}
+            error={section.error || {}}
           />
         ))}
       </FadeInWrapper>

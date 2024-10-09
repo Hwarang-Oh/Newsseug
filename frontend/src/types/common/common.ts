@@ -1,4 +1,4 @@
-import { Category, SliceDetails } from 'types/api/article';
+import { SliceDetails } from 'types/api/article';
 import { EsContentInfo } from '../api/search';
 
 export interface ArticleListCardProps {
@@ -32,4 +32,9 @@ export interface ArticleListCardGroupProps {
   activePress?: number | null;
   folderId?: number | null;
   keyword?: string;
+}
+
+export interface ErrorProps {
+  height: string;
+  text: string;
 }
