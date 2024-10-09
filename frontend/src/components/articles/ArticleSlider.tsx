@@ -2,23 +2,26 @@ import styled from 'styled-components';
 import { Mousewheel, Keyboard, History } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Swiper as SwiperType } from 'swiper';
-
 import 'swiper/css';
 import 'swiper/css/mousewheel';
 import ArticleVideo from 'components/articles/ArticleVideo';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-
 import { RootState } from '../../redux/index';
 import { useLoadNextPage } from 'hooks/useLoadNextPage';
 import { useFetchVideos } from 'hooks/useFecthVideos';
 
 function ArticleSlider() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [activeIndex, setActiveIndex] = useState(0); // 현재 슬라이드 인덱스 상태 추가
   const swiperRef = useRef<SwiperCore | null>(null);
+
+  const handleSlideChange = (swiper: SwiperType) => {
+    setActiveIndex(swiper.activeIndex); // 현재 슬라이드 인덱스 업데이트
+  };
+
   useEffect(() => {
-    // 페이지의 크기만큼 높이 지정
     const setHeight = () => {
       const containerElement = document.getElementById('container');
       if (containerElement) {
@@ -35,7 +38,6 @@ function ArticleSlider() {
   }, []);
 
   useEffect(() => {
-    // isModalOpen 상태에 따라 Swiper 인스턴스의 allowTouchMove 설정
     if (swiperRef.current) {
       swiperRef.current.allowTouchMove = !isModalOpen;
     }
@@ -86,21 +88,22 @@ function ArticleSlider() {
           swiperRef.current = swiper; // Swiper 인스턴스 저장
         }}
         onSlideChange={(swiper: SwiperType) => {
+          handleSlideChange(swiper); // 슬라이드 변경 시 현재 인덱스 업데이트
           if (
             swiper.activeIndex >= articleIds.length - 3 &&
             sliceDetails.hasNext
           ) {
-            loadNextPage(); // 다음 페이지 데이터를 가져옴
-            fetchVideos(); // 해당 페이지 데이터들 정보 가져옴
+            loadNextPage();
+            fetchVideos();
           }
         }}
       >
-        {articleIds.map((articleId: number) => {
+        {articleIds.map((articleId: number, index: number) => {
           const video = videoList[articleId];
           if (!video) {
             return (
               <SwiperSlide key={articleId} data-history={articleId}>
-                <div>Loading video...</div> {/* 로딩 중 메시지 */}
+                <div>Loading video...</div>
               </SwiperSlide>
             );
           }
@@ -109,6 +112,7 @@ function ArticleSlider() {
               <ArticleVideo
                 articleInfo={video}
                 setIsModalOpen={setIsModalOpen}
+                isPlaying={index === activeIndex} // 현재 슬라이드만 재생
               />
             </SwiperSlide>
           );

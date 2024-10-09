@@ -16,12 +16,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 function ArticleVideo({
   articleInfo,
   setIsModalOpen,
+  isPlaying,
 }: Readonly<ArticleVideoProp>) {
   const navigate = useNavigate();
   const location = useLocation();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [isNowPlaying, setIsNowPlaying] = useState(isPlaying);
 
   const [isScrapModalOpen, setIsScrapModalOpen] = useState<boolean>(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
@@ -68,14 +69,33 @@ function ArticleVideo({
     setIsLoginModalOpen((prev) => !prev);
   };
 
-  const togglePlay = () => {
+  useEffect(() => {
     if (videoRef.current) {
       if (isPlaying) {
-        videoRef.current.pause();
+        setIsNowPlaying(true);
       } else {
-        videoRef.current.play();
+        setIsNowPlaying(false);
       }
-      setIsPlaying(!isPlaying);
+    }
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isNowPlaying) {
+        videoRef.current.play().catch((error) => {});
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [isNowPlaying]);
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isNowPlaying) {
+        setIsNowPlaying(false);
+      } else {
+        setIsNowPlaying(true);
+      }
     }
   };
 
@@ -114,7 +134,7 @@ function ArticleVideo({
           onClick={togglePlay}
           onTimeUpdate={updateProgress}
         />
-        {!isPlaying && (
+        {!isNowPlaying && (
           <PlayButton onClick={togglePlay}>
             <img src={playIcon} alt="play icon" />
           </PlayButton>
@@ -153,9 +173,7 @@ function ArticleVideo({
           <ReportModal
             articleId={articleInfo.article.id}
             isOpen={isReportModalOpen}
-            onRequestClose={() => {
-              setIsReportModalOpen(false);
-            }}
+            onRequestClose={() => setIsReportModalOpen(false)}
           />
         )}
         {isLoginModalOpen && (
@@ -173,7 +191,7 @@ function ArticleVideo({
         />
         <ProgressBar
           progress={progress}
-          isPlaying={isPlaying}
+          isPlaying={isNowPlaying}
           onSeek={handleSeek}
         />
       </ArticleContainer>
