@@ -142,9 +142,9 @@ CREATE TABLE IF NOT EXISTS subscribes (
 );
 
 CREATE TABLE IF NOT EXISTS birth_year_view_counts (
-    birth_view_count_id BIGINT PRIMARY KEY DEFAULT nextval(birth_year_view_counts_seq),
-    birth_year          INT,
-    view_count          BIGINT NOT NULL DEFAULT 0,
-    article_id          BIGINT NOT NULL,
-    CONSTRAINT fk_article FOREIGN KEY (article_id) REFERENCES articles (article_id) ON DELETE CASCADE
+    birth_view_count_id bigint PRIMARY KEY DEFAULT nextval(birth_year_view_counts_seq),
+    article_id          bigint not null,
+    birth_year          int    null,
+    view_count          bigint not null default 0,
+    constraint FK4hy7ruduqtt8ugpj8hx5ajrpc foreign key (article_id) references articles (article_id)
 );
