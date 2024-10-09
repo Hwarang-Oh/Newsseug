@@ -9,6 +9,7 @@ import com.a301.newsseug.domain.member.model.dto.response.GetMemberResponse;
 import com.a301.newsseug.domain.member.model.entity.type.GenderType;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.model.entity.Subscribe;
+import com.a301.newsseug.domain.member.repository.MemberRepository;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.exception.NotSubscribePressException;
 import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
@@ -42,6 +43,7 @@ public class MemberServiceImpl implements MemberService {
     private final PressRepository pressRepository;
     private final SubscribeRepository subscribeRepository;
     private final FolderRepository folderRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -52,6 +54,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void updateMember(CustomUserDetails userDetails, UpdateMemberRequest request) {
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         Member loginMember = userDetails.getMember();
 
@@ -70,6 +73,8 @@ public class MemberServiceImpl implements MemberService {
         if (Objects.nonNull(request.profileImageUrl())) {
             loginMember.setProfileImageUrl(request.profileImageUrl());
         }
+
+        memberRepository.save(loginMember);
 
     }
 

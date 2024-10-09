@@ -33,10 +33,10 @@ public class Member extends BaseEntity {
     private Long memberId;
 
     @Setter
-    private String nickname;
+    private String nickname = UUID.randomUUID().toString().substring(0, 6);
 
     @Setter
-    private String profileImageUrl;
+    private String profileImageUrl = "https://newsseug-bucket.s3.ap-northeast-2.amazonaws.com/profile/member/default/profile.svg";
 
     @Setter
     @Enumerated(EnumType.STRING)
