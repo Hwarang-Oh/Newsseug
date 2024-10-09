@@ -9,11 +9,16 @@ import ReportModal from './ReportModal';
 import { useEffect, useRef, useState } from 'react';
 import { ArticleVideoProp } from 'types/props/articleVideo';
 import { AnimatePresence } from 'framer-motion';
+import LoginModal from '../login/LoginModal';
+import { getCookie, setCookie } from 'utils/stateUtils';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function ArticleVideo({
   articleInfo,
   setIsModalOpen,
 }: Readonly<ArticleVideoProp>) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -21,17 +26,46 @@ function ArticleVideo({
   const [isScrapModalOpen, setIsScrapModalOpen] = useState<boolean>(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsModalOpen(isScrapModalOpen || isCreateModalOpen || isReportModalOpen);
-  }, [setIsModalOpen, isCreateModalOpen, isScrapModalOpen, isReportModalOpen]);
+    setIsModalOpen(
+      isScrapModalOpen ||
+        isCreateModalOpen ||
+        isReportModalOpen ||
+        isLoginModalOpen,
+    );
+  }, [
+    setIsModalOpen,
+    isCreateModalOpen,
+    isScrapModalOpen,
+    isReportModalOpen,
+    isLoginModalOpen,
+  ]);
+
+  const isAuthenticated = () => {
+    const token = getCookie('AccessToken');
+    return !!token; // 토큰이 있으면 true, 없으면 false
+  };
 
   const handleScrapClick = () => {
+    if (!isAuthenticated()) {
+      handleButtonClickWithoutLogin();
+      return;
+    }
     setIsScrapModalOpen((prev) => !prev);
   };
 
   const handleReportClick = () => {
+    if (!isAuthenticated()) {
+      handleButtonClickWithoutLogin();
+      return;
+    }
     setIsReportModalOpen((prev) => !prev);
+  };
+
+  const handleButtonClickWithoutLogin = () => {
+    setIsLoginModalOpen((prev) => !prev);
   };
 
   const togglePlay = () => {
@@ -61,6 +95,13 @@ function ArticleVideo({
       setProgress(parseFloat(event.target.value));
     }
   };
+
+  const handleLogin = () => {
+    setIsLoginModalOpen(false);
+    setCookie('redirect', location.pathname, { maxAge: 60 });
+    navigate('/login');
+  };
+
   return (
     <Container>
       <VideoWrapper>
@@ -85,6 +126,7 @@ function ArticleVideo({
           hateInfo={articleInfo.hateInfo}
           handleScrapClick={handleScrapClick}
           handleReportClick={handleReportClick}
+          handleButtonClickWithoutLogin={handleButtonClickWithoutLogin}
         />
         <AnimatePresence>
           {isScrapModalOpen && (
@@ -117,9 +159,18 @@ function ArticleVideo({
             }}
           />
         )}
+        {isLoginModalOpen && (
+          <LoginModal
+            onCancel={handleButtonClickWithoutLogin}
+            onLogin={handleLogin}
+          />
+        )}
       </VideoWrapper>
       <ArticleContainer>
-        <ArticleDetailInfo articleInfo={articleInfo} />
+        <ArticleDetailInfo
+          articleInfo={articleInfo}
+          handleButtonClickWithoutLogin={handleButtonClickWithoutLogin}
+        />
         <ProgressBar
           progress={progress}
           isPlaying={isPlaying}

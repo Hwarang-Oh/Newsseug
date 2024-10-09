@@ -1,7 +1,7 @@
+import { getCookie } from 'utils/stateUtils';
 import { RootState } from '../../redux/index';
 import {
   addPress,
-  fetchSubscribedPress,
   removePress,
   updateSubscribedPress,
 } from '../../redux/subscribeSlice';
@@ -14,9 +14,12 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { ArticleVideo } from 'types/api/articleVideo';
+import { ArticleDetailInfoProp } from 'types/props/articleVideo';
 
-function ArticleDetailInfo({ articleInfo }: { articleInfo: ArticleVideo }) {
+function ArticleDetailInfo({
+  articleInfo,
+  handleButtonClickWithoutLogin,
+}: ArticleDetailInfoProp) {
   const [isSubscribed, setIsSubscribed] = useState<boolean>(
     articleInfo.press.isSubscribed,
   );
@@ -27,7 +30,15 @@ function ArticleDetailInfo({ articleInfo }: { articleInfo: ArticleVideo }) {
     (state: RootState) => state.subscribedPress,
   );
 
+  const isAuthenticated = () => {
+    const token = getCookie('AccessToken');
+    return !!token; // 토큰이 있으면 true, 없으면 false
+  };
   const handleClick = async () => {
+    if (!isAuthenticated()) {
+      handleButtonClickWithoutLogin();
+      return;
+    }
     if (subscribedPress.length === 0) {
       const fetchedPressList = await getSubscribedPressList();
       dispatch(updateSubscribedPress(fetchedPressList));

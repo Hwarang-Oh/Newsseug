@@ -1,4 +1,4 @@
-import { ArticleVideo, HateInfo, LikeInfo } from '../api/articleVideo';
+import { ArticleVideo, HateInfo, LikeInfo } from 'types/api/articleVideo';
 
 export interface ProgressBarProps {
   progress: number;
@@ -30,4 +30,10 @@ export interface ArticleButtonsProp {
   hateInfo: HateInfo;
   handleScrapClick: () => void;
   handleReportClick: () => void;
+  handleButtonClickWithoutLogin: () => void;
+}
+
+export interface ArticleDetailInfoProp {
+  articleInfo: ArticleVideo;
+  handleButtonClickWithoutLogin: () => void;
 }
