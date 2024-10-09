@@ -2,6 +2,7 @@ import { darkenColor } from 'utils/darkenColor';
 import { Helmet } from 'react-helmet-async';
 import styled, { useTheme } from 'styled-components';
 import { LoginModalProps } from 'types/props/login';
+import { motion } from 'framer-motion';
 
 function LoginModal({
   isVideo = false,
@@ -18,7 +19,13 @@ function LoginModal({
         />
       </Helmet>
       <ModalOverlay onClick={onCancel}>
-        <ModalContainer onClick={(e) => e.stopPropagation()}>
+        <ModalContainer
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ type: 'spring', stiffness: 100 }}
+          onClick={(e) => e.stopPropagation()}
+        >
           <Content>
             <Message>로그인이 필요한 서비스 입니다</Message>
             <Message>로그인을 하시겠습니까?</Message>
@@ -37,9 +44,8 @@ export default LoginModal;
 
 const ModalOverlay = styled.div`
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   max-width: 500px;
@@ -51,10 +57,11 @@ const ModalOverlay = styled.div`
   box-shadow: 0 0 100px ${({ theme }) => theme.textColor + '25'};
 `;
 
-const ModalContainer = styled.div`
+const ModalContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   width: 80%;
+  max-width: 500px;
   background: ${({ theme }) => theme.bgColor};
   padding: 20px;
   border-radius: 8px;
