@@ -15,8 +15,10 @@ function UserInfo() {
     (state: RootState) => state.darkMode.isDarkMode,
   );
 
-  const handleLogOut = () => {
-    getLogout(providerId);
+  const handleLogOut = async () => {
+    if (await getLogout(providerId)) {
+      window.location.href = '/login';
+    }
   };
 
   const handleDarkMode = () => {
