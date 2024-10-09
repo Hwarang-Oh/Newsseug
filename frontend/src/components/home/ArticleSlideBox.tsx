@@ -12,7 +12,6 @@ import StoreArticleDispatch from 'hooks/useStoreArticleDispatch';
  */
 function ArticleSlideBox({
   articleList,
-  resultList,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,

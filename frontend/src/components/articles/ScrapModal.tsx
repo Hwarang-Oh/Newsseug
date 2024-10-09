@@ -6,6 +6,8 @@ import { ScrapModalProps } from 'types/props/articleVideo';
 import { FolderInfo } from 'types/api/folder';
 import { useQuery } from 'react-query';
 import { getFolderList, saveArticleToFolder } from 'apis/folderApi';
+import Spinner from 'components/common/Spinner';
+import ErrorSection from 'components/common/ErrorSection';
 
 function ScrapModal({
   articleId,
@@ -22,7 +24,6 @@ function ScrapModal({
   const windowHeight = window.screen.height;
   const maxHeight = windowHeight * 0.6;
 
-  // 수정 필요
   const {
     data: folderList,
     isLoading,
@@ -120,16 +121,6 @@ function ScrapModal({
     }
   };
 
-  if (isLoading) {
-    return <div>로딩 중</div>;
-  }
-
-  if (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : '알 수 없는 오류';
-    return <div>비디오 별 폴더 목록 조회 실패: {errorMessage}</div>;
-  }
-
   return (
     <ModalOverlay
       initial={{ opacity: 0 }}
@@ -160,8 +151,15 @@ function ScrapModal({
         </ModalHeader>
         <ContentWrapper ref={contentRef}>
           <ModalBody>
+            {isLoading && <Spinner height="200px" />}
+            {error ? (
+              <ErrorSection
+                height="200px"
+                text="폴더 목록을 불러오는 데 실패했어요.😥"
+              />
+            ) : null}
             {Array.isArray(folderList) &&
-              folderList.map((folder, index) => (
+              folderList.map((folder) => (
                 <ScrapItem
                   key={folder.id}
                   onClick={() => handleClick(folder.id)}

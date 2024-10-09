@@ -6,6 +6,7 @@ import { getMemberInfo } from 'apis/memberApi';
 import { getLogout } from 'apis/loginApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDarkMode } from '../../redux/darkModeSlice';
+import ErrorSection from '../common/ErrorSection';
 
 function UserInfo() {
   const [userInfo, setUserInfo] = useState<MemberInfo>();
@@ -29,24 +30,29 @@ function UserInfo() {
     fetchData();
   }, []);
 
-  if (!userInfo) {
-    return <div>로딩 중</div>;
-  }
-
   return (
     <Wrapper>
-      <UserImg src={userInfo.profileImageUrl} />
-      <InfoBox>
-        <UserName>{userInfo.nickname}</UserName>
-        <SubBox>
-          <LogoutBtn onClick={handleLogOut}>로그아웃</LogoutBtn>
-          <DarkModeBtn onClick={handleDarkMode}>
-            <DarkModeText>
-              {!isDarkMode ? '다크모드 ON' : '다크모드 OFF'}
-            </DarkModeText>
-          </DarkModeBtn>
-        </SubBox>
-      </InfoBox>
+      {userInfo ? (
+        <>
+          <UserImg src={userInfo.profileImageUrl} />
+          <InfoBox>
+            <UserName>{userInfo.nickname}</UserName>
+            <SubBox>
+              <LogoutBtn onClick={handleLogOut}>로그아웃</LogoutBtn>
+              <DarkModeBtn onClick={handleDarkMode}>
+                <DarkModeText>
+                  {!isDarkMode ? '다크모드 ON' : '다크모드 OFF'}
+                </DarkModeText>
+              </DarkModeBtn>
+            </SubBox>
+          </InfoBox>
+        </>
+      ) : (
+        <ErrorSection
+          text="내 정보를 불러오는 데 실패했어요.😥"
+          height="350px"
+        />
+      )}
     </Wrapper>
   );
 }
@@ -58,7 +64,7 @@ const Wrapper = styled.div`
   border: none;
   display: flex;
   width: 100%;
-  height: fit-content;
+  height: 95px;
   padding: 14px 0;
   align-items: center;
   gap: 12px;

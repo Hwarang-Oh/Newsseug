@@ -101,6 +101,7 @@ const BackBtn = styled.button`
   align-items: center;
   justify-content: center;
   z-index: 10000;
+  cursor: pointer;
   &:focus {
     transition: 0.2s;
     background-color: ${({ theme }) => theme.relaxColor.light + 70};

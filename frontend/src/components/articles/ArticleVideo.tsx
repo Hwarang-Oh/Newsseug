@@ -133,7 +133,7 @@ function ArticleVideo({
 export default ArticleVideo;
 
 const Container = styled.div`
-  width: 100%;
+  width: 100vw;
   height: 100%;
   max-width: 500px;
   z-index: 1;

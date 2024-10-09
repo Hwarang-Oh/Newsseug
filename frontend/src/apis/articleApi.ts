@@ -56,12 +56,16 @@ export const fetchArticlesByToday = async ({
  */
 export const fetchArticlesByPress = async ({
   category = 'ALL',
-  page = 1,
+  page = 0,
   pressId,
 }: PageParamsType): Promise<PageType> => {
   try {
     // await new Promise((resolve) => setTimeout(resolve, 1000));
-    const response = await api.get(`${ARTICLES_URL}/press/${pressId ?? ''}`, {
+    const fetchPressUrl = pressId
+      ? `${ARTICLES_URL}/press/${pressId}`
+      : `${ARTICLES_URL}/press`;
+
+    const response = await api.get(fetchPressUrl, {
       params: { filter: category, pageNumber: page },
     });
     return response.data.data;
