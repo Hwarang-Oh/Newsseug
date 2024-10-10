@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/index';
-import { fetchSubscribedPress } from '../redux/subscribeSlice';
+import {
+  fetchSubscribedPress,
+  updateSubscribedPress,
+} from '../redux/subscribeSlice';
 import { fetchArticlesByPress } from 'apis/articleApi';
 import { Category, PageType } from 'types/api/article';
 import useContentsFetch from 'hooks/useContentsFetch';
@@ -12,19 +15,33 @@ import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 import SubscribePressFilter from 'components/subscribe/SubscribePressFilter';
 import Spinner from 'components/common/Spinner';
 import ErrorSection from 'components/common/ErrorSection';
+import { useQuery } from 'react-query';
+import { PressBasic } from 'types/api/press';
+import { getSubscribedPressList } from 'apis/subscribe';
+import { useQueryClient } from 'react-query';
 
 function Subscribes() {
-  const dispatch = useDispatch();
   const [activeCategory, setActiveCategory] = useState<string>('전체');
   const [activePress, setActivePress] = useState<number | null>(null);
 
-  const { subscribedPress, error } = useSelector(
-    (state: RootState) => state.subscribedPress,
+  const {
+    data: subscribedPressList,
+    isLoading: isPressLoading,
+    isError: isPressError,
+    refetch,
+  } = useQuery<PressBasic[]>(
+    ['subscribedPressList'],
+    () => getSubscribedPressList(),
+    {
+      onSuccess: (data) => {
+        updateSubscribedPress(data);
+      },
+    },
   );
 
   useEffect(() => {
-    dispatch(fetchSubscribedPress());
-  }, [dispatch]);
+    refetch();
+  }, [refetch]);
 
   const {
     articleList,
@@ -49,14 +66,28 @@ function Subscribes() {
     <MainLayout>
       <SubscribeHeader
         title="구독한 언론사"
-        subscribeNumber={subscribedPress.length}
+        subscribeNumber={subscribedPressList?.length}
         variant="subscribed"
       />
-      <SubscribePressFilter
-        subscribeData={subscribedPress}
-        activePress={activePress}
-        setActivePress={setActivePress}
-      />
+      {!isPressError &&
+        !isPressLoading &&
+        subscribedPressList?.length === 0 && (
+          <ErrorSection height="100px" text="구독한 언론사가 없습니다." />
+        )}
+      {subscribedPressList && (
+        <SubscribePressFilter
+          subscribeData={subscribedPressList}
+          activePress={activePress}
+          setActivePress={setActivePress}
+        />
+      )}
+      {isPressLoading && <Spinner height="100px" />}
+      {isPressError && (
+        <ErrorSection
+          height="100px"
+          text="구독 목록을 불러오는 데 실패했어요...😥"
+        />
+      )}
       <CategoryFilter
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}

@@ -15,7 +15,7 @@ function PressCardList({
           key={press.id}
           press={press}
           isSubscribed={subscriptionStatus[press.id]}
-          toggleSubscribe={toggleSubscribe}
+          toggleSubscribe={() => toggleSubscribe(press)}
         />
       ))}
     </Container>

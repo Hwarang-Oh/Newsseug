@@ -9,6 +9,8 @@ export type SubLayoutProps = {
   isSearch?: boolean;
   headerColor?: string;
   isPaddingZero?: boolean;
+  isAllSubPage?: boolean;
+  pressList?: { [key: number]: boolean };
 };
 
 export interface LogoHeaderProps {

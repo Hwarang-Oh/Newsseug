@@ -24,7 +24,7 @@ export const getSubscribedPressList = async (): Promise<PressBasic[]> => {
  */
 export const getAllPressList = async (): Promise<PressBasic[]> => {
   try {
-    const response = await api.get(`api/v1/press`);
+    const response = await api.get(`/api/v1/press`);
     return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
