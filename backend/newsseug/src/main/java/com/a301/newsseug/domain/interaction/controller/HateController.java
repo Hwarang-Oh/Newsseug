@@ -37,14 +37,11 @@ public class HateController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable(name = "articleId") Long articleId
     ) {
-
         hateService.createHate(userDetails, articleId);
-
         return ResponseUtil.ok(
                 Result.of(
                         Boolean.TRUE
                 ));
-
     }
 
     @Operation(summary = "싫어요 취소 API", description = "사용자가 기사에 싫어요를 저장한다.",
@@ -58,14 +55,11 @@ public class HateController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable(name = "articleId") Long articleId
     ) {
-
         hateService.deleteHate(userDetails, articleId);
-
         return ResponseUtil.ok(
                 Result.of(
                         Boolean.TRUE
                 ));
-
     }
 
 }
