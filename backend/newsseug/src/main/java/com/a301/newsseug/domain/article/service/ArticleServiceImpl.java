@@ -110,13 +110,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public SlicedResponse<List<GetArticleResponse>> getTodayArticleListByCategory(String category, int pageNumber) {
+    public SlicedResponse<List<GetArticleResponse>> getTodayArticlesByCategory(String category, int pageNumber) {
 
-        Pageable pageable = PageRequest.of(
-                pageNumber,
-                10,
-                Sort.by(Direction.DESC, SOURCE_CREATED_AT.getField())
-        );
+        Pageable pageable = PageRequest.of(pageNumber, 10);
         LocalDateTime startOfDay = ClockUtil.getLocalDateTime().toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1);
         Slice<Article> sliced = articleRepository.findAllByCategoryAndCreatedAtBetween(category, startOfDay, endOfDay, pageable);
@@ -129,13 +125,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public SlicedResponse<List<GetArticleResponse>> getArticleListByCategory(String category, int pageNumber) {
+    public SlicedResponse<List<GetArticleResponse>> getArticlesByCategory(String category, int pageNumber) {
 
-        Pageable pageable = PageRequest.of(
-                pageNumber,
-                10,
-                Sort.by(Direction.DESC, SOURCE_CREATED_AT.getField())
-        );
+        Pageable pageable = PageRequest.of(pageNumber, 10);
         Slice<Article> sliced = articleRepository.findAllByCategory(category, pageable);
 
         return SlicedResponse.of(
@@ -151,11 +143,7 @@ public class ArticleServiceImpl implements ArticleService {
             CustomUserDetails userDetails, Long pressId, int pageNumber, String category
     ) {
 
-        Pageable pageable = PageRequest.of(
-                pageNumber,
-                20,
-                Sort.by(Direction.DESC, SOURCE_CREATED_AT.getField())
-        );
+        Pageable pageable = PageRequest.of(pageNumber, 20);
 
         Slice<Article> sliced;
 

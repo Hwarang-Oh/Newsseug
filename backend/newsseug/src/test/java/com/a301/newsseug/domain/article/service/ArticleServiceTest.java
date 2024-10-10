@@ -98,7 +98,7 @@ public class ArticleServiceTest {
         )).willReturn(articlesPage);
 
         // When
-        SlicedResponse<List<GetArticleResponse>> response = articleService.getTodayArticleListByCategory(category, 0);
+        SlicedResponse<List<GetArticleResponse>> response = articleService.getTodayArticlesByCategory(category, 0);
 
         // Then
         assertThat(response.getSliceDetails().getCurrentPage()).isEqualTo(0);
