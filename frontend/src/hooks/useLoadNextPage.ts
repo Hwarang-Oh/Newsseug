@@ -6,6 +6,7 @@ import {
   fetchArticlesByToday,
   fetchArticlesByPress,
   fetchRandomArticles,
+  fetchArticlesByAge,
 } from 'apis/articleApi';
 import { getFolderInfo } from 'apis/folderApi';
 import { getMemberHistoryList } from 'apis/memberApi';
@@ -34,6 +35,12 @@ export const useLoadNextPage = () => {
         case 'today':
           newArticles = await fetchArticlesByToday({
             category: activeCategory,
+            page: nextPage,
+          });
+          break;
+
+        case 'age':
+          newArticles = await fetchArticlesByAge({
             page: nextPage,
           });
           break;
