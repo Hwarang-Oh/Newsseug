@@ -87,38 +87,23 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public GetArticleDetailsResponse getRandomArticle(CustomUserDetails userDetails) {
+    public SlicedResponse<List<GetArticleResponse>> getRandomArticle(CustomUserDetails userDetails) {
+
+        Pageable pageable = PageRequest.of(0, 10);
 
         Member loginMember = userDetails.getMember();
         History lastestHistory = historyService.getLatestHistoryByMember(loginMember);
-        List<Article> articles = articleRepository.findAllByCategoryAndActivationStatusAndConversionStatus(
+        Slice<Article> sliced = articleRepository.findAllByCategoryRandom(
                 lastestHistory.getArticle().getCategory(),
                 ActivationStatus.ACTIVE,
-                ConversionStatus.SUCCESS
+                ConversionStatus.SUCCESS,
+                pageable
         );
 
-        Random random = new Random();
-        Article randomArticle = articles.get(random.nextInt(articles.size()));
-
-        birthYearCountService.incrementBirthYearCount(loginMember, randomArticle);
-        Long incrementedViewCount = redisCounterService.increment("article:viewCount:", randomArticle.getArticleId(), 1L);
-        Long likeCount = redisCounterService.findByKey("article:likeCount:", randomArticle.getArticleId()).orElse(0L);
-        Long hateCount = redisCounterService.findByKey("article:hateCount:", randomArticle.getArticleId()).orElse(0L);
-        
-
-        return GetArticleDetailsResponse.of(randomArticle,
-                randomArticle.getViewCount() + incrementedViewCount,
-                subscribeRepository.existsByMemberAndPress(userDetails.getMember(), randomArticle.getPress()),
-                SimpleLikeDto.of(
-                        likeRepository.existsByMemberAndArticle(userDetails.getMember(), randomArticle),
-                        randomArticle.getLikeCount() + likeCount
-                ),
-                SimpleHateDto.of(
-                        hateRepository.existsByMemberAndArticle(userDetails.getMember(), randomArticle),
-                        randomArticle.getHateCount() + hateCount
-                )
+        return SlicedResponse.of(
+                SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
+                GetArticleResponse.of(sliced.getContent())
         );
-
     }
 
     @Override

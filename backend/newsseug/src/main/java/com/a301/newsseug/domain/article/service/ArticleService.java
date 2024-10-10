@@ -9,7 +9,7 @@ public interface ArticleService {
 
     GetArticleDetailsResponse getArticleDetail(CustomUserDetails userDetails, Long articleId);
 
-    GetArticleDetailsResponse getRandomArticle(CustomUserDetails userDetails);
+    SlicedResponse<List<GetArticleResponse>>  getRandomArticle(CustomUserDetails userDetails);
 
     SlicedResponse<List<GetArticleResponse>> getTodayArticleListByCategory(String category, int pageNumber);
 

@@ -33,9 +33,9 @@ public class ArticleController {
         return ResponseUtil.ok(Result.of(articleService.getArticleDetail(userDetails, articleId)));
     }
 
-    @Operation(summary = "랜덤 기사 조회 API", description = "랜덤으로 기사를 조회한다.")
+    @Operation(summary = "랜덤 기사 조회 API", description = "랜덤 기사 리스트를 조회한다.")
     @GetMapping("/random")
-    public ResponseEntity<Result<GetArticleDetailsResponse>> getRandomArticle(
+    public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getRandomArticle(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         return ResponseUtil.ok(
