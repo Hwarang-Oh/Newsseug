@@ -14,6 +14,8 @@ public enum SortingCriteria {
 
     UPDATE_AT("updatedAt"),
 
+    SOURCE_CREATED_AT("sourceCreatedAt"),
+
     BIRTH_YEAR_VIEW_COUNT("birthYearViewCount");
 
     private final String value;

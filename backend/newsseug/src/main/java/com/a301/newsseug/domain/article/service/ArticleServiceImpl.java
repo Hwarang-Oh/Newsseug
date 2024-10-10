@@ -15,7 +15,6 @@ import com.a301.newsseug.domain.interaction.repository.LikeRepository;
 import com.a301.newsseug.domain.interaction.service.HistoryService;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.model.entity.Subscribe;
-import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.member.service.SubscribeService;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 import com.a301.newsseug.global.enums.SortingCriteria;
@@ -43,12 +42,10 @@ public class ArticleServiceImpl implements ArticleService {
     private final BirthYearCountService birthYearCountService;
     private final HistoryService historyService;
     private final SubscribeService subscribeService;
-
     private final ArticleRepository articleRepository;
     private final PressRepository pressRepository;
     private final LikeRepository likeRepository;
     private final HateRepository hateRepository;
-    private final SubscribeRepository subscribeRepository;
 
     @Override
     public GetArticleDetailsResponse getArticleDetail(CustomUserDetails userDetails, Long articleId) {
@@ -116,7 +113,7 @@ public class ArticleServiceImpl implements ArticleService {
         Pageable pageable = PageRequest.of(
                 pageNumber,
                 10,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+                Sort.by(Sort.Direction.DESC, SortingCriteria.SOURCE_CREATED_AT.getValue())
         );
         LocalDateTime startOfDay = ClockUtil.getLocalDateTime().toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1);
@@ -135,7 +132,7 @@ public class ArticleServiceImpl implements ArticleService {
         Pageable pageable = PageRequest.of(
                 pageNumber,
                 10,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+                Sort.by(Sort.Direction.DESC, SortingCriteria.SOURCE_CREATED_AT.getValue())
         );
         Slice<Article> sliced = articleRepository.findAllByCategory(category, pageable);
 
@@ -155,7 +152,7 @@ public class ArticleServiceImpl implements ArticleService {
         Pageable pageable = PageRequest.of(
                 pageNumber,
                 20,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+                Sort.by(Sort.Direction.DESC, SortingCriteria.SOURCE_CREATED_AT.getValue())
         );
 
         Slice<Article> sliced;
