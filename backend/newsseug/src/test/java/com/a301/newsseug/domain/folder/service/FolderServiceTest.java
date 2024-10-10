@@ -128,7 +128,7 @@ class FolderServiceTest {
 
         // Given
         List<Folder> folders = List.of(FolderFactory.folder(1L), FolderFactory.folder(2L));
-        given(folderRepository.findAllByMember(loginMember)).willReturn(folders);
+        given(folderRepository.findAllByMemberAndActivationStatus(loginMember, ActivationStatus.ACTIVE)).willReturn(folders);
         given(bookmarkRepository.findAllByFolder(folders.get(0))).willReturn(List.of());
         given(bookmarkRepository.findAllByFolder(folders.get(1))).willReturn(List.of());
 
@@ -136,7 +136,7 @@ class FolderServiceTest {
         List<GetFolderResponse> response = folderService.getFolders(userDetails);
 
         // Then
-        verify(folderRepository).findAllByMember(loginMember);
+        verify(folderRepository).findAllByMemberAndActivationStatus(loginMember, ActivationStatus.ACTIVE);
         verify(bookmarkRepository).findAllByFolder(folders.get(0));
         verify(bookmarkRepository).findAllByFolder(folders.get(1));
 

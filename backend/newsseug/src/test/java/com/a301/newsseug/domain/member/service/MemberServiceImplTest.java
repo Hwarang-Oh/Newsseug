@@ -137,7 +137,7 @@ class MemberServiceImplTest {
                 Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
         );
 
-        given(folderRepository.findAllByMember(loginMember, pageable)).willReturn(
+        given(folderRepository.findAllByMemberAndActivationStatus(loginMember, ActivationStatus.ACTIVE, pageable)).willReturn(
                 new SliceImpl<>(List.of(FolderFactory.folder(1L), FolderFactory.folder(2L)), pageable, true)
         );
 

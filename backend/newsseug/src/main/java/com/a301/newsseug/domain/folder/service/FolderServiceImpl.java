@@ -66,7 +66,7 @@ public class FolderServiceImpl implements FolderService {
     public List<GetFolderResponse> getFolders(CustomUserDetails userDetails) {
 
         Member loginMember = userDetails.getMember();
-        List<Folder> folders = folderRepository.findAllByMember(loginMember);
+        List<Folder> folders = folderRepository.findAllByMemberAndActivationStatus(loginMember, ActivationStatus.ACTIVE);
         Map<Folder, List<Bookmark>> foldersWithBookmark = getBookmarkFromFolder(folders);
 
         return GetFolderResponse.of(foldersWithBookmark);

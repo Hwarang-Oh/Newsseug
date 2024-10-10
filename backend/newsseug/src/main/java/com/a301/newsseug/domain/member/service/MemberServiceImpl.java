@@ -17,6 +17,7 @@ import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
+import com.a301.newsseug.global.model.entity.ActivationStatus;
 import com.a301.newsseug.global.model.entity.SliceDetails;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -102,7 +103,7 @@ public class MemberServiceImpl implements MemberService {
         );
 
         Member loginMember = userDetails.getMember();
-        Slice<Folder> sliced = folderRepository.findAllByMember(loginMember, pageable);
+        Slice<Folder> sliced = folderRepository.findAllByMemberAndActivationStatus(loginMember, ActivationStatus.ACTIVE, pageable);
 
         return SlicedResponse.of(
                 SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
