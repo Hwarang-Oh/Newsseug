@@ -98,7 +98,7 @@ const NavBarContainer = styled.div`
   height: 8%;
   flex-shrink: 0;
   background-color: ${({ theme }) => theme.bgColor};
-  box-shadow: 0px -4px 100px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px -10px 100px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   padding: 0;
   padding-bottom: 15px;

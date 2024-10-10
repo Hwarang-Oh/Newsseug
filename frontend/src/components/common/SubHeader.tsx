@@ -18,6 +18,8 @@ function SubHeader({
   children,
   isSearch = false,
   headerColor,
+  isAllSubPage,
+  pressList,
 }: Readonly<SubLayoutProps>) {
   const navigate = useNavigate();
   const theme = useTheme();

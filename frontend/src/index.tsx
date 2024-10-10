@@ -19,11 +19,11 @@ import * as serviceWorker from './serviceWorkerRegistration';
 // }
 
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false, // 포커스가 돌아올 때 자동으로 refetch하지 않음
-    },
-  },
+  // defaultOptions: {
+  //   queries: {
+  //     refetchOnWindowFocus: true, // 포커스가 돌아올 때 자동으로 refetch하지 않음
+  //   },
+  // },
 });
 
 const ThemeWrapper = ({ children }: { children: React.ReactNode }) => {

@@ -13,7 +13,7 @@ function App() {
       </Helmet>
       <GlobalStyle />
       <Router />
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 }
