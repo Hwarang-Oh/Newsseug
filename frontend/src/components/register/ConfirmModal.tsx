@@ -10,8 +10,8 @@ import { ConfirmModalProps } from 'types/props/register';
  */
 function ConfirmModal({ userData, onCancel }: Readonly<ConfirmModalProps>) {
   return (
-    <ModalOverlay>
-      <ModalContainer>
+    <ModalOverlay onClick={onCancel}>
+      <ModalContainer onClick={(e) => e.stopPropagation()}>
         <Title>입력하신 정보를 확인해주세요</Title>
 
         <InfoTable>

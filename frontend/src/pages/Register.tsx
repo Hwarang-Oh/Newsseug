@@ -19,7 +19,7 @@ function UserInput() {
     genderList,
     validationRules,
     formState: { isValid },
-    handleImageChange,
+    setProfileImageFile,
     handleGenderSelect,
     handleDateChange,
     handleSubmit,
@@ -30,17 +30,27 @@ function UserInput() {
   const {
     profileImage,
     profileImageUrl,
+    profileImageCropped,
+    profileImageCroppedUrl,
     handleSelectImage,
     handleSaveImage,
     handleRemoveImage,
   } = useImageChange();
 
+  /**
+   * IMP : Profile Image가 변경되었을 때, Profile Image를 Form에서 Update
+   */
   useEffect(() => {
     if (profileImage) {
-      console.log(profileImage);
-      handleImageChange(profileImage);
+      setProfileImageFile(profileImage);
     }
-  }, [profileImage]);
+    if (profileImageCropped) {
+      setProfileImageFile(profileImageCropped);
+    }
+    if (!profileImage && !profileImageCropped) {
+      setProfileImageFile(null);
+    }
+  }, [profileImage, profileImageCropped]);
 
   /**
    * IMP : Modal Open 상태를 관리하는 State
@@ -56,6 +66,7 @@ function UserInput() {
           <ProfileWrapper>
             <ProfileIcon
               profileImageUrl={profileImageUrl}
+              profileImageCroppedUrl={profileImageCroppedUrl}
               selectImage={handleSelectImage}
               saveImage={handleSaveImage}
               removeImage={handleRemoveImage}
