@@ -44,7 +44,7 @@ function Router() {
         </Route>
 
         <Route path="/search" element={<Search />} />
-        <Route path="/search/result" element={<EsSearchResult />} />
+        <Route path="/search/result" element={<SearchResult />} />
         <Route path="/press/:pressId" element={<Press />} />
       </Routes>
     </BrowserRouter>
