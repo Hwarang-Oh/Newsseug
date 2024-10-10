@@ -9,18 +9,17 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import software.amazon.awssdk.services.s3.endpoints.internal.Value.Str;
 
 @Service
 @RequiredArgsConstructor
 public class RedisCounterServiceImpl implements RedisCounterService {
 
     private final RedisTemplate<String, Object> redisTemplate;
-    private final RedisProperties redisProperties;
-    private final ArticleRepository articleRepository;
 
     @Override
-    public void save(String hash, Long key, Long value) {
-        redisTemplate.opsForHash().put(hash, key.toString(), value);
+    public void save(String hash, Long HashKey, Long value) {
+        redisTemplate.opsForHash().put(hash, HashKey.toString(), value);
     }
 
     @Override
@@ -34,25 +33,26 @@ public class RedisCounterServiceImpl implements RedisCounterService {
     }
 
     @Override
-    public Optional<Long> findByKey(String hash, Long key) {
-        Object value = redisTemplate.opsForHash().get(hash, key.toString());
-        if (Objects.isNull(value)) {
-            return Optional.empty();
+    public Optional<Long> findByKey(String hash, Long HashKey) {
+
+        Number value = (Number) redisTemplate.opsForHash().get(hash, HashKey.toString());
+
+        if (Objects.nonNull(value)) {
+            return Optional.of(value.longValue());
         }
 
-        return Optional.of((Long) value);
+        return Optional.empty();
+
     }
 
     @Override
-    public void deleteByKey(String hash, Long key) {
-        redisTemplate.opsForHash().delete(hash, key.toString());
+    public void deleteByKey(String hash, Long HashKey) {
+        redisTemplate.opsForHash().delete(hash, HashKey.toString());
     }
 
     @Override
-    public Long increment(String hash, Long key, Long value) {
-
-        return redisTemplate.opsForHash().increment(hash, key.toString(), value);
-
+    public Long increment(String hash, Long HashKey, Long value) {
+        return redisTemplate.opsForHash().increment(hash, HashKey.toString(), value);
     }
 
 }

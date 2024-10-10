@@ -4,7 +4,7 @@ import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 
 public interface LikeService {
 
-    void postLikeToArticle(CustomUserDetails userDetails, Long articleId);
-    void deleteLikeFromArticle(CustomUserDetails userDetails, Long articleId);
+    void createLike(CustomUserDetails userDetails, Long articleId);
+    void deleteLike(CustomUserDetails userDetails, Long articleId);
     
 }

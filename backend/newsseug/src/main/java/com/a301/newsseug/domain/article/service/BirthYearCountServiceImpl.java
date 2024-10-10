@@ -19,10 +19,10 @@ public class BirthYearCountServiceImpl implements BirthYearCountService{
     private final BirthYearViewCountRepository birthYearViewCountRepository;
 
     public void incrementBirthYearCount(Member member, Article article) {
-        int birthYear = member.getBirth().getYear();
 
-        BirthYearViewCount birthYearViewCount = birthYearViewCountRepository.findByArticleAndBirthYear(
-                article, birthYear);
+        int birthYear = member.getBirth().getYear();
+        BirthYearViewCount birthYearViewCount
+                = birthYearViewCountRepository.findByArticleAndBirthYear(article, birthYear);
 
         if (Objects.isNull(birthYearViewCount)) {
             birthYearViewCount = BirthYearViewCount.builder().article(article).birthYear(birthYear).build();
@@ -30,6 +30,7 @@ public class BirthYearCountServiceImpl implements BirthYearCountService{
         }
 
         birthYearViewCount.view();
+
     }
 
 }

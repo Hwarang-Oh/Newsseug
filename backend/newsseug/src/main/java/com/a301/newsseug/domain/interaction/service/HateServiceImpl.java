@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class HateServiceImpl implements HateService {
@@ -27,16 +28,12 @@ public class HateServiceImpl implements HateService {
     private final ArticleRepository articleRepository;
     private final HateRepository hateRepository;
     private final LikeRepository likeRepository;
-    private final RedisCounterService redisCounterService;
+
 
     @Override
-    @Transactional
-    public void PostHateToArticle(CustomUserDetails userDetails, Long articleId) {
-
+    public void createHate(CustomUserDetails userDetails, Long articleId) {
         Member loginMember = userDetails.getMember();
-
         Article article = articleRepository.getOrThrow(articleId);
-
         Optional<Like> like = likeRepository.findByMemberAndArticle(loginMember, article);
         like.ifPresent(likeRepository::delete);
 
@@ -47,42 +44,14 @@ public class HateServiceImpl implements HateService {
                         .build()
         );
 
-        redisCounterService.increment("article:hateCount:", articleId, 1L);
-
     }
 
     @Override
-    @Transactional
-    public void deleteHateFromArticle(CustomUserDetails userDetails, Long articleId) {
-
+    public void deleteHate(CustomUserDetails userDetails, Long articleId) {
         Member loginMember = userDetails.getMember();
         Article article = articleRepository.getOrThrow(articleId);
         Hate hate = hateRepository.getOrThrow(loginMember, article);
         hateRepository.delete(hate);
-        redisCounterService.increment("article:hateCount:", articleId, -1L);
-
-    }
-
-    @Scheduled(cron = "0 0/5 * * * ?")
-    public void syncHateCounts() {
-
-        String hateHashKey = "article:hateCount:";
-
-        Map<Object, Object> hateCountLogs = redisCounterService.findByHash(hateHashKey);
-
-        if (Objects.nonNull(hateCountLogs)) {
-            for (Map.Entry<Object, Object> entry : hateCountLogs.entrySet()) {
-                Long articleId = Long.parseLong((String) entry.getKey());
-                String hateCount = (String) entry.getValue();
-
-                if (Objects.nonNull(hateCount)) {
-                    log.info("Updating articleId: {}, New hateCount: {}", articleId, hateCount);
-                    articleRepository.updateCount("hateCount", articleId, Long.parseLong(hateCount));
-                    redisCounterService.deleteByKey("article:hateCount:", articleId);
-                }
-            }
-        }
-
     }
 
 }

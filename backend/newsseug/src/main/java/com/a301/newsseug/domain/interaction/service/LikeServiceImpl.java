@@ -31,7 +31,7 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     @Transactional
-    public void postLikeToArticle(CustomUserDetails userDetails, Long articleId) {
+    public void createLike(CustomUserDetails userDetails, Long articleId) {
 
         Member loginMember = userDetails.getMember();
         Article article = articleRepository.getOrThrow(articleId);
@@ -44,13 +44,11 @@ public class LikeServiceImpl implements LikeService {
                 .build()
         );
 
-        redisCounterService.increment("article:likeCount", articleId, 1L);
-
     }
 
     @Override
     @Transactional
-    public void deleteLikeFromArticle(CustomUserDetails userDetails, Long articleId) {
+    public void deleteLike(CustomUserDetails userDetails, Long articleId) {
 
         Member loginMember = userDetails.getMember();
         Article article = articleRepository.getOrThrow(articleId);

@@ -19,9 +19,6 @@ public record GetArticleDetailsResponse(
         @Schema(description = "언론사 정보", examples = {"Object"})
         GetPressResponse press,
 
-        @Schema(description = "구독 유무", examples = {"TRUE"})
-        Boolean isSubscribed,
-
         @Schema(description = "좋아요 유무와 개수", examples = {"Object"})
         SimpleLikeDto likeInfo,
 
@@ -36,8 +33,7 @@ public record GetArticleDetailsResponse(
 
         return GetArticleDetailsResponse.builder()
                 .article(ArticleDto.of(article, currentViewCount))
-                .press(GetPressResponse.of(article.getPress()))
-                .isSubscribed(isSubscribed)
+                .press(GetPressResponse.of(article.getPress(), isSubscribed))
                 .likeInfo(likeInfo)
                 .hateInfo(hateInfo)
                 .build();

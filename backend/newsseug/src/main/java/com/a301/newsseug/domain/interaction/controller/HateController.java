@@ -1,5 +1,6 @@
 package com.a301.newsseug.domain.interaction.controller;
 
+import com.a301.newsseug.domain.article.service.RedisCounterService;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.interaction.service.HateService;
 import com.a301.newsseug.global.model.dto.Result;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HateController {
 
     private final HateService hateService;
+    private final RedisCounterService redisCounterService;
 
     @Operation(summary = "싫어요 API", description = "사용자가 기사에 싫어요를 저장한다.",
             responses = {
@@ -36,7 +38,8 @@ public class HateController {
             @PathVariable(name = "articleId") Long articleId
     ) {
 
-        hateService.PostHateToArticle(userDetails, articleId);
+        hateService.createHate(userDetails, articleId);
+        redisCounterService.increment("article:hateCount:", articleId, 1L);
 
         return ResponseUtil.ok(
                 Result.of(
@@ -57,7 +60,8 @@ public class HateController {
             @PathVariable(name = "articleId") Long articleId
     ) {
 
-        hateService.deleteHateFromArticle(userDetails, articleId);
+        hateService.deleteHate(userDetails, articleId);
+        redisCounterService.increment("article:hateCount:", articleId, -1L);
 
         return ResponseUtil.ok(
                 Result.of(
