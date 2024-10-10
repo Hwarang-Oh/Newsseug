@@ -50,7 +50,7 @@ public class HistoryServiceImpl implements HistoryService {
 		Pageable pageable = PageRequest.of(
 				0,
 				1,
-				Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+				Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getField())
 		);
 
 		Page<History> history = historyRepository.findByMember(member, pageable);
@@ -64,7 +64,7 @@ public class HistoryServiceImpl implements HistoryService {
 		Pageable pageable = PageRequest.of(
 				page,
 				PAGE_SIZE,
-				Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+				Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getField())
 		);
 
 		Member member = userDetails.getMember();

@@ -14,7 +14,6 @@ import com.a301.newsseug.domain.member.factory.entity.MemberFactory;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.model.entity.Press;
-import com.a301.newsseug.external.redis.config.RedisProperties;
 import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
@@ -87,7 +86,7 @@ public class ArticleServiceTest {
         PageRequest pageRequest = PageRequest.of(
                 0,
                 10,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getField())
         );
 
         // Test 데이터를 생성 (카테고리 없는 기사 목록)

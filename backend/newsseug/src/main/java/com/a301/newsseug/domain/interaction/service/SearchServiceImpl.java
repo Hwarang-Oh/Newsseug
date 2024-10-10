@@ -1,5 +1,7 @@
 package com.a301.newsseug.domain.interaction.service;
 
+import static com.a301.newsseug.global.enums.SortingCriteria.SOURCE_CREATED_AT;
+
 import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.article.repository.ArticleRepository;
@@ -28,6 +30,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -49,7 +52,7 @@ public class SearchServiceImpl implements SearchService {
         Pageable pageable = PageRequest.of(
                 pageNumber,
                 10,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+                Sort.by(Direction.DESC, SOURCE_CREATED_AT.getField())
         );
 
         Slice<Article> articles = articleRepository.findAllByTitleIsContainingIgnoreCase(keyword, filter, pageable);
@@ -89,7 +92,7 @@ public class SearchServiceImpl implements SearchService {
         Pageable pageable = PageRequest.of(
                 pageNumber,
                 10,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getField())
         );
 
         float[] vector = embeddingServiceClient.getEmbeddingVector(keyword);

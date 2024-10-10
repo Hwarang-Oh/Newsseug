@@ -134,7 +134,7 @@ class MemberServiceImplTest {
         Pageable pageable = PageRequest.of(
                 0,
                 10,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getField())
         );
 
         given(folderRepository.findAllByMemberAndActivationStatus(loginMember, ActivationStatus.ACTIVE, pageable)).willReturn(
