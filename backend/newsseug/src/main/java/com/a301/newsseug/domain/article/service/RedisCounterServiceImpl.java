@@ -1,8 +1,7 @@
 package com.a301.newsseug.domain.article.service;
 
-import com.a301.newsseug.domain.article.repository.ArticleRepository;
-import com.a301.newsseug.external.redis.config.RedisProperties;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -10,8 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import software.amazon.awssdk.services.s3.endpoints.internal.Value.Str;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RedisCounterServiceImpl implements RedisCounterService {
@@ -56,10 +55,14 @@ public class RedisCounterServiceImpl implements RedisCounterService {
         return redisTemplate.opsForHash().increment(hash, HashKey.toString(), value);
     }
 
-    @Async
     @Override
+    @Async("asyncExecutor")
     public void incrementAsync(String hash, Long HashKey, Long value) {
-        redisTemplate.opsForHash().increment(hash, HashKey.toString(), value);
+        try {
+            redisTemplate.opsForHash().increment(hash, HashKey.toString(), value);
+        } catch (Exception e) {
+            log.error("Failed to increment Redis value for hash: {}, key: {}, by: {}", hash, HashKey, value, e);
+        }
     }
 
 }

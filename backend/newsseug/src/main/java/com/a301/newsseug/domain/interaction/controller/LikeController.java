@@ -39,7 +39,6 @@ public class LikeController {
     ) {
 
         likeService.createLike(userDetails, articleId);
-        redisCounterService.increment("article:likeCount:", articleId, 1L);
 
         return ResponseUtil.ok(
                 Result.of(

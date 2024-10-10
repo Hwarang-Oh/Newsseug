@@ -36,19 +36,18 @@ public class HateServiceImpl implements HateService {
         Article article = articleRepository.getOrThrow(articleId);
         Optional<Like> like = likeRepository.findByMemberAndArticle(loginMember, article);
 
-        if (like.isEmpty()) {
-            hateRepository.save(
-                    Hate.builder()
-                            .member(loginMember)
-                            .article(article)
-                            .build()
-            );
-
-            return;
+        if (like.isPresent()) {
+            likeRepository.delete(like.get());
+            redisCounterService.incrementAsync("article:likeCount:", articleId, -1L);
         }
 
-        likeRepository.delete(like.get());
-        redisCounterService.incrementAsync("article:likeCount", articleId, -1L);
+        hateRepository.save(
+                Hate.builder()
+                        .member(loginMember)
+                        .article(article)
+                        .build()
+        );
+        redisCounterService.incrementAsync("article:hateCount:", articleId, 1L);
 
     }
 
@@ -59,6 +58,7 @@ public class HateServiceImpl implements HateService {
         Article article = articleRepository.getOrThrow(articleId);
         Hate hate = hateRepository.getOrThrow(loginMember, article);
         hateRepository.delete(hate);
+        redisCounterService.incrementAsync("article:hateCount:", articleId, -1L);
 
     }
 
