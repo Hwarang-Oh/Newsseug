@@ -2,19 +2,12 @@
 module.exports = {
   devServer: (devServerConfig) => {
     devServerConfig.port = 3000;
-    devServerConfig.liveReload = true;
     devServerConfig.host = '0.0.0.0';
     devServerConfig.allowedHosts = 'all';
     devServerConfig.open = true;
-    devServerConfig.client = {
-      overlay: true,
-      webSocketURL: {
-        hostname: 'localhost',
-        pathname: undefined,
-        port: '0',
-      },
-    };
     devServerConfig.compress = true;
+    devServerConfig.hot = false; // Hot Module Replacement 비활성화
+    devServerConfig.liveReload = false; // 라이브 리로드 비활성화
 
     return devServerConfig;
   },
