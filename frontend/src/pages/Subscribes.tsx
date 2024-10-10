@@ -11,7 +11,7 @@ import SubscribeHeader from 'components/subscribe/SubscribeHeader';
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 import SubscribePressFilter from 'components/subscribe/SubscribePressFilter';
 import Spinner from 'components/common/Spinner';
-import ErrorSection from '@/components/common/ErrorSection';
+import ErrorSection from 'components/common/ErrorSection';
 
 function Subscribes() {
   const dispatch = useDispatch();
