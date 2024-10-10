@@ -117,7 +117,6 @@ public class MemberServiceImpl implements MemberService {
 
         Member loginMember = userDetails.getMember();
         Press press = pressRepository.getOrThrow(pressId);
-
         Optional<Subscribe> subscribe = subscribeRepository.findByMemberAndPress(loginMember, press);
 
         if (subscribe.isPresent()) {
@@ -142,12 +141,10 @@ public class MemberServiceImpl implements MemberService {
 
         Member loginMember = userDetails.getMember();
         Press press = pressRepository.getOrThrow(pressId);
-
         Subscribe subscribe = subscribeRepository.findByMemberAndPress(loginMember, press)
                 .orElseThrow(NotSubscribePressException::new);
 
         subscribe.inactive();
-
         press.decrementSubscribeCount();
 
     }
