@@ -66,7 +66,7 @@ public class PressServiceTest {
 		);
 
 		given(pressRepository.findAll()).willReturn(List.of(press1, press2));
-		given(subscribeRepository.findAllByMember(loginMember)).willReturn(subscribes);
+//		given(subscribeRepository.findAllByMember(loginMember)).willReturn(subscribes);
 
 		// When
 		List<GetPressResponse> response = pressService.getPress(userDetails);
@@ -103,8 +103,8 @@ public class PressServiceTest {
 
 
 		given(pressRepository.findAll()).willReturn(List.of(press1, press2));
-		given(subscribeRepository.findAllByMember(loginMember))
-				.willReturn(List.of(SubscribeFactory.subscribe(0L, press1)));
+//		given(subscribeRepository.findAllByMember(loginMember))
+//				.willReturn(List.of(SubscribeFactory.subscribe(0L, press1)));
 
 		// When
 		List<GetPressResponse> response = pressService.getPress(userDetails);

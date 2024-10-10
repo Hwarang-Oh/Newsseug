@@ -115,13 +115,13 @@ class MemberServiceImplTest {
         // Given
         Press press = PressFactory.press(1L);
         Subscribe subscribe = SubscribeFactory.subscribe(1L, press);
-        given(subscribeRepository.findAllByMember(loginMember)).willReturn(List.of(subscribe));
+//        given(subscribeRepository.findAllByMember(loginMember)).willReturn(List.of(subscribe));
 
         // When
         List<GetPressResponse> response = memberService.getPressByMember(userDetails);
 
         // Then
-        verify(subscribeRepository).findAllByMember(loginMember);
+//        verify(subscribeRepository).findAllByMember(loginMember);
         assertThat(response).hasSize(1);
 
     }

@@ -63,7 +63,13 @@ public class HistoryServiceImpl implements HistoryService {
 
 		Member member = userDetails.getMember();
 
-		Pageable pageable = PageRequest.of(page, PAGE_SIZE, Sort.by("updatedAt"));
+//		Pageable pageable = PageRequest.of(page, PAGE_SIZE, Sort.by("updatedAt"));
+
+		Pageable pageable = PageRequest.of(
+				page, 
+				PAGE_SIZE,
+				Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+		);
 
 		Slice<History> historyPage = historyRepository.findAllByMember(member, pageable);
 
