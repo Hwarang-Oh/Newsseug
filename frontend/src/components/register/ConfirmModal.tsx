@@ -50,6 +50,8 @@ const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   max-width: 500px;
+  width: 100%;
+  height: 100%;
 `;
 
 const ModalContainer = styled.div`
