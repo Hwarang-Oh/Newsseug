@@ -9,16 +9,16 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.Objects;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class CounterSchedulingServiceImpl implements CounterSchedulingService {
 
     private final RedisCounterService redisCounterService;
     private final ArticleRepository articleRepository;
 
     @Override
-    @Scheduled(cron = "0 0/5 * * * ?")
+    @Scheduled(cron = "0 0/7 * * * ?")
     public void syncCounts() {
         syncCount("article:likeCount:", "likeCount");
         syncCount("article:hateCount:", "hateCount");
@@ -30,13 +30,14 @@ public class CounterSchedulingServiceImpl implements CounterSchedulingService {
 
         if (Objects.nonNull(countLogs)) {
             for (Map.Entry<Object, Object> entry : countLogs.entrySet()) {
-                Long articleId = Long.parseLong((String) entry.getKey());
-                String count = (String) entry.getValue();
+
+                String articleId = (String) entry.getKey();
+                Number count = (Number) entry.getValue();
 
                 if (Objects.nonNull(count)) {
                     log.info("Updating articleId: {}, New {}: {}", articleId, column, count);
-                    articleRepository.updateCount(column, articleId, Long.parseLong(count));
-                    redisCounterService.deleteByKey(redisHashKey, articleId);
+                    redisCounterService.deleteByKey(redisHashKey, Long.parseLong(articleId));
+                    articleRepository.updateCount(column, Long.parseLong(articleId), count.longValue());
                 }
             }
         }

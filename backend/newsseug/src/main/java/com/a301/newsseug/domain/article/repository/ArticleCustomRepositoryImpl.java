@@ -10,6 +10,7 @@ import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
@@ -68,10 +70,11 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
 
     @Override
     @Modifying
+    @Transactional
     public void updateCount(String field, Long id, Long count) {
         PathBuilder<Long> fieldPath = new PathBuilder<>(Long.class, "article." + field);
         jpaQueryFactory.update(article)
-                .set(fieldPath, count)
+                .set(fieldPath,  Expressions.numberTemplate(Long.class, "{0} + {1}", fieldPath, count))
                 .where(article.articleId.eq(id))
                 .execute();
     }
