@@ -79,10 +79,11 @@ public class ArticleController {
     @GetMapping("/age")
     public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getArticlesByBirthYear(
             @NullableUserDetails CustomUserDetails userDetails,
-            @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber
+            @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber,
+            @RequestParam(required = false, defaultValue = "ALL", value = "filter") String filter
     ) {
        return ResponseUtil.ok(
-               Result.of(articleService.getArticlesByBirthYear(userDetails, pageNumber))
+               Result.of(articleService.getArticlesByBirthYear(userDetails, pageNumber, filter))
        );
     }
 

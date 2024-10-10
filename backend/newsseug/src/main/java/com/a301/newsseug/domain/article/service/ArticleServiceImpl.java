@@ -3,6 +3,7 @@ package com.a301.newsseug.domain.article.service;
 import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
 import com.a301.newsseug.domain.article.model.dto.response.*;
 import com.a301.newsseug.domain.article.model.entity.Article;
+import com.a301.newsseug.domain.article.model.entity.type.CategoryType;
 import com.a301.newsseug.domain.article.model.entity.type.ConversionStatus;
 import com.a301.newsseug.domain.article.repository.ArticleRepository;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
@@ -184,7 +185,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public SlicedResponse<List<GetArticleResponse>> getArticlesByBirthYear(CustomUserDetails userDetails, int pageNumber) {
+    public SlicedResponse<List<GetArticleResponse>> getArticlesByBirthYear(CustomUserDetails userDetails, int pageNumber, String category) {
 
         Pageable pageable = PageRequest.of(
                 pageNumber,
@@ -206,7 +207,9 @@ public class ArticleServiceImpl implements ArticleService {
         int ageBegin = (int) Math.floor((double) age / 10) * 10;
         int ageEnd = (int) Math.ceil((double) age / 10) * 10 - 1;
 
-        Slice<Article> sliced = articleRepository.findAllByBirthYearOrderByViewCount(ageBegin, ageEnd, pageable);
+        Slice<Article> sliced = category.equals("ALL") ? articleRepository.findAllByBirthYearOrderByViewCount(ageBegin, ageEnd, pageable) :
+        articleRepository.findAllByBirthYearOrderByViewCountFiltered(ageBegin, ageEnd, pageable,
+            CategoryType.convertToEnum(category));
 
         return SlicedResponse.of(
                 SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
