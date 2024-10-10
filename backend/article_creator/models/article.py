@@ -49,12 +49,12 @@ class Press(Base):
 class Article(Base):
     __tablename__ = 'articles'
 
-    article_id = Column(BigInteger, primary_key=True, autoincrement=True)
+    article_id = Column(BigInteger, primary_key=True, server_default=articles_seq.next_value())
     press_id = Column(BigInteger, ForeignKey('press.press_id', ondelete='CASCADE'), nullable=False)
-    hate_count = Column(BigInteger, nullable=False, default=0)
-    like_count = Column(BigInteger, nullable=False, default=0)
+    hate_count = Column(BigInteger, nullable=False, server_default=0)
+    like_count = Column(BigInteger, nullable=False, server_default=0)
     source_created_at = Column(TIMESTAMP, nullable=True)
-    view_count = Column(BigInteger, nullable=False, default=0)
+    view_count = Column(BigInteger, nullable=False, server_default=0)
     content_url = Column(String(255), nullable=True)
     source_url = Column(String(255), nullable=False)
     thumbnail_url = Column(String(255), nullable=True)
@@ -68,7 +68,7 @@ class Article(Base):
     conversion_status = Column(Enum(ConversionStatus), nullable=False)
 
     # Enum for activation_status with default value
-    activation_status = Column(Enum(ActivationStatus), nullable=False, default=ActivationStatus.ACTIVE)
+    activation_status = Column(Enum(ActivationStatus), nullable=False, server_default=ActivationStatus.ACTIVE)
 
     # Timestamps with default value
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
