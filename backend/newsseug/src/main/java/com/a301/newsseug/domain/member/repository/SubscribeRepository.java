@@ -23,7 +23,4 @@ public interface SubscribeRepository extends JpaRepository<Subscribe, Long> {
 
     Boolean existsByMemberAndPressAndActivationStatus(Member member, Press press, ActivationStatus activationStatus);
 
-    @Query("SELECT s.press FROM Subscribe s WHERE s.member = :member")
-    List<Press> findPressByMember(@Param("member") Member member);
-
 }

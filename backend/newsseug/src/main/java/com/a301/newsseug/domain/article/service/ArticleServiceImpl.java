@@ -13,6 +13,7 @@ import com.a301.newsseug.domain.interaction.repository.HateRepository;
 import com.a301.newsseug.domain.interaction.repository.LikeRepository;
 import com.a301.newsseug.domain.interaction.service.HistoryService;
 import com.a301.newsseug.domain.member.model.entity.Member;
+import com.a301.newsseug.domain.member.model.entity.Subscribe;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.member.service.SubscribeService;
 import com.a301.newsseug.domain.press.repository.PressRepository;
@@ -157,14 +158,22 @@ public class ArticleServiceImpl implements ArticleService {
         );
 
         Slice<Article> sliced;
+
         if (Objects.nonNull(pressId)) {
             sliced = articleRepository.findAllByPressAndCategory(
                     pressRepository.getOrThrow(pressId) , category, pageable
             );
-        } else {
+        }
+
+        else {
+
+            List<Subscribe> subscribes = subscribeService.getSubscribeByMember(userDetails.getMember());
             sliced = articleRepository.findByPress(
-                    subscribeRepository.findPressByMember(userDetails.getMember()), category, pageable
+                    subscribes.stream().map(Subscribe::getPress).toList(),
+                    category,
+                    pageable
             );
+
         }
 
         return SlicedResponse.of(
