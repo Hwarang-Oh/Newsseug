@@ -1,13 +1,14 @@
 package com.a301.newsseug.domain.press.service;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+import com.a301.newsseug.domain.press.model.dto.response.GetPressDetailsResponse;
 import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
-import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
+import java.util.List;
 
 public interface PressService {
 
-	ListSimplePressResponse getPress(CustomUserDetails userDetails);
+	List<GetPressResponse> getPress(CustomUserDetails userDetails);
 
-	GetPressResponse getPressDetails(CustomUserDetails userDetails, Long pressId);
+	GetPressDetailsResponse getPressDetails(CustomUserDetails userDetails, Long pressId);
 
 }

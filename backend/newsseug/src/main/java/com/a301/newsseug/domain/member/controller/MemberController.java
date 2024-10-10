@@ -5,7 +5,7 @@ import com.a301.newsseug.domain.member.model.dto.request.UpdateMemberRequest;
 import com.a301.newsseug.domain.member.model.dto.response.GetMemberFolderResponse;
 import com.a301.newsseug.domain.member.model.dto.response.GetMemberResponse;
 import com.a301.newsseug.domain.member.service.MemberService;
-import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
+import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
 import com.a301.newsseug.global.model.dto.Result;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.util.ResponseUtil;
@@ -67,7 +67,7 @@ public class MemberController {
 
     @Operation(summary = "구독한 언론사 목록 조회", description = "사용자가 구독한 언론사 목록을 조회한다.")
     @GetMapping("/press")
-    public ResponseEntity<Result<ListSimplePressResponse>> getPress(
+    public ResponseEntity<Result<List<GetPressResponse>>> getPress(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
 

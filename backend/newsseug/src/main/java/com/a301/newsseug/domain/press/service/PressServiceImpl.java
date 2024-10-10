@@ -1,17 +1,19 @@
 package com.a301.newsseug.domain.press.service;
 
+import com.a301.newsseug.domain.member.model.entity.Subscribe;
+import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
+import java.util.HashSet;
 import java.util.List;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
-import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
-import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
-import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
+import com.a301.newsseug.domain.press.model.dto.response.GetPressDetailsResponse;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 
 import java.util.Objects;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -24,29 +26,33 @@ public class PressServiceImpl implements PressService {
     private final SubscribeRepository subscribeRepository;
 
     @Override
-    public ListSimplePressResponse getPress(CustomUserDetails userDetails) {
-
-        List<Press> press = pressRepository.findAll();
+    public List<GetPressResponse> getPress(CustomUserDetails userDetails) {
 
         Member member = userDetails.getMember();
+        List<Press> press = pressRepository.findAll();
+        Set<Press> subscribedPress =  new HashSet<>(
+                subscribeRepository.findAllByMember(member).stream()
+                        .map(Subscribe::getPress)
+                        .toList()
+        );
 
-        List<SimplePressDto> simplePressDtoList = press.stream().map(p ->
-            SimplePressDto.of(p, subscribeRepository.existsByMemberAndPress(member, p))
-        ).toList();
+        return GetPressResponse.of(
+                press,
+                subscribedPress
+        );
 
-        return ListSimplePressResponse.of(simplePressDtoList);
     }
 
     @Override
-    public GetPressResponse getPressDetails(CustomUserDetails userDetails, Long pressId) {
+    public GetPressDetailsResponse getPressDetails(CustomUserDetails userDetails, Long pressId) {
 
         Press press = pressRepository.getOrThrow(pressId);
 
         if (Objects.nonNull(userDetails)) {
-            return  GetPressResponse.of(press, subscribeRepository.existsByMemberAndPress(userDetails.getMember(), press));
+            return  GetPressDetailsResponse.of(press, subscribeRepository.existsByMemberAndPress(userDetails.getMember(), press));
         }
 
-        return GetPressResponse.of(press);
+        return GetPressDetailsResponse.of(press);
 
     }
 

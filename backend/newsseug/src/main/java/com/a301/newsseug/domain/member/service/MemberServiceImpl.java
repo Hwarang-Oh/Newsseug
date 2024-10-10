@@ -12,8 +12,7 @@ import com.a301.newsseug.domain.member.model.entity.Subscribe;
 import com.a301.newsseug.domain.member.repository.MemberRepository;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.exception.NotSubscribePressException;
-import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
-import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
+import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 import com.a301.newsseug.global.enums.SortingCriteria;
@@ -80,13 +79,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(readOnly = true)
-    public ListSimplePressResponse getPressByMember(CustomUserDetails userDetails) {
+    public List<GetPressResponse> getPressByMember(CustomUserDetails userDetails) {
 
         Member loginMember = userDetails.getMember();
         List<Subscribe> subscribes = subscribeRepository.findAllByMember(loginMember);
 
-        return ListSimplePressResponse.of(
-                SimplePressDto.fromSubscribe(subscribes)
+        return GetPressResponse.fromSubscribe(
+                subscribes
         );
 
     }

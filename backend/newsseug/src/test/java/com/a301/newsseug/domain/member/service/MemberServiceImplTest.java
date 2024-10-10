@@ -20,10 +20,11 @@ import com.a301.newsseug.domain.member.model.dto.response.GetMemberResponse;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.model.entity.Subscribe;
 import com.a301.newsseug.domain.member.model.entity.type.GenderType;
+import com.a301.newsseug.domain.member.repository.MemberRepository;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.exception.NotSubscribePressException;
 import com.a301.newsseug.domain.press.factory.PressFactory;
-import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
+import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 import com.a301.newsseug.global.enums.SortingCriteria;
@@ -48,6 +49,9 @@ import org.springframework.data.domain.Sort;
 @DisplayName("멤버 관련 기능")
 @ExtendWith(MockitoExtension.class)
 class MemberServiceImplTest {
+
+    @Mock
+    private MemberRepository memberRepository;
 
     @Mock
     private PressRepository pressRepository;
@@ -114,11 +118,11 @@ class MemberServiceImplTest {
         given(subscribeRepository.findAllByMember(loginMember)).willReturn(List.of(subscribe));
 
         // When
-        ListSimplePressResponse response = memberService.getPressByMember(userDetails);
+        List<GetPressResponse> response = memberService.getPressByMember(userDetails);
 
         // Then
         verify(subscribeRepository).findAllByMember(loginMember);
-        assertThat(response.press()).hasSize(1);
+        assertThat(response).hasSize(1);
 
     }
 

@@ -1,9 +1,10 @@
 package com.a301.newsseug.domain.press.service;
 
-import static com.a301.newsseug.external.jwt.factory.fixtures.JwtFixtures.JWT_SECRET;
 import static org.assertj.core.api.Assertions.*;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+import com.a301.newsseug.domain.member.factory.entity.SubscribeFactory;
+import com.a301.newsseug.domain.member.model.entity.Subscribe;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,9 +24,8 @@ import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.exception.NotExistPressException;
 import com.a301.newsseug.domain.press.factory.PressFactory;
-import com.a301.newsseug.domain.press.model.dto.SimplePressDto;
 import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
-import com.a301.newsseug.domain.press.model.dto.response.ListSimplePressResponse;
+import com.a301.newsseug.domain.press.model.dto.response.GetPressDetailsResponse;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 
@@ -59,21 +59,33 @@ public class PressServiceTest {
 		// Given
 		Press press1 = PressFactory.press(0L);
 		Press press2 = PressFactory.press(1L);
+		List<Subscribe> subscribes = List.of(
+				SubscribeFactory.subscribe(0L, press1.getPressId()),
+				SubscribeFactory.subscribe(1L, press2.getPressId())
+		);
 
 		given(pressRepository.findAll()).willReturn(List.of(press1, press2));
-		given(subscribeRepository.existsByMemberAndPress(loginMember, press1)).willReturn(true);
-		given(subscribeRepository.existsByMemberAndPress(loginMember, press2)).willReturn(true);
+		given(subscribeRepository.findAllByMember(loginMember)).willReturn(subscribes);
 
 		// When
-		ListSimplePressResponse response = pressService.getPress(userDetails);
+		List<GetPressResponse> response = pressService.getPress(userDetails);
 
 		// Then
-		assertThat(response.press()).hasSize(2);
-		assertThat(response.press())
-			.extracting(SimplePressDto::id, SimplePressDto::name, SimplePressDto::imageUrl, SimplePressDto::isSubscribed)
+		assertThat(response).hasSize(2);
+		assertThat(response)
+			.extracting(GetPressResponse::id, GetPressResponse::name, GetPressResponse::imageUrl, GetPressResponse::isSubscribed)
 			.containsExactlyInAnyOrder(
-				tuple(0L, "name", "imageUrl", true),
-				tuple(1L, "name", "imageUrl", true)
+				tuple(
+						press1.getPressId(),
+						press1.getPressBranding().getName(),
+						press1.getPressBranding().getImageUrl(),
+						true
+				),
+				tuple(
+						press2.getPressId(),
+						press2.getPressBranding().getName(),
+						press2.getPressBranding().getImageUrl(),
+						true)
 			);
 
 		verify(pressRepository).findAll();
@@ -95,12 +107,12 @@ public class PressServiceTest {
 		given(subscribeRepository.existsByMemberAndPress(loginMember, press2)).willReturn(false);
 
 		// When
-		ListSimplePressResponse response = pressService.getPress(userDetails);
+		List<GetPressResponse> response = pressService.getPress(userDetails);
 
 		// Then
-		assertThat(response.press()).hasSize(2);
-		assertThat(response.press())
-			.extracting(SimplePressDto::id, SimplePressDto::name, SimplePressDto::imageUrl, SimplePressDto::isSubscribed)
+		assertThat(response).hasSize(2);
+		assertThat(response)
+			.extracting(GetPressResponse::id, GetPressResponse::name, GetPressResponse::imageUrl, GetPressResponse::isSubscribed)
 			.containsExactlyInAnyOrder(
 				tuple(0L, "name", "imageUrl", true),
 				tuple(1L, "name", "imageUrl", false)
@@ -120,7 +132,7 @@ public class PressServiceTest {
 		given(pressRepository.getOrThrow(press.getPressId())).willReturn(press);
 
 		// When
-		GetPressResponse response = pressService.getPressDetails(userDetails, press.getPressId());
+		GetPressDetailsResponse response = pressService.getPressDetails(userDetails, press.getPressId());
 
 		// Then
 		verify(pressRepository).getOrThrow(press.getPressId());
@@ -158,7 +170,7 @@ public class PressServiceTest {
 		given(subscribeRepository.existsByMemberAndPress(loginMember, press)).willReturn(true);
 
 		// When
-		GetPressResponse response = pressService.getPressDetails(userDetails, press.getPressId());
+		GetPressDetailsResponse response = pressService.getPressDetails(userDetails, press.getPressId());
 
 		// Then
 		verify(pressRepository).getOrThrow(press.getPressId());
@@ -183,7 +195,7 @@ public class PressServiceTest {
 		given(subscribeRepository.existsByMemberAndPress(loginMember, press)).willReturn(false);
 
 		// When
-		GetPressResponse response = pressService.getPressDetails(userDetails, press.getPressId());
+		GetPressDetailsResponse response = pressService.getPressDetails(userDetails, press.getPressId());
 
 		// Then
 		verify(pressRepository).getOrThrow(press.getPressId());

@@ -7,7 +7,7 @@ import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.interaction.model.dto.response.SearchResponse;
 import com.a301.newsseug.domain.member.model.entity.Subscribe;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
-import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
+import com.a301.newsseug.domain.press.model.dto.response.GetPressDetailsResponse;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 import com.a301.newsseug.external.elasticsearch.model.document.PressAndArticleDocument;
@@ -60,7 +60,7 @@ public class SearchServiceImpl implements SearchService {
             );
 
             return SearchResponse.of(
-                    GetPressResponse.of(press, subscribedPress),
+                    GetPressDetailsResponse.of(press, subscribedPress),
                     SlicedResponse.of(
                             SliceDetails.of(articles.getNumber(), articles.isFirst(), articles.hasNext()),
                             GetArticleResponse.of(articles.getContent())
@@ -70,7 +70,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         return SearchResponse.of(
-                GetPressResponse.of(press),
+                GetPressDetailsResponse.of(press),
                 SlicedResponse.of(
                         SliceDetails.of(articles.getNumber(), articles.isFirst(), articles.hasNext()),
                         GetArticleResponse.of(articles.getContent())
