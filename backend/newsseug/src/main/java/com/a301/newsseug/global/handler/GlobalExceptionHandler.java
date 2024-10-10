@@ -19,12 +19,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @Slf4j
@@ -48,7 +50,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         .build());
 
     }
-
 
     @ExceptionHandler(RuntimeException.class)
     protected ResponseEntity<Object> handleRuntimeException(
@@ -100,7 +101,38 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
-    @ExceptionHandler({ConstraintViolationException.class})
+    @Override
+    protected ResponseEntity<Object> handleHandlerMethodValidationException(
+            HandlerMethodValidationException e, HttpHeaders headers, HttpStatusCode status, WebRequest request
+    ) {
+        ErrorCode errorCode = FAIL_TO_VALIDATE;
+        ServletWebRequest servletWebRequest = (ServletWebRequest) request;
+
+        List<String> errors = new ArrayList<>();
+        e.getAllErrors().forEach(validationResult -> {
+            if (validationResult instanceof FieldError) {
+                FieldError fieldError = (FieldError) validationResult;
+                errors.add(String.format(
+                        VALIDATED_ERROR_RESULT,
+                        fieldError.getDefaultMessage(),
+                        fieldError.getRejectedValue()
+                ));
+            } else {
+                errors.add(validationResult.getDefaultMessage());
+            }
+        });
+
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(ErrorResponse
+                        .builder(e, errorCode.getStatus(), errorCode.getMessage())
+                        .title(e.getClass().getSimpleName())
+                        .instance(URI.create(servletWebRequest.getRequest().getRequestURI()))
+                        .property("error", errors)
+                        .build());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleConstraintViolation(
             ConstraintViolationException e, WebRequest request
     ) {
