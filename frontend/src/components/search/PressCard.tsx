@@ -2,8 +2,10 @@ import { PressDetail } from 'types/api/press';
 import { formatNumber } from 'utils/formatNumber';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { subscribePress, unsubscribePress } from 'apis/subscribe';
+import { getCookie, setCookie } from 'utils/stateUtils';
+import LoginModal from '../login/LoginModal';
 
 function PressCard({
   id,
@@ -14,10 +16,30 @@ function PressCard({
   subscribeCount,
 }: Readonly<PressDetail>) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSub, setIsSub] = useState<boolean>(isSubscribed);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+
+  const isAuthenticated = () => {
+    const token = getCookie('AccessToken');
+    return !!token; // 토큰이 있으면 true, 없으면 false
+  };
+
+  const handleButtonClickWithoutLogin = () => {
+    setIsLoginModalOpen((prev) => !prev);
+  };
+  const handleLogin = () => {
+    setIsLoginModalOpen(false);
+    setCookie('redirect', location.pathname, { maxAge: 60 });
+    navigate('/login');
+  };
 
   const handleSubscribeClick = async (e: { stopPropagation: () => void }) => {
     e.stopPropagation();
+    if (!isAuthenticated()) {
+      handleButtonClickWithoutLogin();
+      return;
+    }
     if (isSub) {
       try {
         await unsubscribePress(Number(id));
@@ -43,6 +65,12 @@ function PressCard({
 
   return (
     <Wrapper onClick={handlePressClick}>
+      {isLoginModalOpen && (
+        <LoginModal
+          onCancel={handleButtonClickWithoutLogin}
+          onLogin={handleLogin}
+        />
+      )}
       <PressLogo src={imageUrl} />
       <PressInfo>
         <PressName>{name}</PressName>
