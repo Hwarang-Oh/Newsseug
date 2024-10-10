@@ -39,7 +39,7 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
             String filter, LocalDateTime startOfDay, LocalDateTime endOfDay, Pageable pageable
     ) {
         BooleanBuilder builder = createBaseCondition(filter);
-        builder.and(article.createdAt.between(startOfDay, endOfDay));
+        builder.and(article.sourceCreatedAt.between(startOfDay, endOfDay));
         return executeQuery(builder, pageable);
     }
 
