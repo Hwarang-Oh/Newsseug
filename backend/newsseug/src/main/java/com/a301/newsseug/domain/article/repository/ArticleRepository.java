@@ -48,8 +48,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
     @Query("SELECT a " +
         "FROM Article a " +
         "JOIN BirthYearViewCount b ON b.article = a WHERE YEAR(CURRENT_DATE) - b.birthYear " +
-        "WHERE a.category = :category" +
         "BETWEEN :ageBegin AND :ageEnd " +
+        "WHERE a.category = :category " +
         "GROUP BY a ORDER BY SUM(b.viewCount) DESC")
-    Slice<Article> findAllByBirthYearOrderByViewCountFiltered(@Param("ageBegin") Integer ageBegin, @Param("ageEnd") Integer ageEnd, Pageable pageable, @Param("category") CategoryType category);
+    Slice<Article> findAllByBirthYearOrderByViewCountFiltered(@Param("ageBegin") Integer ageBegin, @Param("ageEnd") Integer ageEnd, @Param("category") CategoryType category, Pageable pageable);
 }
