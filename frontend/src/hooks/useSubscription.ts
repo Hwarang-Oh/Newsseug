@@ -4,7 +4,9 @@ import { PressBasic } from 'types/api/press';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
+  addPress,
   fetchSubscribedPress,
+  removePress,
   updateSubscribedPress,
 } from '../redux/subscribeSlice';
 
@@ -61,9 +63,10 @@ function useSubscription() {
       ...prev,
       [press.id]: !isSubscribed,
     }));
-    if (isSubscribed)
+    if (isSubscribed) {
       setSubscribeList(subscribeList.filter((p) => p.id !== press.id));
-    else
+      dispatch(removePress(press.id));
+    } else {
       setSubscribeList((prev) => [
         ...prev,
         {
@@ -73,6 +76,8 @@ function useSubscription() {
           isSubscribed: true,
         },
       ]);
+      dispatch(addPress(press));
+    }
   };
 
   const handleSubscriptionUpdate = () => {
@@ -89,6 +94,7 @@ function useSubscription() {
     removeSubscribe.forEach(async (press) => {
       await unsubscribePress(press.id);
     });
+    console.log(targetList);
     dispatch(updateSubscribedPress(targetList));
   };
 

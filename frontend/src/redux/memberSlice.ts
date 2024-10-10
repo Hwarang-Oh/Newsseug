@@ -9,7 +9,7 @@ import { CalculateAge } from 'utils/formUtils';
 import { getMemberInfo } from 'apis/memberApi';
 
 const initialState: MemberStore = {
-  member: { nickname: '', gender: '', age: 0, profileImageUrl: '' },
+  member: { nickname: '', gender: '', age: null, profileImageUrl: '' },
   accessToken: '',
   refreshToken: '',
   providerType: 'none',
