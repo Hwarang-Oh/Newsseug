@@ -22,10 +22,8 @@ function Subscribes() {
   );
 
   useEffect(() => {
-    if (subscribedPress.length === 0) {
-      dispatch(fetchSubscribedPress());
-    }
-  }, [dispatch, subscribedPress.length]);
+    dispatch(fetchSubscribedPress());
+  }, [dispatch]);
 
   const {
     articleList,

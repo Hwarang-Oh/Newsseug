@@ -1,17 +1,6 @@
 import { getCookie } from 'utils/stateUtils';
-import { RootState } from '../../redux/index';
-import {
-  addPress,
-  removePress,
-  updateSubscribedPress,
-} from '../../redux/subscribeSlice';
-import {
-  getSubscribedPressList,
-  subscribePress,
-  unsubscribePress,
-} from 'apis/subscribe';
+import { subscribePress, unsubscribePress } from 'apis/subscribe';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ArticleDetailInfoProp } from 'types/props/articleVideo';
@@ -24,11 +13,6 @@ function ArticleDetailInfo({
     articleInfo.press.isSubscribed,
   );
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const { subscribedPress } = useSelector(
-    (state: RootState) => state.subscribedPress,
-  );
 
   const isAuthenticated = () => {
     const token = getCookie('AccessToken');
@@ -39,16 +23,10 @@ function ArticleDetailInfo({
       handleButtonClickWithoutLogin();
       return;
     }
-    if (subscribedPress.length === 0) {
-      const fetchedPressList = await getSubscribedPressList();
-      dispatch(updateSubscribedPress(fetchedPressList));
-    }
     if (isSubscribed) {
       unsubscribePress(articleInfo.press.id);
-      dispatch(removePress(articleInfo.press.id));
     } else {
       subscribePress(articleInfo.press.id);
-      dispatch(addPress(articleInfo.press));
     }
     setIsSubscribed((prev) => !prev);
   };

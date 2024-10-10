@@ -2,21 +2,10 @@ import { PressInfoProps } from 'types/props/press';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { formatNumber } from 'utils/formatNumber';
-import {
-  getSubscribedPressList,
-  subscribePress,
-  unsubscribePress,
-} from 'apis/subscribe';
+import { subscribePress, unsubscribePress } from 'apis/subscribe';
 import { getCookie, setCookie } from 'utils/stateUtils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import LoginModal from 'components/login/LoginModal';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/index';
-import {
-  addPress,
-  removePress,
-  updateSubscribedPress,
-} from '../../redux/subscribeSlice';
 
 function PressProfile({
   id,
@@ -29,10 +18,10 @@ function PressProfile({
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsSub(isSubscribed);
+    console.log(isSubscribed);
   }, []);
 
   const isAuthenticated = () => {
@@ -50,35 +39,19 @@ function PressProfile({
     setIsLoginModalOpen((prev) => !prev);
   };
 
-  const { subscribedPress } = useSelector(
-    (state: RootState) => state.subscribedPress,
-  );
-
   const handleSubscribe = async () => {
     try {
       if (!isAuthenticated()) {
         handleButtonClickWithoutLogin();
         return;
       }
-      if (subscribedPress.length === 0) {
-        const fetchedPressList = await getSubscribedPressList();
-        dispatch(updateSubscribedPress(fetchedPressList));
-      }
 
       if (isSub) {
         await unsubscribePress(id);
         setIsSub(false);
-        dispatch(removePress(id));
       } else {
         await subscribePress(id);
         setIsSub(true);
-        const pressInfo = {
-          id: id,
-          name: name,
-          imageUrl: imageUrl,
-          isSubscribed: true,
-        };
-        dispatch(addPress(pressInfo));
       }
     } catch (err) {
       console.error('구독/구독취소 실패', err);
@@ -98,7 +71,7 @@ function PressProfile({
           <PressName>{name}</PressName>
           <PressSubCnt>구독자 {formatNumber(subscribeCount)}명</PressSubCnt>
         </InfoArea>
-        <SubscribeBtn onClick={handleSubscribe} isSubscribed={isSub}>
+        <SubscribeBtn onClick={handleSubscribe} $isSubscribed={isSub}>
           {isSub ? '구독 중' : '구독하기'}
         </SubscribeBtn>
       </TextArea>
@@ -138,7 +111,7 @@ const InfoArea = styled.div`
   align-items: flex-start;
   gap: 4px;
 `;
-const SubscribeBtn = styled.button<{ isSubscribed: boolean }>`
+const SubscribeBtn = styled.button<{ $isSubscribed: boolean }>`
   display: flex;
   padding: 6px 12px;
   justify-content: center;
@@ -146,10 +119,10 @@ const SubscribeBtn = styled.button<{ isSubscribed: boolean }>`
   gap: 8px;
   border-radius: 999px;
   border: 1px solid ${({ theme }) => theme.mainColor};
-  color: ${({ theme, isSubscribed }) =>
-    isSubscribed ? theme.mainColor : theme.bgColor};
-  background: ${({ theme, isSubscribed }) =>
-    isSubscribed ? theme.bgColor : theme.mainColor};
+  color: ${({ theme, $isSubscribed }) =>
+    $isSubscribed ? theme.mainColor : theme.bgColor};
+  background: ${({ theme, $isSubscribed }) =>
+    $isSubscribed ? theme.bgColor : theme.mainColor};
   transition: 0.15s;
   cursor: pointer;
 `;
