@@ -61,21 +61,20 @@ function SearchResult() {
   const sliceDetails =
     pages.length > 0 ? pages[pages.length - 1].articles.sliceDetails : {};
 
-  const allArticles = data?.pages.flatMap(
-    (page) => page.articles.content || [],
-  );
+  const allArticles =
+    data?.pages.flatMap((page) => page.articles.content) || [];
 
   return (
     <SubLayout isSearch={true}>
       <InputSection keywordText={keyword} />
       <>
-        {isLoading && <Spinner height="200px" />}
+        {isLoading && <Spinner height="400px" />}
         {isError && (
-          <ErrorSection height="200px" text="검색에 실패했어요...😥" />
+          <ErrorSection height="400px" text="검색에 실패했어요...😥" />
         )}
         {!isLoading &&
           !isError &&
-          (pages && pages.length > 0 ? (
+          (allArticles.length > 0 || pressData.length > 0 ? (
             <>
               <CategoryFilter
                 activeCategory={activeCategory}
@@ -103,7 +102,7 @@ function SearchResult() {
               />
             </>
           ) : (
-            <ErrorSection height="200px" text="검색 결과가 없습니다." />
+            <ErrorSection height="400px" text="검색 결과가 없습니다." />
           ))}
       </>
     </SubLayout>

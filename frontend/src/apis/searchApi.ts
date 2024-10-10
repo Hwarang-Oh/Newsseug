@@ -23,7 +23,7 @@ export const getSearchResult = async ({
         filter: category,
       },
     });
-    return response.data;
+    return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
