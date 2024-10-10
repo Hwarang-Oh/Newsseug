@@ -55,7 +55,9 @@ const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 1001;
-  box-shadow: 0 0 100px ${({ theme }) => theme.textColor + '25'};
+  box-shadow:
+    100px 0 100px -50px ${({ theme }) => theme.textColor + '25'},
+    -100px 0 100px -50px ${({ theme }) => theme.textColor + '25'};
 `;
 
 const ModalContainer = styled(motion.div)`

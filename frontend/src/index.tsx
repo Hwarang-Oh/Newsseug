@@ -10,13 +10,13 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { HelmetProvider } from 'react-helmet-async';
 import * as serviceWorker from './serviceWorkerRegistration';
 
-async function enableMocking() {
-  if (process.env.NODE_ENV !== 'development') {
-    return;
-  }
-  const { worker } = await import('./mocks/browser');
-  return worker.start();
-}
+// async function enableMocking() {
+//   if (process.env.NODE_ENV !== 'development') {
+//     return;
+//   }
+//   const { worker } = await import('./mocks/browser');
+//   return worker.start();
+// }
 
 const queryClient = new QueryClient({
   defaultOptions: {

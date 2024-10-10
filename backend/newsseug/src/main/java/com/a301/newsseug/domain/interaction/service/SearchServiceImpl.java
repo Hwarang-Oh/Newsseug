@@ -20,6 +20,7 @@ import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.model.entity.SliceDetails;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +55,7 @@ public class SearchServiceImpl implements SearchService {
         Slice<Article> articles = articleRepository.findAllByTitleIsContainingIgnoreCase(keyword, filter, pageable);
         List<Press> press = pressRepository.findAllByPressBranding_NameIsContainingIgnoreCase(keyword);
 
-        if (userDetails.isEnabled()) {
+        if (Objects.nonNull(userDetails)) {
 
             Set<Press> subscribedPress = new HashSet<>(
                     subscribeService.getSubscribeByMember(userDetails.getMember()).stream()
