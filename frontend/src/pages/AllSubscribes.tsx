@@ -50,44 +50,59 @@ function AllSubscribes() {
   }, [allPressList, initialSubscribedPressList]);
 
   // 구독 상태 토글 함수
-  const toggleSubscribe = (press: PressBasic) => {
+  const toggleSubscribe = async (press: PressBasic) => {
     const isSubscribed = subscriptionStatus[press.id];
-    setSubscriptionStatus((prevStatus) => ({
-      ...prevStatus,
-      [press.id]: !isSubscribed,
-    }));
-    setSubscribePressList((prevList) => {
-      if (isSubscribed) {
-        return prevList.filter((subscribed) => subscribed.id !== press.id);
+    const updatedStatus = !isSubscribed;
+
+    try {
+      // 구독 상태 변경 API 호출
+      if (updatedStatus) {
+        await subscribePress(press.id);
       } else {
-        return [...prevList, press];
+        await unsubscribePress(press.id);
       }
-    });
+
+      // 상태 업데이트
+      setSubscriptionStatus((prevStatus) => ({
+        ...prevStatus,
+        [press.id]: updatedStatus,
+      }));
+      setSubscribePressList((prevList) => {
+        return updatedStatus
+          ? [...prevList, press]
+          : prevList.filter((subscribed) => subscribed.id !== press.id);
+      });
+    } catch (error) {
+      console.error(
+        `Failed to ${updatedStatus ? 'subscribe to' : 'unsubscribe from'} press:`,
+        error,
+      );
+    }
   };
 
   // 페이지 떠나기 전 구독 상태 업데이트
-  useEffect(() => {
-    const handleSubscriptionUpdate = async () => {
-      const subscribeIds = Object.keys(subscriptionStatus)
-        .filter((id) => subscriptionStatus[Number(id)])
-        .map(Number);
-      const unsubscribeIds = Object.keys(subscriptionStatus)
-        .filter((id) => !subscriptionStatus[Number(id)])
-        .map(Number);
+  // useEffect(() => {
+  //   const handleSubscriptionUpdate = async () => {
+  //     const subscribeIds = Object.keys(subscriptionStatus)
+  //       .filter((id) => subscriptionStatus[Number(id)])
+  //       .map(Number);
+  //     const unsubscribeIds = Object.keys(subscriptionStatus)
+  //       .filter((id) => !subscriptionStatus[Number(id)])
+  //       .map(Number);
 
-      try {
-        await Promise.all([
-          ...subscribeIds.map((id) => subscribePress(id)),
-          ...unsubscribeIds.map((id) => unsubscribePress(id)),
-        ]);
+  //     try {
+  //       await Promise.all([
+  //         ...subscribeIds.map((id) => subscribePress(id)),
+  //         ...unsubscribeIds.map((id) => unsubscribePress(id)),
+  //       ]);
 
-        await getSubscribedPressList();
-      } catch (error) {
-        console.error('구독 상태 동기화 실패:', error);
-      }
-    };
-    handleSubscriptionUpdate();
-  }, [subscriptionStatus]);
+  //       await getSubscribedPressList();
+  //     } catch (error) {
+  //       console.error('구독 상태 동기화 실패:', error);
+  //     }
+  //   };
+  //   handleSubscriptionUpdate();
+  // }, [subscriptionStatus]);
 
   return (
     <SubLayout isAllSubPage={true} pressList={subscriptionStatus}>
