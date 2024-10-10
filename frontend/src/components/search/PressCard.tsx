@@ -88,6 +88,7 @@ function PressCard({
 export default PressCard;
 
 const Wrapper = styled.div`
+  cursor: pointer;
   width: 100%;
   height: 100px;
   box-sizing: border-box;
@@ -134,6 +135,7 @@ const PressSubCount = styled.span`
 
 const PressSubBtn = styled.button<{ $isSubscribed: boolean }>`
   height: 22px;
+  cursor: pointer;
   background-color: ${({ $isSubscribed, theme }) =>
     $isSubscribed ? theme.mainColor : theme.bgColor};
   border: 1px solid

@@ -5,6 +5,7 @@ import {
 } from 'types/api/search';
 import api from 'apis/commonApi';
 import { isAxiosError } from 'axios';
+import { Category } from 'types/api/article';
 const SEARCH_URL = '/api/v1/search';
 
 /**
@@ -20,7 +21,7 @@ export const getSearchResult = async ({
       params: {
         keyword: keywordText,
         pageNumber,
-        filter: category,
+        filter: Category[category as keyof typeof Category],
       },
     });
     return response.data.data;
