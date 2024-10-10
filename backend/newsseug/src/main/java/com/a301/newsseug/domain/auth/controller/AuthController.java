@@ -8,6 +8,7 @@ import com.a301.newsseug.global.model.dto.Result;
 import com.a301.newsseug.global.util.ResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,7 @@ public class AuthController {
     @Operation(summary = "로그인 API", description = "로그인을 수행한다.")
     @GetMapping("/login")
     public ResponseEntity<Result<LoginResponse>> login(
-            @RequestParam("providerId") String providerId
+            @RequestParam("providerId") @NotBlank String providerId
     ) {
         String accessToken = jwtService.issueToken(providerId, TokenType.ACCESS_TOKEN);
         String refreshToken = jwtService.issueToken(providerId, TokenType.REFRESH_TOKEN);
