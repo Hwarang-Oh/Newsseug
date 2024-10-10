@@ -25,15 +25,15 @@ function PressDescription({ description }: Readonly<PressDescriptionProps>) {
     <Wrapper>
       <DescriptionText
         ref={descriptionRef}
-        isOpen={isOpen}
-        maxHeight={isOpen ? `${descriptionHeight}px` : '61.2px'}
+        $isOpen={isOpen}
+        $maxHeight={isOpen ? `${descriptionHeight}px` : '61.2px'}
       >
         {description}
       </DescriptionText>
       {isExpandable && (
         <OpenBtn onClick={handleOpen}>
           <BtnText>{isOpen ? '닫기' : '전체보기'}</BtnText>
-          <BtnIcon isOpen={isOpen} src={expandIcon} />
+          <BtnIcon $isOpen={isOpen} src={expandIcon} />
         </OpenBtn>
       )}
     </Wrapper>
@@ -55,7 +55,7 @@ const Wrapper = styled.div`
   background: ${({ theme }) => theme.descriptionBgColor};
 `;
 
-const DescriptionText = styled.p<{ isOpen: boolean; maxHeight: string }>`
+const DescriptionText = styled.p<{ $isOpen: boolean; $maxHeight: string }>`
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -67,7 +67,7 @@ const DescriptionText = styled.p<{ isOpen: boolean; maxHeight: string }>`
   line-height: 170%;
   letter-spacing: -0.3px;
 
-  max-height: ${({ maxHeight }) => maxHeight};
+  max-height: ${({ $maxHeight }) => $maxHeight};
   transition: max-height 0.3s ease-out;
 `;
 
@@ -95,9 +95,9 @@ const BtnText = styled.span`
   letter-spacing: -0.275px;
 `;
 
-const BtnIcon = styled.img<{ isOpen: boolean }>`
+const BtnIcon = styled.img<{ $isOpen: boolean }>`
   width: 12px;
   height: 12px;
-  transform: ${({ isOpen }) => (isOpen ? 'rotate(-180deg)' : 'none')};
+  transform: ${({ $isOpen }) => ($isOpen ? 'rotate(-180deg)' : 'none')};
   transition: 0.2s;
 `;
