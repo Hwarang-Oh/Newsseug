@@ -4,47 +4,33 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { createFolder } from 'apis/folderApi';
 
+// CreateScrapModal.js
+
 function CreateScrapModal({
   isOpen,
   onRequestClose,
 }: Readonly<ModalBasicProps>) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [folderName, setFolderName] = useState<string>('');
-  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [isOpen, folderName]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFolderName(e.currentTarget.value);
-  };
-
-  const handleCloseClick = () => {
-    onRequestClose();
-  };
+  }, [isOpen]);
 
   const handleSubmitClick = async () => {
     try {
       await createFolder(folderName);
-
-      onRequestClose();
+      onRequestClose(); // 폴더 생성 후 모달을 닫으면서 refetch 실행
     } catch (error) {
       console.error('폴더 생성 실패', error);
     }
   };
 
   return (
-    <ModalOverlay onClick={handleCloseClick}>
-      <ModalContent
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        transition={{ type: 'spring', stiffness: 100 }}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ModalOverlay onClick={onRequestClose}>
+      <ModalContent onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <ModalTitle>새 폴더 생성</ModalTitle>
         </ModalHeader>
@@ -53,14 +39,11 @@ function CreateScrapModal({
             ref={inputRef}
             placeholder="폴더 이름을 입력해주세요."
             maxLength={10}
-            onChange={handleInputChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onChange={(e) => setFolderName(e.currentTarget.value)}
           />
-          <TextCnt $disabled={!isFocused}>{folderName.length}/10</TextCnt>
         </ModalBody>
         <ModalFooter>
-          <Btn onClick={handleCloseClick} $isSubmit={false}>
+          <Btn onClick={onRequestClose} $isSubmit={false}>
             취소
           </Btn>
           <Btn onClick={handleSubmitClick} $isSubmit={true}>
@@ -94,16 +77,6 @@ const TextInput = styled.input`
     outline: none;
     transition: 0.1s;
   }
-`;
-
-const TextCnt = styled.span<{ $disabled: boolean }>`
-  width: 100%;
-  font-size: 14px;
-  text-align: end;
-  color: ${({ theme, $disabled }) =>
-    $disabled ? 'transparent' : theme.relaxColor.dark};
-  padding-right: 5px;
-  box-sizing: border-box;
 `;
 
 const ModalOverlay = styled.div`
@@ -185,5 +158,6 @@ const Btn = styled.button<{ $isSubmit: boolean }>`
 
   &:not(:active) {
     transition: background-color 0.5s;
+    cursor: pointer;
   }
 `;

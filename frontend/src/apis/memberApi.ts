@@ -84,6 +84,7 @@ export const getMemberFolderList = async (
     const response = await api.get(`${MEMBER_URL}/folders`, {
       params: { pageNumber: page },
     });
+    console.log(response);
     return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {

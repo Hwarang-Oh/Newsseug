@@ -13,8 +13,6 @@ import Spinner from 'components/common/Spinner';
 
 function AllFolders() {
   const navigate = useNavigate();
-
-  // useInfiniteQuery로 데이터 가져오기
   const {
     data,
     fetchNextPage,
@@ -22,15 +20,16 @@ function AllFolders() {
     isFetchingNextPage,
     isError,
     isLoading,
+    refetch,
   } = useInfiniteQuery(
     'folders',
-    ({ pageParam = 0 }) => getMemberFolderList(pageParam), // axios 함수 호출
+    ({ pageParam = 0 }) => getMemberFolderList(pageParam),
     {
       getNextPageParam: (lastPage) => {
         if (lastPage.sliceDetails.hasNext) {
           return lastPage.sliceDetails.currentPage + 1;
         }
-        return undefined; // 다음 페이지가 없으면 undefined 반환
+        return undefined;
       },
     },
   );
@@ -45,7 +44,6 @@ function AllFolders() {
     setIsCreateOpen(true);
   };
 
-  // 스크롤 이벤트 감지
   useEffect(() => {
     const handleScroll = () => {
       const { scrollHeight, scrollTop, clientHeight } =
@@ -84,7 +82,10 @@ function AllFolders() {
         {isCreateOpen && (
           <CreateScrapModal
             isOpen={isCreateOpen}
-            onRequestClose={() => setIsCreateOpen(false)}
+            onRequestClose={() => {
+              setIsCreateOpen(false);
+              refetch(); // 모달 닫을 때 폴더 목록을 다시 불러옴
+            }}
           />
         )}
         {data?.pages.map((page) =>
@@ -99,7 +100,7 @@ function AllFolders() {
             />
           )),
         )}
-        {isFetchingNextPage && <div>불러오는 중...</div>}
+        {isFetchingNextPage && <Spinner height="50px" />}
       </ScrapContainer>
     </SubLayout>
   );
@@ -109,6 +110,7 @@ export default AllFolders;
 
 const CreateScrap = styled.button`
   border: none;
+  cursor: pointer;
   outline: none;
   background: none;
   color: ${({ theme }) => theme.textColor};
@@ -138,6 +140,7 @@ const Title = styled.h1`
 
 const Header = styled.div`
   width: 100vw;
+  max-width: 500px;
   display: flex;
   align-items: center;
   position: relative;

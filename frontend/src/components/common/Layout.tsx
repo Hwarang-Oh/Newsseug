@@ -32,5 +32,7 @@ const LayoutBox = styled.div<{ $backgroundColor?: string }>`
   padding-right: env(safe-area-inset-right);
   box-sizing: border-box;
   border: none;
-  box-shadow: 0 0 100px ${({ theme }) => theme.textColor + '25'};
+  box-shadow:
+    100px 0 100px -50px ${({ theme }) => theme.textColor + '25'},
+    -100px 0 100px -50px ${({ theme }) => theme.textColor + '25'};
 `;

@@ -9,7 +9,7 @@ const FOLDERS_URL = `/api/v1/folders`;
 export const getFolderList = async (): Promise<FolderInfo[]> => {
   try {
     const response = await api.get(`${FOLDERS_URL}`);
-    return response.data;
+    return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -29,7 +29,9 @@ export const createFolder = async (
   folderName: string,
 ): Promise<MemberFolderInfo[]> => {
   try {
-    const response = await api.post(`${FOLDERS_URL}`, { title: folderName });
+    const response = await api.post(`${FOLDERS_URL}`, null, {
+      params: { title: folderName },
+    });
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
@@ -39,7 +41,6 @@ export const createFolder = async (
     } else throw error;
   }
 };
-
 /**
  * IMP : 사용자가 기사를 폴더에 저장하는 API
  */
@@ -72,7 +73,7 @@ export const getFolderInfo = async (
     const response = await api.get(`${FOLDERS_URL}/${folderId}`, {
       params: { pageNumber: pageParam },
     });
-    return response.data;
+    return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
