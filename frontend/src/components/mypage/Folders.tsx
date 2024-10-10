@@ -20,7 +20,7 @@ function Folders() {
     isLoading,
     error,
   } = useQuery<MemberFolder>(['memberFolderData'], () =>
-    getMemberFolderList(1),
+    getMemberFolderList(0),
   );
 
   if (isLoading) {
@@ -38,17 +38,22 @@ function Folders() {
 
   return (
     <Wrapper>
-      {Array.isArray(memberFolderData?.content) &&
-        memberFolderData?.content?.map((folder: MemberFolderInfo) => (
-          <Folder
-            key={folder.id}
-            width={width}
-            height={height}
-            thumbnailUrl={folder.thumbnailUrl}
-            folderCnt={folder.articleCount}
-            folderTitle={folder.title}
-            onClick={() => handleClick(folder.id, folder.title)}
-          />
+      {memberFolderData &&
+        Array.isArray(memberFolderData?.content) &&
+        (memberFolderData.content.length > 0 ? (
+          memberFolderData?.content?.map((folder: MemberFolderInfo) => (
+            <Folder
+              key={folder.id}
+              width={width}
+              height={height}
+              thumbnailUrl={folder.thumbnailUrl}
+              folderCnt={folder.articleCount}
+              folderTitle={folder.title}
+              onClick={() => handleClick(folder.id, folder.title)}
+            />
+          ))
+        ) : (
+          <ErrorSection height={height} text="폴더 목록이 없습니다." />
         ))}
     </Wrapper>
   );
