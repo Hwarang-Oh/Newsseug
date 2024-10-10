@@ -21,7 +21,6 @@ const LayoutBox = styled.div<{ $backgroundColor?: string }>`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  min-height: -webkit-fill-available;
   width: 100vw;
   max-width: 500px;
   margin: 0 auto;
