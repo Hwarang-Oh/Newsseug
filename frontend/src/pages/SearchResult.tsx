@@ -9,11 +9,13 @@ import { PressDetail } from 'types/api/press';
 import { getSearchResult } from 'apis/searchApi';
 import { SearchResultInfo } from 'types/api/search';
 import { useInfiniteQuery } from 'react-query';
+import Spinner from 'components/common/Spinner';
+import ErrorSection from 'components/common/ErrorSection';
 
 function SearchResult() {
   const [searchParams] = useSearchParams();
   const keyword: string = searchParams.get('keyword') ?? '';
-  const [activeCategory, setActiveCategory] = useState<string>('전체');
+  const [activeCategory, setActiveCategory] = useState<string>('ALL');
   const [pressData, setPressData] = useState<PressDetail[]>([]);
 
   useEffect(() => {
@@ -59,9 +61,6 @@ function SearchResult() {
   const sliceDetails =
     pages.length > 0 ? pages[pages.length - 1].articles.sliceDetails : {};
 
-  if (isLoading) return <div>로딩 중</div>;
-  if (isError) return <div>검색 결과 조회 실패</div>;
-
   const allArticles = data?.pages.flatMap(
     (page) => page.articles.content || [],
   );
@@ -70,30 +69,42 @@ function SearchResult() {
     <SubLayout isSearch={true}>
       <InputSection keywordText={keyword} />
       <>
-        <CategoryFilter
-          activeCategory={activeCategory}
-          setActiveCategory={setActiveCategory}
-        />
-        {pressData.map((press: PressDetail) => (
-          <PressCard
-            key={press.id}
-            id={press.id}
-            name={press.name}
-            imageUrl={press.imageUrl}
-            isSubscribed={press.isSubscribed}
-            description={press.description}
-            subscribeCount={press.subscribeCount}
-          />
-        ))}
-        <ArticleListCardGroup
-          articleList={allArticles || []}
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-          sliceDetails={sliceDetails}
-          articleFrom="search"
-          activeCategory={activeCategory}
-          keyword={keyword}
-        />
+        {isLoading && <Spinner height="200px" />}
+        {isError && (
+          <ErrorSection height="200px" text="검색에 실패했어요...😥" />
+        )}
+        {!isLoading &&
+          !isError &&
+          (pages && pages.length > 0 ? (
+            <>
+              <CategoryFilter
+                activeCategory={activeCategory}
+                setActiveCategory={setActiveCategory}
+              />
+              {pressData.map((press: PressDetail) => (
+                <PressCard
+                  key={press.id}
+                  id={press.id}
+                  name={press.name}
+                  imageUrl={press.imageUrl}
+                  isSubscribed={press.isSubscribed}
+                  description={press.description}
+                  subscribeCount={press.subscribeCount}
+                />
+              ))}
+              <ArticleListCardGroup
+                articleList={allArticles}
+                fetchNextPage={fetchNextPage}
+                hasNextPage={hasNextPage}
+                sliceDetails={sliceDetails}
+                articleFrom="search"
+                activeCategory={activeCategory}
+                keyword={keyword}
+              />
+            </>
+          ) : (
+            <ErrorSection height="200px" text="검색 결과가 없습니다." />
+          ))}
       </>
     </SubLayout>
   );
