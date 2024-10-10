@@ -101,7 +101,7 @@ export const getMemberFolderList = async (
  * IMP : 사용자 시청 기록 조회를 위한 API
  */
 export const getMemberHistoryList = async ({
-  page = 1,
+  page = 0,
 }: {
   page: number;
 }): Promise<PageType> => {

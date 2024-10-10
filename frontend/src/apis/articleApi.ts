@@ -11,7 +11,7 @@ const ARTICLES_URL = `/api/v1/articles`;
 
 export const fetchArticles = async ({
   category = 'ALL',
-  page = 1,
+  page = 0,
 }: PageParamsType): Promise<PageType> => {
   try {
     // await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -29,7 +29,7 @@ export const fetchArticles = async ({
 
 export const fetchArticlesByToday = async ({
   category = 'ALL',
-  page = 1,
+  page = 0,
 }: PageParamsType): Promise<PageType> => {
   try {
     // await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -46,7 +46,7 @@ export const fetchArticlesByToday = async ({
 };
 
 export const fetchArticlesByAge = async ({
-  page = 1,
+  page = 0,
 }: PageParamsType): Promise<PageType> => {
   try {
     const response = await api.get(`${ARTICLES_URL}/age`, {
