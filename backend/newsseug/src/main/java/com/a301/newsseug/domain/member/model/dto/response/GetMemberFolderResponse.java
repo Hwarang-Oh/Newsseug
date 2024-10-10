@@ -34,13 +34,7 @@ public record GetMemberFolderResponse(
 
     public static List<GetMemberFolderResponse> of(List<Folder> folders) {
         return folders.stream()
-                .map(folder ->
-                        GetMemberFolderResponse.builder()
-                                .id(folder.getFolderId())
-                                .title(folder.getTitle())
-                                .articleCount(folder.getArticleCount())
-                                .build()
-                )
+                .map(GetMemberFolderResponse::of)
                 .toList();
     }
 
