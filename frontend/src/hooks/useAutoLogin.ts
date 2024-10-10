@@ -48,15 +48,14 @@ function useAutoLogin() {
             providerId: providerId,
           }),
         );
+        if (isFirst) navigate('/register');
+        else {
+          dispatch(fetchMemberInfo());
+          if (getCookie('redirect')) navigate(getCookie('redirect'));
+          else navigate('/');
+          removeCookie('redirect');
+        }
       });
-      if (isFirst) {
-        navigate('/register');
-      } else {
-        dispatch(fetchMemberInfo());
-        if (getCookie('redirect')) navigate(getCookie('redirect'));
-        else navigate('/');
-        removeCookie('redirect');
-      }
     }
   }, [location, navigate, dispatch]);
 }
