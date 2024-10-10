@@ -11,6 +11,7 @@ import com.a301.newsseug.domain.folder.model.entity.Folder;
 import com.a301.newsseug.domain.folder.repository.FolderRepository;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
+import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +38,17 @@ public class BookmarkServiceImpl implements BookmarkService {
 
         List<Bookmark> bookmarks = folders.stream()
                 .map(folder -> {
-                    folder.incrementArticleCount();
-                    return Bookmark.builder()
+
+                    Bookmark bookmark = Bookmark.builder()
                             .folder(folder)
                             .article(article)
                             .build();
-                    }
-                ).toList();
+
+                    folder.incrementArticleCount();
+
+                    return bookmark;
+
+                }).toList();
 
         bookmarkRepository.saveAll(bookmarks);
 
