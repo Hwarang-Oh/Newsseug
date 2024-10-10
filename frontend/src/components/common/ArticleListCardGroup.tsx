@@ -66,9 +66,9 @@ function ArticleListCardGroup({
 
   return (
     <Container ref={slideBoxRef} onClick={articleDispatch}>
-      {articleList?.map((article) => (
+      {articleList?.map((article, index) => (
         <StyledArticleListCard
-          key={article.id}
+          key={`${article.id}-${index}`}
           thumbnailUrl={article.thumbnailUrl}
           title={article.title}
           viewCount={article.viewCount}
@@ -77,7 +77,7 @@ function ArticleListCardGroup({
           width="calc(50% - 4px)"
         />
       ))}
-      {resultList?.map((result) =>
+      {resultList?.map((result, index) =>
         result.type === 'press' ? (
           <FullWidthPressCard
             key={`press-${result.id}`}
@@ -90,7 +90,7 @@ function ArticleListCardGroup({
           />
         ) : (
           <StyledArticleListCard
-            key={`article-${result.id}`}
+            key={`article-${result.id}-${index}`}
             thumbnailUrl={result.thumbnailUrl}
             title={result.title}
             viewCount={result.viewCount}
