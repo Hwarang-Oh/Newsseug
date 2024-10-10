@@ -85,11 +85,9 @@ function useFormState() {
     }
     dispatch(setMemberInfo({ ...data, age }));
     if (await registerMember(data)) {
-      navigate(getCookie('redirect') || '/');
+      navigate('/');
       removeCookie('redirect');
-    } else {
-      throw new Error('회원가입에 실패했습니다.');
-    }
+    } else throw new Error('회원가입에 실패했습니다.');
   };
 
   return {
