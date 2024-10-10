@@ -16,10 +16,12 @@ import { RootState } from '../redux/index';
 function Home() {
   useAutoLogin();
   const navigate = useNavigate();
-  const memberAge = useSelector((state: RootState) => state.member.member.age);
+  let memberAge =
+    useSelector((state: RootState) => state.member.member.age) ?? 20;
   const getAgeGroup = (age: number) => {
     return Math.floor(age / 10) * 10; // 10 단위로 내림
   };
+
   const sections = [
     useContentsFetch({
       queryKey: ['todayArticles', 'ALL'],
