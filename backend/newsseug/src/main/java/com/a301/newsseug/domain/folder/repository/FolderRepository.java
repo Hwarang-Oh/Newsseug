@@ -14,10 +14,8 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
 
     Optional<Folder> findByFolderIdAndMemberAndActivationStatus(Long id, Member member, ActivationStatus status);
 
-    @EntityGraph(attributePaths = {"bookmark", "article"})
     List<Folder> findAllByMember(Member member);
 
-    @EntityGraph(attributePaths = {"bookmark", "article"})
     Slice<Folder> findAllByMember(Member member, Pageable pageable);
 
 }
