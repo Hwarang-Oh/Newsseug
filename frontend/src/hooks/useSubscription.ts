@@ -95,7 +95,6 @@ function useSubscription() {
       await unsubscribePress(press.id);
     });
     dispatch(updateSubscribedPress(targetList));
-    console.log(subscribeListRef.current);
   };
 
   return {
