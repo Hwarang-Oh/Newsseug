@@ -61,18 +61,14 @@ public class HistoryServiceImpl implements HistoryService {
 	@Override
 	public SlicedResponse<List<HistoryDto>> getHistories(CustomUserDetails userDetails, int page) {
 
-		Member member = userDetails.getMember();
-
-//		Pageable pageable = PageRequest.of(page, PAGE_SIZE, Sort.by("updatedAt"));
-
 		Pageable pageable = PageRequest.of(
-				page, 
+				page,
 				PAGE_SIZE,
 				Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
 		);
 
+		Member member = userDetails.getMember();
 		Slice<History> historyPage = historyRepository.findAllByMember(member, pageable);
-
 		SliceDetails sliceDetails = SliceDetails.of(historyPage.getNumber(), historyPage.isFirst(), historyPage.hasNext());
 
 		return SlicedResponse.of(sliceDetails, historyPage.map(HistoryDto::of).toList());
