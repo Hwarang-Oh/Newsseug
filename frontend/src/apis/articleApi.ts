@@ -45,6 +45,22 @@ export const fetchArticlesByToday = async ({
   }
 };
 
+export const fetchArticlesByAge = async ({
+  page = 1,
+}: PageParamsType): Promise<PageType> => {
+  try {
+    const response = await api.get(`${ARTICLES_URL}/age`, {
+      params: { pageNumber: page },
+    });
+    return response.data.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 404) throw new Error('Not Found');
+      else throw error;
+    } else throw error;
+  }
+};
+
 /**
  * IMP : 구독 페이지의 기사 조회를 위한 API
  * IMP : 1.1 pressId가 없다면, 구독한 언론사의 전체 기사를 조회함.

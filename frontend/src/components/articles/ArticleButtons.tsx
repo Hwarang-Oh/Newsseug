@@ -127,7 +127,7 @@ const Button = styled.button`
   border: none;
   color: #fff;
   gap: 4px;
-
+  cursor: pointer;
   .span {
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
     font-size: 10px;

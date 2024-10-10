@@ -38,7 +38,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
 
     Optional<Article> findByArticleIdAndConversionStatus(Long id, ConversionStatus conversionStatus);
 
-    @Query("SELECT a FROM Article a JOIN BirthYearViewCount b WHERE YEAR(CURRENT_DATE) - b.birthYear " +
+    @Query("SELECT a FROM Article a JOIN BirthYearViewCount b ON a.article_id = b.article_id WHERE YEAR(CURRENT_DATE) - b.birthYear " +
             "BETWEEN :ageBegin AND :ageEnd " +
             "GROUP BY a ORDER BY SUM(b.viewCount) DESC")
     Slice<Article> findAllByBirthYearOrderByViewCount(@Param("ageBegin") Integer ageBegin, @Param("ageEnd") Integer ageEnd, Pageable pageable);

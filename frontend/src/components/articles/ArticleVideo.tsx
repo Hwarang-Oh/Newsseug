@@ -123,10 +123,10 @@ function ArticleVideo({
   };
 
   return (
-    <Container>
+    <Container className="container">
       <VideoWrapper>
         <ShortForm
-          autoPlay
+          className="shortform"
           playsInline
           loop
           src={articleInfo.article.videoUrl}
@@ -203,17 +203,29 @@ export default ArticleVideo;
 
 const Container = styled.div`
   width: 100vw;
-  height: 100%;
+  height: 100vh;
   max-width: 500px;
   z-index: 1;
   position: relative;
-  background-color: #202020;
+  background-color: #000;
   display: flex;
   align-items: center;
 `;
 
+// const ShortForm = styled.video`
+//   width: auto;
+//   height: 100vh;
+//   object-fit: cover;
+//   /* overflow: hidden; 여분의 영역 숨기기 */
+// `;
+
 const ShortForm = styled.video`
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 100%;
+  height: 100vh;
+  transform: translate(-50%, -50%);
   object-fit: cover;
 `;
 

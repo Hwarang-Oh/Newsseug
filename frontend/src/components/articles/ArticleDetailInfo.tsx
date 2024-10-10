@@ -186,6 +186,7 @@ const PressInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 `;
 
 const PressIcon = styled.img`
@@ -213,4 +214,5 @@ const PressSubscribe = styled.button<{ $isSubscribed: boolean }>`
   border-radius: 999px;
   transition: 0.2s;
   padding: 6px 12px;
+  cursor: pointer;
 `;

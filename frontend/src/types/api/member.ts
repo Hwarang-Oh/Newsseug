@@ -32,6 +32,8 @@ export interface TokenResponse {
 // IMP : 회원 정보 조회에 대한 Response Type
 export interface MemberInfo {
   nickname: string;
+  gender: string;
+  birth: string;
   profileImageUrl: string;
 }
 
