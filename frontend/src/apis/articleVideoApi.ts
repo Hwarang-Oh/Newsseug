@@ -110,8 +110,8 @@ export const fetchReportArticle = async (
   reportType: string,
 ) => {
   try {
-    await api.post(`/api/v1/reports/articles/${articleId}`, {
-      params: { articleId, reportType },
+    await api.post(`/api/v1/reports/articles/${articleId}`, null, {
+      params: { reportType },
     });
   } catch (error: unknown) {
     if (isAxiosError(error)) {
