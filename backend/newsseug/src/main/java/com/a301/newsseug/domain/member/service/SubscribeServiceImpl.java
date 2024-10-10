@@ -1,9 +1,11 @@
 package com.a301.newsseug.domain.member.service;
 
 import com.a301.newsseug.domain.member.model.entity.Member;
+import com.a301.newsseug.domain.member.model.entity.Subscribe;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class SubscribeServiceImpl implements SubscribeService {
 
     private final SubscribeRepository subscribeRepository;
+
+    @Override
+    public List<Subscribe> getSubscribeByMember(Member member) {
+        return subscribeRepository.findAllByMemberAndActivationStatus(member, ActivationStatus.ACTIVE);
+    }
 
     @Override
     public Boolean isSubscribed(Member member, Press press) {

@@ -25,7 +25,6 @@ public class PressServiceImpl implements PressService {
 
     private final SubscribeService subscribeService;
     private final PressRepository pressRepository;
-    private final SubscribeRepository subscribeRepository;
 
     @Override
     public List<GetPressResponse> getPress(CustomUserDetails userDetails) {
@@ -33,7 +32,7 @@ public class PressServiceImpl implements PressService {
         Member member = userDetails.getMember();
         List<Press> press = pressRepository.findAll();
         Set<Press> subscribedPress =  new HashSet<>(
-                subscribeRepository.findAllByMember(member).stream()
+              subscribeService.getSubscribeByMember(member).stream()
                         .map(Subscribe::getPress)
                         .toList()
         );

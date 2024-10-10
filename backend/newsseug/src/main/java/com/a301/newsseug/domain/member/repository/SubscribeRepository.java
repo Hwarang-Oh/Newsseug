@@ -19,7 +19,7 @@ public interface SubscribeRepository extends JpaRepository<Subscribe, Long> {
     Optional<Subscribe> findByMemberAndPress(Member member, Press press);
 
     @EntityGraph(attributePaths = {"press"})
-    List<Subscribe> findAllByMember(Member member);
+    List<Subscribe> findAllByMemberAndActivationStatus(Member member, ActivationStatus activationStatus);
 
     Boolean existsByMemberAndPressAndActivationStatus(Member member, Press press, ActivationStatus activationStatus);
 
