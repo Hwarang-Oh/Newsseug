@@ -147,11 +147,14 @@ const Container = styled.div<{
 const getBorder = (
   theme: any,
   $isSticky: boolean,
+  $brightness: number,
   $active?: boolean,
   $isPressPage?: boolean,
 ) => {
   if ($isPressPage && $isSticky) {
-    return `1px solid ${theme.descriptionColor}`;
+    return $brightness > 128
+      ? `1px solid #202020`
+      : `1px solid ${theme.descriptionColor}`;
   }
   return $active ? 'none' : `1px solid ${theme.descriptionColor}`;
 };
@@ -165,7 +168,7 @@ const getColor = (
 ) => {
   if ($isPressPage && $isSticky) {
     if ($active) {
-      return '#202020';
+      return $brightness > 128 ? '#fff' : '#202020';
     }
     return $brightness > 128 ? '#202020' : '#ffffff';
   }
@@ -173,13 +176,18 @@ const getColor = (
 };
 
 const getBackgroundColor = (
+  $brightness: number,
   $isSticky: boolean,
   theme: any,
   $active?: boolean,
   $isPressPage?: boolean,
 ) => {
   if ($isPressPage && $isSticky) {
-    return $active ? theme.descriptionColor : '#eeeeee00';
+    if ($brightness > 128) {
+      return $active ? '#202020' : '#eeeeee00';
+    } else {
+      return $active ? theme.descriptionColor : '#eeeeee00';
+    }
   }
   return $active ? theme.mainColor : theme.bgColor;
 };
@@ -191,8 +199,8 @@ const CategoryFilterButton = styled.button<{
   $isSticky: boolean;
 }>`
   display: flex;
-  border: ${({ $active, $isPressPage, $isSticky, theme }) =>
-    getBorder(theme, $isSticky, $active, $isPressPage)};
+  border: ${({ $active, $isPressPage, $isSticky, theme, $brightness }) =>
+    getBorder(theme, $isSticky, $brightness, $active, $isPressPage)};
   font-size: 12px;
   width: 55px;
   height: 32px;
@@ -202,8 +210,14 @@ const CategoryFilterButton = styled.button<{
   color: ${({ $brightness, $active, theme, $isPressPage, $isSticky }) =>
     getColor($brightness, $isSticky, theme, $active, $isPressPage)};
   border-radius: 3px;
-  background-color: ${({ $active, $isPressPage, $isSticky, theme }) =>
-    getBackgroundColor($isSticky, theme, $active, $isPressPage)};
+  background-color: ${({
+    $active,
+    $isPressPage,
+    $isSticky,
+    theme,
+    $brightness,
+  }) =>
+    getBackgroundColor($brightness, $isSticky, theme, $active, $isPressPage)};
   cursor: pointer;
   outline: none;
   will-change: background-color, color, border;

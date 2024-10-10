@@ -24,6 +24,8 @@ import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
 import com.a301.newsseug.global.model.entity.SliceDetails;
 import com.a301.newsseug.global.util.ClockUtil;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -192,15 +194,19 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public SlicedResponse<List<GetArticleResponse>> getArticlesByBirthYear(CustomUserDetails userDetails, int pageNumber) {
 
-        Member member = userDetails.getMember();
         Pageable pageable = PageRequest.of(
                 pageNumber,
                 10
         );
 
-        int year = member.getBirth().getYear();
-        int currentYear = LocalDateTime.now().getYear();
-        int age = currentYear - year;
+        int age = 0;
+
+        if (Objects.isNull(userDetails)) {
+            age = 20;
+        } else {
+            age = LocalDate.now().getYear() - userDetails.getMember().getBirth().getYear()
+        }
+
         int ageBegin = (int) Math.floor((double) age / 10) * 10;
         int ageEnd = (int) Math.ceil((double) age / 10) * 10 - 1;
 

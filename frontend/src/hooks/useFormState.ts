@@ -47,10 +47,6 @@ function useFormState() {
     { icon: FemaleIcon(), selected: false, value: 'FEMALE' },
   ]);
 
-  const handleImageChange = async (profileImageFile: File) => {
-    setProfileImageFile(profileImageFile);
-  };
-
   const handleGenderSelect = async (index: number) => {
     setGenderList((prev) =>
       prev.map((item, i) => ({
@@ -101,7 +97,7 @@ function useFormState() {
     genderList,
     validationRules,
     formState,
-    handleImageChange,
+    setProfileImageFile,
     handleGenderSelect,
     handleDateChange,
     handleSubmit,
