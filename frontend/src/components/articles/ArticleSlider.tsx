@@ -61,6 +61,7 @@ function ArticleSlider() {
   const loadNextPage = useLoadNextPage();
 
   useEffect(() => {
+    setIsLoading(true);
     const startIndex = Math.max(activeIndex - 1, 0);
     const endIndex = Math.min(activeIndex + 1, articleIds.length - 1);
     const idsToFetch = articleIds.slice(startIndex, endIndex + 1);
@@ -108,7 +109,7 @@ function ArticleSlider() {
         }}
       >
         {articleIds.map((articleId: number, index: number) => {
-          console.log(videoList);
+          console.log(isLoading, videoList);
           const video = videoList[articleId];
           if (isLoading) {
             return (
@@ -122,6 +123,7 @@ function ArticleSlider() {
           if (!video) {
             return <SwiperSlide key={articleId} data-history={articleId} />;
           }
+          console.log(video.press.isSubscribed, articleId);
           return (
             <SwiperSlide key={video.article.id} data-history={video.article.id}>
               <ArticleVideo

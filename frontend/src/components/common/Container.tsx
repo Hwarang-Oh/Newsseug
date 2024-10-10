@@ -19,6 +19,6 @@ const ContainerBox = styled.div<{ $isPaddingZero: boolean }>`
   flex-direction: column;
   padding: ${({ $isPaddingZero }) => ($isPaddingZero ? '0' : '0 16px')};
   padding-top: 55px;
-  padding-bottom: calc(7vh + 20px);
+  padding-bottom: calc(7vh);
   box-sizing: border-box;
 `;
