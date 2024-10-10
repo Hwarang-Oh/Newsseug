@@ -39,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
+    private final SubscribeService subscribeService;
     private final PressRepository pressRepository;
     private final SubscribeRepository subscribeRepository;
     private final FolderRepository folderRepository;
@@ -82,7 +83,7 @@ public class MemberServiceImpl implements MemberService {
     public List<GetPressResponse> getPressByMember(CustomUserDetails userDetails) {
 
         Member loginMember = userDetails.getMember();
-        List<Subscribe> subscribes = subscribeRepository.findAllByMember(loginMember);
+        List<Subscribe> subscribes = subscribeService.getSubscribeByMember(loginMember);
 
         return GetPressResponse.fromSubscribe(
                 subscribes
