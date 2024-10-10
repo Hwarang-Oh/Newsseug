@@ -9,7 +9,7 @@ const MEMBER_URL = '/api/v1/members';
 export const getSubscribedPressList = async (): Promise<PressBasic[]> => {
   try {
     const response = await api.get(`${MEMBER_URL}/press`);
-    return response.data.data.press;
+    return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -25,7 +25,7 @@ export const getSubscribedPressList = async (): Promise<PressBasic[]> => {
 export const getAllPressList = async (): Promise<PressBasic[]> => {
   try {
     const response = await api.get(`api/v1/press`);
-    return response.data.data.press;
+    return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {

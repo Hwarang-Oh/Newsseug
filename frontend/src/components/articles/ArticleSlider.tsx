@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Mousewheel, Keyboard, History } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Swiper as SwiperType } from 'swiper';
@@ -10,13 +10,18 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState } from '../../redux/index';
 import { useLoadNextPage } from 'hooks/useLoadNextPage';
-import { useFetchVideos } from 'hooks/useFetchVideos';
-import Spinner from 'components/common/Spinner';
+import { ArticleVideo as ArticleVideoType } from 'types/api/articleVideo';
+import { fetchEachArticle } from 'apis/articleVideoApi';
+import Spinner from '../common/Spinner';
 
 function ArticleSlider() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState(0); // 현재 슬라이드 인덱스 상태 추가
   const swiperRef = useRef<SwiperCore | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [videoList, setVideoList] = useState<{
+    [id: number]: ArticleVideoType;
+  }>({});
 
   const handleSlideChange = (swiper: SwiperType) => {
     setActiveIndex(swiper.activeIndex); // 현재 슬라이드 인덱스 업데이트
@@ -55,7 +60,25 @@ function ArticleSlider() {
 
   const loadNextPage = useLoadNextPage();
 
-  const { videoList, isLoading } = useFetchVideos(articleIds, activeIndex);
+  useEffect(() => {
+    const startIndex = Math.max(activeIndex - 1, 0);
+    const endIndex = Math.min(activeIndex + 1, articleIds.length - 1);
+    const idsToFetch = articleIds.slice(startIndex, endIndex + 1);
+    const fetchedVideos: { [id: number]: ArticleVideoType } = {};
+
+    const fetchVideos = async () => {
+      const fetchPromises = idsToFetch.map(async (id: number) => {
+        const videoData = await fetchEachArticle(id);
+        fetchedVideos[id] = videoData;
+      });
+
+      await Promise.all(fetchPromises);
+      setVideoList(fetchedVideos);
+      setIsLoading(false);
+    };
+
+    fetchVideos();
+  }, [activeIndex]);
 
   return (
     <Container id="container">
@@ -85,6 +108,7 @@ function ArticleSlider() {
         }}
       >
         {articleIds.map((articleId: number, index: number) => {
+          console.log(videoList);
           const video = videoList[articleId];
           if (isLoading) {
             return (
