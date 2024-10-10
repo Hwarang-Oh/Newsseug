@@ -1,10 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../redux/index';
-import {
-  fetchSubscribedPress,
-  updateSubscribedPress,
-} from '../redux/subscribeSlice';
+import { updateSubscribedPress } from '../redux/subscribeSlice';
 import { fetchArticlesByPress } from 'apis/articleApi';
 import { Category, PageType } from 'types/api/article';
 import useContentsFetch from 'hooks/useContentsFetch';
@@ -18,7 +13,6 @@ import ErrorSection from 'components/common/ErrorSection';
 import { useQuery } from 'react-query';
 import { PressBasic } from 'types/api/press';
 import { getSubscribedPressList } from 'apis/subscribe';
-import { useQueryClient } from 'react-query';
 
 function Subscribes() {
   const [activeCategory, setActiveCategory] = useState<string>('전체');
