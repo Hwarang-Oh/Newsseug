@@ -33,6 +33,7 @@ function Home() {
       queryKey: ['ageArticles'],
       fetchData: fetchArticlesByAge,
       sectionType: 'age',
+      category: 'ALL' as Category,
     }),
     useContentsFetch({
       queryKey: ['allArticles', 'ALL'],
