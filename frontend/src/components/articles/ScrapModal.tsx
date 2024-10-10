@@ -231,9 +231,7 @@ const ContentWrapper = styled.div`
   overflow-y: auto;
   flex-grow: 1;
   overscroll-behavior: contain;
-  max-height: calc(
-    60vh - 80px
-  ); // 헤더 및 푸터 높이를 제외한 내용 영역의 최대 높이 설정
+  max-height: calc(60vh - 80px);
 `;
 
 const DraggableBar = styled.div`
@@ -277,6 +275,7 @@ const CreateScrap = styled.button`
   gap: 5px;
   padding: 5px;
   border-radius: 20px;
+  cursor: pointer;
   &:active {
     background-color: ${({ theme }) => theme.textColor + '3b'};
     transition: none;
@@ -305,6 +304,7 @@ const ScrapItem = styled.div`
   font-size: 14px;
   line-height: 140%;
   overflow: hidden;
+  cursor: pointer;
   border: 1px solid ${({ theme }) => theme.bgColor};
   &:active {
     background-color: ${({ theme }) => theme.textColor + '30'};
@@ -391,4 +391,5 @@ const Btn = styled.button<{ $isSubmit: boolean }>`
   &:not(:active) {
     transition: background-color 0.5s;
   }
+  cursor: pointer;
 `;

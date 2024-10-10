@@ -12,6 +12,8 @@ import {
   Category,
 } from 'types/api/article';
 import useContentsFetch from 'hooks/useContentsFetch';
+import Spinner from 'components/common/Spinner';
+import ErrorSection from 'components/common/ErrorSection';
 
 /**
  * IMP : All Articles Page -> Home Page를 통해서 들어올 수 있는 Page
@@ -30,6 +32,8 @@ function AllArticles() {
     hasNextPage,
     isFetchingNextPage,
     sliceDetails,
+    isLoading,
+    isError,
   } = useContentsFetch<PageType>({
     queryKey: [
       sectionState.queryKey[0],
@@ -39,7 +43,6 @@ function AllArticles() {
     sectionType: sectionState.sectionType,
     category: Category[activeCategory as keyof typeof Category],
   });
-
   return (
     <SubLayout>
       <div>{SectionTypeMatch[sectionState.sectionType]}</div>
@@ -50,15 +53,29 @@ function AllArticles() {
             setActiveCategory={setActiveCategory}
           />
         </StickyWrapper>
-        <ArticleListCardGroup
-          articleList={articleList || []}
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          sliceDetails={sliceDetails}
-          articleFrom={sectionState.sectionType}
-          activeCategory={activeCategory}
-        />
+        {isLoading && <Spinner height="200px" />}
+        {isError && (
+          <ErrorSection
+            height="200px"
+            text={`${SectionTypeMatch[sectionState.sectionType]}를 불러오는 데 실패했어요...😥`}
+          />
+        )}
+        {articleList.length > 0 ? (
+          <ArticleListCardGroup
+            articleList={articleList || []}
+            fetchNextPage={fetchNextPage}
+            hasNextPage={hasNextPage}
+            isFetchingNextPage={isFetchingNextPage}
+            sliceDetails={sliceDetails}
+            articleFrom={sectionState.sectionType}
+            activeCategory={activeCategory}
+          />
+        ) : (
+          <ErrorSection
+            height="200px"
+            text={`${SectionTypeMatch[sectionState.sectionType]}의 ${activeCategory} 카테고리 기사가 아직 없어요...😥`}
+          />
+        )}
       </FadeInWrapper>
     </SubLayout>
   );

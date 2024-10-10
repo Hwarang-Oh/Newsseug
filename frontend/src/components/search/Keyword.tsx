@@ -62,6 +62,7 @@ const Wrapper = styled.div`
   gap: 16px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const KeywordText = styled.p`

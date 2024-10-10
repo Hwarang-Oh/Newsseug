@@ -24,6 +24,7 @@ function Folder({
 export default Folder;
 
 const Wrapper = styled.div<{ width?: string; height?: string; url: string }>`
+  cursor: pointer;
   padding: 40px 10px;
   box-sizing: border-box;
   position: relative;

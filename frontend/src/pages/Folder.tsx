@@ -5,6 +5,8 @@ import { useInfiniteQuery } from 'react-query';
 import { getFolderInfo } from 'apis/folderApi';
 import { useParams } from 'react-router-dom';
 import { FolderDetail } from 'types/api/folder';
+import Spinner from 'components/common/Spinner';
+import ErrorSection from 'components/common/ErrorSection';
 function Folder() {
   const { folderId } = useParams();
 
@@ -44,15 +46,26 @@ function Folder() {
   return (
     <SubLayout>
       <ScrapTitle>{data?.pages[0].title}</ScrapTitle>
-      <ArticleListCardGroup
-        articleList={allArticles || []}
-        fetchNextPage={fetchNextPage}
-        hasNextPage={hasNextPage}
-        sliceDetails={sliceDetails}
-        articleFrom="folder"
-        activeCategory="전체"
-        folderId={Number(folderId)}
-      />
+      {isLoading && <Spinner height="200px" />}
+      {isError && (
+        <ErrorSection
+          height="200px"
+          text="폴더 내 기사 목록을 불러오는 데 실패했어요...😥"
+        />
+      )}
+      {allArticles && allArticles?.length > 0 ? (
+        <ArticleListCardGroup
+          articleList={allArticles || []}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          sliceDetails={sliceDetails}
+          articleFrom="folder"
+          activeCategory="전체"
+          folderId={Number(folderId)}
+        />
+      ) : (
+        <ErrorSection height="500px" text="폴더 내 기사가 아직 없습니다." />
+      )}
     </SubLayout>
   );
 }
