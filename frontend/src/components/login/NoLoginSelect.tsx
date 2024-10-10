@@ -7,7 +7,7 @@ function NoLoginSelect() {
   return (
     <div>
       <NoLoginParagraph onClick={() => navigate('/')}>
-        비로그인으로 계속하기
+        비회원으로 계속하기
       </NoLoginParagraph>
     </div>
   );
