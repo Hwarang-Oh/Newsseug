@@ -39,7 +39,6 @@ public class HateController {
     ) {
 
         hateService.createHate(userDetails, articleId);
-        redisCounterService.increment("article:hateCount:", articleId, 1L);
 
         return ResponseUtil.ok(
                 Result.of(
@@ -61,7 +60,6 @@ public class HateController {
     ) {
 
         hateService.deleteHate(userDetails, articleId);
-        redisCounterService.increment("article:hateCount:", articleId, -1L);
 
         return ResponseUtil.ok(
                 Result.of(
