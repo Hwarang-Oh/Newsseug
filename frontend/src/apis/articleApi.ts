@@ -46,11 +46,12 @@ export const fetchArticlesByToday = async ({
 };
 
 export const fetchArticlesByAge = async ({
+  category = 'ALL',
   page = 0,
 }: PageParamsType): Promise<PageType> => {
   try {
     const response = await api.get(`${ARTICLES_URL}/age`, {
-      params: { pageNumber: page },
+      params: { pageNumber: page, filter: category },
     });
     return response.data.data;
   } catch (error: unknown) {
