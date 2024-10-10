@@ -35,4 +35,12 @@ public class Press extends BaseEntity {
         this.subscribeCount = 0L;
     }
 
+    public void incrementSubscribeCount() {
+        this.subscribeCount++;
+    }
+
+    public void decrementSubscribeCount() {
+        this.subscribeCount--;
+    }
+
 }

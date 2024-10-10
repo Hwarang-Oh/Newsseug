@@ -122,6 +122,7 @@ public class MemberServiceImpl implements MemberService {
 
         if (subscribe.isPresent()) {
             subscribe.get().active();
+            press.incrementSubscribeCount();
             return;
         }
 
@@ -131,6 +132,8 @@ public class MemberServiceImpl implements MemberService {
                         .press(press)
                         .build()
         );
+
+        press.incrementSubscribeCount();
 
     }
 
@@ -144,6 +147,8 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(NotSubscribePressException::new);
 
         subscribe.inactive();
+
+        press.decrementSubscribeCount();
 
     }
 
