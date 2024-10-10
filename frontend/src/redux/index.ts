@@ -1,16 +1,15 @@
-import throttle from 'lodash.throttle';
 import memberReducer from './memberSlice';
-import articleReducer from './articleSlice';
 import subscribeReducer from './subscribeSlice';
 import { configureStore } from '@reduxjs/toolkit';
 import {
   saveStateToSessionStorage,
   loadStateFromSessionStorage,
 } from 'utils/stateUtils';
+import throttle from 'lodash.throttle';
 import darkModeSlice from './darkModeSlice';
+import articleReducer from './articleSlice';
 
 const persistedState = loadStateFromSessionStorage();
-
 export const store = configureStore({
   reducer: {
     member: memberReducer,
@@ -19,6 +18,7 @@ export const store = configureStore({
     darkMode: darkModeSlice,
   },
   preloadedState: persistedState,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(), // 미들웨어로 redux-thunk 추가
 });
 
 store.subscribe(

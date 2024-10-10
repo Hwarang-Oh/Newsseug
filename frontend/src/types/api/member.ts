@@ -8,7 +8,7 @@ export type ProviderType = 'kakao' | 'google' | 'none';
 export interface MemberState {
   nickname: string;
   gender: string;
-  age: number;
+  age: number | null;
   profileImageUrl: string;
 }
 

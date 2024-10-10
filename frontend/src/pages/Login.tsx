@@ -1,6 +1,7 @@
-import LoginWord from 'components/login/LoginWord';
 import Layout from 'components/common/Layout';
 import LoginList from 'components/login/LoginList';
+import LoginWord from 'components/login/LoginWord';
+import NoLoginSelect from 'components/login/NoLoginSelect';
 import styled, { keyframes } from 'styled-components';
 import { ProviderType } from 'types/api/member';
 import { GoogleLogin, KakaoLogin } from 'components/icon/LoginIcon';
@@ -16,6 +17,7 @@ function Login() {
       <FadeInWrapper>
         <LoginWord />
         <LoginList loginItemList={LoginItems} />
+        <NoLoginSelect />
       </FadeInWrapper>
     </Layout>
   );

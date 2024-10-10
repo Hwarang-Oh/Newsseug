@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { getLogout } from 'apis/loginApi';
 import { useEffect, useState } from 'react';
-import { RootState } from '@reduxjs/toolkit';
 import { MemberInfo } from 'types/api/member';
 import { getMemberInfo } from 'apis/memberApi';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDarkMode } from '../../redux/darkModeSlice';
+import { RootState } from '@reduxjs/toolkit';
 import ErrorSection from '../common/ErrorSection';
 
 function UserInfo() {
