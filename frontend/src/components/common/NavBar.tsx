@@ -8,7 +8,7 @@ import {
   SearchNavItem,
   MyPageNavItem,
 } from 'components/icon/NavItemIcon';
-import { fetchRandomArticles } from 'apis/articleApi';
+import { fetchArticles, fetchRandomArticles } from 'apis/articleApi';
 import { useDispatch } from 'react-redux';
 import {
   setActiveCategory,
@@ -18,6 +18,7 @@ import {
 } from '../../redux/articleSlice';
 import { ArticleListCardProps } from 'types/common/common';
 import { SliceDetails } from 'types/api/article';
+import { getCookie } from 'utils/stateUtils';
 
 /**
  * IMP : NavBar Component ( Navigation Bar )
@@ -29,21 +30,33 @@ function NavBar() {
   const location = useLocation();
 
   const dispatch = useDispatch();
+  const isAuthenticated = () => {
+    const token = getCookie('AccessToken');
+    return !!token; // 토큰이 있으면 true, 없으면 false
+  };
 
   const articleDispatch = (
     articleList: ArticleListCardProps[],
     sliceDetails: SliceDetails,
+    articleFrom: string,
   ) => {
     dispatch(setArticleIds(articleList.map((article) => article.id)));
-    dispatch(setArticleFrom('newsseug'));
+    dispatch(setArticleFrom(articleFrom));
     dispatch(setSliceDetail(sliceDetails ?? {}));
+    dispatch(setActiveCategory('all'));
   };
 
   const handleItemClick = async (index: number, to: string) => {
     if (index === 2) {
       try {
-        const article = await fetchRandomArticles();
-        articleDispatch(article.content, article.sliceDetails);
+        let article;
+        if (!isAuthenticated()) {
+          article = await fetchArticles({ category: 'ALL', page: 0 });
+          articleDispatch(article.content, article.sliceDetails, 'all');
+        } else {
+          article = await fetchRandomArticles();
+          articleDispatch(article.content, article.sliceDetails, 'newsseug');
+        }
         console.log(article.content[0].id);
         navigate(`/articles/${article.content[0].id}`);
       } catch (error) {
