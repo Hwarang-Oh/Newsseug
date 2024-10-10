@@ -5,6 +5,7 @@ import { PressDescriptionProps } from 'types/props/press';
 
 function PressDescription({ description }: Readonly<PressDescriptionProps>) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isExpandable, setIsExpandable] = useState<boolean>(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const [descriptionHeight, setDescriptionHeight] = useState<number>(0);
 
@@ -14,9 +15,11 @@ function PressDescription({ description }: Readonly<PressDescriptionProps>) {
 
   useEffect(() => {
     if (descriptionRef.current) {
-      setDescriptionHeight(descriptionRef.current.scrollHeight);
+      const currentHeight = descriptionRef.current.scrollHeight;
+      setDescriptionHeight(currentHeight);
+      setIsExpandable(currentHeight > 61.2); // 높이가 기준보다 클 때만 열고 닫기 버튼 표시
     }
-  }, [description, isOpen]);
+  }, [description]);
 
   return (
     <Wrapper>
@@ -27,10 +30,12 @@ function PressDescription({ description }: Readonly<PressDescriptionProps>) {
       >
         {description}
       </DescriptionText>
-      <OpenBtn onClick={handleOpen}>
-        <BtnText>{isOpen ? '닫기' : '전체보기'}</BtnText>
-        <BtnIcon isOpen={isOpen} src={expandIcon} />
-      </OpenBtn>
+      {isExpandable && (
+        <OpenBtn onClick={handleOpen}>
+          <BtnText>{isOpen ? '닫기' : '전체보기'}</BtnText>
+          <BtnIcon isOpen={isOpen} src={expandIcon} />
+        </OpenBtn>
+      )}
     </Wrapper>
   );
 }
@@ -62,7 +67,6 @@ const DescriptionText = styled.p<{ isOpen: boolean; maxHeight: string }>`
   line-height: 170%;
   letter-spacing: -0.3px;
 
-  // max-height 애니메이션
   max-height: ${({ maxHeight }) => maxHeight};
   transition: max-height 0.3s ease-out;
 `;
@@ -90,6 +94,7 @@ const BtnText = styled.span`
   line-height: 170%;
   letter-spacing: -0.275px;
 `;
+
 const BtnIcon = styled.img<{ isOpen: boolean }>`
   width: 12px;
   height: 12px;
