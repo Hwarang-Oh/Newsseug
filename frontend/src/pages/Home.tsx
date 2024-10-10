@@ -5,11 +5,21 @@ import useContentsFetch from 'hooks/useContentsFetch';
 import styled, { keyframes } from 'styled-components';
 import { Category, SectionType, SectionTypeMatch } from 'types/api/article';
 import { useNavigate } from 'react-router-dom';
-import { fetchArticles, fetchArticlesByToday } from 'apis/articleApi';
+import {
+  fetchArticles,
+  fetchArticlesByToday,
+  fetchArticlesByAge,
+} from 'apis/articleApi';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/index';
 
 function Home() {
-  const navigate = useNavigate();
   useAutoLogin();
+  const navigate = useNavigate();
+  const memberAge = useSelector((state: RootState) => state.member.member.age);
+  const getAgeGroup = (age: number) => {
+    return Math.floor(age / 10) * 10; // 10 단위로 내림
+  };
   const sections = [
     useContentsFetch({
       queryKey: ['todayArticles', 'ALL'],
@@ -18,10 +28,9 @@ function Home() {
       category: 'ALL' as Category,
     }),
     useContentsFetch({
-      queryKey: ['ageArticles', 'ALL'],
-      fetchData: fetchArticlesByToday,
+      queryKey: ['ageArticles'],
+      fetchData: fetchArticlesByAge,
       sectionType: 'age',
-      category: 'ALL' as Category,
     }),
     useContentsFetch({
       queryKey: ['allArticles', 'ALL'],
@@ -36,7 +45,11 @@ function Home() {
         {sections.map((section) => (
           <Section
             key={section.sectionType}
-            subTitle={SectionTypeMatch[section.sectionType as SectionType]}
+            subTitle={
+              section.sectionType === 'age'
+                ? `${getAgeGroup(memberAge)}대 추천 기사`
+                : SectionTypeMatch[section.sectionType as SectionType]
+            }
             moreLink={() =>
               navigate(`/articles/section/${section.sectionType}`, {
                 state: {

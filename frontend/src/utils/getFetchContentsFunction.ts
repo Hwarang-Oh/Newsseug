@@ -1,4 +1,8 @@
-import { fetchArticles, fetchArticlesByToday } from 'apis/articleApi';
+import {
+  fetchArticles,
+  fetchArticlesByAge,
+  fetchArticlesByToday,
+} from 'apis/articleApi';
 import { SectionType } from 'types/api/article';
 
 export const getAPIFunctionBySectionType = (sectionType: SectionType) => {
@@ -6,6 +10,7 @@ export const getAPIFunctionBySectionType = (sectionType: SectionType) => {
     case 'today':
       return fetchArticlesByToday;
     case 'age':
+      return fetchArticlesByAge;
     case 'all':
       return fetchArticles;
     default:

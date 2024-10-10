@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'redux/index';
 import { getLogin } from 'apis/loginApi';
-import { setProviderInfo } from '../redux/memberSlice';
+import { setProviderInfo, fetchMemberInfo } from '../redux/memberSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   setCookie,
@@ -52,8 +52,9 @@ function useAutoLogin() {
       if (isFirst) {
         navigate('/register');
       } else {
-        if (getCookie('redirect')) navigate('/');
-        else navigate(getCookie('redirect'));
+        dispatch(fetchMemberInfo());
+        if (getCookie('redirect')) navigate(getCookie('redirect'));
+        else navigate('/');
         removeCookie('redirect');
       }
     }
