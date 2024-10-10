@@ -58,7 +58,8 @@ body {
   background-color: ${({ theme }) => theme.bgColor};
   display: flex;
   justify-content: center;
-  overflow-y: scroll;
+  position: relative;
+  overflow-y: scroll !important;
 }
 
 `;
