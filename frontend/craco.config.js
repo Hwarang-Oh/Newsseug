@@ -9,7 +9,7 @@ module.exports = {
     devServerConfig.client = {
       overlay: true,
       webSocketURL: {
-        hostname: undefined,
+        hostname: 'localhost',
         pathname: undefined,
         port: '0',
       },
