@@ -3,22 +3,18 @@ package com.a301.newsseug.domain.article.service;
 import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
 import com.a301.newsseug.domain.article.model.dto.response.*;
 import com.a301.newsseug.domain.article.model.entity.Article;
-import com.a301.newsseug.domain.article.model.entity.BirthYearViewCount;
 import com.a301.newsseug.domain.article.model.entity.type.ConversionStatus;
 import com.a301.newsseug.domain.article.repository.ArticleRepository;
-import com.a301.newsseug.domain.article.repository.BirthYearViewCountRepository;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.interaction.model.dto.SimpleHateDto;
 import com.a301.newsseug.domain.interaction.model.dto.SimpleLikeDto;
 import com.a301.newsseug.domain.interaction.model.entity.History;
 import com.a301.newsseug.domain.interaction.repository.HateRepository;
-import com.a301.newsseug.domain.interaction.repository.HistoryRepository;
 import com.a301.newsseug.domain.interaction.repository.LikeRepository;
 import com.a301.newsseug.domain.interaction.service.HistoryService;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.repository.PressRepository;
-import com.a301.newsseug.external.redis.config.RedisProperties;
 import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
@@ -204,7 +200,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (Objects.isNull(userDetails)) {
             age = 20;
         } else {
-            age = LocalDate.now().getYear() - userDetails.getMember().getBirth().getYear()
+            age = LocalDate.now().getYear() - userDetails.getMember().getBirth().getYear();
         }
 
         int ageBegin = (int) Math.floor((double) age / 10) * 10;
