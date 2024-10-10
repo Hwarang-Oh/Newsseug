@@ -15,7 +15,7 @@ import ErrorSection from 'components/common/ErrorSection';
 function SearchResult() {
   const [searchParams] = useSearchParams();
   const keyword: string = searchParams.get('keyword') ?? '';
-  const [activeCategory, setActiveCategory] = useState<string>('ALL');
+  const [activeCategory, setActiveCategory] = useState<string>('전체');
   const [pressData, setPressData] = useState<PressDetail[]>([]);
 
   useEffect(() => {

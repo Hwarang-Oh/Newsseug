@@ -45,7 +45,11 @@ function AllArticles() {
   });
   return (
     <SubLayout>
-      <div>{SectionTypeMatch[sectionState.sectionType]}</div>
+      <div>
+        {sectionState.title
+          ? sectionState.title
+          : SectionTypeMatch[sectionState.sectionType]}
+      </div>
       <FadeInWrapper>
         <StickyWrapper>
           <CategoryFilter

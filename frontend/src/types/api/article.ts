@@ -64,6 +64,7 @@ export interface SectionState {
   queryKey: string[];
   sliceDetails: SliceDetails;
   sectionType: SectionType;
+  title?: string;
 }
 
 /**
