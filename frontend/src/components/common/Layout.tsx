@@ -33,6 +33,6 @@ const LayoutBox = styled.div<{ $backgroundColor?: string }>`
   box-sizing: border-box;
   border: none;
   box-shadow:
-    100px 0 100px -50px ${({ theme }) => theme.textColor + '25'},
-    -100px 0 100px -50px ${({ theme }) => theme.textColor + '25'};
+    50px 0 100px -50px ${({ theme }) => theme.textColor + '10'},
+    -50px 0 100px -50px ${({ theme }) => theme.textColor + '10'};
 `;

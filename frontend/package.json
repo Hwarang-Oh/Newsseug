@@ -83,8 +83,6 @@
     ]
   },
   "msw": {
-    "workerDirectory": [
-      
-    ]
+    "workerDirectory": []
   }
 }
