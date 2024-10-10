@@ -109,7 +109,7 @@ export const getMemberHistoryList = async ({
     const response = await api.get(`/api/v1/histories`, {
       params: { page },
     });
-    return response.data;
+    return response.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 404) {
