@@ -22,6 +22,7 @@ import com.a301.newsseug.domain.press.repository.PressRepository;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
 import com.a301.newsseug.global.model.entity.SliceDetails;
+import com.a301.newsseug.global.util.AgeUtil;
 import com.a301.newsseug.global.util.ClockUtil;
 
 import java.time.LocalDate;
@@ -144,24 +145,18 @@ public class ArticleServiceImpl implements ArticleService {
     ) {
 
         Pageable pageable = PageRequest.of(pageNumber, 20);
-
         Slice<Article> sliced;
-
         if (Objects.nonNull(pressId)) {
             sliced = articleRepository.findAllByPressAndCategory(
                     pressRepository.getOrThrow(pressId) , category, pageable
             );
-        }
-
-        else {
-
+        } else {
             List<Subscribe> subscribes = subscribeService.getSubscribeByMember(userDetails.getMember());
             sliced = articleRepository.findByPress(
                     subscribes.stream().map(Subscribe::getPress).toList(),
                     category,
                     pageable
             );
-
         }
 
         return SlicedResponse.of(
@@ -175,20 +170,13 @@ public class ArticleServiceImpl implements ArticleService {
     public SlicedResponse<List<GetArticleResponse>> getArticlesByBirthYear(CustomUserDetails userDetails, int pageNumber, String category) {
 
         Pageable pageable = PageRequest.of(pageNumber, 10);
-
-        int age = 0;
-        if (Objects.isNull(userDetails)) {
-            age = 25;
-        } else {
-            age = LocalDate.now().getYear() - userDetails.getMember().getBirth().getYear();
-            if (age % 10 == 0) {
-                age++;
-            }
-        }
-
-        int ageBegin = (int) Math.floor((double) age / 10) * 10;
-        int ageEnd = (int) Math.ceil((double) age / 10) * 10 - 1;
-        Slice<Article> sliced = articleRepository.findAllByBirthYearOrderByViewCount(ageBegin, ageEnd, category, pageable);
+        int age = AgeUtil.calculateAge(userDetails);
+        Slice<Article> sliced = articleRepository.findAllByBirthYearOrderByViewCount(
+                AgeUtil.calculateAgeBegin(age),
+                AgeUtil.calculateAgeEnd(age),
+                category,
+                pageable
+        );
 
         return SlicedResponse.of(
                 SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
