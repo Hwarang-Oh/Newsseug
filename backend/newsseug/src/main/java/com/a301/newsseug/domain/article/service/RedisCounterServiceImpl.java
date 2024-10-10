@@ -4,6 +4,7 @@ import com.a301.newsseug.domain.article.repository.ArticleRepository;
 import com.a301.newsseug.external.redis.config.RedisProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -53,6 +54,12 @@ public class RedisCounterServiceImpl implements RedisCounterService {
     @Override
     public Long increment(String hash, Long HashKey, Long value) {
         return redisTemplate.opsForHash().increment(hash, HashKey.toString(), value);
+    }
+
+    @Async
+    @Override
+    public void incrementAsync(String hash, Long HashKey, Long value) {
+        redisTemplate.opsForHash().increment(hash, HashKey.toString(), value);
     }
 
 }

@@ -11,12 +11,8 @@ import com.a301.newsseug.domain.interaction.repository.LikeRepository;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -36,13 +32,17 @@ public class LikeServiceImpl implements LikeService {
         Member loginMember = userDetails.getMember();
         Article article = articleRepository.getOrThrow(articleId);
         Optional<Hate> hate = hateRepository.findByMemberAndArticle(loginMember, article);
-        hate.ifPresent(hateRepository::delete);
 
-        likeRepository.save(Like.builder()
-                .member(loginMember)
-                .article(article)
-                .build()
-        );
+        if (hate.isEmpty()) {
+            likeRepository.save(Like.builder()
+                    .member(loginMember)
+                    .article(article)
+                    .build()
+            );
+        }
+
+        hateRepository.delete(hate.get());
+        redisCounterService.incrementAsync("article:hateCount", articleId, -1L);
 
     }
 
@@ -54,28 +54,7 @@ public class LikeServiceImpl implements LikeService {
         Article article = articleRepository.getOrThrow(articleId);
         Like like = likeRepository.getOrThrow(loginMember, article);
         likeRepository.delete(like);
-        redisCounterService.increment("article:likeCount", articleId,  -1L);
 
     }
 
-    @Scheduled(cron = "0 0/5 * * * ?")
-    public void syncLikeCounts() {
-
-
-        Map<Object, Object> likeCountLogs = redisCounterService.findByHash("article:likeCount");
-
-        if (Objects.nonNull(likeCountLogs)) {
-            for (Map.Entry<Object, Object> entry : likeCountLogs.entrySet()) {
-                Long articleId = Long.parseLong((String) entry.getKey());
-                String likeCount = (String) entry.getValue();
-
-                if (Objects.nonNull(likeCount)) {
-                    log.info("Updating articleId: {}, New likeCount: {}", articleId, likeCount);
-                    articleRepository.updateCount("likeCount", articleId, Long.parseLong(likeCount));
-                    redisCounterService.deleteByKey("article:likeCount", articleId);
-                }
-            }
-        }
-
-    }
 }
