@@ -133,6 +133,7 @@ const CreateScrap = styled.button`
 `;
 
 const Title = styled.h1`
+  color: ${({ theme }) => theme.textColor};
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
