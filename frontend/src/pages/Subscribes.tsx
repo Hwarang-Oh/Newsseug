@@ -11,6 +11,7 @@ import SubscribeHeader from 'components/subscribe/SubscribeHeader';
 import ArticleListCardGroup from 'components/common/ArticleListCardGroup';
 import SubscribePressFilter from 'components/subscribe/SubscribePressFilter';
 import Spinner from 'components/common/Spinner';
+import ErrorSection from '@/components/common/ErrorSection';
 
 function Subscribes() {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ function Subscribes() {
     isFetchingNextPage,
     sliceDetails,
     isLoading,
+    isError,
   } = useContentsFetch<PageType>({
     queryKey: [
       'subscribedArticles',
@@ -42,9 +44,6 @@ function Subscribes() {
     category: Category[activeCategory as keyof typeof Category],
     pressId: activePress,
   });
-
-  // 로딩 상태 처리
-  if (error) return <p>Error: {error?.message}</p>;
 
   return (
     <MainLayout>
@@ -62,9 +61,14 @@ function Subscribes() {
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
       />
-      {isLoading ? (
-        <Spinner height="400px" />
-      ) : (
+      {isLoading && <Spinner height="400px" />}
+      {isError && (
+        <ErrorSection
+          height="400px"
+          text="기사를 불러오는 데 실패했어요...😥"
+        />
+      )}
+      {articleList.length > 0 ? (
         <ArticleListCardGroup
           articleList={articleList || []}
           fetchNextPage={fetchNextPage}
@@ -75,6 +79,8 @@ function Subscribes() {
           activeCategory={activeCategory}
           activePress={activePress}
         />
+      ) : (
+        <ErrorSection height="400px" text="기사가 없습니다." />
       )}
     </MainLayout>
   );
