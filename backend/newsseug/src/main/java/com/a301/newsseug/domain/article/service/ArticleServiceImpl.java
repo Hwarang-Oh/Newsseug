@@ -174,18 +174,13 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public SlicedResponse<List<GetArticleResponse>> getArticlesByBirthYear(CustomUserDetails userDetails, int pageNumber, String category) {
 
-        Pageable pageable = PageRequest.of(
-                pageNumber,
-                10
-        );
+        Pageable pageable = PageRequest.of(pageNumber, 10);
 
         int age = 0;
-
         if (Objects.isNull(userDetails)) {
             age = 25;
         } else {
             age = LocalDate.now().getYear() - userDetails.getMember().getBirth().getYear();
-
             if (age % 10 == 0) {
                 age++;
             }
@@ -193,10 +188,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         int ageBegin = (int) Math.floor((double) age / 10) * 10;
         int ageEnd = (int) Math.ceil((double) age / 10) * 10 - 1;
-
-        Slice<Article> sliced = category.equals("ALL") ? articleRepository.findAllByBirthYearOrderByViewCount(ageBegin, ageEnd, pageable) :
-        articleRepository.findAllByBirthYearOrderByViewCountFiltered(ageBegin, ageEnd,
-            CategoryType.convertToEnum(category), pageable);
+        Slice<Article> sliced = articleRepository.findAllByBirthYearOrderByViewCount(ageBegin, ageEnd, category, pageable);
 
         return SlicedResponse.of(
                 SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
