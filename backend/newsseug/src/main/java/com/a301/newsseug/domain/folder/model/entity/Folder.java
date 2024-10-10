@@ -49,4 +49,12 @@ public class Folder extends BaseEntity {
         this.articleCount = 0L;
     }
 
+    public void incrementArticleCount() {
+        this.articleCount++;
+    }
+
+    public void decrementArticleCount() {
+        this.articleCount--;
+    }
+
 }
