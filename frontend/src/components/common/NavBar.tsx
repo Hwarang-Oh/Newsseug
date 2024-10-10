@@ -57,7 +57,6 @@ function NavBar() {
           article = await fetchRandomArticles();
           articleDispatch(article.content, article.sliceDetails, 'newsseug');
         }
-        console.log(article.content[0].id);
         navigate(`/articles/${article.content[0].id}`);
       } catch (error) {
         console.error('Error fetching articles:', error);

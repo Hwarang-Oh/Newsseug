@@ -17,7 +17,6 @@ const usePickMainImageColor = (imageUrl: string) => {
         try {
           const palette = colorThief.getPalette(img, 5);
           const result = palette[2];
-          //   console.log(palette);
           setColor(`rgb(${result[0]}, ${result[1]}, ${result[2]})`);
         } catch (error) {
           console.error('Color extraction failed:', error);

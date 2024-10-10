@@ -109,7 +109,6 @@ function ArticleSlider() {
         }}
       >
         {articleIds.map((articleId: number, index: number) => {
-          console.log(isLoading, videoList);
           const video = videoList[articleId];
           if (isLoading) {
             return (
@@ -123,7 +122,6 @@ function ArticleSlider() {
           if (!video) {
             return <SwiperSlide key={articleId} data-history={articleId} />;
           }
-          console.log(video.press.isSubscribed, articleId);
           return (
             <SwiperSlide key={video.article.id} data-history={video.article.id}>
               <ArticleVideo

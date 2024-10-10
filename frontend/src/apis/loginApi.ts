@@ -13,7 +13,6 @@ const AUTH_URL = '/api/v1/auth';
 const LOGIN_URL = `/oauth2/authorization`;
 export const loginRoute = (provider: string): void => {
   const loginUrl = `${LOGIN_URL}/${provider}`;
-  console.log(loginUrl);
   window.location.href = loginUrl;
 };
 

@@ -21,7 +21,6 @@ function PressProfile({
 
   useEffect(() => {
     setIsSub(isSubscribed);
-    console.log(isSubscribed);
   }, []);
 
   const isAuthenticated = () => {
