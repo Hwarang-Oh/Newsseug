@@ -52,15 +52,15 @@ class PressControllerTest {
 		mockMvc.perform(get("/api/v1/press")
 			.with(SecurityMockMvcRequestPostProcessors.user(customUserDetails))
 		).andExpect(status().isOk())
-			.andExpect(jsonPath("$.data.press[0].id").value(0L))
-			.andExpect(jsonPath("$.data.press[0].name").value("name"))
-			.andExpect(jsonPath("$.data.press[0].imageUrl").value("imageUrl"))
-			.andExpect(jsonPath("$.data.press[0].isSubscribed").value(true))
+			.andExpect(jsonPath("$.data[0].id").value(0L))
+			.andExpect(jsonPath("$.data[0].name").value("name"))
+			.andExpect(jsonPath("$.data[0].imageUrl").value("imageUrl"))
+			.andExpect(jsonPath("$.data[0].isSubscribed").value(true))
 
-			.andExpect(jsonPath("$.data.press[1].id").value(1L))
-			.andExpect(jsonPath("$.data.press[1].name").value("name"))
-			.andExpect(jsonPath("$.data.press[1].imageUrl").value("imageUrl"))
-			.andExpect(jsonPath("$.data.press[1].isSubscribed").value(true));
+			.andExpect(jsonPath("$.data[1].id").value(1L))
+			.andExpect(jsonPath("$.data[1].name").value("name"))
+			.andExpect(jsonPath("$.data[1].imageUrl").value("imageUrl"))
+			.andExpect(jsonPath("$.data[1].isSubscribed").value(true));
 	}
 
 	@Test
@@ -72,7 +72,6 @@ class PressControllerTest {
 
 		Press press1 = PressFactory.press(0L);
 		Press press2 = PressFactory.press(1L);
-
 		List<GetPressResponse> getPressResponseList = Stream.of(press1, press2).map(p -> GetPressResponse.of(p, false)).toList();
 		given(pressService.getPress(customUserDetails)).willReturn(getPressResponseList);
 
@@ -80,15 +79,15 @@ class PressControllerTest {
 		mockMvc.perform(get("/api/v1/press")
 				.with(SecurityMockMvcRequestPostProcessors.user(customUserDetails))
 			).andExpect(status().isOk())
-			.andExpect(jsonPath("$.data.press[0].id").value(0L))
-			.andExpect(jsonPath("$.data.press[0].name").value("name"))
-			.andExpect(jsonPath("$.data.press[0].imageUrl").value("imageUrl"))
-			.andExpect(jsonPath("$.data.press[0].isSubscribed").value(false))
+			.andExpect(jsonPath("$.data[0].id").value(0L))
+			.andExpect(jsonPath("$.data[0].name").value("name"))
+			.andExpect(jsonPath("$.data[0].imageUrl").value("imageUrl"))
+			.andExpect(jsonPath("$.data[0].isSubscribed").value(false))
 
-			.andExpect(jsonPath("$.data.press[1].id").value(1L))
-			.andExpect(jsonPath("$.data.press[1].name").value("name"))
-			.andExpect(jsonPath("$.data.press[1].imageUrl").value("imageUrl"))
-			.andExpect(jsonPath("$.data.press[1].isSubscribed").value(false));
+			.andExpect(jsonPath("$.data[1].id").value(1L))
+			.andExpect(jsonPath("$.data[1].name").value("name"))
+			.andExpect(jsonPath("$.data[1].imageUrl").value("imageUrl"))
+			.andExpect(jsonPath("$.data[1].isSubscribed").value(false));
 	}
 
 	@Test
@@ -111,15 +110,15 @@ class PressControllerTest {
 		mockMvc.perform(get("/api/v1/press")
 				.with(SecurityMockMvcRequestPostProcessors.user(customUserDetails))
 			).andExpect(status().isOk())
-			.andExpect(jsonPath("$.data.press[0].id").value(0L))
-			.andExpect(jsonPath("$.data.press[0].name").value("name"))
-			.andExpect(jsonPath("$.data.press[0].imageUrl").value("imageUrl"))
-			.andExpect(jsonPath("$.data.press[0].isSubscribed").value(true))
+			.andExpect(jsonPath("$.data[0].id").value(0L))
+			.andExpect(jsonPath("$.data[0].name").value("name"))
+			.andExpect(jsonPath("$.data[0].imageUrl").value("imageUrl"))
+			.andExpect(jsonPath("$.data[0].isSubscribed").value(true))
 
-			.andExpect(jsonPath("$.data.press[1].id").value(1L))
-			.andExpect(jsonPath("$.data.press[1].name").value("name"))
-			.andExpect(jsonPath("$.data.press[1].imageUrl").value("imageUrl"))
-			.andExpect(jsonPath("$.data.press[1].isSubscribed").value(false));
+			.andExpect(jsonPath("$.data[1].id").value(1L))
+			.andExpect(jsonPath("$.data[1].name").value("name"))
+			.andExpect(jsonPath("$.data[1].imageUrl").value("imageUrl"))
+			.andExpect(jsonPath("$.data[1].isSubscribed").value(false));
 	}
 
 	@Test
@@ -135,10 +134,10 @@ class PressControllerTest {
 		// // When&Then
 		// mockMvc.perform(get("/api/v1/press/0"))
 		// 	.andExpect(status().isOk())
-		// 	.andExpect(jsonPath("$.data.press.id").value(0L))
-		// 	.andExpect(jsonPath("$.data.press.name").value("name"))
-		// 	.andExpect(jsonPath("$.data.press.imageUrl").value("imageUrl"))
-		// 	.andExpect(jsonPath("$.data.press.isSubscribed").doesNotExist());
+		// 	.andExpect(jsonPath("$.data.id").value(0L))
+		// 	.andExpect(jsonPath("$.data.name").value("name"))
+		// 	.andExpect(jsonPath("$.data.imageUrl").value("imageUrl"))
+		// 	.andExpect(jsonPath("$.data.isSubscribed").doesNotExist());
 	}
 
 }

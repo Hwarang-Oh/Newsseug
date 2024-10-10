@@ -60,8 +60,8 @@ public class PressServiceTest {
 		Press press1 = PressFactory.press(0L);
 		Press press2 = PressFactory.press(1L);
 		List<Subscribe> subscribes = List.of(
-				SubscribeFactory.subscribe(0L, press1.getPressId()),
-				SubscribeFactory.subscribe(1L, press2.getPressId())
+				SubscribeFactory.subscribe(0L, press1),
+				SubscribeFactory.subscribe(1L, press2)
 		);
 
 		given(pressRepository.findAll()).willReturn(List.of(press1, press2));
@@ -89,8 +89,7 @@ public class PressServiceTest {
 			);
 
 		verify(pressRepository).findAll();
-		verify(subscribeRepository).existsByMemberAndPress(loginMember, press1);
-		verify(subscribeRepository).existsByMemberAndPress(loginMember, press2);
+
 	}
 
 	@Test
@@ -103,8 +102,8 @@ public class PressServiceTest {
 
 
 		given(pressRepository.findAll()).willReturn(List.of(press1, press2));
-		given(subscribeRepository.existsByMemberAndPress(loginMember, press1)).willReturn(true);
-		given(subscribeRepository.existsByMemberAndPress(loginMember, press2)).willReturn(false);
+		given(subscribeRepository.findAllByMember(loginMember))
+				.willReturn(List.of(SubscribeFactory.subscribe(0L, press1)));
 
 		// When
 		List<GetPressResponse> response = pressService.getPress(userDetails);
@@ -119,8 +118,7 @@ public class PressServiceTest {
 			);
 
 		verify(pressRepository).findAll();
-		verify(subscribeRepository).existsByMemberAndPress(loginMember, press1);
-		verify(subscribeRepository).existsByMemberAndPress(loginMember, press2);
+
 	}
 
 	@Test

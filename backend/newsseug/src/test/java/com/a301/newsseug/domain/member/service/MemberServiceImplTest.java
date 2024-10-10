@@ -114,7 +114,7 @@ class MemberServiceImplTest {
 
         // Given
         Press press = PressFactory.press(1L);
-        Subscribe subscribe = SubscribeFactory.subscribe(1L, press.getPressId());
+        Subscribe subscribe = SubscribeFactory.subscribe(1L, press);
         given(subscribeRepository.findAllByMember(loginMember)).willReturn(List.of(subscribe));
 
         // When
@@ -177,7 +177,7 @@ class MemberServiceImplTest {
 
         // Given
         Press press = PressFactory.press(1L);
-        Subscribe subscribe = SubscribeFactory.subscribe(1L, press.getPressId());
+        Subscribe subscribe = SubscribeFactory.subscribe(1L, press);
         given(pressRepository.getOrThrow(press.getPressId())).willReturn(press);
         given(subscribeRepository.findByMemberAndPress(loginMember, press)).willReturn(Optional.of(subscribe));
 
@@ -196,7 +196,7 @@ class MemberServiceImplTest {
 
         // Given
         Press press = PressFactory.press(1L);
-        Subscribe subscribe = SubscribeFactory.subscribe(1L, press.getPressId());
+        Subscribe subscribe = SubscribeFactory.subscribe(1L, press);
         given(pressRepository.getOrThrow(press.getPressId())).willReturn(press);
         given(subscribeRepository.findByMemberAndPress(loginMember, press)).willReturn(Optional.of(subscribe));
 
