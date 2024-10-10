@@ -36,10 +36,13 @@ public class BookmarkServiceImpl implements BookmarkService {
         List<Folder> folders = getFolderFromFolderId(request.folderIds(), loginMember, article);
 
         List<Bookmark> bookmarks = folders.stream()
-                .map(folder ->
-                        Bookmark.builder()
-                                .folder(folder)
-                                .article(article).build()
+                .map(folder -> {
+                    folder.incrementArticleCount();
+                    return Bookmark.builder()
+                            .folder(folder)
+                            .article(article)
+                            .build();
+                    }
                 ).toList();
 
         bookmarkRepository.saveAll(bookmarks);

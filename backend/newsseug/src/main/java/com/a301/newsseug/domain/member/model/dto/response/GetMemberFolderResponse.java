@@ -27,6 +27,7 @@ public record GetMemberFolderResponse(
         return GetMemberFolderResponse.builder()
                 .id(folder.getFolderId())
                 .title(folder.getTitle())
+                .thumbnailUrl(folder.getThumbnailUrl())
                 .articleCount(folder.getArticleCount())
                 .build();
     }
