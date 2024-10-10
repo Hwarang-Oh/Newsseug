@@ -75,7 +75,6 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/folders/**").hasRole(ROLE_MEMBER.getRole())
                                 .requestMatchers("/api/v1/press").hasRole(ROLE_MEMBER.getRole())
                                 .requestMatchers("/api/v1/articles/random").hasRole(ROLE_MEMBER.getRole())
-                                .requestMatchers("/api/v1/articles/age").hasRole(ROLE_MEMBER.getRole())
 
                                 .requestMatchers("/api/v1/auth/**").permitAll()
                                 .requestMatchers("/api/v1/press/*").permitAll()
