@@ -1,13 +1,28 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MemberState, MemberStore, ProviderType } from 'types/api/member';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  MemberState,
+  MemberInfo,
+  MemberStore,
+  ProviderType,
+} from 'types/api/member';
+import { CalculateAge } from 'utils/formUtils';
+import { getMemberInfo } from 'apis/memberApi';
 
 const initialState: MemberStore = {
-  member: { nickname: '', gender: 'MALE', age: 27, profileImageUrl: '' },
+  member: { nickname: '', gender: '', age: 0, profileImageUrl: '' },
   accessToken: '',
   refreshToken: '',
   providerType: 'none',
   providerId: '',
 };
+
+export const fetchMemberInfo = createAsyncThunk<MemberInfo>(
+  'member/fetchMemberInfo',
+  async () => {
+    const response = await getMemberInfo();
+    return response;
+  },
+);
 
 const memberSlice = createSlice({
   name: 'member',
@@ -34,6 +49,16 @@ const memberSlice = createSlice({
     setProviderType: (state, action: PayloadAction<ProviderType>) => {
       state.providerType = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchMemberInfo.fulfilled, (state, action) => {
+      state.member = {
+        nickname: action.payload.nickname,
+        gender: action.payload.gender,
+        age: CalculateAge(action.payload.birth),
+        profileImageUrl: action.payload.profileImageUrl,
+      };
+    });
   },
 });
 
