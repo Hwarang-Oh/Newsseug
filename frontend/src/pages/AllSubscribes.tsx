@@ -25,7 +25,7 @@ function AllSubscribes() {
 
   return (
     <SubLayout>
-      <div>내 구독목록</div>
+      <div>내 구독 목록</div>
       <div>
         <SubscribeHeader
           title="구독한 언론사"
