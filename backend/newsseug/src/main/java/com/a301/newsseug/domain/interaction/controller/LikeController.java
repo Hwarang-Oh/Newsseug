@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class LikeController {
 
     private final LikeService likeService;
-    private final RedisCounterService redisCounterService;
 
     @Operation(summary = "좋아요 API", description = "사용자가 기사에 좋아요를 저장한다.",
             responses = {
@@ -37,14 +36,11 @@ public class LikeController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable(name = "articleId") Long articleId
     ) {
-
         likeService.createLike(userDetails, articleId);
-
         return ResponseUtil.ok(
                 Result.of(
                         Boolean.TRUE
                 ));
-
     }
 
     @Operation(summary = "좋아요 취소 API", description = "사용자가 기사에 좋아요를 삭제한다.",
@@ -58,10 +54,7 @@ public class LikeController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable(name = "articleId") Long articleId
     ) {
-
         likeService.deleteLike(userDetails, articleId);
-        redisCounterService.increment("article:likeCount:", articleId, -1L);
-
         return ResponseUtil.ok(
                 Result.of(
                         Boolean.TRUE
