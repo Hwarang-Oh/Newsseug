@@ -151,6 +151,7 @@ const SubscribeBtn = styled.button<{ isSubscribed: boolean }>`
   background: ${({ theme, isSubscribed }) =>
     isSubscribed ? theme.bgColor : theme.mainColor};
   transition: 0.15s;
+  cursor: pointer;
 `;
 
 const PressName = styled.h1`

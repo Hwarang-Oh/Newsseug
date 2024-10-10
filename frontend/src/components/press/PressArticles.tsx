@@ -6,6 +6,8 @@ import { Category, PageType } from 'types/api/article';
 import { fetchArticlesByPress } from 'apis/articleApi';
 import { PressArticleProps } from 'types/props/press';
 import React from 'react';
+import Spinner from '../common/Spinner';
+import ErrorSection from '../common/ErrorSection';
 
 function PressArticles({
   pressId,
@@ -17,6 +19,8 @@ function PressArticles({
     hasNextPage,
     isFetchingNextPage,
     sliceDetails,
+    isLoading,
+    isError,
   } = useContentsFetch<PageType>({
     queryKey: [
       'pressArticles',
@@ -30,16 +34,30 @@ function PressArticles({
   return (
     <Wrapper>
       <SubTitle title="업로드한 영상" />
-      <ArticleListCardGroup
-        articleList={articleList || []}
-        fetchNextPage={fetchNextPage}
-        hasNextPage={hasNextPage}
-        isFetchingNextPage={isFetchingNextPage}
-        sliceDetails={sliceDetails}
-        articleFrom="press"
-        activeCategory={activeCategory}
-        activePress={pressId}
-      />
+      {isLoading && <Spinner height="200px" />}
+      {isError && (
+        <ErrorSection
+          height="200px"
+          text={`${activeCategory} 카테고리의 기사를 불러오는 데 실패했어요`}
+        />
+      )}
+      {articleList.length > 0 ? (
+        <ArticleListCardGroup
+          articleList={articleList || []}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          sliceDetails={sliceDetails}
+          articleFrom="press"
+          activeCategory={activeCategory}
+          activePress={pressId}
+        />
+      ) : (
+        <ErrorSection
+          height="200px"
+          text={`${activeCategory} 카테고리의 기사가 아직 없어요...😥`}
+        />
+      )}
     </Wrapper>
   );
 }
