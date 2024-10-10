@@ -32,7 +32,7 @@ const Container = styled.div`
   display: flex;
   white-space: nowrap;
   overflow-x: auto;
-  padding-bottom: 12px;
+  padding: 12px 0;
   border-bottom: 1px solid #f4f4f4;
 
   align-items: flex-start;
