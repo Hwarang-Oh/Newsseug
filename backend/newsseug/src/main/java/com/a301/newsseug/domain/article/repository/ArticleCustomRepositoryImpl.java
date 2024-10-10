@@ -156,8 +156,6 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
 
     }
 
-
-
     private <T> void addCategoryCondition(BooleanBuilder builder, String value, Function<CategoryType , BooleanExpression> condition) {
         builder.and(condition.apply(CategoryType.convertToEnum(value)));
     }
