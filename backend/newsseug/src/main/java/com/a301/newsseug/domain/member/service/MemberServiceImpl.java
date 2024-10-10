@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional(readOnly = true)
     public GetMemberResponse getMember(CustomUserDetails userDetails) {
         Member loginMember = userDetails.getMember();
-        return GetMemberResponse.of(loginMember.getNickname(), loginMember.getProfileImageUrl());
+        return GetMemberResponse.of(loginMember);
     }
 
     @Override
