@@ -208,8 +208,8 @@ public class ArticleServiceImpl implements ArticleService {
         int ageEnd = (int) Math.ceil((double) age / 10) * 10 - 1;
 
         Slice<Article> sliced = category.equals("ALL") ? articleRepository.findAllByBirthYearOrderByViewCount(ageBegin, ageEnd, pageable) :
-        articleRepository.findAllByBirthYearOrderByViewCountFiltered(ageBegin, ageEnd, pageable,
-            CategoryType.convertToEnum(category));
+        articleRepository.findAllByBirthYearOrderByViewCountFiltered(ageBegin, ageEnd,
+            CategoryType.convertToEnum(category), pageable);
 
         return SlicedResponse.of(
                 SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
