@@ -185,9 +185,13 @@ public class ArticleServiceImpl implements ArticleService {
         int age = 0;
 
         if (Objects.isNull(userDetails)) {
-            age = 20;
+            age = 25;
         } else {
             age = LocalDate.now().getYear() - userDetails.getMember().getBirth().getYear();
+
+            if (age % 10 == 0) {
+                age++;
+            }
         }
 
         int ageBegin = (int) Math.floor((double) age / 10) * 10;
