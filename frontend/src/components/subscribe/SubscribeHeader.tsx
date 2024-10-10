@@ -72,6 +72,7 @@ const SubscribeCount = styled.span`
 `;
 
 const ViewAll = styled.div`
+  cursor: pointer;
   display: flex;
   justify-content: flex-end;
   align-items: center;

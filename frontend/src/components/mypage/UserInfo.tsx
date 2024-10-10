@@ -119,6 +119,8 @@ const LogoutBtn = styled.a`
   &:active {
     text-decoration: underline;
   }
+
+  cursor: pointer;
 `;
 
 const DarkModeBtn = styled.button`
@@ -127,6 +129,7 @@ const DarkModeBtn = styled.button`
   display: flex;
   padding: 3px;
   align-items: center;
+  cursor: pointer;
 `;
 
 const DarkModeText = styled.p`
