@@ -17,6 +17,7 @@ import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.external.redis.config.RedisProperties;
 import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
+import com.a301.newsseug.global.model.entity.ActivationStatus;
 import com.a301.newsseug.global.util.ClockUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,12 +47,6 @@ public class ArticleServiceTest {
 
     @Mock
     private ArticleRepository articleRepository;
-
-    @Mock
-    private RedisCounterService redisCounterService;
-
-    @Mock
-    private RedisProperties redisProperties;
 
     @Mock
     private SubscribeRepository subscribeRepository;
@@ -120,11 +115,9 @@ public class ArticleServiceTest {
         // Given
         given(articleRepository.getOrThrow(any(Long.class))).willReturn(article);
         given(userDetails.getMember()).willReturn(loginMember);
-        given(subscribeRepository.existsByMemberAndPress(loginMember, press)).willReturn(true);
+        given(subscribeRepository.existsByMemberAndPressAndActivationStatus(loginMember, press, ActivationStatus.ACTIVE)).willReturn(true);
         given(likeRepository.existsByMemberAndArticle(loginMember, article)).willReturn(true);
         given(hateRepository.existsByMemberAndArticle(loginMember, article)).willReturn(false);
-//        given(likeRepository.countByArticle(article)).willReturn(0);
-//        given(hateRepository.countByArticle(article)).willReturn(0);
 
         // When
         GetArticleDetailsResponse response = articleService.getArticleDetail(userDetails, 1L);
@@ -135,7 +128,7 @@ public class ArticleServiceTest {
         System.out.println("JSON Response: " + jsonResponse);
 
         // Then
-        assertThat(response.isSubscribed()).isTrue(); // 구독 여부 확인
+        assertThat(response.press().isSubscribed()).isTrue(); // 구독 여부 확인
 
         // 좋아요 정보 확인
         SimpleLikeDto expectedLikeInfo = SimpleLikeDto.of(Boolean.TRUE, 0L);
@@ -164,7 +157,7 @@ public class ArticleServiceTest {
         GetArticleDetailsResponse response = articleService.getArticleDetail(nullUserDetails, 1L);
 
         // Then
-        assertThat(response.isSubscribed()).isFalse();
+        assertThat(response.press().isSubscribed()).isFalse();
         assertThat(response.likeInfo()).isEqualTo(SimpleLikeDto.of(Boolean.FALSE, 5L));
         assertThat(response.hateInfo()).isEqualTo(SimpleHateDto.of(Boolean.FALSE, 1L));
 

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.member.factory.entity.SubscribeFactory;
 import com.a301.newsseug.domain.member.model.entity.Subscribe;
+import com.a301.newsseug.global.model.entity.ActivationStatus;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -165,14 +166,14 @@ public class PressServiceTest {
 		// Given
 		Press press = PressFactory.press(0L);
 		given(pressRepository.getOrThrow(press.getPressId())).willReturn(press);
-		given(subscribeRepository.existsByMemberAndPress(loginMember, press)).willReturn(true);
+		given(subscribeRepository.existsByMemberAndPressAndActivationStatus(loginMember, press, ActivationStatus.ACTIVE)).willReturn(true);
 
 		// When
 		GetPressDetailsResponse response = pressService.getPressDetails(userDetails, press.getPressId());
 
 		// Then
 		verify(pressRepository).getOrThrow(press.getPressId());
-		verify(subscribeRepository).existsByMemberAndPress(loginMember, press);
+		verify(subscribeRepository).existsByMemberAndPressAndActivationStatus(loginMember, press, ActivationStatus.ACTIVE);
 
 		assertThat(response.id()).isEqualTo(press.getPressId());
 		assertThat(response.name()).isEqualTo(press.getPressBranding().getName());
@@ -190,14 +191,14 @@ public class PressServiceTest {
 		// Given
 		Press press = PressFactory.press(0L);
 		given(pressRepository.getOrThrow(press.getPressId())).willReturn(press);
-		given(subscribeRepository.existsByMemberAndPress(loginMember, press)).willReturn(false);
+		given(subscribeRepository.existsByMemberAndPressAndActivationStatus(loginMember, press, ActivationStatus.ACTIVE)).willReturn(false);
 
 		// When
 		GetPressDetailsResponse response = pressService.getPressDetails(userDetails, press.getPressId());
 
 		// Then
 		verify(pressRepository).getOrThrow(press.getPressId());
-		verify(subscribeRepository).existsByMemberAndPress(loginMember, press);
+		verify(subscribeRepository).existsByMemberAndPressAndActivationStatus(loginMember, press, ActivationStatus.ACTIVE);
 
 		assertThat(response.id()).isEqualTo(press.getPressId());
 		assertThat(response.name()).isEqualTo(press.getPressBranding().getName());

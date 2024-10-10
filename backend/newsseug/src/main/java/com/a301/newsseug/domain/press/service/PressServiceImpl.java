@@ -1,6 +1,7 @@
 package com.a301.newsseug.domain.press.service;
 
 import com.a301.newsseug.domain.member.model.entity.Subscribe;
+import com.a301.newsseug.domain.member.service.SubscribeService;
 import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PressServiceImpl implements PressService {
 
+    private final SubscribeService subscribeService;
     private final PressRepository pressRepository;
     private final SubscribeRepository subscribeRepository;
 
@@ -49,7 +51,7 @@ public class PressServiceImpl implements PressService {
         Press press = pressRepository.getOrThrow(pressId);
 
         if (Objects.nonNull(userDetails)) {
-            return  GetPressDetailsResponse.of(press, subscribeRepository.existsByMemberAndPress(userDetails.getMember(), press));
+            return  GetPressDetailsResponse.of(press, subscribeService.isSubscribed(userDetails.getMember(), press));
         }
 
         return GetPressDetailsResponse.of(press);

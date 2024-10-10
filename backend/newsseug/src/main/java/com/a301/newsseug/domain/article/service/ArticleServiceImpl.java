@@ -14,6 +14,7 @@ import com.a301.newsseug.domain.interaction.repository.LikeRepository;
 import com.a301.newsseug.domain.interaction.service.HistoryService;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
+import com.a301.newsseug.domain.member.service.SubscribeService;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
@@ -25,7 +26,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
@@ -40,6 +40,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final RedisCounterService redisCounterService;
     private final BirthYearCountService birthYearCountService;
     private final HistoryService historyService;
+    private final SubscribeService subscribeService;
 
     private final ArticleRepository articleRepository;
     private final PressRepository pressRepository;
@@ -61,9 +62,10 @@ public class ArticleServiceImpl implements ArticleService {
             historyService.createHistory(member, article);
             birthYearCountService.incrementBirthYearCount(member, article);
 
-            return GetArticleDetailsResponse.of(article,
+            return GetArticleDetailsResponse.of(
+                    article,
                     article.getViewCount() + incrementedViewCount,
-                    subscribeRepository.existsByMemberAndPress(userDetails.getMember(), article.getPress()),
+                    subscribeService.isSubscribed(member, article.getPress()),
                     SimpleLikeDto.of(
                             likeRepository.existsByMemberAndArticle(userDetails.getMember(), article),
                             article.getLikeCount() + likeCount
