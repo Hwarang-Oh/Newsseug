@@ -78,7 +78,7 @@ public class ArticleController {
     @Operation(summary = "연령대별 기사 조회 API", description = "연령대별 많이 보는 기사 리스트를 조회한다.")
     @GetMapping("/age")
     public ResponseEntity<Result<SlicedResponse<List<GetArticleResponse>>>> getArticlesByBirthYear(
-            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @NullableUserDetails CustomUserDetails userDetails,
             @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber
     ) {
        return ResponseUtil.ok(
