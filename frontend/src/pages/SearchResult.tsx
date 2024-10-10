@@ -11,7 +11,6 @@ import { SearchResultInfo } from 'types/api/search';
 import { useInfiniteQuery } from 'react-query';
 import Spinner from 'components/common/Spinner';
 import ErrorSection from 'components/common/ErrorSection';
-import { Category } from 'types/api/article';
 
 function SearchResult() {
   const [searchParams] = useSearchParams();
