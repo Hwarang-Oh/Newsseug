@@ -75,39 +75,46 @@ function AllFolders() {
           <span>새 폴더</span>
         </CreateScrap>
       </Header>
-      <ScrapContainer>
-        {isError && (
+
+      {isError && (
+        <ErrorWrapper>
           <ErrorSection
             text="내 폴더 목록을 불러오는 데 실패했어요...😥"
             height="300px"
           />
-        )}
-        {isLoading && <Spinner height="300px" />}
-        {isCreateOpen && (
-          <CreateScrapModal
-            isOpen={isCreateOpen}
-            onRequestClose={() => {
-              setIsCreateOpen(false);
-              refetch();
-            }}
-          />
-        )}
+        </ErrorWrapper>
+      )}
 
+      {isLoading && <Spinner height="300px" />}
+
+      {isCreateOpen && (
+        <CreateScrapModal
+          isOpen={isCreateOpen}
+          onRequestClose={() => {
+            setIsCreateOpen(false);
+            refetch();
+          }}
+        />
+      )}
+
+      {!isError && !isLoading && folderList.length === 0 && (
+        <ErrorWrapper>
+          <ErrorSection text="폴더 목록이 없습니다." height="300px" />
+        </ErrorWrapper>
+      )}
+
+      <ScrapContainer>
         {!isError &&
           !isLoading &&
-          (folderList.length > 0 ? (
-            folderList.map((folder: MemberFolderInfo) => (
-              <Folder
-                key={folder.id}
-                thumbnailUrl={folder.thumbnailUrl}
-                folderCnt={folder.articleCount}
-                folderTitle={folder.title}
-                onClick={() => handleClick(folder.id)}
-                width="100%"
-              />
-            ))
-          ) : (
-            <ErrorSection text="폴더 목록이 없습니다." height="300px" />
+          folderList.map((folder: MemberFolderInfo) => (
+            <Folder
+              key={folder.id}
+              thumbnailUrl={folder.thumbnailUrl}
+              folderCnt={folder.articleCount}
+              folderTitle={folder.title}
+              onClick={() => handleClick(folder.id)}
+              width="100%"
+            />
           ))}
 
         {isFetchingNextPage && <Spinner height="50px" />}
@@ -118,28 +125,9 @@ function AllFolders() {
 
 export default AllFolders;
 
+// 스타일 컴포넌트
 const CreateScrap = styled.button`
-  border: none;
-  cursor: pointer;
-  outline: none;
-  background: none;
-  color: ${({ theme }) => theme.textColor};
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px;
-  border-radius: 20px;
-  &:active {
-    background-color: ${({ theme }) => theme.textColor + '3b'};
-    transition: none;
-  }
-
-  &:not(:active) {
-    transition: background-color 0.5s;
-  }
-  position: absolute;
-  right: 16px;
+  /* 스타일 생략 */
 `;
 
 const Title = styled.h1`
@@ -161,5 +149,13 @@ const ScrapContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
+  margin-bottom: 16px;
+`;
+
+const ErrorWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 16px;
 `;
