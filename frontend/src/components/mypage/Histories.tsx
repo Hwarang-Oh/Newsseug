@@ -17,6 +17,7 @@ function Histories() {
     data: myPageHistory,
     isLoading,
     error,
+    isError,
   } = useQuery<PageType>(['myPageHistory'], () =>
     getMemberHistoryList({ page: 1 }),
   );
@@ -32,7 +33,7 @@ function Histories() {
     return <Spinner height={height} />;
   }
 
-  if (error) {
+  if (isError) {
     return (
       <ErrorSection
         height={height}
@@ -43,11 +44,11 @@ function Histories() {
 
   return (
     <Wrapper onClick={() => articleDispatch()}>
-      {myPageHistory?.content ? (
-        Array.isArray(myPageHistory?.content) &&
-        myPageHistory.content.map(
-          (history: ArticleListCardProps, index: number) => {
-            return (
+      {!isLoading &&
+        !isError &&
+        (myPageHistory?.content && myPageHistory.content.length > 0 ? (
+          myPageHistory.content.map(
+            (history: ArticleListCardProps, index: number) => (
               <ArticleListCard
                 key={`${history.id}-${index}`}
                 thumbnailUrl={history.thumbnailUrl}
@@ -58,12 +59,11 @@ function Histories() {
                 width={width}
                 height={height}
               />
-            );
-          },
-        )
-      ) : (
-        <ErrorSection height={height} text="시청 기록이 없습니다." />
-      )}
+            ),
+          )
+        ) : (
+          <ErrorSection height={height} text="시청 기록이 없습니다." />
+        ))}
     </Wrapper>
   );
 }
