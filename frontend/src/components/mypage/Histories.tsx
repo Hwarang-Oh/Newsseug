@@ -19,7 +19,7 @@ function Histories() {
     error,
     isError,
   } = useQuery<PageType>(['myPageHistory'], () =>
-    getMemberHistoryList({ page: 1 }),
+    getMemberHistoryList({ page: 0 }),
   );
   const articles = myPageHistory?.content || [];
   const sliceDetails = myPageHistory?.sliceDetails || {};
