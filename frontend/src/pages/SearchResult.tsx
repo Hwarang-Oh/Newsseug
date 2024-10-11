@@ -68,6 +68,10 @@ function SearchResult() {
     <SubLayout isSearch={true}>
       <InputSection keywordText={keyword} />
       <>
+        <CategoryFilter
+          activeCategory={activeCategory}
+          setActiveCategory={setActiveCategory}
+        />
         {isLoading && <Spinner height="400px" />}
         {isError && (
           <ErrorSection height="400px" text="검색에 실패했어요...😥" />
@@ -76,10 +80,6 @@ function SearchResult() {
           !isError &&
           (allArticles.length > 0 || pressData.length > 0 ? (
             <>
-              <CategoryFilter
-                activeCategory={activeCategory}
-                setActiveCategory={setActiveCategory}
-              />
               {pressData.map((press: PressDetail) => (
                 <PressCard
                   key={press.id}
