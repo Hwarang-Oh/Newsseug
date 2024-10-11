@@ -37,7 +37,7 @@ function ReportModal({
         onClick={(e) => e.stopPropagation()}
       >
         <ModalHeader>
-          <ModalTitle>새 폴더 생성</ModalTitle>
+          <ModalTitle>신고하기</ModalTitle>
         </ModalHeader>
         <ModalBody>
           <OptionLabel>
