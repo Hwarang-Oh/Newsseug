@@ -125,9 +125,28 @@ function AllFolders() {
 
 export default AllFolders;
 
-// 스타일 컴포넌트
 const CreateScrap = styled.button`
-  /* 스타일 생략 */
+  border: none;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  color: ${({ theme }) => theme.textColor};
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  border-radius: 20px;
+  &:active {
+    background-color: ${({ theme }) => theme.textColor + '3b'};
+    transition: none;
+  }
+
+  &:not(:active) {
+    transition: background-color 0.5s;
+  }
+  position: absolute;
+  right: 16px;
 `;
 
 const Title = styled.h1`
