@@ -8,13 +8,13 @@ import java.util.List;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.interaction.model.dto.HistoryDto;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
-import org.springframework.security.config.ldap.LdapServerBeanDefinitionParser;
+import java.util.Optional;
 
 public interface HistoryService {
 
 	void createHistory(Member member, Article article);
 
-	History getLatestHistoryByMember(Member member);
+	Optional<History> getLatestHistoryByMember(Member member);
 
 	SlicedResponse<List<HistoryDto>> getHistories(CustomUserDetails userDetails, int page);
 

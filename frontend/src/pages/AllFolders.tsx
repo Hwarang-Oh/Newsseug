@@ -61,6 +61,11 @@ function AllFolders() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
+  const pages = data?.pages || [];
+  const folderList = pages
+    .flatMap((page) => page.content || [])
+    .filter(Boolean);
+
   return (
     <SubLayout>
       <Header>
@@ -70,26 +75,38 @@ function AllFolders() {
           <span>새 폴더</span>
         </CreateScrap>
       </Header>
+
       {isError && (
-        <ErrorSection
-          text="내 폴더 목록을 불러오는 데 실패했어요...😥"
-          height="300px"
-        />
+        <ErrorWrapper>
+          <ErrorSection
+            text="내 폴더 목록을 불러오는 데 실패했어요...😥"
+            height="300px"
+          />
+        </ErrorWrapper>
       )}
+
       {isLoading && <Spinner height="300px" />}
 
+      {isCreateOpen && (
+        <CreateScrapModal
+          isOpen={isCreateOpen}
+          onRequestClose={() => {
+            setIsCreateOpen(false);
+            refetch();
+          }}
+        />
+      )}
+
+      {!isError && !isLoading && folderList.length === 0 && (
+        <ErrorWrapper>
+          <ErrorSection text="폴더 목록이 없습니다." height="300px" />
+        </ErrorWrapper>
+      )}
+
       <ScrapContainer>
-        {isCreateOpen && (
-          <CreateScrapModal
-            isOpen={isCreateOpen}
-            onRequestClose={() => {
-              setIsCreateOpen(false);
-              refetch(); // 모달 닫을 때 폴더 목록을 다시 불러옴
-            }}
-          />
-        )}
-        {data?.pages.map((page) =>
-          page.content.map((folder: MemberFolderInfo) => (
+        {!isError &&
+          !isLoading &&
+          folderList.map((folder: MemberFolderInfo) => (
             <Folder
               key={folder.id}
               thumbnailUrl={folder.thumbnailUrl}
@@ -98,8 +115,8 @@ function AllFolders() {
               onClick={() => handleClick(folder.id)}
               width="100%"
             />
-          )),
-        )}
+          ))}
+
         {isFetchingNextPage && <Spinner height="50px" />}
       </ScrapContainer>
     </SubLayout>
@@ -151,5 +168,13 @@ const ScrapContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
+  margin-bottom: 16px;
+`;
+
+const ErrorWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 16px;
 `;

@@ -47,7 +47,7 @@ public class FolderServiceImpl implements FolderService {
         Pageable pageable = PageRequest.of(
                 pageNumber,
                 10,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getField())
         );
         Slice<Bookmark> bookmarks = bookmarkRepository.findAllByFolderWithSlice(folder, pageable);
 

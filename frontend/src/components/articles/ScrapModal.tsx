@@ -27,6 +27,7 @@ function ScrapModal({
   const {
     data: folderList,
     isLoading,
+    isError,
     error,
   } = useQuery<FolderInfo[]>(['folderList'], () => getFolderList(), {
     onSuccess: (data) => {
@@ -152,13 +153,17 @@ function ScrapModal({
         <ContentWrapper ref={contentRef}>
           <ModalBody>
             {isLoading && <Spinner height="200px" />}
-            {error ? (
+            {isError && (
               <ErrorSection
                 height="200px"
                 text="폴더 목록을 불러오는 데 실패했어요...😥"
               />
+            )}
+            {!isLoading && !isError && folderList?.length === 0 ? (
+              <ErrorSection height="200px" text="생성된 폴더가 없습니다." />
             ) : null}
             {Array.isArray(folderList) &&
+              folderList.length > 0 &&
               folderList.map((folder) => (
                 <ScrapItem
                   key={folder.id}

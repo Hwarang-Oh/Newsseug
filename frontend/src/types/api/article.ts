@@ -64,6 +64,7 @@ export interface SectionState {
   queryKey: string[];
   sliceDetails: SliceDetails;
   sectionType: SectionType;
+  title?: string;
 }
 
 /**
@@ -76,4 +77,5 @@ export interface ContentsFetchType<T extends PageType> {
   pressId?: number | null;
   sectionType?: string;
   initialPage?: number;
+  enabled?: boolean;
 }

@@ -15,6 +15,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 function ArticleVideo({
   articleInfo,
+  thumbnailUrl,
   setIsModalOpen,
   isPlaying,
 }: Readonly<ArticleVideoProp>) {
@@ -130,6 +131,7 @@ function ArticleVideo({
           playsInline
           loop
           src={articleInfo.article.videoUrl}
+          poster={thumbnailUrl ?? '예시 이미지'}
           ref={videoRef}
           onClick={togglePlay}
           onTimeUpdate={updateProgress}

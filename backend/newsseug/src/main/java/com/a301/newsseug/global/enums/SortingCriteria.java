@@ -18,7 +18,7 @@ public enum SortingCriteria {
 
     BIRTH_YEAR_VIEW_COUNT("birthYearViewCount");
 
-    private final String value;
+    private final String field;
 
     public static SortingCriteria convertToEnum(String reportValue) {
 

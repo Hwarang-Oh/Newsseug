@@ -11,9 +11,9 @@ public interface ArticleService {
 
     SlicedResponse<List<GetArticleResponse>>  getRandomArticle(CustomUserDetails userDetails);
 
-    SlicedResponse<List<GetArticleResponse>> getTodayArticleListByCategory(String category, int pageNumber);
+    SlicedResponse<List<GetArticleResponse>> getTodayArticlesByCategory(String category, int pageNumber);
 
-    SlicedResponse<List<GetArticleResponse>> getArticleListByCategory(String category, int pageNumber);
+    SlicedResponse<List<GetArticleResponse>> getArticlesByCategory(String category, int pageNumber);
 
     SlicedResponse<List<GetArticleResponse>> getArticlesByPress(CustomUserDetails userDetails, Long pressId, int pageNumber, String category);
 

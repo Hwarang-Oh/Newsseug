@@ -100,7 +100,7 @@ public class MemberServiceImpl implements MemberService {
         Pageable pageable = PageRequest.of(
                 pageNumber,
                 10,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.UPDATE_AT.getValue())
+                Sort.by(Sort.Direction.DESC, SortingCriteria.UPDATE_AT.getField())
         );
 
         Member loginMember = userDetails.getMember();

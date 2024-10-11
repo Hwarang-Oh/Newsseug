@@ -12,8 +12,8 @@ export const PressContainer = styled.div`
 `;
 
 export const PressLogo = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
 `;
 

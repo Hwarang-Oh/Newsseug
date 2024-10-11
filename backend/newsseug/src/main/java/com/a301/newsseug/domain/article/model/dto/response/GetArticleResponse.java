@@ -41,7 +41,7 @@ public record GetArticleResponse(
                         .thumbnailUrl(article.getThumbnailUrl())
                         .title(article.getTitle())
                         .viewCount(article.getViewCount())
-                        .createdAt(article.getCreatedAt())
+                        .createdAt(article.getSourceCreatedAt())
                         .build();
         }
 

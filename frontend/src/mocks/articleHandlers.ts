@@ -34,7 +34,6 @@ export const articleHandlers = [
   http.get(`${ARTICLE_URL}/today`, ({ request }) => {
     const pageNumber =
       Number(new URL(request.url).searchParams.get('pageNumber')) || 1;
-    // console.log(pageNumber);
     const startIdx = (pageNumber - 1) * 6;
     const endIdx = pageNumber * 6;
     const paginatedArticles = articledummy.articlesPagination.slice(
@@ -78,7 +77,6 @@ export const articleHandlers = [
   http.get(`${ARTICLE_URL}/random`, ({ request }) => {
     const pageNumber =
       Number(new URL(request.url).searchParams.get('pageNumber')) || 1;
-    // console.log(pageNumber);
     const startIdx = (pageNumber - 1) * 6;
     const endIdx = pageNumber * 6;
     const paginatedArticles = articledummy.articlesPagination.slice(

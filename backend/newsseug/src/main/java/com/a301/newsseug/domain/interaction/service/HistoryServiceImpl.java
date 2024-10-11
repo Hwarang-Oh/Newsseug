@@ -5,6 +5,7 @@ import com.a301.newsseug.global.enums.SortingCriteria;
 import jakarta.transaction.Transactional;
 import java.util.List;
 
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,16 +46,21 @@ public class HistoryServiceImpl implements HistoryService {
 	}
 
 	@Override
-	public History getLatestHistoryByMember(Member member) {
+	public Optional<History> getLatestHistoryByMember(Member member) {
 
 		Pageable pageable = PageRequest.of(
 				0,
 				1,
-				Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+				Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getField())
 		);
 
-		Page<History> history = historyRepository.findByMember(member, pageable);
-		return history.getContent().get(0);
+		Page<History> paged = historyRepository.findByMember(member, pageable);
+
+		if (paged.hasContent()) {
+			return Optional.of(paged.getContent().get(0));
+		}
+
+		return Optional.empty();
 
 	}
 
@@ -64,7 +70,7 @@ public class HistoryServiceImpl implements HistoryService {
 		Pageable pageable = PageRequest.of(
 				page,
 				PAGE_SIZE,
-				Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getValue())
+				Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getField())
 		);
 
 		Member member = userDetails.getMember();
