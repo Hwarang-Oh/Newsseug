@@ -19,6 +19,7 @@ import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
 import com.a301.newsseug.global.model.entity.SliceDetails;
+import io.jsonwebtoken.lang.Strings;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -59,19 +60,19 @@ public class MemberServiceImpl implements MemberService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         Member loginMember = userDetails.getMember();
 
-        if (Objects.nonNull(request.birth())) {
+        if (Strings.hasText(request.birth())) {
             loginMember.setBirth(LocalDate.parse(request.birth(), formatter));
         }
 
-        if (Objects.nonNull(request.gender())) {
+        if (Strings.hasText(request.gender())) {
             loginMember.setGender(GenderType.convertToEnum(request.gender()));
         }
 
-        if (Objects.nonNull(request.nickname())) {
+        if (Strings.hasText(request.nickname())) {
             loginMember.setNickname(request.nickname());
         }
 
-        if (Objects.nonNull(request.profileImageUrl())) {
+        if (Strings.hasText(request.profileImageUrl())) {
             loginMember.setProfileImageUrl(request.profileImageUrl());
         }
 
