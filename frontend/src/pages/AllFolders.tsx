@@ -61,6 +61,8 @@ function AllFolders() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
+  console.log(data);
+
   return (
     <SubLayout>
       <Header>
@@ -70,14 +72,24 @@ function AllFolders() {
           <span>새 폴더</span>
         </CreateScrap>
       </Header>
-      {isError && (
-        <ErrorSection
-          text="내 폴더 목록을 불러오는 데 실패했어요...😥"
-          height="300px"
-        />
-      )}
-      {isLoading && <Spinner height="300px" />}
       <ScrapContainer>
+        {isError && (
+          <ErrorSection
+            text="내 폴더 목록을 불러오는 데 실패했어요...😥"
+            height="300px"
+          />
+        )}
+        {isLoading && <Spinner height="300px" />}
+        {isCreateOpen && (
+          <CreateScrapModal
+            isOpen={isCreateOpen}
+            onRequestClose={() => {
+              setIsCreateOpen(false);
+              refetch();
+            }}
+          />
+        )}
+
         {!isError &&
           !isLoading &&
           (data && data.pages.length > 0 ? (
