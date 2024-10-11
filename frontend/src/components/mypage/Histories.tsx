@@ -16,6 +16,7 @@ function Histories() {
   const {
     data: myPageHistory,
     isLoading,
+    error,
     isError,
   } = useQuery<PageType>(['myPageHistory'], () =>
     getMemberHistoryList({ page: 1 }),
@@ -28,21 +29,15 @@ function Histories() {
     StoreArticleDispatch(dispatch, articles, sliceDetails, 'history');
   };
 
-  if (isLoading) {
-    return <Spinner height={height} />;
-  }
-
-  if (isError) {
-    return (
-      <ErrorSection
-        height={height}
-        text="시청 기록을 불러오는 데 실패했어요...😥"
-      />
-    );
-  }
-
   return (
     <Wrapper onClick={() => articleDispatch()}>
+      {isLoading && <Spinner height={height} />}
+      {isError && (
+        <ErrorSection
+          height={height}
+          text="시청 기록을 불러오는 데 실패했어요...😥"
+        />
+      )}
       {!isLoading &&
         !isError &&
         (articles.length > 0 ? (
@@ -61,6 +56,28 @@ function Histories() {
         ) : (
           <ErrorSection height={height} text="시청 기록이 없습니다." />
         ))}
+
+      {myPageHistory?.content ? (
+        Array.isArray(myPageHistory?.content) &&
+        myPageHistory.content.map(
+          (history: ArticleListCardProps, index: number) => {
+            return (
+              <ArticleListCard
+                key={`${history.id}-${index}`}
+                thumbnailUrl={history.thumbnailUrl}
+                title={history.title}
+                viewCount={history.viewCount}
+                pressName={history.pressName}
+                id={history.id}
+                width={width}
+                height={height}
+              />
+            );
+          },
+        )
+      ) : (
+        <ErrorSection height={height} text="시청 기록이 없습니다." />
+      )}
     </Wrapper>
   );
 }

@@ -77,29 +77,26 @@ function AllFolders() {
         />
       )}
       {isLoading && <Spinner height="300px" />}
-
       <ScrapContainer>
-        {isCreateOpen && (
-          <CreateScrapModal
-            isOpen={isCreateOpen}
-            onRequestClose={() => {
-              setIsCreateOpen(false);
-              refetch(); // 모달 닫을 때 폴더 목록을 다시 불러옴
-            }}
-          />
-        )}
-        {data?.pages.map((page) =>
-          page.content.map((folder: MemberFolderInfo) => (
-            <Folder
-              key={folder.id}
-              thumbnailUrl={folder.thumbnailUrl}
-              folderCnt={folder.articleCount}
-              folderTitle={folder.title}
-              onClick={() => handleClick(folder.id)}
-              width="100%"
-            />
-          )),
-        )}
+        {!isError &&
+          !isLoading &&
+          (data && data.pages.length > 0 ? (
+            data?.pages.map((page) =>
+              page.content.map((folder: MemberFolderInfo) => (
+                <Folder
+                  key={folder.id}
+                  thumbnailUrl={folder.thumbnailUrl}
+                  folderCnt={folder.articleCount}
+                  folderTitle={folder.title}
+                  onClick={() => handleClick(folder.id)}
+                  width="100%"
+                />
+              )),
+            )
+          ) : (
+            <ErrorSection text="폴더 목록이 없습니다." height="300px" />
+          ))}
+
         {isFetchingNextPage && <Spinner height="50px" />}
       </ScrapContainer>
     </SubLayout>
