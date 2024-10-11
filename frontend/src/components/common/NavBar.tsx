@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
 import {
   setActiveCategory,
   setArticleFrom,
-  setArticleIds,
+  setArticlesInfo,
   setSliceDetail,
 } from '../../redux/articleSlice';
 import { ArticleListCardProps } from 'types/common/common';
@@ -40,7 +40,15 @@ function NavBar() {
     sliceDetails: SliceDetails,
     articleFrom: string,
   ) => {
-    dispatch(setArticleIds(articleList.map((article) => article.id)));
+    console.log(articleList);
+    const articleInfo = articleList.map((article) => {
+      return {
+        id: article.id,
+        thumbnailUrl: article.thumbnailUrl,
+      };
+    });
+    console.log(articleInfo);
+    dispatch(setArticlesInfo(articleInfo));
     dispatch(setArticleFrom(articleFrom));
     dispatch(setSliceDetail(sliceDetails ?? {}));
     dispatch(setActiveCategory('all'));

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { setArticleIds, setSliceDetail } from '../redux/articleSlice';
+import { setArticlesInfo, setSliceDetail } from '../redux/articleSlice';
 import { RootState } from '../redux/index';
 import {
   fetchArticles,
@@ -11,11 +11,13 @@ import {
 import { getFolderInfo } from 'apis/folderApi';
 import { getMemberHistoryList } from 'apis/memberApi';
 import { getSearchResult } from 'apis/searchApi';
+import { ArticleListCardProps } from 'types/common/common';
 
 export const useLoadNextPage = () => {
   const dispatch = useDispatch();
   const {
     articleIds,
+    articlesInfo,
     sliceDetails,
     activeCategory,
     articlesFrom,
@@ -88,13 +90,20 @@ export const useLoadNextPage = () => {
           throw new Error('Unknown articlesFrom value');
       }
 
-      let newArticleIds = [];
+      let newArticlesInfo = [];
 
       if (newArticles) {
-        newArticleIds = newArticles.content.map((article: any) => article.id);
+        newArticlesInfo = newArticles.content.map(
+          (article: ArticleListCardProps) => {
+            return {
+              id: article.id,
+              thumbnailUrl: article.thumbnailUrl,
+            };
+          },
+        );
       }
       dispatch(setSliceDetail(newArticles.sliceDetails));
-      dispatch(setArticleIds([...articleIds, ...newArticleIds]));
+      dispatch(setArticlesInfo([...articlesInfo, ...newArticlesInfo]));
     }
   };
 

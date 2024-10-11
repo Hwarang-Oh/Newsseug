@@ -1,8 +1,13 @@
 import { SliceDetails } from 'types/api/article';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+interface ArticleInfoType {
+  id: number;
+  thumbnailUrl: string;
+}
+
 interface ArticleState {
-  articleIds: number[];
+  articlesInfo: ArticleInfoType[];
   sliceDetails: SliceDetails | {};
   articlesFrom: string;
   activeCategory: string;
@@ -12,7 +17,7 @@ interface ArticleState {
 }
 
 const initialArticleState: ArticleState = {
-  articleIds: [],
+  articlesInfo: [],
   sliceDetails: {},
   articlesFrom: '',
   activeCategory: 'ALL',
@@ -25,8 +30,8 @@ const articleSlice = createSlice({
   name: 'articles',
   initialState: initialArticleState,
   reducers: {
-    setArticleIds(state, action: PayloadAction<number[]>) {
-      state.articleIds = action.payload;
+    setArticlesInfo(state, action: PayloadAction<ArticleInfoType[]>) {
+      state.articlesInfo = action.payload;
     },
     setSliceDetail(state, action: PayloadAction<SliceDetails | {}>) {
       state.sliceDetails = action.payload;
@@ -50,7 +55,7 @@ const articleSlice = createSlice({
 });
 
 export const {
-  setArticleIds,
+  setArticlesInfo,
   setSliceDetail,
   setArticleFrom,
   setActiveCategory,
