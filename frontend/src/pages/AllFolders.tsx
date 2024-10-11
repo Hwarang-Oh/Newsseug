@@ -61,7 +61,10 @@ function AllFolders() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  console.log(data);
+  const pages = data?.pages || [];
+  const folderList = pages
+    .flatMap((page) => page.content || [])
+    .filter(Boolean);
 
   return (
     <SubLayout>
@@ -92,19 +95,17 @@ function AllFolders() {
 
         {!isError &&
           !isLoading &&
-          (data && data.pages.length > 0 ? (
-            data?.pages.map((page) =>
-              page.content.map((folder: MemberFolderInfo) => (
-                <Folder
-                  key={folder.id}
-                  thumbnailUrl={folder.thumbnailUrl}
-                  folderCnt={folder.articleCount}
-                  folderTitle={folder.title}
-                  onClick={() => handleClick(folder.id)}
-                  width="100%"
-                />
-              )),
-            )
+          (folderList.length > 0 ? (
+            folderList.map((folder: MemberFolderInfo) => (
+              <Folder
+                key={folder.id}
+                thumbnailUrl={folder.thumbnailUrl}
+                folderCnt={folder.articleCount}
+                folderTitle={folder.title}
+                onClick={() => handleClick(folder.id)}
+                width="100%"
+              />
+            ))
           ) : (
             <ErrorSection text="폴더 목록이 없습니다." height="300px" />
           ))}
