@@ -150,7 +150,7 @@ const SubscribeBtn = styled.button<{ $isSubscribed: boolean }>`
   color: ${({ theme, $isSubscribed }) =>
     $isSubscribed ? theme.mainColor : theme.bgColor};
   background-color: ${({ $isSubscribed, theme }) =>
-    $isSubscribed ? theme.relaxColor.main : theme.mainColor};
+    $isSubscribed ? '#807E7E' : theme.mainColor};
   color: #fff;
 
   transition: 0.15s;

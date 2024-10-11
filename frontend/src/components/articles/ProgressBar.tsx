@@ -42,7 +42,7 @@ const ProgressSection = styled.div<{ $isPlaying: boolean }>`
 
 const ProgressBarWrap = styled.div`
   position: relative;
-  background: ${({ theme }) => theme.relaxColor.dark};
+  background: #5e5f60;
   height: 5px;
   cursor: pointer;
 `;

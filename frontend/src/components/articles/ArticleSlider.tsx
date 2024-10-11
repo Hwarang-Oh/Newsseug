@@ -112,7 +112,10 @@ function ArticleSlider() {
           const video = videoList[articleId];
           if (isLoading) {
             return (
-              <SwiperSlide key={articleId} data-history={articleId}>
+              <SwiperSlide
+                key={`${articleId}-${index}`}
+                data-history={`${articleId}-${index}`}
+              >
                 <ModalOverlay>
                   <Spinner height="100vh" />
                 </ModalOverlay>
@@ -120,10 +123,18 @@ function ArticleSlider() {
             );
           }
           if (!video) {
-            return <SwiperSlide key={articleId} data-history={articleId} />;
+            return (
+              <SwiperSlide
+                key={`${articleId}-${index}`}
+                data-history={`${articleId}-${index}`}
+              />
+            );
           }
           return (
-            <SwiperSlide key={video.article.id} data-history={video.article.id}>
+            <SwiperSlide
+              key={`${articleId}-${index}`}
+              data-history={`${articleId}-${index}`}
+            >
               <ArticleVideo
                 articleInfo={video}
                 setIsModalOpen={setIsModalOpen}
