@@ -16,7 +16,6 @@ function Histories() {
   const {
     data: myPageHistory,
     isLoading,
-    error,
     isError,
   } = useQuery<PageType>(['myPageHistory'], () =>
     getMemberHistoryList({ page: 1 }),
@@ -46,21 +45,19 @@ function Histories() {
     <Wrapper onClick={() => articleDispatch()}>
       {!isLoading &&
         !isError &&
-        (myPageHistory?.content && myPageHistory.content.length > 0 ? (
-          myPageHistory.content.map(
-            (history: ArticleListCardProps, index: number) => (
-              <ArticleListCard
-                key={`${history.id}-${index}`}
-                thumbnailUrl={history.thumbnailUrl}
-                title={history.title}
-                viewCount={history.viewCount}
-                pressName={history.pressName}
-                id={history.id}
-                width={width}
-                height={height}
-              />
-            ),
-          )
+        (articles.length > 0 ? (
+          articles.map((history: ArticleListCardProps, index: number) => (
+            <ArticleListCard
+              key={`${history.id}-${index}`}
+              thumbnailUrl={history.thumbnailUrl}
+              title={history.title}
+              viewCount={history.viewCount}
+              pressName={history.pressName}
+              id={history.id}
+              width={width}
+              height={height}
+            />
+          ))
         ) : (
           <ErrorSection height={height} text="시청 기록이 없습니다." />
         ))}
