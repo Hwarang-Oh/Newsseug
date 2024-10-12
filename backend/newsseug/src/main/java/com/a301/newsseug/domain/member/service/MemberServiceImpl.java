@@ -41,9 +41,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    private final SubscribeService subscribeService;
-    private final PressRepository pressRepository;
-    private final SubscribeRepository subscribeRepository;
     private final MemberRepository memberRepository;
 
     @Override
@@ -76,56 +73,6 @@ public class MemberServiceImpl implements MemberService {
         }
 
         loginMember.setIsFirst(false);
-
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<GetPressResponse> getPressByMember(CustomUserDetails userDetails) {
-
-        Member loginMember = userDetails.getMember();
-        List<Subscribe> subscribes = subscribeService.getSubscribeByMember(loginMember);
-
-        return GetPressResponse.fromSubscribe(
-                subscribes
-        );
-
-    }
-
-    @Override
-    public void subscribe(CustomUserDetails userDetails, Long pressId) {
-
-        Member loginMember = userDetails.getMember();
-        Press press = pressRepository.getOrThrow(pressId);
-        Optional<Subscribe> subscribe = subscribeRepository.findByMemberAndPress(loginMember, press);
-
-        if (subscribe.isPresent()) {
-            subscribe.get().active();
-            press.incrementSubscribeCount();
-            return;
-        }
-
-        subscribeRepository.save(
-                Subscribe.builder()
-                        .member(loginMember)
-                        .press(press)
-                        .build()
-        );
-
-        press.incrementSubscribeCount();
-
-    }
-
-    @Override
-    public void unsubscribe(CustomUserDetails userDetails, Long pressId) {
-
-        Member loginMember = userDetails.getMember();
-        Press press = pressRepository.getOrThrow(pressId);
-        Subscribe subscribe = subscribeRepository.findByMemberAndPress(loginMember, press)
-                .orElseThrow(NotSubscribePressException::new);
-
-        subscribe.inactive();
-        press.decrementSubscribeCount();
 
     }
 

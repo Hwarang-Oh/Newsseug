@@ -14,10 +14,4 @@ public interface MemberService {
 
     void updateMember(CustomUserDetails userDetails, UpdateMemberRequest request);
 
-    List<GetPressResponse> getPressByMember(CustomUserDetails userDetails);
-
-    void subscribe(CustomUserDetails userDetails, Long pressId);
-
-    void unsubscribe(CustomUserDetails userDetails, Long pressId);
-
 }

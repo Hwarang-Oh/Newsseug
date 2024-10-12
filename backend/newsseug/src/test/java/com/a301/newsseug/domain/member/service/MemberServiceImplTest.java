@@ -46,15 +46,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.domain.Sort;
 
-@DisplayName("멤버 관련 기능")
+@DisplayName("사용자 관련 기능")
 @ExtendWith(MockitoExtension.class)
 class MemberServiceImplTest {
 
     @Mock
-    private PressRepository pressRepository;
-
-    @Mock
-    private SubscribeRepository subscribeRepository;
+    private MemberRepository memberRepository;
 
     @Mock
     private CustomUserDetails userDetails;
@@ -91,6 +88,7 @@ class MemberServiceImplTest {
         // Given
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         UpdateMemberRequest request = MemberRequestFactory.updateMemberRequest();
+        given(memberRepository.getOrThrow(loginMember.getOAuth2Details().getProviderId())).willReturn(loginMember);
 
         // When
         memberService.updateMember(userDetails, request);
@@ -100,92 +98,6 @@ class MemberServiceImplTest {
         assertThat(loginMember.getGender()).isEqualTo(GenderType.convertToEnum(request.gender()));
         assertThat(loginMember.getBirth()).isEqualTo(LocalDate.parse(request.birth(), formatter));
 
-    }
-
-    @Test
-    @DisplayName("구독 언론사 조회[성공]")
-    void getPressByMember() {
-
-        // Given
-        Press press = PressFactory.press(1L);
-        Subscribe subscribe = SubscribeFactory.subscribe(1L, press);
-//        given(subscribeRepository.findAllByMember(loginMember)).willReturn(List.of(subscribe));
-
-        // When
-        List<GetPressResponse> response = memberService.getPressByMember(userDetails);
-
-        // Then
-//        verify(subscribeRepository).findAllByMember(loginMember);
-        assertThat(response).hasSize(1);
-
-    }
-
-    @Test
-    @DisplayName("구독[성공]")
-    void subscribe() {
-
-        // Given
-        Press press = PressFactory.press(1L);
-        given(pressRepository.getOrThrow(press.getPressId())).willReturn(press);
-        given(subscribeRepository.findByMemberAndPress(loginMember, press)).willReturn(Optional.empty());
-
-        // When
-        memberService.subscribe(userDetails, press.getPressId());
-
-        // Then
-        verify(subscribeRepository).save(any(Subscribe.class));
-
-    }
-
-    @Test
-    @DisplayName("구독[성공 - 재활성화]")
-    void subscribeAlreadySubscribed() {
-
-        // Given
-        Press press = PressFactory.press(1L);
-        Subscribe subscribe = SubscribeFactory.subscribe(1L, press);
-        given(pressRepository.getOrThrow(press.getPressId())).willReturn(press);
-        given(subscribeRepository.findByMemberAndPress(loginMember, press)).willReturn(Optional.of(subscribe));
-
-        // When
-        memberService.subscribe(userDetails, press.getPressId());
-
-        // Then
-        verify(subscribeRepository, never()).save(any());
-        assertThat(subscribe.getActivationStatus()).isEqualByComparingTo(ActivationStatus.ACTIVE);
-
-    }
-
-    @Test
-    @DisplayName("구독 취소[성공]")
-    void unsubscribe() {
-
-        // Given
-        Press press = PressFactory.press(1L);
-        Subscribe subscribe = SubscribeFactory.subscribe(1L, press);
-        given(pressRepository.getOrThrow(press.getPressId())).willReturn(press);
-        given(subscribeRepository.findByMemberAndPress(loginMember, press)).willReturn(Optional.of(subscribe));
-
-        // When
-        memberService.unsubscribe(userDetails, press.getPressId());
-
-        // Then
-        assertThat(subscribe.getActivationStatus()).isEqualTo(ActivationStatus.INACTIVE);
-    }
-
-    @Test
-    @DisplayName("구독 취소[실패 - 구독하지 않은 언론사]")
-    void unsubscribeNotSubscribed() {
-
-        // Given
-        Press press = PressFactory.press(1L);
-        given(pressRepository.getOrThrow(press.getPressId())).willReturn(press);
-        given(subscribeRepository.findByMemberAndPress(loginMember, press)).willReturn(Optional.empty());
-
-        // Then
-        assertThatThrownBy(() -> memberService.unsubscribe(userDetails, press.getPressId()))
-                .isInstanceOf(NotSubscribePressException.class);
-        
     }
 
 }
