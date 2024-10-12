@@ -36,13 +36,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String provider = userRequest.getClientRegistration().getRegistrationId();
         OAuth2UserDetails oAuth2UserDetails = getOAuth2UserDetails(provider, oAuth2User);
         String providerId = oAuth2UserDetails.getProviderId();
-
-        boolean isFirst = false;
-        Optional<Member> member = memberRepository.findByProviderId(providerId);
-
-        if (member.isEmpty()) {
-            isFirst = true;
-        }
+        Optional<Member> member = memberRepository.findByProviderId( oAuth2UserDetails.getProviderId());
 
         return CustomOAuth2User.of(
                 member.orElseGet(() ->
@@ -53,7 +47,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                                         .role(RoleType.ROLE_MEMBER)
                                         .build()
                 )),
-                isFirst,
                 oAuth2User.getAttributes()
         );
 

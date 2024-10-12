@@ -50,8 +50,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional(readOnly = true)
     public GetMemberResponse getMember(CustomUserDetails userDetails) {
-        Member loginMember = userDetails.getMember();
-        return GetMemberResponse.of(loginMember);
+        return GetMemberResponse.of(userDetails.getMember());
     }
 
     @Override
@@ -59,6 +58,7 @@ public class MemberServiceImpl implements MemberService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         Member loginMember = userDetails.getMember();
+        loginMember = memberRepository.getOrThrow(loginMember.getOAuth2Details().getProviderId());
 
         if (Strings.hasText(request.birth())) {
             loginMember.setBirth(LocalDate.parse(request.birth(), formatter));
@@ -76,7 +76,7 @@ public class MemberServiceImpl implements MemberService {
             loginMember.setProfileImageUrl(request.profileImageUrl());
         }
 
-        memberRepository.save(loginMember);
+        loginMember.setIsFirst(false);
 
     }
 

@@ -15,13 +15,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 public class CustomOAuth2User implements OAuth2User {
 
     private final Member member;
-    private boolean isFirst;
     private Map<String, Object> attributes;
 
-    public static CustomOAuth2User of(Member member, boolean isFirst, Map<String, Object> attributes) {
+    public static CustomOAuth2User of(Member member, Map<String, Object> attributes) {
         return CustomOAuth2User.builder()
                 .member(member)
-                .isFirst(isFirst)
                 .attributes(attributes)
                 .build();
     }

@@ -11,14 +11,18 @@ public record LoginResponse(
         String accessToken,
 
         @Schema(description = "리프레쉬 토큰")
-        String refreshToken
+        String refreshToken,
+
+        @Schema(description = "프로필 등록 여부")
+        Boolean isFirst
         
 ) {
 
-    public static LoginResponse of(String accessToken, String refreshToken) {
+    public static LoginResponse of(String accessToken, String refreshToken, Boolean isFirst) {
         return LoginResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .isFirst(isFirst)
                 .build();
     }
 

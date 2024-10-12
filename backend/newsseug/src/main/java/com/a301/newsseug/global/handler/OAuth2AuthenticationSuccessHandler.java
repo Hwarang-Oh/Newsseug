@@ -1,7 +1,6 @@
 package com.a301.newsseug.global.handler;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomOAuth2User;
-import com.a301.newsseug.domain.member.model.entity.Member;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +27,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
         String redirectUrl = UriComponentsBuilder.fromHttpUrl(url)
-                .queryParam("isFirst", oAuth2User.isFirst())
+                .queryParam("isFirst", oAuth2User.getMember().getIsFirst())
                 .queryParam("providerId", oAuth2User.getMember().getOAuth2Details().getProviderId())
                 .build().toUriString();
 
