@@ -51,16 +51,10 @@ import org.springframework.data.domain.Sort;
 class MemberServiceImplTest {
 
     @Mock
-    private MemberRepository memberRepository;
-
-    @Mock
     private PressRepository pressRepository;
 
     @Mock
     private SubscribeRepository subscribeRepository;
-
-    @Mock
-    private FolderRepository folderRepository;
 
     @Mock
     private CustomUserDetails userDetails;
@@ -123,34 +117,6 @@ class MemberServiceImplTest {
         // Then
 //        verify(subscribeRepository).findAllByMember(loginMember);
         assertThat(response).hasSize(1);
-
-    }
-
-    @Test
-    @DisplayName("내 폴더 목록 조회[성공]")
-    void getFoldersByMember() {
-
-        // Given
-        Pageable pageable = PageRequest.of(
-                0,
-                10,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getField())
-        );
-
-        given(folderRepository.findAllByMemberAndActivationStatus(loginMember, ActivationStatus.ACTIVE, pageable)).willReturn(
-                new SliceImpl<>(List.of(FolderFactory.folder(1L), FolderFactory.folder(2L)), pageable, true)
-        );
-
-        SlicedResponse<List<GetMemberFolderResponse>> slicedResponse = memberService.getFoldersByMember(userDetails, 0);
-        List<GetMemberFolderResponse> response = slicedResponse.getContent();
-
-        assertThat(response)
-                .extracting(GetMemberFolderResponse::id, GetMemberFolderResponse::title, GetMemberFolderResponse::articleCount)
-                .containsExactlyInAnyOrder(
-                        tuple(1L, FolderFixtures.title, 0L),
-                        tuple(2L, FolderFixtures.title, 0L)
-                );
-
 
     }
 

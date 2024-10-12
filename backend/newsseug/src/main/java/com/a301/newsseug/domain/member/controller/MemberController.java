@@ -52,17 +52,6 @@ public class MemberController {
         return ResponseUtil.ok(Result.of(Boolean.TRUE));
     }
 
-    @Operation(summary = "사용자 폴더 목록 조회", description = "사용자 폴더 목록을 조회한다.")
-    @GetMapping("/folders")
-    public ResponseEntity<Result<SlicedResponse<List<GetMemberFolderResponse>>>> getFolders(
-            @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber
-    ) {
-        return ResponseUtil.ok(
-                Result.of(memberService.getFoldersByMember(userDetails, pageNumber))
-        );
-    }
-
     @Operation(summary = "구독한 언론사 목록 조회", description = "사용자가 구독한 언론사 목록을 조회한다.")
     @GetMapping("/press")
     public ResponseEntity<Result<List<GetPressResponse>>> getPress(

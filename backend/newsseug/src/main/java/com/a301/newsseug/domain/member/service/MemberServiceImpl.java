@@ -44,7 +44,6 @@ public class MemberServiceImpl implements MemberService {
     private final SubscribeService subscribeService;
     private final PressRepository pressRepository;
     private final SubscribeRepository subscribeRepository;
-    private final FolderRepository folderRepository;
     private final MemberRepository memberRepository;
 
     @Override
@@ -89,26 +88,6 @@ public class MemberServiceImpl implements MemberService {
 
         return GetPressResponse.fromSubscribe(
                 subscribes
-        );
-
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public SlicedResponse<List<GetMemberFolderResponse>> getFoldersByMember(CustomUserDetails userDetails, int pageNumber) {
-
-        Pageable pageable = PageRequest.of(
-                pageNumber,
-                10,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.UPDATE_AT.getField())
-        );
-
-        Member loginMember = userDetails.getMember();
-        Slice<Folder> sliced = folderRepository.findAllByMemberAndActivationStatus(loginMember, ActivationStatus.ACTIVE, pageable);
-
-        return SlicedResponse.of(
-                SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
-                GetMemberFolderResponse.of(sliced.getContent())
         );
 
     }
