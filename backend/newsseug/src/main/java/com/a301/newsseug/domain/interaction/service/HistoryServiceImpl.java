@@ -3,9 +3,9 @@ package com.a301.newsseug.domain.interaction.service;
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.global.enums.SortingCriteria;
 import jakarta.transaction.Transactional;
-import java.util.List;
 
 import java.util.Optional;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -65,7 +65,7 @@ public class HistoryServiceImpl implements HistoryService {
 	}
 
 	@Override
-	public SlicedResponse<List<HistoryDto>> getHistories(CustomUserDetails userDetails, int page) {
+	public SlicedResponse<Set<HistoryDto>> getHistories(CustomUserDetails userDetails, int page) {
 
 		Pageable pageable = PageRequest.of(
 				page,
@@ -74,10 +74,12 @@ public class HistoryServiceImpl implements HistoryService {
 		);
 
 		Member member = userDetails.getMember();
-		Slice<History> historyPage = historyRepository.findAllByMember(member, pageable);
-		SliceDetails sliceDetails = SliceDetails.of(historyPage.getNumber(), historyPage.isFirst(), historyPage.hasNext());
+		Slice<History> sliced = historyRepository.findAllByMember(member, pageable);
 
-		return SlicedResponse.of(sliceDetails, historyPage.map(HistoryDto::of).toList());
+		return SlicedResponse.of(
+				SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
+				sliced.map(HistoryDto::of).toSet()
+		);
 
 	}
 

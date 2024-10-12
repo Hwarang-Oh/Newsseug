@@ -2,6 +2,7 @@ package com.a301.newsseug.domain.interaction.controller;
 
 import java.util.List;
 
+import java.util.Set;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,7 @@ public class HistoryController {
 
 	@GetMapping
 	@Operation(summary = "사용자 시청 기록", description = "사용자가 시청한 숏폼 목록을 반환하는 API")
-	public ResponseEntity<Result<SlicedResponse<List<HistoryDto>>>> getMemberHistories(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("page") int page) {
+	public ResponseEntity<Result<SlicedResponse<Set<HistoryDto>>>> getMemberHistories(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("page") int page) {
 		return ResponseUtil.ok(Result.of(historyService.getHistories(userDetails, page)));
 	}
 
