@@ -1,11 +1,11 @@
 package com.a301.newsseug.domain.member.service;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+import com.a301.newsseug.domain.member.model.dto.response.GetSubscribeResponse;
 import com.a301.newsseug.domain.member.model.entity.Member;
 import com.a301.newsseug.domain.member.model.entity.Subscribe;
 import com.a301.newsseug.domain.member.repository.SubscribeRepository;
 import com.a301.newsseug.domain.press.exception.NotSubscribePressException;
-import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.domain.press.repository.PressRepository;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
@@ -32,13 +32,9 @@ public class SubscribeServiceImpl implements SubscribeService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<GetPressResponse> getSubscribesMember(CustomUserDetails userDetails) {
-
+    public List<GetSubscribeResponse> getSubscribesMember(CustomUserDetails userDetails) {
         List<Subscribe> subscribes = subscribeRepository.findAllByMemberAndActivationStatus(userDetails.getMember(), ActivationStatus.ACTIVE);
-        return GetPressResponse.fromSubscribe(
-                subscribes
-        );
-
+        return GetSubscribeResponse.of(subscribes);
     }
 
     @Override

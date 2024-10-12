@@ -3,7 +3,6 @@ package com.a301.newsseug.domain.article.service;
 import com.a301.newsseug.domain.article.model.dto.response.GetArticleDetailsResponse;
 import com.a301.newsseug.domain.article.model.dto.response.GetArticleResponse;
 import com.a301.newsseug.domain.article.model.entity.Article;
-import com.a301.newsseug.domain.article.model.entity.type.CategoryType;
 import com.a301.newsseug.domain.article.model.entity.type.ConversionStatus;
 import com.a301.newsseug.domain.article.repository.ArticleRepository;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
@@ -167,8 +166,7 @@ public class ArticleServiceImpl implements ArticleService {
                     pressRepository.getOrThrow(pressId), category, pageable
             );
         } else {
-            List<Subscribe> subscribes = subscribeService.getSubscribeByMember(
-                    userDetails.getMember());
+            List<Subscribe> subscribes = subscribeService.getSubscribeByMember(userDetails.getMember());
             sliced = articleRepository.findByPress(
                     subscribes.stream().map(Subscribe::getPress).toList(),
                     category,

@@ -1,6 +1,7 @@
 package com.a301.newsseug.domain.member.controller;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
+import com.a301.newsseug.domain.member.model.dto.response.GetSubscribeResponse;
 import com.a301.newsseug.domain.member.service.SubscribeService;
 import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
 import com.a301.newsseug.global.model.dto.Result;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "멤버 API")
+@Tag(name = "멤버-언론사 관련 API")
 @RestController
 @RequestMapping("/api/v1/members")
 @RequiredArgsConstructor
@@ -28,14 +29,12 @@ public class SubscribeController {
 
     @Operation(summary = "구독한 언론사 목록 조회", description = "사용자가 구독한 언론사 목록을 조회한다.")
     @GetMapping("/press")
-    public ResponseEntity<Result<List<GetPressResponse>>> getPress(
+    public ResponseEntity<Result<List<GetSubscribeResponse>>> getPress(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-
         return ResponseUtil.ok(
                 Result.of(subscribeService.getSubscribesMember(userDetails))
         );
-
     }
 
     @Operation(summary = "언론사 구독", description = "사용자가 언론사를 구독한다.")
@@ -61,7 +60,6 @@ public class SubscribeController {
         return ResponseUtil.ok(
                 Result.of(Boolean.TRUE)
         );
-
     }
 
 }
