@@ -29,7 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @DisplayName("사용자-언론사 관련 기능")
 @ExtendWith(MockitoExtension.class)
-class MemberPressImplTest {
+class SubscribeImplTest {
 
     @Mock
     private PressRepository pressRepository;
@@ -41,7 +41,7 @@ class MemberPressImplTest {
     private CustomUserDetails userDetails;
 
     @InjectMocks
-    private MemberPressServiceImpl memberPressService;
+    private SubscribeServiceImpl subscribeService;
 
     private Member loginMember;
 
@@ -61,7 +61,7 @@ class MemberPressImplTest {
         given(subscribeRepository.findByMemberAndPress(loginMember, press)).willReturn(Optional.empty());
 
         // When
-        memberPressService.subscribe(userDetails, press.getPressId());
+        subscribeService.subscribe(userDetails, press.getPressId());
 
         // Then
         verify(subscribeRepository).save(any(Subscribe.class));
@@ -79,7 +79,7 @@ class MemberPressImplTest {
         given(subscribeRepository.findByMemberAndPress(loginMember, press)).willReturn(Optional.of(subscribe));
 
         // When
-        memberPressService.subscribe(userDetails, press.getPressId());
+        subscribeService.subscribe(userDetails, press.getPressId());
 
         // Then
         verify(subscribeRepository, never()).save(any());
@@ -98,7 +98,7 @@ class MemberPressImplTest {
         given(subscribeRepository.findByMemberAndPress(loginMember, press)).willReturn(Optional.of(subscribe));
 
         // When
-        memberPressService.unsubscribe(userDetails, press.getPressId());
+        subscribeService.unsubscribe(userDetails, press.getPressId());
 
         // Then
         assertThat(subscribe.getActivationStatus()).isEqualTo(ActivationStatus.INACTIVE);
@@ -114,7 +114,7 @@ class MemberPressImplTest {
         given(subscribeRepository.findByMemberAndPress(loginMember, press)).willReturn(Optional.empty());
 
         // Then
-        assertThatThrownBy(() -> memberPressService.unsubscribe(userDetails, press.getPressId()))
+        assertThatThrownBy(() -> subscribeService.unsubscribe(userDetails, press.getPressId()))
                 .isInstanceOf(NotSubscribePressException.class);
         
     }

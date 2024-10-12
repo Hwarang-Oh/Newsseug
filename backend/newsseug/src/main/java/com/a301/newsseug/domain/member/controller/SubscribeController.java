@@ -1,7 +1,7 @@
 package com.a301.newsseug.domain.member.controller;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
-import com.a301.newsseug.domain.member.service.MemberPressService;
+import com.a301.newsseug.domain.member.service.SubscribeService;
 import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
 import com.a301.newsseug.global.model.dto.Result;
 import com.a301.newsseug.global.util.ResponseUtil;
@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/members")
 @RequiredArgsConstructor
-public class MemberPressController {
+public class SubscribeController {
 
-    private final MemberPressService memberPressService;
+    private final SubscribeService subscribeService;
 
     @Operation(summary = "구독한 언론사 목록 조회", description = "사용자가 구독한 언론사 목록을 조회한다.")
     @GetMapping("/press")
@@ -33,7 +33,7 @@ public class MemberPressController {
     ) {
 
         return ResponseUtil.ok(
-                Result.of(memberPressService.getPressByMember(userDetails))
+                Result.of(subscribeService.getSubscribesMember(userDetails))
         );
 
     }
@@ -44,7 +44,7 @@ public class MemberPressController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable(name = "pressId") Long pressId
     ) {
-        memberPressService.subscribe(userDetails, pressId);
+        subscribeService.subscribe(userDetails, pressId);
         return ResponseUtil.ok(
                 Result.of(Boolean.TRUE)
         );
@@ -57,7 +57,7 @@ public class MemberPressController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable(name = "pressId") Long pressId
     ) {
-        memberPressService.unsubscribe(userDetails, pressId);
+        subscribeService.unsubscribe(userDetails, pressId);
         return ResponseUtil.ok(
                 Result.of(Boolean.TRUE)
         );
