@@ -1,10 +1,10 @@
-import ArrowIcon from 'assets/arrowIconWhite.svg';
+import styled from 'styled-components';
+// import styled, { useTheme } from 'styled-components'; In Case of Using Theme
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
-import styled, { useTheme } from 'styled-components';
 
 function ArticleHeader() {
-  const theme = useTheme();
+  // const theme = useTheme();
   const navigate = useNavigate();
   const handleGoBack = () => {
     navigate(-1);

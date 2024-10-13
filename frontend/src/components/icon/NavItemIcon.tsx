@@ -1,5 +1,3 @@
-import { RootState } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
 import { useTheme } from 'styled-components';
 
 /**

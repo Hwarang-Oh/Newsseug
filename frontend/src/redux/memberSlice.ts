@@ -7,6 +7,7 @@ import {
 } from 'types/api/member';
 import { CalculateAge } from 'utils/formUtils';
 import { getMemberInfo } from 'apis/memberApi';
+import { getLogout } from 'apis/loginApi';
 
 const initialState: MemberStore = {
   member: { nickname: '', gender: '', age: null, profileImageUrl: '' },
@@ -23,6 +24,17 @@ export const fetchMemberInfo = createAsyncThunk<MemberInfo>(
     return response;
   },
 );
+
+export const logout = createAsyncThunk<
+  boolean,
+  void,
+  { state: { member: MemberStore } }
+>('member/logout', async (_, thunkAPI) => {
+  const state = thunkAPI.getState(); // Redux state 가져오기
+  const providerId = state.member.providerId;
+  const response = await getLogout(providerId); // API 요청에 providerId 사용
+  return response;
+});
 
 const memberSlice = createSlice({
   name: 'member',
@@ -58,6 +70,20 @@ const memberSlice = createSlice({
         age: CalculateAge(action.payload.birth),
         profileImageUrl: action.payload.profileImageUrl,
       };
+    });
+    builder.addCase(logout.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.member = {
+          nickname: '',
+          gender: '',
+          age: null,
+          profileImageUrl: '',
+        };
+        state.accessToken = '';
+        state.refreshToken = '';
+        state.providerType = 'none';
+        state.providerId = '';
+      }
     });
   },
 });

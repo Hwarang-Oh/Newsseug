@@ -1,13 +1,13 @@
-import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { motion, useAnimation, PanInfo } from 'framer-motion';
-import scrapPlusIcon from 'assets/scrapPlusIcon.svg';
-import { ScrapModalProps } from 'types/props/articleVideo';
-import { FolderInfo } from 'types/api/folder';
-import { useQuery } from 'react-query';
-import { getFolderList, saveArticleToFolder } from 'apis/folderApi';
 import Spinner from 'components/common/Spinner';
+import scrapPlusIcon from 'assets/scrapPlusIcon.svg';
 import ErrorSection from 'components/common/ErrorSection';
+import { useQuery } from 'react-query';
+import { FolderInfo } from 'types/api/folder';
+import { useState, useRef, useEffect } from 'react';
+import { ScrapModalProps } from 'types/props/articleVideo';
+import { motion, useAnimation, PanInfo } from 'framer-motion';
+import { getFolderList, saveArticleToFolder } from 'apis/folderApi';
 
 function ScrapModal({
   articleId,
@@ -28,7 +28,7 @@ function ScrapModal({
     data: folderList,
     isLoading,
     isError,
-    error,
+    // error,
   } = useQuery<FolderInfo[]>(['folderList'], () => getFolderList(), {
     onSuccess: (data) => {
       const initialCheckedItems = data.map((folder) => ({
