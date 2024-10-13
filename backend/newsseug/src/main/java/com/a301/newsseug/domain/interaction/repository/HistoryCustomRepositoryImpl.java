@@ -52,27 +52,19 @@ public class HistoryCustomRepositoryImpl implements HistoryCustomRepository {
     private Slice<History> executeQuery(BooleanBuilder builder, Pageable pageable) {
 
         QHistory historySub = new QHistory("historySub");
-
         List<History> content = jpaQueryFactory
                 .selectFrom(history)
                 .join(history.article).fetchJoin()
                 .join(history.article.press).fetchJoin()
-                .where(
-                        builder
-                                .and(
-                                history.historyId.eq(
-                                        JPAExpressions
-                                                .select(historySub.historyId)
-                                                .from(historySub)
-                                                .where(
-                                                        historySub.article.eq(history.article)
-                                                                .and(historySub.member.eq(history.member))
-                                                )
-                                                .orderBy(historySub.createdAt.desc())
-                                                .limit(1)
-                                )
+                .where(builder.and(
+                        history.createdAt.in(
+                                JPAExpressions
+                                        .select(historySub.createdAt.max())
+                                        .from(historySub)
+                                        .where(historySub.member.eq(history.member))
+                                        .groupBy(historySub.article, historySub.member)
                         )
-                )
+                ))
                 .orderBy(history.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
