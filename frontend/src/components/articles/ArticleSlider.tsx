@@ -1,10 +1,12 @@
-import styled, { keyframes } from 'styled-components';
-import { Mousewheel, Keyboard, History } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Swiper as SwiperType } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/mousewheel';
+import styled from 'styled-components';
+// import styled, { keyframes } from 'styled-components'; In Case of Using Keyframes
+import Spinner from '../common/Spinner';
 import ArticleVideo from 'components/articles/ArticleVideo';
+import SwiperCore, { Swiper as SwiperType } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Mousewheel, Keyboard, History } from 'swiper/modules';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -12,7 +14,6 @@ import { RootState } from '../../redux/index';
 import { useLoadNextPage } from 'hooks/useLoadNextPage';
 import { ArticleVideo as ArticleVideoType } from 'types/api/articleVideo';
 import { fetchEachArticle } from 'apis/articleVideoApi';
-import Spinner from '../common/Spinner';
 
 interface ArticleInfoType {
   id: number;
@@ -23,14 +24,14 @@ function ArticleSlider() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const swiperRef = useRef<SwiperCore | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [videoList, setVideoList] = useState<{
-    [id: number]: ArticleVideoType;
-  }>({});
+  // const [videoList, setVideoList] = useState<{
+  //   [id: number]: ArticleVideoType;
+  // }>({});
 
   const [videoData, setVideoData] = useState<ArticleVideoType | null>(null);
 
   const handleSlideChange = (swiper: SwiperType) => {
-    setActiveIndex(swiper.activeIndex); // 현재 슬라이드 인덱스 업데이트
+    setActiveIndex(swiper.activeIndex);
   };
 
   useEffect(() => {
@@ -64,7 +65,7 @@ function ArticleSlider() {
     (article: ArticleInfoType) => article.id === Number(articleId),
   );
 
-  const [activeIndex, setActiveIndex] = useState(slideIndex); // 현재 슬라이드 인덱스 상태 추가
+  const [activeIndex, setActiveIndex] = useState(slideIndex);
   const loadNextPage = useLoadNextPage();
 
   useEffect(() => {
@@ -94,10 +95,10 @@ function ArticleSlider() {
         }}
         initialSlide={slideIndex}
         onSwiper={(swiper: SwiperType) => {
-          swiperRef.current = swiper; // Swiper 인스턴스 저장
+          swiperRef.current = swiper;
         }}
         onSlideChange={(swiper: SwiperType) => {
-          handleSlideChange(swiper); // 슬라이드 변경 시 현재 인덱스 업데이트
+          handleSlideChange(swiper);
           if (
             swiper.activeIndex >= articlesInfo.length - 3 &&
             sliceDetails.hasNext
@@ -153,7 +154,7 @@ function ArticleSlider() {
                 articleInfo={videoData}
                 thumbnailUrl={articleInfo.thumbnailUrl}
                 setIsModalOpen={setIsModalOpen}
-                isPlaying={index === activeIndex} // 현재 슬라이드만 재생
+                isPlaying={index === activeIndex}
               />
             </SwiperSlide>
           );

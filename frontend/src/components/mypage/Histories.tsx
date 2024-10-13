@@ -16,8 +16,8 @@ function Histories() {
   const {
     data: myPageHistory,
     isLoading,
-    error,
     isError,
+    // error,
   } = useQuery<PageType>(['myPageHistory'], () =>
     getMemberHistoryList({ page: 0 }),
   );

@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { getLogout } from 'apis/loginApi';
 import { useEffect, useState } from 'react';
 import { MemberInfo } from 'types/api/member';
 import { getMemberInfo } from 'apis/memberApi';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDarkMode } from '../../redux/darkModeSlice';
+import { logout } from '../../redux/memberSlice';
 import { RootState } from '@reduxjs/toolkit';
 import ErrorSection from '../common/ErrorSection';
 
@@ -13,13 +13,13 @@ function UserInfo() {
   const [userInfo, setUserInfo] = useState<MemberInfo>();
   const naivagate = useNavigate();
   const dispatch = useDispatch();
-  const providerId = useSelector((state: RootState) => state.member.providerId);
+  // const providerId = useSelector((state: RootState) => state.member.providerId);
   const isDarkMode = useSelector(
     (state: RootState) => state.darkMode.isDarkMode,
   );
 
   const handleLogOut = async () => {
-    if (await getLogout(providerId)) {
+    if (dispatch(logout())) {
       naivagate('/login');
     }
   };

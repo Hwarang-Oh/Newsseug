@@ -10,7 +10,6 @@ import {
  * IMP : AccessToken 재발급을 위한 API
  */
 const REFRESH_URL = '/api/v1/auth/reissue';
-// const REFRESH_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1/auth/reissue`;
 export const reissueToken = async (): Promise<string> => {
   try {
     const refreshToken = getCookie('RefreshToken');
@@ -38,7 +37,6 @@ export const reissueToken = async (): Promise<string> => {
         removeCookie('AccessToken');
         removeCookie('RefreshToken');
         removeCookie('ProviderId');
-        // window.location.href = '/login';
         throw new Error('refreshToken is expired, redirecting to login.');
       }
     } else throw error;
