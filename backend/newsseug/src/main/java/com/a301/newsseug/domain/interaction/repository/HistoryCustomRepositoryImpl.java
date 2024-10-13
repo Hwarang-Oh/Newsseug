@@ -25,9 +25,19 @@ public class HistoryCustomRepositoryImpl implements HistoryCustomRepository {
 
     @Override
     public Slice<History> findAllByMember(Member member, Pageable pageable) {
+        QHistory historySub = new QHistory("historySub");
         BooleanBuilder builder = createBaseCondition();
+        builder.and(
+                history.createdAt.eq(
+                        JPAExpressions
+                                .select(historySub.createdAt.max())
+                                .from(historySub)
+                                .where(historySub.article.eq(history.article).and(historySub.member.eq(history.member)))
+                )
+        );
         return executeQuery(builder, pageable);
     }
+
     /**
      * 공통 조건을 처리하는 메서드
      * @return BooleanBuilder에 상태와 변환 상태 조건을 추가한 빌더
@@ -38,6 +48,7 @@ public class HistoryCustomRepositoryImpl implements HistoryCustomRepository {
         builder.and(history.article.activationStatus.eq(ActivationStatus.ACTIVE));
         builder.and(history.article.conversionStatus.eq(ConversionStatus.SUCCESS));
         return builder;
+
     }
 
     /**
@@ -48,19 +59,11 @@ public class HistoryCustomRepositoryImpl implements HistoryCustomRepository {
      */
     private Slice<History> executeQuery(BooleanBuilder builder, Pageable pageable) {
 
-        QHistory historySub = new QHistory("historySub");
-
         List<History> content = jpaQueryFactory
                 .selectFrom(history)
                 .join(history.article).fetchJoin()
                 .join(history.article.press).fetchJoin()
                 .where(builder)
-                .where(history.createdAt.eq(
-                        JPAExpressions
-                                .select(historySub.createdAt.max())
-                                .from(historySub)
-                                .where(historySub.article.eq(history.article))
-                ))
                 .orderBy(history.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
