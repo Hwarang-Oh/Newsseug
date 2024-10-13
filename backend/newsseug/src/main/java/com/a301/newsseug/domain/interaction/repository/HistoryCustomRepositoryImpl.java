@@ -26,8 +26,7 @@ public class HistoryCustomRepositoryImpl implements HistoryCustomRepository {
     @Override
     public Slice<History> findAllByMember(Member member, Pageable pageable) {
         BooleanBuilder builder = createBaseCondition();
-        builder.and(history.member.eq(member));
-        return executeQuery(builder, pageable);
+        return executeQuery(builder, member, pageable);
     }
 
     /**
@@ -49,23 +48,26 @@ public class HistoryCustomRepositoryImpl implements HistoryCustomRepository {
      * @param pageable 페이징 정보
      * @return Slice<Article>
      */
-    private Slice<History> executeQuery(BooleanBuilder builder, Pageable pageable) {
+    private Slice<History> executeQuery(BooleanBuilder builder, Member member, Pageable pageable) {
 
-        QHistory historySub = new QHistory("historySub");
+        QHistory subquery = new QHistory("subquery");
+
         List<History> content = jpaQueryFactory
                 .selectFrom(history)
                 .join(history.article).fetchJoin()
                 .join(history.article.press).fetchJoin()
-                .where(builder.and(
-                        history.createdAt.in(
-                                JPAExpressions
-                                        .select(historySub.createdAt.max())
-                                        .from(historySub)
-                                        .where(historySub.member.eq(history.member))
-                                        .groupBy(historySub.article, historySub.member)
+                .where(builder)
+                .where(history.member.eq(member)
+                        .and(history.createdAt.eq(
+                                        JPAExpressions
+                                                .select(subquery.createdAt.max())
+                                                .from(subquery)
+                                                .where(subquery.article.eq(history.article)
+                                                        .and(subquery.member.eq(history.member))
+                                                )
+                                )
                         )
-                ))
-                .orderBy(history.createdAt.desc())
+                )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
