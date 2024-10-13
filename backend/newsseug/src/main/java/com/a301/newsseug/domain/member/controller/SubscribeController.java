@@ -3,7 +3,6 @@ package com.a301.newsseug.domain.member.controller;
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
 import com.a301.newsseug.domain.member.model.dto.response.GetSubscribeResponse;
 import com.a301.newsseug.domain.member.service.SubscribeService;
-import com.a301.newsseug.domain.press.model.dto.response.GetPressResponse;
 import com.a301.newsseug.global.model.dto.Result;
 import com.a301.newsseug.global.util.ResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
