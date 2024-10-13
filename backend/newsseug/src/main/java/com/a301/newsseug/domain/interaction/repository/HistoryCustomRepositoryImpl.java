@@ -57,15 +57,13 @@ public class HistoryCustomRepositoryImpl implements HistoryCustomRepository {
                 .join(history.article).fetchJoin()
                 .join(history.article.press).fetchJoin()
                 .where(builder)
-                .where(history.member.eq(member)
-                        .and(history.createdAt.eq(
-                                        JPAExpressions
-                                                .select(subquery.createdAt.max())
-                                                .from(subquery)
-                                                .where(subquery.article.eq(history.article)
-                                                        .and(subquery.member.eq(history.member))
-                                                )
-                                )
+                .where(history.member.eq(member))
+                .groupBy(history.article)
+                .having(history.createdAt.eq(
+                                JPAExpressions
+                                        .select(subquery.createdAt.max())
+                                        .from(subquery)
+                                        .where(subquery.article.eq(history.article).and(subquery.member.eq(history.member)))
                         )
                 )
                 .offset(pageable.getOffset())
