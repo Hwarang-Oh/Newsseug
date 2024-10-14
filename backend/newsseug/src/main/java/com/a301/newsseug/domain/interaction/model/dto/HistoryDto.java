@@ -3,6 +3,8 @@ package com.a301.newsseug.domain.interaction.model.dto;
 import com.a301.newsseug.domain.interaction.model.entity.History;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 
@@ -23,17 +25,21 @@ public record HistoryDto(
 	Long viewCount,
 
 	@Schema(name = "언론사 이름")
-	String pressName
+	String pressName,
+
+	@Schema(name = "시청 시간")
+	LocalDateTime viewTime
 
 ) {
 
 	public static HistoryDto of(History history) {
 		return HistoryDto.builder()
-			.id(history.getArticle().getArticleId())
-			.title(history.getArticle().getTitle())
-			.thumbnailUrl(history.getArticle().getThumbnailUrl())
-			.viewCount(history.getArticle().getViewCount())
-			.pressName(history.getArticle().getPress().getPressBranding().getName())
+				.id(history.getArticle().getArticleId())
+				.title(history.getArticle().getTitle())
+				.thumbnailUrl(history.getArticle().getThumbnailUrl())
+				.viewCount(history.getArticle().getViewCount())
+				.pressName(history.getArticle().getPress().getPressBranding().getName())
+				.viewTime(history.getUpdatedAt())
 			.build();
 	}
 

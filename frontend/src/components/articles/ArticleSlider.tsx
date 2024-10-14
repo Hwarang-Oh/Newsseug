@@ -1,7 +1,6 @@
 import 'swiper/css';
 import 'swiper/css/mousewheel';
 import styled from 'styled-components';
-// import styled, { keyframes } from 'styled-components'; In Case of Using Keyframes
 import Spinner from '../common/Spinner';
 import ArticleVideo from 'components/articles/ArticleVideo';
 import SwiperCore, { Swiper as SwiperType } from 'swiper';
@@ -24,9 +23,6 @@ function ArticleSlider() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const swiperRef = useRef<SwiperCore | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  // const [videoList, setVideoList] = useState<{
-  //   [id: number]: ArticleVideoType;
-  // }>({});
 
   const [videoData, setVideoData] = useState<ArticleVideoType | null>(null);
 
@@ -34,21 +30,21 @@ function ArticleSlider() {
     setActiveIndex(swiper.activeIndex);
   };
 
-  useEffect(() => {
-    const setHeight = () => {
-      const containerElement = document.getElementById('container');
-      if (containerElement) {
-        containerElement.style.height = `${window.innerHeight}px`;
-      }
-    };
+  // useEffect(() => {
+  //   const setHeight = () => {
+  //     const containerElement = document.getElementById('container');
+  //     if (containerElement) {
+  //       containerElement.style.height = `${window.innerHeight}px`;
+  //     }
+  //   };
 
-    setHeight();
-    window.addEventListener('resize', setHeight);
+  //   setHeight();
+  //   window.addEventListener('resize', setHeight);
 
-    return () => {
-      window.removeEventListener('resize', setHeight);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('resize', setHeight);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (swiperRef.current) {
@@ -204,13 +200,6 @@ const ImgContainer = styled.div`
   display: flex;
   align-items: center;
 `;
-
-// const ShortForm = styled.video`
-//   width: auto;
-//   height: 100vh;
-//   object-fit: cover;
-//   /* overflow: hidden; 여분의 영역 숨기기 */
-// `;
 
 const Thumnail = styled.img`
   position: absolute;
