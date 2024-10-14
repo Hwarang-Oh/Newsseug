@@ -5,8 +5,8 @@ import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
 import jakarta.transaction.Transactional;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +17,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
-import com.a301.newsseug.domain.interaction.model.dto.HistoryDto;
+import com.a301.newsseug.domain.interaction.model.dto.GetHistoryResponse;
 import com.a301.newsseug.domain.interaction.model.entity.History;
 import com.a301.newsseug.domain.interaction.repository.HistoryRepository;
 import com.a301.newsseug.domain.member.model.entity.Member;
@@ -78,7 +78,7 @@ public class HistoryServiceImpl implements HistoryService {
 	}
 
 	@Override
-	public SlicedResponse<Set<HistoryDto>> getHistories(CustomUserDetails userDetails, int page) {
+	public SlicedResponse<List<GetHistoryResponse>> getHistories(CustomUserDetails userDetails, int page) {
 
 		Pageable pageable = PageRequest.of(
 				page,
@@ -91,8 +91,9 @@ public class HistoryServiceImpl implements HistoryService {
 
 		return SlicedResponse.of(
 				SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
-				sliced.map(HistoryDto::of).toSet()
+				GetHistoryResponse.of(sliced.getContent())
 		);
+
 
 	}
 

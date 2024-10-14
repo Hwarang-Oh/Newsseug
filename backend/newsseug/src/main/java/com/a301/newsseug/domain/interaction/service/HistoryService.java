@@ -5,10 +5,10 @@ import com.a301.newsseug.domain.interaction.model.entity.History;
 import com.a301.newsseug.domain.member.model.entity.Member;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
-import com.a301.newsseug.domain.interaction.model.dto.HistoryDto;
+import com.a301.newsseug.domain.interaction.model.dto.GetHistoryResponse;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface HistoryService {
 
@@ -16,6 +16,6 @@ public interface HistoryService {
 
 	Optional<History> getLatestHistoryByMember(Member member);
 
-	SlicedResponse<Set<HistoryDto>> getHistories(CustomUserDetails userDetails, int page);
+	SlicedResponse<List<GetHistoryResponse>> getHistories(CustomUserDetails userDetails, int page);
 
 }

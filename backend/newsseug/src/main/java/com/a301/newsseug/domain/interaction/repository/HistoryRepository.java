@@ -5,9 +5,11 @@ import com.a301.newsseug.domain.interaction.model.entity.History;
 import com.a301.newsseug.domain.member.model.entity.Member;
 
 import com.a301.newsseug.global.model.entity.ActivationStatus;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -43,7 +45,7 @@ public interface HistoryRepository extends JpaRepository<History, Long> {
 					+ "h.article.conversionStatus = 'SUCCESS' AND "
 					+ "h.member = :member "
 	)
-	Page<History> findAllByMemberOrderByUpdatedAt(
+	Slice<History> findAllByMemberOrderByUpdatedAt(
 			@Param("member") Member member, Pageable pageable
 	);
 

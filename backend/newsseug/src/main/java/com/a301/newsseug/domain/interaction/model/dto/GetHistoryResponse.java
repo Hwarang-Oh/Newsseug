@@ -4,13 +4,13 @@ import com.a301.newsseug.domain.interaction.model.entity.History;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 
 @Builder(access = AccessLevel.PRIVATE)
 @Schema(name = "시청 기록", description = "사용자가 시청한 기사 정보")
-public record HistoryDto(
+public record GetHistoryResponse(
 
 	@Schema(name = "식별자")
 	Long id,
@@ -32,8 +32,8 @@ public record HistoryDto(
 
 ) {
 
-	public static HistoryDto of(History history) {
-		return HistoryDto.builder()
+	public static GetHistoryResponse of(History history) {
+		return GetHistoryResponse.builder()
 				.id(history.getArticle().getArticleId())
 				.title(history.getArticle().getTitle())
 				.thumbnailUrl(history.getArticle().getThumbnailUrl())
@@ -41,6 +41,12 @@ public record HistoryDto(
 				.pressName(history.getArticle().getPress().getPressBranding().getName())
 				.viewTime(history.getUpdatedAt())
 			.build();
+	}
+
+	public static List<GetHistoryResponse> of(List<History> histories) {
+		return histories.stream()
+				.map(GetHistoryResponse::of)
+				.toList();
 	}
 
 }
