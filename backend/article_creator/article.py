@@ -157,7 +157,7 @@ Example:
         
         json_content = json.loads(response.choices[0].message.content)
         
-        return [Scene(number=scene["scene"], description=scene["description_en"], en_dialogue=scene["dialogue_en"], ko_dialogue=scene["dialogue_ko"]) for scene in json_content["script"]], response.choices[0].finish_reason
+        return [Scene(number=scene["scene"], description=scene["description"], en_dialogue=scene["dialogue_en"], ko_dialogue=scene["dialogue_ko"]) for scene in json_content["script"]], response.choices[0].finish_reason
     
     except Exception as e:
         logger.exception(e)
