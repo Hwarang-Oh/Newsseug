@@ -69,7 +69,7 @@ class CreateArticleRequestDto(BaseModel):
     category: Category
     source_created_at: datetime
     press_id: int
-    press_name: int
+    press_name: str
 
 @app.post("/ai/video")
 async def create_and_register_article(article_request_dto: CreateArticleRequestDto, session = Depends(get_session)):
