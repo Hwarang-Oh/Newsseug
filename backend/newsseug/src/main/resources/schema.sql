@@ -76,8 +76,8 @@ CREATE TABLE IF NOT EXISTS articles (
 
 CREATE TABLE IF NOT EXISTS bookmarks (
     bookmark_id       BIGINT PRIMARY KEY DEFAULT nextval(bookmarks_seq),
-    article_id        BIGINT  NOT NULL,
     folder_id         BIGINT  NOT NULL,
+    article_id        BIGINT  NOT NULL,
     activation_status ENUM ('ACTIVE', 'INACTIVE')  NOT NULL DEFAULT 'ACTIVE',
     created_at        TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at        TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -88,20 +88,21 @@ CREATE TABLE IF NOT EXISTS bookmarks (
 
 CREATE TABLE IF NOT EXISTS histories (
     history_id        BIGINT PRIMARY KEY DEFAULT nextval(histories_seq),
-    article_id        BIGINT  NOT NULL,
     member_id         BIGINT  NOT NULL,
+    article_id        BIGINT  NOT NULL,
     play_time         INT  NOT NULL,
     activation_status ENUM ('ACTIVE', 'INACTIVE')  NOT NULL DEFAULT 'ACTIVE',
     created_at        TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at        TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK6dwu9pkt9gecpbk3r8u4oqk7n FOREIGN KEY (article_id) REFERENCES articles (article_id) ON DELETE CASCADE,
-    CONSTRAINT FKr5eq32k17h6xd5u1ridpahnlg FOREIGN KEY (member_id) REFERENCES members (member_id) ON DELETE CASCADE
+    CONSTRAINT uniqueBookmark UNIQUE (member_id, article_id),
+    CONSTRAINT FKr5eq32k17h6xd5u1ridpahnlg FOREIGN KEY (member_id) REFERENCES members (member_id) ON DELETE CASCADE,
+    CONSTRAINT FK6dwu9pkt9gecpbk3r8u4oqk7n FOREIGN KEY (article_id) REFERENCES articles (article_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS likes (
     like_id           BIGINT PRIMARY KEY DEFAULT nextval(likes_seq),
-    article_id        BIGINT  NOT NULL,
     member_id         BIGINT  NOT NULL,
+    article_id        BIGINT  NOT NULL,
     activation_status ENUM ('ACTIVE', 'INACTIVE')  NOT NULL DEFAULT 'ACTIVE',
     created_at        TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at        TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -111,8 +112,8 @@ CREATE TABLE IF NOT EXISTS likes (
 
 CREATE TABLE IF NOT EXISTS hates (
     hate_id           BIGINT PRIMARY KEY DEFAULT nextval(hates_seq),
-    article_id        BIGINT  NOT NULL,
     member_id         BIGINT  NOT NULL,
+    article_id        BIGINT  NOT NULL,
     activation_status ENUM ('ACTIVE', 'INACTIVE')  NOT NULL DEFAULT 'ACTIVE',
     created_at        TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at        TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,

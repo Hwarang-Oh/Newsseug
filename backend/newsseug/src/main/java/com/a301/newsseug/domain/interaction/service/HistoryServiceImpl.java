@@ -2,6 +2,7 @@ package com.a301.newsseug.domain.interaction.service;
 
 import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.global.enums.SortingCriteria;
+import com.a301.newsseug.global.model.entity.ActivationStatus;
 import jakarta.transaction.Transactional;
 
 import java.util.Optional;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
@@ -37,12 +39,23 @@ public class HistoryServiceImpl implements HistoryService {
 
 	@Override
 	public void createHistory(Member member, Article article) {
+
+		Optional<History> history = historyRepository.findByMemberAndArticleAndActivationStatus(
+				member, article, ActivationStatus.ACTIVE
+		);
+
+		if (history.isPresent()){
+			history.get().onPreUpdate();
+			return;
+		}
+
 		historyRepository.save(
 				History.builder()
 						.member(member)
 						.article(article)
 						.build()
 		);
+
 	}
 
 	@Override
@@ -54,7 +67,7 @@ public class HistoryServiceImpl implements HistoryService {
 				Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getField())
 		);
 
-		Page<History> paged = historyRepository.findByMember(member, pageable);
+		Page<History> paged = historyRepository.findAllByMember(member, pageable);
 
 		if (paged.hasContent()) {
 			return Optional.of(paged.getContent().get(0));
@@ -70,11 +83,11 @@ public class HistoryServiceImpl implements HistoryService {
 		Pageable pageable = PageRequest.of(
 				page,
 				PAGE_SIZE,
-				Sort.by(Sort.Direction.DESC, SortingCriteria.CREATED_AT.getField())
+				Sort.by(Direction.DESC, SortingCriteria.UPDATE_AT.getField())
 		);
 
 		Member member = userDetails.getMember();
-		Slice<History> sliced = historyRepository.findAllByMember(member, pageable);
+		Slice<History> sliced = historyRepository.findAllByMemberOrderByUpdatedAt(member, pageable);
 
 		return SlicedResponse.of(
 				SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
