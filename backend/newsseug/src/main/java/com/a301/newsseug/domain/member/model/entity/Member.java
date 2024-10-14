@@ -56,7 +56,7 @@ public class Member extends BaseEntity {
             GenderType gender, LocalDate birth, ProviderType provider, String providerId, RoleType role
     ) {
         this.nickname = UUID.randomUUID().toString().substring(0, 6);
-        this.profileImageUrl = "https://newsseug-bucket.s3.ap-northeast-2.amazonaws.com/profile/member/default/profile.svg";
+        this.profileImageUrl = "https://newsseug-bucket.s3.ap-northeast-2.amazonaws.com/profile/member/default.png";
         this.gender = gender;
         this.birth = birth;
         this.oAuth2Details = OAuth2Details.of(provider, providerId, role);
