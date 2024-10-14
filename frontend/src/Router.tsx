@@ -15,7 +15,7 @@ import Press from 'pages/Press';
 import ArticleVideo from 'pages/ArticleVideo';
 import History from 'pages/History';
 import Folder from 'pages/Folder';
-import EsSearchResult from 'pages/EsSearchResult';
+// import EsSearchResult from 'pages/EsSearchResult'; Case In Elastic Search is Ready
 
 function Router() {
   return (

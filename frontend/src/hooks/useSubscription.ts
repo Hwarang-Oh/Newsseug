@@ -94,7 +94,6 @@ function useSubscription() {
     removeSubscribe.forEach(async (press) => {
       await unsubscribePress(press.id);
     });
-    console.log(targetList);
     dispatch(updateSubscribedPress(targetList));
   };
 
@@ -104,6 +103,7 @@ function useSubscription() {
     subscriptionStatus,
     toggleSubscribe,
     handleSubscriptionUpdate,
+    subscribeListRef,
   };
 }
 

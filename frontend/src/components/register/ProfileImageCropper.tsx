@@ -17,10 +17,7 @@ function ProfileImageCropper({
   const imgRef = useRef<HTMLImageElement>(null);
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
-  const [scale, setScale] = useState(1);
-  const [rotate, setRotate] = useState(0);
-  const [aspect, setAspect] = useState<number>(1);
-
+  const [scale, rotate, aspect] = [1, 0, 1];
   /**
    * IMP : Image Load Event
    * @param e
@@ -43,7 +40,6 @@ function ProfileImageCropper({
 
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
-
     const canvas = document.createElement('canvas');
     canvas.width = completedCrop.width * scaleX;
     canvas.height = completedCrop.height * scaleY;
@@ -103,8 +99,8 @@ function ProfileImageCropper({
             onChange={(_, percentCrop) => setCrop(percentCrop)}
             onComplete={(c) => setCompletedCrop(c)}
             aspect={aspect}
-            minWidth={400}
-            minHeight={100}
+            minWidth={106}
+            minHeight={106}
             circularCrop
           >
             <img
@@ -116,22 +112,21 @@ function ProfileImageCropper({
           </ReactCrop>
         </ImageContainer>
         {!!completedCrop && (
-          <div>
+          <div style={{ display: 'none' }}>
             <canvas
               ref={previewCanvasRef}
               style={{
                 objectFit: 'contain',
                 borderRadius: '50%',
-                width: completedCrop.width,
-                height: completedCrop.height,
+                width: 106.5,
+                height: 106.5,
               }}
             />
           </div>
         )}
         <ButtonContainer>
-          <Button onClick={onDownloadCropClick}>저장하기</Button>
-          <Button onClick={onClose}>돌아가기</Button>
-          <Button onClick={onRemove}>삭제하기</Button>
+          <SaveButton onClick={onDownloadCropClick}>저장하기</SaveButton>
+          <DeleteButton onClick={onRemove}>삭제하기</DeleteButton>
         </ButtonContainer>
       </ModalContent>
     </ModalOverlay>
@@ -183,9 +178,19 @@ const ButtonContainer = styled.div`
   gap: 10px;
 `;
 
-const Button = styled.button`
+const SaveButton = styled.button`
   padding: 10px 20px;
   background-color: #58d7a2;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  flex: 1;
+`;
+
+const DeleteButton = styled.button`
+  padding: 10px 20px;
+  background-color: #ff5e5e;
   color: #ffffff;
   border: none;
   border-radius: 4px;

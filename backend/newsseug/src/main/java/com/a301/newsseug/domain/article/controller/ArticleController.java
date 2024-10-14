@@ -49,7 +49,7 @@ public class ArticleController {
             @RequestParam(required = false, defaultValue = "0", value = "pageNumber") int pageNumber,
             @RequestParam(required = false, defaultValue = "ALL", value = "filter") String filter
     ) {
-        return ResponseUtil.ok(Result.of(articleService.getTodayArticleListByCategory(filter, pageNumber)));
+        return ResponseUtil.ok(Result.of(articleService.getTodayArticlesByCategory(filter, pageNumber)));
     }
 
     @Operation(summary = "전체 기사 조회 API", description = "전체 기사 리스트를 조회한다.")
@@ -59,7 +59,7 @@ public class ArticleController {
             @RequestParam(required = false, defaultValue = "ALL", value = "filter") String filter
 
     ) {
-        return ResponseUtil.ok(Result.of(articleService.getArticleListByCategory(filter, pageNumber)));
+        return ResponseUtil.ok(Result.of(articleService.getArticlesByCategory(filter, pageNumber)));
     }
 
     @Operation(summary = "언론사별 기사 조회 API", description = "언론사별 기사 리스트를 조회한다.")

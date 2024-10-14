@@ -60,6 +60,10 @@ function Home() {
                   queryKey: section.queryKey,
                   articleList: section.articleList,
                   sliceDetails: section.sliceDetails,
+                  title:
+                    section.sectionType === 'age'
+                      ? `${getAgeGroup(memberAge)}대 추천 기사`
+                      : null,
                 },
               })
             }

@@ -5,7 +5,6 @@ import com.a301.newsseug.domain.article.model.entity.Article;
 import com.a301.newsseug.domain.article.model.entity.type.CategoryType;
 import com.a301.newsseug.domain.article.model.entity.type.ConversionStatus;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
-import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,12 +24,25 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
 
     @Query(value = "SELECT a "
             + "FROM Article a "
+            + "LEFT JOIN FETCH a.press "
             + "WHERE a.category = :category "
             + "AND a.activationStatus = :activationStatus "
             + "AND a.conversionStatus = :conversionStatus "
             + "ORDER BY RAND()")
-    Slice<Article> findAllByCategoryRandom(
+    Slice<Article> findAllByCategoryOrderByRandom(
             @Param("category") CategoryType categoryType,
+            @Param("activationStatus") ActivationStatus activationStatus,
+            @Param("conversionStatus") ConversionStatus conversionStatus,
+            Pageable pageable
+    );
+
+    @Query(value = "SELECT a "
+            + "FROM Article a "
+            + "LEFT JOIN FETCH a.press "
+            + "WHERE a.activationStatus = :activationStatus "
+            + "AND a.conversionStatus = :conversionStatus "
+            + "ORDER BY RAND()")
+    Slice<Article> findAllOrderByRandom(
             @Param("activationStatus") ActivationStatus activationStatus,
             @Param("conversionStatus") ConversionStatus conversionStatus,
             Pageable pageable
@@ -51,4 +63,5 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
         "WHERE YEAR(CURRENT_DATE) - b.birthYear BETWEEN :ageBegin AND :ageEnd AND a.category = :category " +
         "GROUP BY a ORDER BY SUM(b.viewCount) DESC")
     Slice<Article> findAllByBirthYearOrderByViewCountFiltered(@Param("ageBegin") Integer ageBegin, @Param("ageEnd") Integer ageEnd, @Param("category") CategoryType category, Pageable pageable);
+
 }

@@ -12,7 +12,15 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "histories")
+@Table(
+        name = "histories",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uniqueHistory",
+                        columnNames = {"member_id", "article_id"}
+                )
+        }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class History extends BaseEntity {
 

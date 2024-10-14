@@ -3,7 +3,7 @@ import {
   setActiveCategory,
   setActviePress,
   setArticleFrom,
-  setArticleIds,
+  setArticlesInfo,
   setFolderId,
   setKeyword,
   setSliceDetail,
@@ -21,7 +21,13 @@ function StoreArticleDispatch(
   folerId?: number | null,
   keyword?: string,
 ) {
-  dispatch(setArticleIds(articleList.map((article) => article.id)));
+  const articleInfo = articleList.map((article) => {
+    return {
+      id: article.id,
+      thumbnailUrl: article.thumbnailUrl,
+    };
+  });
+  dispatch(setArticlesInfo(articleInfo));
   dispatch(setSliceDetail(sliceDetails));
   dispatch(setArticleFrom(articleFrom));
   dispatch(

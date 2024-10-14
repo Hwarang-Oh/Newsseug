@@ -39,10 +39,8 @@ export const uploadProfileImage = async (presignedUrl: string, file: File) => {
 export const registerMember = async (
   input: UserInputProps,
 ): Promise<boolean> => {
-  console.log(input);
   try {
     const resonse = await api.put(MEMBER_URL, input);
-    console.log(input, resonse.data.data);
     return resonse.data.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {

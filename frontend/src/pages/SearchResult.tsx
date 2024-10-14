@@ -11,12 +11,11 @@ import { SearchResultInfo } from 'types/api/search';
 import { useInfiniteQuery } from 'react-query';
 import Spinner from 'components/common/Spinner';
 import ErrorSection from 'components/common/ErrorSection';
-import { Category } from 'types/api/article';
 
 function SearchResult() {
   const [searchParams] = useSearchParams();
   const keyword: string = searchParams.get('keyword') ?? '';
-  const [activeCategory, setActiveCategory] = useState<string>('ALL');
+  const [activeCategory, setActiveCategory] = useState<string>('전체');
   const [pressData, setPressData] = useState<PressDetail[]>([]);
 
   useEffect(() => {
@@ -69,6 +68,10 @@ function SearchResult() {
     <SubLayout isSearch={true}>
       <InputSection keywordText={keyword} />
       <>
+        <CategoryFilter
+          activeCategory={activeCategory}
+          setActiveCategory={setActiveCategory}
+        />
         {isLoading && <Spinner height="400px" />}
         {isError && (
           <ErrorSection height="400px" text="검색에 실패했어요...😥" />
@@ -77,10 +80,6 @@ function SearchResult() {
           !isError &&
           (allArticles.length > 0 || pressData.length > 0 ? (
             <>
-              <CategoryFilter
-                activeCategory={activeCategory}
-                setActiveCategory={setActiveCategory}
-              />
               {pressData.map((press: PressDetail) => (
                 <PressCard
                   key={press.id}

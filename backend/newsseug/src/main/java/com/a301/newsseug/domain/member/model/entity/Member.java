@@ -48,6 +48,9 @@ public class Member extends BaseEntity {
     @Embedded
     private OAuth2Details oAuth2Details;
 
+    @Setter
+    private Boolean isFirst;
+
     @Builder
     public Member(
             GenderType gender, LocalDate birth, ProviderType provider, String providerId, RoleType role
@@ -57,6 +60,7 @@ public class Member extends BaseEntity {
         this.gender = gender;
         this.birth = birth;
         this.oAuth2Details = OAuth2Details.of(provider, providerId, role);
+        this.isFirst = true;
     }
 
 }

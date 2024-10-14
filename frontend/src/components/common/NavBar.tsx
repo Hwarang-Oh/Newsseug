@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
 import {
   setActiveCategory,
   setArticleFrom,
-  setArticleIds,
+  setArticlesInfo,
   setSliceDetail,
 } from '../../redux/articleSlice';
 import { ArticleListCardProps } from 'types/common/common';
@@ -40,7 +40,15 @@ function NavBar() {
     sliceDetails: SliceDetails,
     articleFrom: string,
   ) => {
-    dispatch(setArticleIds(articleList.map((article) => article.id)));
+    console.log(articleList);
+    const articleInfo = articleList.map((article) => {
+      return {
+        id: article.id,
+        thumbnailUrl: article.thumbnailUrl,
+      };
+    });
+    console.log(articleInfo);
+    dispatch(setArticlesInfo(articleInfo));
     dispatch(setArticleFrom(articleFrom));
     dispatch(setSliceDetail(sliceDetails ?? {}));
     dispatch(setActiveCategory('all'));
@@ -57,7 +65,6 @@ function NavBar() {
           article = await fetchRandomArticles();
           articleDispatch(article.content, article.sliceDetails, 'newsseug');
         }
-        console.log(article.content[0].id);
         navigate(`/articles/${article.content[0].id}`);
       } catch (error) {
         console.error('Error fetching articles:', error);
@@ -98,7 +105,7 @@ const NavBarContainer = styled.div`
   height: 8%;
   flex-shrink: 0;
   background-color: ${({ theme }) => theme.bgColor};
-  box-shadow: 0px -4px 100px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px -10px 100px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   padding: 0;
   padding-bottom: 15px;

@@ -14,8 +14,6 @@ function ReportModal({
     setReportValue(e.target.name);
   };
 
-  // console.log(reportValue);
-
   const handleCloseClick = () => {
     onRequestClose();
   };
@@ -39,7 +37,7 @@ function ReportModal({
         onClick={(e) => e.stopPropagation()}
       >
         <ModalHeader>
-          <ModalTitle>새 폴더 생성</ModalTitle>
+          <ModalTitle>신고하기</ModalTitle>
         </ModalHeader>
         <ModalBody>
           <OptionLabel>
@@ -168,6 +166,7 @@ const ModalFooter = styled.div`
   align-self: stretch;
 `;
 const Btn = styled.button<{ $isSubmit: boolean }>`
+  cursor: pointer;
   color: ${({ theme, $isSubmit }) =>
     $isSubmit ? theme.mainColor : theme.textColor};
   font-size: 15px;
@@ -191,6 +190,7 @@ const Btn = styled.button<{ $isSubmit: boolean }>`
 `;
 
 const OptionLabel = styled.label`
+  cursor: pointer;
   display: flex;
   padding: 14px 0px;
   align-items: center;

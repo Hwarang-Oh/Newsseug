@@ -30,8 +30,7 @@ export const fetchEachArticle = async (
  */
 export const fetchLikeArticle = async (articleId: number) => {
   try {
-    const response = await api.post(`/api/v1/likes/articles/${articleId}`);
-    console.log(response.data);
+    await api.post(`/api/v1/likes/articles/${articleId}`);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 400) {
@@ -49,8 +48,7 @@ export const fetchLikeArticle = async (articleId: number) => {
  */
 export const fetchDislikeArticle = async (articleId: number) => {
   try {
-    const response = await api.delete(`/api/v1/likes/articles/${articleId}`);
-    console.log(response.data);
+    await api.delete(`/api/v1/likes/articles/${articleId}`);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 400) {
@@ -68,8 +66,7 @@ export const fetchDislikeArticle = async (articleId: number) => {
  */
 export const fetchHateArticle = async (articleId: number) => {
   try {
-    const response = await api.post(`/api/v1/hates/articles/${articleId}`);
-    console.log(response.data);
+    await api.post(`/api/v1/hates/articles/${articleId}`);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 400) {
@@ -87,8 +84,7 @@ export const fetchHateArticle = async (articleId: number) => {
  */
 export const fetchDishateArticle = async (articleId: number) => {
   try {
-    const response = await api.delete(`/api/v1/hates/articles/${articleId}`);
-    console.log(response.data);
+    await api.delete(`/api/v1/hates/articles/${articleId}`);
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 400) {
@@ -110,8 +106,8 @@ export const fetchReportArticle = async (
   reportType: string,
 ) => {
   try {
-    await api.post(`/api/v1/reports/articles/${articleId}`, {
-      params: { articleId, reportType },
+    await api.post(`/api/v1/reports/articles/${articleId}`, null, {
+      params: { reportType },
     });
   } catch (error: unknown) {
     if (isAxiosError(error)) {

@@ -19,6 +19,7 @@ import com.a301.newsseug.global.enums.SortingCriteria;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
 import com.a301.newsseug.global.model.entity.SliceDetails;
+import io.jsonwebtoken.lang.Strings;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -40,17 +41,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    private final SubscribeService subscribeService;
-    private final PressRepository pressRepository;
-    private final SubscribeRepository subscribeRepository;
-    private final FolderRepository folderRepository;
     private final MemberRepository memberRepository;
 
     @Override
     @Transactional(readOnly = true)
     public GetMemberResponse getMember(CustomUserDetails userDetails) {
-        Member loginMember = userDetails.getMember();
-        return GetMemberResponse.of(loginMember);
+        return GetMemberResponse.of(userDetails.getMember());
     }
 
     @Override
@@ -58,94 +54,25 @@ public class MemberServiceImpl implements MemberService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         Member loginMember = userDetails.getMember();
+        loginMember = memberRepository.getOrThrow(loginMember.getOAuth2Details().getProviderId());
 
-        if (Objects.nonNull(request.birth())) {
+        if (Strings.hasText(request.birth())) {
             loginMember.setBirth(LocalDate.parse(request.birth(), formatter));
         }
 
-        if (Objects.nonNull(request.gender())) {
+        if (Strings.hasText(request.gender())) {
             loginMember.setGender(GenderType.convertToEnum(request.gender()));
         }
 
-        if (Objects.nonNull(request.nickname())) {
+        if (Strings.hasText(request.nickname())) {
             loginMember.setNickname(request.nickname());
         }
 
-        if (Objects.nonNull(request.profileImageUrl())) {
+        if (Strings.hasText(request.profileImageUrl())) {
             loginMember.setProfileImageUrl(request.profileImageUrl());
         }
 
-        memberRepository.save(loginMember);
-
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<GetPressResponse> getPressByMember(CustomUserDetails userDetails) {
-
-        Member loginMember = userDetails.getMember();
-        List<Subscribe> subscribes = subscribeService.getSubscribeByMember(loginMember);
-
-        return GetPressResponse.fromSubscribe(
-                subscribes
-        );
-
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public SlicedResponse<List<GetMemberFolderResponse>> getFoldersByMember(CustomUserDetails userDetails, int pageNumber) {
-
-        Pageable pageable = PageRequest.of(
-                pageNumber,
-                10,
-                Sort.by(Sort.Direction.DESC, SortingCriteria.UPDATE_AT.getValue())
-        );
-
-        Member loginMember = userDetails.getMember();
-        Slice<Folder> sliced = folderRepository.findAllByMemberAndActivationStatus(loginMember, ActivationStatus.ACTIVE, pageable);
-
-        return SlicedResponse.of(
-                SliceDetails.of(sliced.getNumber(), sliced.isFirst(), sliced.hasNext()),
-                GetMemberFolderResponse.of(sliced.getContent())
-        );
-
-    }
-
-    @Override
-    public void subscribe(CustomUserDetails userDetails, Long pressId) {
-
-        Member loginMember = userDetails.getMember();
-        Press press = pressRepository.getOrThrow(pressId);
-        Optional<Subscribe> subscribe = subscribeRepository.findByMemberAndPress(loginMember, press);
-
-        if (subscribe.isPresent()) {
-            subscribe.get().active();
-            press.incrementSubscribeCount();
-            return;
-        }
-
-        subscribeRepository.save(
-                Subscribe.builder()
-                        .member(loginMember)
-                        .press(press)
-                        .build()
-        );
-
-        press.incrementSubscribeCount();
-
-    }
-
-    @Override
-    public void unsubscribe(CustomUserDetails userDetails, Long pressId) {
-
-        Member loginMember = userDetails.getMember();
-        Press press = pressRepository.getOrThrow(pressId);
-        Subscribe subscribe = subscribeRepository.findByMemberAndPress(loginMember, press)
-                .orElseThrow(NotSubscribePressException::new);
-
-        subscribe.inactive();
-        press.decrementSubscribeCount();
+        loginMember.setIsFirst(false);
 
     }
 

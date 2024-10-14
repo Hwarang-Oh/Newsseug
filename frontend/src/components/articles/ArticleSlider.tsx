@@ -1,10 +1,11 @@
-import styled, { keyframes } from 'styled-components';
-import { Mousewheel, Keyboard, History } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Swiper as SwiperType } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/mousewheel';
+import styled from 'styled-components';
+import Spinner from '../common/Spinner';
 import ArticleVideo from 'components/articles/ArticleVideo';
+import SwiperCore, { Swiper as SwiperType } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Mousewheel, Keyboard, History } from 'swiper/modules';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -12,36 +13,38 @@ import { RootState } from '../../redux/index';
 import { useLoadNextPage } from 'hooks/useLoadNextPage';
 import { ArticleVideo as ArticleVideoType } from 'types/api/articleVideo';
 import { fetchEachArticle } from 'apis/articleVideoApi';
-import Spinner from '../common/Spinner';
+
+interface ArticleInfoType {
+  id: number;
+  thumbnailUrl: string;
+}
 
 function ArticleSlider() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [activeIndex, setActiveIndex] = useState(0); // 현재 슬라이드 인덱스 상태 추가
   const swiperRef = useRef<SwiperCore | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [videoList, setVideoList] = useState<{
-    [id: number]: ArticleVideoType;
-  }>({});
+
+  const [videoData, setVideoData] = useState<ArticleVideoType | null>(null);
 
   const handleSlideChange = (swiper: SwiperType) => {
-    setActiveIndex(swiper.activeIndex); // 현재 슬라이드 인덱스 업데이트
+    setActiveIndex(swiper.activeIndex);
   };
 
-  useEffect(() => {
-    const setHeight = () => {
-      const containerElement = document.getElementById('container');
-      if (containerElement) {
-        containerElement.style.height = `${window.innerHeight}px`;
-      }
-    };
+  // useEffect(() => {
+  //   const setHeight = () => {
+  //     const containerElement = document.getElementById('container');
+  //     if (containerElement) {
+  //       containerElement.style.height = `${window.innerHeight}px`;
+  //     }
+  //   };
 
-    setHeight();
-    window.addEventListener('resize', setHeight);
+  //   setHeight();
+  //   window.addEventListener('resize', setHeight);
 
-    return () => {
-      window.removeEventListener('resize', setHeight);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('resize', setHeight);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (swiperRef.current) {
@@ -49,32 +52,24 @@ function ArticleSlider() {
     }
   }, [isModalOpen]);
 
-  const { articleIds, sliceDetails } = useSelector(
+  const { sliceDetails, articlesInfo } = useSelector(
     (state: RootState) => state.articles,
   );
   const { articleId } = useParams<{ articleId: string }>();
 
-  const slideIndex = articleIds.findIndex(
-    (id: number) => id === Number(articleId),
+  const slideIndex = articlesInfo.findIndex(
+    (article: ArticleInfoType) => article.id === Number(articleId),
   );
 
+  const [activeIndex, setActiveIndex] = useState(slideIndex);
   const loadNextPage = useLoadNextPage();
 
   useEffect(() => {
     setIsLoading(true);
-    const startIndex = Math.max(activeIndex - 1, 0);
-    const endIndex = Math.min(activeIndex + 1, articleIds.length - 1);
-    const idsToFetch = articleIds.slice(startIndex, endIndex + 1);
-    const fetchedVideos: { [id: number]: ArticleVideoType } = {};
 
     const fetchVideos = async () => {
-      const fetchPromises = idsToFetch.map(async (id: number) => {
-        const videoData = await fetchEachArticle(id);
-        fetchedVideos[id] = videoData;
-      });
-
-      await Promise.all(fetchPromises);
-      setVideoList(fetchedVideos);
+      const video = await fetchEachArticle(articlesInfo[activeIndex].id);
+      setVideoData(video);
       setIsLoading(false);
     };
 
@@ -96,40 +91,66 @@ function ArticleSlider() {
         }}
         initialSlide={slideIndex}
         onSwiper={(swiper: SwiperType) => {
-          swiperRef.current = swiper; // Swiper 인스턴스 저장
+          swiperRef.current = swiper;
         }}
         onSlideChange={(swiper: SwiperType) => {
-          handleSlideChange(swiper); // 슬라이드 변경 시 현재 인덱스 업데이트
+          handleSlideChange(swiper);
           if (
-            swiper.activeIndex >= articleIds.length - 3 &&
+            swiper.activeIndex >= articlesInfo.length - 3 &&
             sliceDetails.hasNext
           ) {
             loadNextPage();
           }
         }}
       >
-        {articleIds.map((articleId: number, index: number) => {
-          console.log(isLoading, videoList);
-          const video = videoList[articleId];
-          if (isLoading) {
+        {articlesInfo.map((articleInfo: ArticleInfoType, index: number) => {
+          const startIndex = Math.max(activeIndex - 1);
+          const endIndex = Math.min(activeIndex + 1);
+          if (isLoading || !videoData) {
             return (
-              <SwiperSlide key={articleId} data-history={articleId}>
+              <SwiperSlide
+                key={`${articleId}-${index}`}
+                data-history={articleInfo.id}
+              >
                 <ModalOverlay>
                   <Spinner height="100vh" />
                 </ModalOverlay>
               </SwiperSlide>
             );
           }
-          if (!video) {
-            return <SwiperSlide key={articleId} data-history={articleId} />;
+
+          if (index === startIndex || index === endIndex) {
+            return (
+              <SwiperSlide
+                key={`${articleId}-${index}`}
+                data-history={articleInfo.id}
+              >
+                <ImgContainer>
+                  <Thumnail src={articleInfo.thumbnailUrl} />
+                </ImgContainer>
+              </SwiperSlide>
+            );
           }
-          console.log(video.press.isSubscribed, articleId);
+
+          if (index !== activeIndex) {
+            return (
+              <SwiperSlide
+                key={`${articleId}-${index}`}
+                data-history={articleInfo.id}
+              />
+            );
+          }
+
           return (
-            <SwiperSlide key={video.article.id} data-history={video.article.id}>
+            <SwiperSlide
+              key={`${articleId}-${index}`}
+              data-history={articleInfo.id}
+            >
               <ArticleVideo
-                articleInfo={video}
+                articleInfo={videoData}
+                thumbnailUrl={articleInfo.thumbnailUrl}
                 setIsModalOpen={setIsModalOpen}
-                isPlaying={index === activeIndex} // 현재 슬라이드만 재생
+                isPlaying={index === activeIndex}
               />
             </SwiperSlide>
           );
@@ -167,4 +188,25 @@ const ModalOverlay = styled.div`
   box-shadow:
     100px 0 100px -50px ${({ theme }) => theme.textColor + '25'},
     -100px 0 100px -50px ${({ theme }) => theme.textColor + '25'};
+`;
+
+const ImgContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  max-width: 500px;
+  z-index: 1;
+  position: relative;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+`;
+
+const Thumnail = styled.img`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100vh;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
 `;

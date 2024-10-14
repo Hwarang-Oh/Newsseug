@@ -183,7 +183,7 @@ const PressName = styled.p`
 
 const PressSubscribe = styled.button<{ $isSubscribed: boolean }>`
   background-color: ${({ $isSubscribed, theme }) =>
-    $isSubscribed ? theme.relaxColor.main : theme.mainColor};
+    $isSubscribed ? '#807E7E' : theme.mainColor};
   border: none;
   color: #fff;
 

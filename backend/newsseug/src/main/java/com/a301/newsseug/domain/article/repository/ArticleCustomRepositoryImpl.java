@@ -1,14 +1,16 @@
 package com.a301.newsseug.domain.article.repository;
 
 import static com.a301.newsseug.domain.article.model.entity.QArticle.article;
+import static com.a301.newsseug.domain.article.model.entity.QBirthYearViewCount.birthYearViewCount;
 
 import com.a301.newsseug.domain.article.model.entity.Article;
-import com.a301.newsseug.domain.article.model.entity.QArticle;
 import com.a301.newsseug.domain.article.model.entity.type.CategoryType;
 import com.a301.newsseug.domain.article.model.entity.type.ConversionStatus;
 import com.a301.newsseug.domain.press.model.entity.Press;
 import com.a301.newsseug.global.model.entity.ActivationStatus;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.PathBuilder;
@@ -37,7 +39,7 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
             String filter, LocalDateTime startOfDay, LocalDateTime endOfDay, Pageable pageable
     ) {
         BooleanBuilder builder = createBaseCondition(filter);
-        builder.and(article.createdAt.between(startOfDay, endOfDay));
+        builder.and(article.sourceCreatedAt.between(startOfDay, endOfDay));
         return executeQuery(builder, pageable);
     }
 
@@ -66,6 +68,35 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
         BooleanBuilder builder = createBaseCondition(filter);
         builder.and(article.title.containsIgnoreCase(keyword));
         return executeQuery(builder, pageable);
+    }
+
+    public Slice<Article> findAllByBirthYearOrderByViewCount(Integer ageBegin, Integer ageEnd, String category, Pageable pageable) {
+
+        BooleanBuilder builder = createBaseCondition(category);
+        builder.and(
+                Expressions
+                        .numberTemplate(Integer.class, "YEAR(CURRENT_DATE) - {0}", birthYearViewCount.birthYear)
+                        .between(ageBegin, ageEnd)
+        );
+
+        List<Article> content = jpaQueryFactory
+                .selectFrom(article)
+                .join(article.press).fetchJoin()
+                .join(birthYearViewCount).on(birthYearViewCount.article.eq(article))
+                .where(builder)
+                .orderBy(new OrderSpecifier<>(Order.DESC, birthYearViewCount.viewCount))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+
+        boolean hasNext = content.size() > pageable.getPageSize();
+
+        if (hasNext) {
+            content.remove(content.size() - 1);
+        }
+
+        return new SliceImpl<>(content, pageable, hasNext);
+
     }
 
     @Override
@@ -110,6 +141,7 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
                 .selectFrom(article)
                 .join(article.press).fetchJoin()
                 .where(builder)
+                .orderBy(new OrderSpecifier<>(Order.DESC, article.sourceCreatedAt))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();

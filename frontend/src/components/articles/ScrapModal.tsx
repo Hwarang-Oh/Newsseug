@@ -1,13 +1,13 @@
-import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { motion, useAnimation, PanInfo } from 'framer-motion';
-import scrapPlusIcon from 'assets/scrapPlusIcon.svg';
-import { ScrapModalProps } from 'types/props/articleVideo';
-import { FolderInfo } from 'types/api/folder';
-import { useQuery } from 'react-query';
-import { getFolderList, saveArticleToFolder } from 'apis/folderApi';
 import Spinner from 'components/common/Spinner';
+import scrapPlusIcon from 'assets/scrapPlusIcon.svg';
 import ErrorSection from 'components/common/ErrorSection';
+import { useQuery } from 'react-query';
+import { FolderInfo } from 'types/api/folder';
+import { useState, useRef, useEffect } from 'react';
+import { ScrapModalProps } from 'types/props/articleVideo';
+import { motion, useAnimation, PanInfo } from 'framer-motion';
+import { getFolderList, saveArticleToFolder } from 'apis/folderApi';
 
 function ScrapModal({
   articleId,
@@ -27,7 +27,8 @@ function ScrapModal({
   const {
     data: folderList,
     isLoading,
-    error,
+    isError,
+    // error,
   } = useQuery<FolderInfo[]>(['folderList'], () => getFolderList(), {
     onSuccess: (data) => {
       const initialCheckedItems = data.map((folder) => ({
@@ -152,13 +153,17 @@ function ScrapModal({
         <ContentWrapper ref={contentRef}>
           <ModalBody>
             {isLoading && <Spinner height="200px" />}
-            {error ? (
+            {isError && (
               <ErrorSection
                 height="200px"
                 text="폴더 목록을 불러오는 데 실패했어요...😥"
               />
+            )}
+            {!isLoading && !isError && folderList?.length === 0 ? (
+              <ErrorSection height="200px" text="생성된 폴더가 없습니다." />
             ) : null}
             {Array.isArray(folderList) &&
+              folderList.length > 0 &&
               folderList.map((folder) => (
                 <ScrapItem
                   key={folder.id}

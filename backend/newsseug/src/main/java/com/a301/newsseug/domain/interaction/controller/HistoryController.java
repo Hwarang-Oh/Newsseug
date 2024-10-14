@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.a301.newsseug.domain.auth.model.entity.CustomUserDetails;
-import com.a301.newsseug.domain.interaction.model.dto.HistoryDto;
+import com.a301.newsseug.domain.interaction.model.dto.GetHistoryResponse;
 import com.a301.newsseug.domain.interaction.service.HistoryService;
 import com.a301.newsseug.global.model.dto.Result;
 import com.a301.newsseug.global.model.dto.SlicedResponse;
@@ -30,7 +30,10 @@ public class HistoryController {
 
 	@GetMapping
 	@Operation(summary = "사용자 시청 기록", description = "사용자가 시청한 숏폼 목록을 반환하는 API")
-	public ResponseEntity<Result<SlicedResponse<List<HistoryDto>>>> getMemberHistories(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("page") int page) {
+	public ResponseEntity<Result<SlicedResponse<List<GetHistoryResponse>>>> getMemberHistories(
+			@AuthenticationPrincipal CustomUserDetails userDetails,
+			@RequestParam(name = "page", defaultValue = "0") int page
+	) {
 		return ResponseUtil.ok(Result.of(historyService.getHistories(userDetails, page)));
 	}
 

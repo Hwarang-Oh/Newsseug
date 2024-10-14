@@ -2,7 +2,7 @@ package com.a301.newsseug.domain.interaction.model.dto.response;
 
 import java.util.List;
 
-import com.a301.newsseug.domain.interaction.model.dto.HistoryDto;
+import com.a301.newsseug.domain.interaction.model.dto.GetHistoryResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -13,11 +13,11 @@ import lombok.Builder;
 public record ListHistoryResponse(
 
 	@Schema(name = "숏폼 목록")
-	List<HistoryDto> histories
+	List<GetHistoryResponse> histories
 
 ) {
 
-	public static ListHistoryResponse of(List<HistoryDto> histories) {
+	public static ListHistoryResponse of(List<GetHistoryResponse> histories) {
 		return ListHistoryResponse.builder()
 			.histories(histories)
 			.build();
