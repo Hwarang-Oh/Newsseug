@@ -222,7 +222,7 @@ def create_image_clip(images: list[np.ndarray], durations: list[float]):
         num_frames = int(duration * fps)
         frames.extend([image] * num_frames)
 
-    video_clip = mp.ImageSequenceClip([cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) for frame in frames], fps=fps)
+    video_clip = mp.ImageSequenceClip(frames, fps=fps)
 
     return video_clip
 
