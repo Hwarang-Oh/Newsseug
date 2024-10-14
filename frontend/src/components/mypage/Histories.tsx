@@ -56,28 +56,6 @@ function Histories() {
         ) : (
           <ErrorSection height={height} text="시청 기록이 없습니다." />
         ))}
-
-      {myPageHistory?.content ? (
-        Array.isArray(myPageHistory?.content) &&
-        myPageHistory.content.map(
-          (history: ArticleListCardProps, index: number) => {
-            return (
-              <ArticleListCard
-                key={`${history.id}-${index}`}
-                thumbnailUrl={history.thumbnailUrl}
-                title={history.title}
-                viewCount={history.viewCount}
-                pressName={history.pressName}
-                id={history.id}
-                width={width}
-                height={height}
-              />
-            );
-          },
-        )
-      ) : (
-        <ErrorSection height={height} text="시청 기록이 없습니다." />
-      )}
     </Wrapper>
   );
 }
