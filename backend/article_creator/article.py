@@ -122,18 +122,18 @@ Article:
 
 Example:
 [
-  {
+  {{
     "scene": 1,
     "description": "A young man dreams of becoming an artist in the bustling city.",
     "dialogue_en": "He is filled with hope but knows the road ahead will be tough.",
     "dialogue_ko": "그는 희망으로 가득 차 있지만, 앞길이 험난할 것임을 알고 있다."
-  },
-  {
+  }},
+  {{
     "scene": 2,
     "description": "The man meets a diverse group of artists who inspire him.",
     "dialogue_en": "This is the beginning of his artistic journey.",
     "dialogue_ko": "이것은 그의 예술 여정의 시작이다."
-  }
+  }}
 ]
 """
     try:
