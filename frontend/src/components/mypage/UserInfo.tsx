@@ -45,7 +45,7 @@ function UserInfo() {
               <LogoutBtn onClick={handleLogOut}>로그아웃</LogoutBtn>
               <DarkModeBtn onClick={handleDarkMode}>
                 <DarkModeText>
-                  {!isDarkMode ? '다크 모드' : '라이트 모드'}
+                  {!isDarkMode ? '다크모드' : '라이트모드'}
                 </DarkModeText>
               </DarkModeBtn>
             </SubBox>
