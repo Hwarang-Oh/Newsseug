@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS articles (
     hate_count        BIGINT  NOT NULL DEFAULT 0,
     like_count        BIGINT  NOT NULL DEFAULT 0,
     source_created_at TIMESTAMP NULL,
-    view_count        BIGINT  NOT NULL,
+    view_count        BIGINT  NOT NULL DEFAULT 0,
     content_url       VARCHAR(255) NULL,
     source_url        VARCHAR(255)  NOT NULL,
     thumbnail_url     VARCHAR(255) NULL,
