@@ -51,8 +51,22 @@
 ### **기사 원문 크롤링 기능**
 
 ### **기사 생성 기능**
+#### 프롬프트 엔지니어링
+![prompt](./etc/asset/prompt.png)
+#### 기사 원문으로 동영상 시나리오 생성
+![prompt](./etc/asset/scenario.png)
 
+#### 기사 원문으로 동영상 이미지 생성
+![prompt_image_before_after](./etc/asset/prompt_before_after.png)
 
+#### 시나리오를 통해 나레이션 생성
+![speech](./etc/asset/speech.png)
+
+#### 나레이션 길이만큼 이미지 복사
+![image_copy](./etc/asset/image_copy.png)
+
+#### 동영상 생성
+![create_video](./etc/asset/create_video.png)
 ---
 
 ## 🧑🏻 팀원
