@@ -143,10 +143,9 @@
 | :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Collaboration | <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white" alt="Notion"/> <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" alt="Swagger"/> <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" alt="Figma"/> |
 
-## Architecture
-
+## 산출물
+### Architecture
 ![architecture](./etc/asset/Newsseug%20Architecture.png)
 
-## ERD
-
+### ERD
 ![ERD](./etc/asset/ERD.png)
