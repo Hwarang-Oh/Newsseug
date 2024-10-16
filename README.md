@@ -22,32 +22,32 @@
 
 -   카테고리 기반 추천 기사 : 사용자의 시청 기록을 바탕으로 가장 최근에 시정한 카테고리에 해당하는 기사를 제공합니다.
 
-| 오늘의 기사 | 연령별 추천 기사 | 전체 기사 | 카테고리 기반 추천 기사                            |
-| :---: | :---: | :---: | :---: |
+|                 오늘의 기사                  |               연령별 추천 기사               |                  전체 기사                   |              카테고리 기반 추천 기사               |
+| :------------------------------------------: | :------------------------------------------: | :------------------------------------------: | :------------------------------------------------: |
 | <img width="180" src="./etc/asset/home.gif"> | <img width="180" src="./etc/asset/home.gif"> | <img width="180" src="./etc/asset/home.gif"> | <img width="180" src="./etc/asset/user_video.gif"> |
 
 ### 💼 언론사 구독 기능
 
 사용자가 관심 있는 언론사를 구독하여 해당 언론사의 기사 숏폼을 모아볼 수 있습니다.
 
-| 언론사 구독                                       | 구독한 언론사 기사 조회                           |
-| :---: | :---: |
+|                    언론사 구독                    |              구독한 언론사 기사 조회              |
+| :-----------------------------------------------: | :-----------------------------------------------: |
 | <img width="180" src="./etc/asset/subscribe.gif"> | <img width="180" src="./etc/asset/subscribe.gif"> |
 
 ### 📂 북마크 기능
 
-사용자가 보고 싶은 기사를 북마크할 수 있는 기능으로,'저장하기' 버튼을 눌러 자신이 만든 폴더에 숏폼 영상을 저장하여 언제든지 쉽게 다시 확인할 수 있습니다.
+사용자가 보고 싶은 기사를 북마크할 수 있는 기능으로, '저장하기' 버튼을 눌러 자신이 만든 폴더에 숏폼 영상을 저장하여 언제든지 쉽게 다시 확인할 수 있습니다.
 
-| 북마크                                         | 조회                                           |
-| :---: | :---: |
+|                     북마크                     |                      조회                      |
+| :--------------------------------------------: | :--------------------------------------------: |
 | <img width="180" src="./etc/asset/scrap1.gif"> | <img width="180" src="./etc/asset/scrap2.gif"> |
 
 ### 🔍 검색 기능
 
 키워드를 입력하면 관련된 기사와 언론사를 제공합니다.
 
-| 검색                                           |
-| :---: |
+|                      검색                      |
+| :--------------------------------------------: |
 | <img width="180" src="./etc/asset/search.gif"> |
 
 ## **🎥 숏폼 생성 과정**
@@ -69,16 +69,19 @@
 <img width="600" src="./etc/asset/scenario.png">
 
 ### 이미지 생성
+
 프롬프팅 엔지니어링을 수행한 결과 다음 사진과 같으며, 생성한 시나리오의 **description**을 바탕으로 이미지를 생성합니다.
 
 <img width="600" src="./etc/asset/prompt_before_after.png">
 
 ### 나레이션 생성
+
 생성한 시나리오의 **dialogue**을 바탕으로 나레이션을 생성합니다.
 
 <img width="600" src="./etc/asset/speech.png">
 
 ### 동영상 생성
+
 위에서 도출한 이미지 배열과 나레이션을 합쳐지면 숏폼 영상을 제작 완료합니다.
 
 <img width="600" src="./etc/asset/create_video.png">
@@ -87,7 +90,7 @@
 
 ### Client
 
-|                                              김주연                                                    |                                                    김민경                                                     |                                                       오화랑                                                        |
+|                                                   김주연                                                    |                                                    김민경                                                     |                                                       오화랑                                                        |
 | :---------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------: |
 | <a href="https://github.com/izodam"><img src="https://avatars.githubusercontent.com/izodam" width=160/></a> | <a href="https://github.com/mkkim68"><img src="https://avatars.githubusercontent.com/mkkim68" width=160/></a> | <a href="https://github.com/Hwarang-Oh"><img src="https://avatars.githubusercontent.com/Hwarang-Oh" width=160/></a> |
 |                                     [izodam](https://github.com/izodam)                                     |                                     [mkkim68](https://github.com/mkkim68)                                     |                                     [Hwarang-Oh](https://github.com/Hwarang-Oh)                                     |
@@ -114,8 +117,8 @@
 
 ### 🖥️ Server
 
-| 역할                 | 종류                                                                                                                                                                                                                   |
-| :------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 역할                 | 종류                                                                                                                                                                                                                                                                                                                                                                          |
+| :------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
 | Framework            | <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"/>                                                                                                                                                                                                                                                               |
 | Programming Language | <img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white"/>                                                                                                                                                                                                                                                                 |
 | Database             | <img src="https://img.shields.io/badge/mysql-005C84?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL"/> <img src="https://img.shields.io/badge/redis-FF4438?style=for-the-badge&logo=redis&logoColor=white" alt="Redis"/> <img src="https://img.shields.io/badge/elasticsearch-005571?style=for-the-badge&logo=elasticsearch&logoColor=white" alt="ElasticSearch"/> |
@@ -126,8 +129,8 @@
 
 ### 🖥️ Data
 
-| 역할                 | 종류                                                                                                                                                                                                                   |
-| :------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 역할                 | 종류                                                                                                                                                                                                      |
+| :------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
 | Framework            | <img src="https://img.shields.io/badge/fastapi-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>                                                                                                 |
 | Programming Language | <img src="https://img.shields.io/badge/python-3776AB.svg?style=for-the-badge&logo=python&logoColor=white"/>                                                                                               |
 | Cloud                | <img src="https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=Amazon%20EC2&logoColor=white">                                                                                        |
