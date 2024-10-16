@@ -75,7 +75,7 @@
 |김주연|김민경|오화랑|
 | :-: | :-: | :-: |
 <a href="https://github.com/izodam"><img src="https://avatars.githubusercontent.com/izodam" width=160/></a> | <a href="https://github.com/mkkim68"><img src="https://avatars.githubusercontent.com/mkkim68" width=160/></a> | <a href="https://github.com/Hwarang-Oh"><img src="https://avatars.githubusercontent.com/Hwarang-Oh" width=160/></a> |
-|[izodam](https://github.com/izodam)|[Hwarang-Oh](https://github.com/mkkim68)|[mimiminz](https://github.com/Hwarang-Oh)|
+|[izodam](https://github.com/izodam)|[mkkim68](https://github.com/mkkim68)|[Hwarang-Oh](https://github.com/Hwarang-Oh)|
 
 ### Server
 |박근석|박상후|박찬규|
