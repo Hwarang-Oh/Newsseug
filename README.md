@@ -53,7 +53,23 @@
 
 각 언론사에 보도된 뉴스 기사를 다음과 같은 과정을 통해 숏폼 영상으로 제작하여 사용자에게 제공합니다.
 
-### ✂️ 크롤링
+### 🐱‍🏍 주요 기능 흐름
+
+<img width="600" src="./etc/asset/functional-flow-chart.png">
+
+### 🕷 크롤링
+
+BeautifulSoup4 라이브러리를 활용해 각 언론사별 크롤러를 구현했습니다.
+
+<img width="600" src="./etc/asset/crawler-compare.png">
+
+### 🌐 배포 환경
+
+크롤러는 AWS Lambda 를 통한 서버리스 환경에서 동작하고 있습니다.
+
+이러한 설계는 다음과 같은 요약을 토대로 선택했습니다.
+
+<img width="600" src="./etc/asset/server-less-compare.png">
 
 ### ⚙️ 프롬프트 엔지니어링
 
