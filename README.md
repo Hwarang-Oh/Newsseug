@@ -155,4 +155,4 @@ BeautifulSoup4 라이브러리를 활용해 각 언론사별 크롤러를 구현
 |  |  |
 | :--: | ---: |
 | Architecture | <img width="700" src="./etc/asset/Newsseug%20Architecture.png"> |
-| ERD          | <img width="700" src="./etc/asset/erd.png"> |
+| ERD          | <img width="700" src="./etc/asset/ERD.png"> |
