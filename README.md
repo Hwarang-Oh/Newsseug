@@ -31,7 +31,7 @@
 
 |                    언론사 구독                    |              구독한 언론사 기사 조회              |
 | :-----------------------------------------------: | :-----------------------------------------------: |
-| <img width="180" src="./etc/asset/subscribe.gif"> | <img width="180" src="./etc/asset/subscribe.gif"> |
+| <img width="180" src="./etc/asset/subscribe-1.gif"> | <img width="180" src="./etc/asset/subscribe-2.gif"> |
 
 ### 📂 북마크 기능
 
