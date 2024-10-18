@@ -30,9 +30,9 @@
 
 사용자가 관심 있는 언론사를 구독하여 해당 언론사의 기사 숏폼을 모아볼 수 있습니다.
 
-|                    언론사 구독                    |              구독한 언론사 기사 조회              |
-| :-----------------------------------------------: | :-----------------------------------------------: |
-| <img width="180" src="./etc/asset/subscribe.gif"> | <img width="180" src="./etc/asset/subscribe.gif"> |
+|                     언론사 구독                     |              구독한 언론사 기사 조회              |
+| :-------------------------------------------------: | :-----------------------------------------------: |
+| <img width="180" src="./etc/asset/subscribe-1.gif"> | <img width="180" src="./etc/asset/subscribe-2.gif"> |
 
 ### 📂 북마크 기능
 
@@ -117,8 +117,8 @@
 
 ### 🖥️ API Server
 
-| 역할                 | 종류                                                                                                                                                                                                                   |
-| :------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 역할                 | 종류                                                                                                                                                                                                                                                                                                                                                                          |
+| :------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
 | Framework            | <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"/>                                                                                                                                                                                                                                                               |
 | Programming Language | <img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white"/>                                                                                                                                                                                                                                                                 |
 | Database             | <img src="https://img.shields.io/badge/mysql-005C84?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL"/> <img src="https://img.shields.io/badge/redis-FF4438?style=for-the-badge&logo=redis&logoColor=white" alt="Redis"/> <img src="https://img.shields.io/badge/elasticsearch-005571?style=for-the-badge&logo=elasticsearch&logoColor=white" alt="ElasticSearch"/> |
@@ -129,8 +129,8 @@
 
 ### 🖥️ Short Form Server
 
-| 역할                 | 종류                                                                                                                                                                                                                   |
-| :------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 역할                 | 종류                                                                                                                                                                                                      |
+| :------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
 | Framework            | <img src="https://img.shields.io/badge/fastapi-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>                                                                                                 |
 | Programming Language | <img src="https://img.shields.io/badge/python-3776AB.svg?style=for-the-badge&logo=python&logoColor=white"/>                                                                                               |
 | Cloud                | <img src="https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=Amazon%20EC2&logoColor=white">                                                                                        |
@@ -144,8 +144,11 @@
 | Collaboration | <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white" alt="Notion"/> <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" alt="Swagger"/> <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" alt="Figma"/> |
 
 ## 산출물
+
 ### Architecture
+
 ![architecture](./etc/asset/Newsseug%20Architecture.png)
 
 ### ERD
+
 ![ERD](./etc/asset/ERD.png)
