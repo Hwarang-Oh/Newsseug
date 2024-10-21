@@ -1,8 +1,0 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "io.ssafy.p.j11a301.twa",
-        "sha256_cert_fingerprints": ["17:61:93:7C:7F:32:B6:CA:85:E7:5D:92:00:06:EF:B6:7E:3C:46:C2:E5:29:95:70:B1:FD:7F:5A:44:98:F5:21"]
-      }
-    }]
