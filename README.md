@@ -13,17 +13,18 @@
 
 숏폼으로 제작한 뉴스 기사를 오늘의 뉴스, 연령별 추천 기사, 전체 기사, 언론사별 기사, 카테고리 기반 추천을 통해 사용자에게 제공합니다.
 
--   오늘의 기사 : 오늘 발행된 최신 뉴스를 숏폼 영상으로 제공하여 사용자들이 최신 뉴스를 빠르게 확인할 수 있습니다.
+-   일반 기사 조회
+    -   오늘의 기사 : 오늘 발행된 최신 뉴스를 숏폼 영상으로 제공하여 사용자들이 최신 뉴스를 빠르게 확인할 수 있습니다.
 
--   연령별 추천 기사 : 사용자의 연령대에 맞춰 가장 많이 조회된 뉴스를 추천해 주며, 연령대별로 적합한 콘텐츠를 제공합니다.
+    -   연령별 추천 기사 : 사용자의 연령대에 맞춰 가장 많이 조회된 뉴스를 추천해 주며, 연령대별로 적합한 콘텐츠를 제공합니다.
 
--   전체 기사 : 전체 뉴스 기사를 카테고리 필터를 통해 원하는 분류의 기사를 쉽게 탐색할 수 있습니다.
+    -   전체 기사 : 전체 뉴스 기사를 카테고리 필터를 통해 원하는 분류의 기사를 쉽게 탐색할 수 있습니다.
 
 -   카테고리 기반 추천 기사 : 사용자의 시청 기록을 바탕으로 가장 최근에 시정한 카테고리에 해당하는 기사를 제공합니다.
 
-|                 오늘의 기사                  |               연령별 추천 기사               |                  전체 기사                   |              카테고리 기반 추천 기사               |
-| :------------------------------------------: | :------------------------------------------: | :------------------------------------------: | :------------------------------------------------: |
-| <img width="250" src="./etc/asset/home.gif"> | <img width="250" src="./etc/asset/home.gif"> | <img width="250" src="./etc/asset/home.gif"> | <img width="250" src="./etc/asset/user_video.gif"> |
+|    기사 조회        |              카테고리 기반 추천 기사               |
+| :------------------------------------------: | :------------------------------------------------: |
+| <img width="250" src="./etc/asset/home.gif"> | <img width="250" src="./etc/asset/user_video.gif"> |
 
 ### 💼 언론사 구독 기능
 
@@ -119,6 +120,8 @@ BeautifulSoup4 라이브러리를 활용해 각 언론사별 크롤러를 구현
 
 ## ⚒️ 기술 스택
 
+## ⚒️ 기술 스택
+
 ### 🖥️ Client
 
 |  |  |
@@ -132,35 +135,28 @@ BeautifulSoup4 라이브러리를 활용해 각 언론사별 크롤러를 구현
 
 ### 🖥️ Server
 
-| 역할                 | 종류                                                                                                                                                                                                                   |
-| :------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Framework            | <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"/>                                                                                                                                                                                                                                                               |
-| Programming Language | <img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white"/>                                                                                                                                                                                                                                                                 |
-| Database             | <img src="https://img.shields.io/badge/mysql-005C84?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL"/> <img src="https://img.shields.io/badge/redis-FF4438?style=for-the-badge&logo=redis&logoColor=white" alt="Redis"/> <img src="https://img.shields.io/badge/elasticsearch-005571?style=for-the-badge&logo=elasticsearch&logoColor=white" alt="ElasticSearch"/> |
-| Cloud                | <img src="https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=Amazon%20EC2&logoColor=white"> <img src="https://img.shields.io/badge/Amazon%20S3-569A31?style=for-the-badge&logo=Amazon%20S3&logoColor=white">                                                                                                                                           |
-| DevOps               | <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white" alt="Docker"/>                                                                                                                                                                                                                                                          |     |
-| Version Control      | <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"/> <img src="https://img.shields.io/badge/gitLAB-fc6d26?style=for-the-badge&logo=gitlab&logoColor=white"/>                                                                                                                                                                     |
-| IDE                  | <img src="https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white"/>                                                                                                                                                                                                                                                      |
+|  |  |
+| :-------------------: | :-------------- |
+| Framework             | <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"/> <img src="https://img.shields.io/badge/fastapi-009688?style=for-the-badge&logo=fastapi&logoColor=white"/> |
+| Language | <img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white"/> <img src="https://img.shields.io/badge/python-3776AB.svg?style=for-the-badge&logo=python&logoColor=white"/> |
+| Database              | <img src="https://img.shields.io/badge/mariadb-003545?style=for-the-badge&logo=mariadb&logoColor=white" alt="MariaDB"/> <img src="https://img.shields.io/badge/redis-FF4438?style=for-the-badge&logo=redis&logoColor=white" alt="Redis"/> |
+|Monitoring | <img src="https://img.shields.io/badge/prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white" alt="prometheus"/> <img src="https://img.shields.io/badge/grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white" alt="grafana"/>|
+| Cloud                 | <img src="https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=Amazon%20EC2&logoColor=white"> <img src="https://img.shields.io/badge/Amazon%20S3-569A31?style=for-the-badge&logo=Amazon%20S3&logoColor=white"> |
+| DevOps                | <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white" alt="Docker"> <img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white" alt="jenkins"> |  
+| AI                    |  <img src="https://img.shields.io/badge/openai-412991.svg?style=for-the-badge&logo=openai&logoColor=white"/> |
+| Crawling              |  <img src="https://img.shields.io/badge/awslambda-FF9900.svg?style=for-the-badge&logo=awslambda&logoColor=white"/> <img src="https://img.shields.io/badge/Beautiful%20Soup-000000.svg?style=for-the-badge&logoColor=white"/> |
+| Version Control       | <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"/> <img src="https://img.shields.io/badge/gitLAB-fc6d26?style=for-the-badge&logo=gitlab&logoColor=white"/> |
+| IDE                   | <img src="https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white"/> |
 
-### 🖥️ Short Form Server
+### 🖥️ Common
 
-| 역할                 | 종류                                                                                                                                                                                                                   |
-| :------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Framework            | <img src="https://img.shields.io/badge/fastapi-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>                                                                                                 |
-| Programming Language | <img src="https://img.shields.io/badge/python-3776AB.svg?style=for-the-badge&logo=python&logoColor=white"/>                                                                                               |
-| Cloud                | <img src="https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=Amazon%20EC2&logoColor=white">                                                                                        |
-| DevOps               | <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white" alt="Docker"/>                                                                                      |     |
-| Version Control      | <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"/> <img src="https://img.shields.io/badge/gitLAB-fc6d26?style=for-the-badge&logo=gitlab&logoColor=white"/> |
+|  |  |
+| :--- | :--- |
+| Collaboration | <img src="https://img.shields.io/badge/jira-0052CC?style=for-the-badge&logo=jira&logoColor=white" alt="Notion"/> <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white" alt="Notion"/> <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white" alt="Swagger"/> <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" alt="Figma"/> |
 
-## 🖥️ Common
+## 📚 산출물
+|  |  |
+| :--: | ---: |
+| Architecture | <img width="700" src="./etc/asset/Newsseug%20Architecture.png"> |
+| ERD          | <img width="700" src="./etc/asset/ERD.png"> |
 
-| 역할          | 종류                                                                                                                                                                                                                                                                                                                                                           |
-| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Collaboration | <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white" alt="Notion"/> <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" alt="Swagger"/> <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" alt="Figma"/> |
-
-## 산출물
-### Architecture
-![architecture](./etc/asset/Newsseug%20Architecture.png)
-
-### ERD
-![ERD](./etc/asset/ERD.png)
